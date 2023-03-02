@@ -1,0 +1,11 @@
+const base = 'http://192.168.1.108:5000';
+const stationInfo = 'station';
+const features = '/station/features';
+const valveInfo = '/station/valve_info';
+const irrigationSettings = '/station/irrigation_settings';
+const irrigationPeriods = '/station/irrigation_settings/periods';
+const irrigationCycle = '/station/irrigation_settings/cycles';
+const fertilizerPeriods= '/station/fertilization_settings/periods';
+const fertilizerSettings= '/station/fertilizer_settings';
+const animalRepellent= '/station/animal_repellent';
+const light= '/station/light_settings';
