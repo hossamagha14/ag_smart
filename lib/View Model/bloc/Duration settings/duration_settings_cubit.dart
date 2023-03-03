@@ -16,7 +16,6 @@ class DurationSettingsCubit extends Cubit<DurationSettingsStates> {
   var dio = Dio();
   DurationModel durationModel = DurationModel();
   List<DurationModel> durations = [DurationModel()];
-  int index = 1;
   bool visible = false;
   int noDayIsChosen = 7;
   List<DaysModel> days = [
@@ -35,13 +34,11 @@ class DurationSettingsCubit extends Cubit<DurationSettingsStates> {
   }
 
   addContainer() {
-    index++;
     durations.add(DurationModel());
     emit(DurationSettingsAddContainerState());
   }
 
   removeContainer(int containerIndex) {
-    index--;
     durations.removeAt(containerIndex);
     emit(DurationSettingsAddContainerState());
   }
@@ -87,80 +84,6 @@ class DurationSettingsCubit extends Cubit<DurationSettingsStates> {
     }
   }
 
-  postIrrigationPeriod({
-    required int valveId,
-    required TimeOfDay time,
-    required int duration,
-    required int quantity,
-    required int weekDays,
-    required int periodId,
-  }) async {
-    int startTime = time.hour * 60 + time.minute;
-    await dio.post('$base/$irrigationPeriods/1/$valveId/$periodId', data: {
-      "valve_id": valveId,
-      "starting_time": startTime,
-      "duration": duration,
-      "quantity": quantity,
-      "week_days": weekDays
-    }).then((value) {
-      print(value.data);
-      if (value.statusCode == 200) {
-        emit(DurationSettingsSendSuccessState());
-      }
-    }).catchError((onError) {
-      print(onError);
-      emit(DurationSettingsSendFailedState());
-    });
-  }
-
-  putIrrigationPeriod({
-    required TimeOfDay time,
-    required int duration,
-    required int quantity,
-    required int weekDays,
-    required int periodId,
-  }) async {
-    int startTime = time.hour * 60 + time.minute;
-    await dio.put('$base/$irrigationPeriods/1/1/$periodId', data: {
-      "starting_time": startTime,
-      "duration": duration,
-      "quantity": quantity,
-      "week_days": weekDays
-    }).then((value) {
-      print(value.data);
-      if (value.statusCode == 200) {
-        emit(DurationSettingsSendSuccessState());
-      }
-    }).catchError((onError) {
-      print(onError);
-      emit(DurationSettingsSendFailedState());
-    });
-  }
-
-  postIrrigationCycle({
-    required int valveId,
-    required int interval,
-    required int duration,
-    required int quantity,
-    required int weekDays,
-  }) async {
-    await dio.post('$base/$irrigationCycle/1/$valveId', data: {
-      "valve_id": valveId,
-      "interval": interval,
-      "duration": duration,
-      "quantity": quantity,
-      "week_days": weekDays
-    }).then((value) {
-      print(value.data);
-      if (value.statusCode == 200) {
-        emit(DurationSettingsSendSuccessState());
-      }
-    }).catchError((onError) {
-      print(onError);
-      emit(DurationSettingsSendFailedState());
-    });
-  }
-
   putIrrigationCycle({
     required int valveId,
     required int interval,
@@ -181,6 +104,34 @@ class DurationSettingsCubit extends Cubit<DurationSettingsStates> {
       }
     }).catchError((onError) {
       print(onError);
+      emit(DurationSettingsSendFailedState());
+    });
+  }
+
+  putIrrigationHour({
+    required int stationId,
+    required int periodId,
+    required int valveId,
+    required TimeOfDay startTime,
+    required int duration,
+    required int quantity,
+    required int weekDays,
+  }) async {
+    int time = startTime.hour * 60 + startTime.minute;
+    await dio.put('$base/$irrigationPeriods/$stationId/$valveId/$periodId', data: {
+      "period_id": periodId,
+      "valve_id": valveId,
+      "starting_time": time,
+      "duration": duration,
+      "quantity": quantity,
+      "week_days": weekDays
+    }).then((value) {
+      if (value.statusCode == 200) {
+        print(value.data);
+        emit(DurationSettingsSendSuccessState());
+      }
+    }).catchError((onError) {
+      print(onError.toString());
       emit(DurationSettingsSendFailedState());
     });
   }

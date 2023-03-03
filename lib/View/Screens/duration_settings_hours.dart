@@ -93,15 +93,14 @@ class DurationSettingsByHourScreen extends StatelessWidget {
                                       MediaQuery.of(context).size.height * 0.01,
                                 );
                               },
-                              itemCount: myCubit.index),
+                              itemCount: myCubit.durations.length),
                         ),
                         AddNewContainerButton(
                           functionAdd: () {
                             myCubit.addContainer();
                           },
                           functionRemove: () {
-                            myCubit
-                                .showDeleteButton();
+                            myCubit.showDeleteButton();
                           },
                         )
                       ],
@@ -135,11 +134,13 @@ class DurationSettingsByHourScreen extends StatelessWidget {
                           errorToast('Please choose the days of work');
                         } else {
                           for (int i = 0; i < myCubit.durations.length; i++) {
-                            myCubit.putIrrigationPeriod(
-                                time: myCubit.durations[i].time,
-                                duration: int.parse(
+                            myCubit.putIrrigationHour(
+                                stationId: 1,
+                                valveId: 0,
+                                startTime: myCubit.durations[i].time,
+                                duration: 0,
+                                quantity: int.parse(
                                     myCubit.durations[i].controller.text),
-                                quantity: 0,
                                 weekDays: 9,
                                 periodId: i + 1);
                           }

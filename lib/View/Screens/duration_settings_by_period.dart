@@ -41,21 +41,12 @@ class DurationSettingsByPeriodScreen extends StatelessWidget {
                   DurationSettingsCubit myCubit =
                       DurationSettingsCubit.get(context);
                   if (state is DurationSettingsMoveToNextPageState) {
-                    if (isEdit == false) {
-                      myCubit.postIrrigationCycle(
-                          valveId: 0,
-                          interval: int.parse(numberOfHoursControl.text),
-                          duration: int.parse(numberOfMinutesControl.text),
-                          quantity: 0,
-                          weekDays: 9);
-                    } else if (isEdit == true) {
-                      myCubit.putIrrigationCycle(
-                          valveId: 0,
-                          interval: int.parse(numberOfHoursControl.text),
-                          duration: int.parse(numberOfMinutesControl.text),
-                          quantity: 0,
-                          weekDays: 9);
-                    }
+                    myCubit.putIrrigationCycle(
+                        valveId: 0,
+                        interval: int.parse(numberOfHoursControl.text),
+                        duration: int.parse(numberOfMinutesControl.text),
+                        quantity: 0,
+                        weekDays: 9);
                   } else if (state is DurationSettingsErrorState) {
                     errorToast('Input error');
                   } else if (state is DurationSettingsSendSuccessState) {

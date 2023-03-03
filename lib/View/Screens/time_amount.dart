@@ -88,7 +88,7 @@ class TimeAmountScreen extends StatelessWidget {
                                           MediaQuery.of(context).size.height *
                                               0.01,
                                     ),
-                                itemCount: myCubit.index),
+                                itemCount: myCubit.durations.length),
                           ),
                           AddNewContainerButton(
                             functionAdd: () {
@@ -117,27 +117,16 @@ class TimeAmountScreen extends StatelessWidget {
                           errorToast('Please choose the days of work');
                         }
                         if (allFull == true) {
-                          if (isEdit == false) {
-                            for (int i = 0; i < myCubit.durations.length; i++) {
-                              myCubit.postIrrigationPeriod(
-                                  valveId: 0,
-                                  time: myCubit.durations[i].time,
-                                  duration: 0,
-                                  quantity: int.parse(
-                                      myCubit.durations[i].controller.text),
-                                  weekDays: 9,
-                                  periodId: i + 1);
-                            }
-                          } else if (isEdit == true) {
-                            for (int i = 0; i < myCubit.durations.length; i++) {
-                              myCubit.putIrrigationPeriod(
-                                  time: myCubit.durations[i].time,
-                                  duration: 0,
-                                  quantity: int.parse(
-                                      myCubit.durations[i].controller.text),
-                                  weekDays: 9,
-                                  periodId: i + 1);
-                            }
+                          for (int i = 0; i < myCubit.durations.length; i++) {
+                            myCubit.putIrrigationHour(
+                                stationId: 1,
+                                valveId: 0,
+                                startTime: myCubit.durations[i].time,
+                                duration: 0,
+                                quantity: int.parse(
+                                    myCubit.durations[i].controller.text),
+                                weekDays: 9,
+                                periodId: i + 1);
                           }
                         } else {
                           errorToast('Please add the open valve time');

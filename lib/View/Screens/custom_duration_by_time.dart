@@ -189,6 +189,7 @@ class CustomDurationByTime extends StatelessWidget {
                                         .controllersList.length;
                                 i++) {
                               myCubit.putIrrigationHour(
+                                stationId: 1,
                                   periodId: i + 1,
                                   valveId: lineIndex + 1,
                                   startTime: myCubit

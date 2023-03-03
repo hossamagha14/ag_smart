@@ -111,7 +111,7 @@ class CustomIrrigationCubit extends Cubit<CustomIrrigationStates> {
     }).catchError((onError) {
       customIrrigationModelList[lineIndex].isBeingDeleted[containerIndex] =
           true;
-          print(onError.toString());
+      print(onError.toString());
       emit(CustomIrrigationDeleteFailedState());
     });
   }
@@ -172,6 +172,7 @@ class CustomIrrigationCubit extends Cubit<CustomIrrigationStates> {
 
   putIrrigationHour({
     required int periodId,
+    required int stationId,
     required int valveId,
     required TimeOfDay startTime,
     required int duration,
@@ -180,7 +181,8 @@ class CustomIrrigationCubit extends Cubit<CustomIrrigationStates> {
   }) async {
     emit(CustomIrrigationLoadingState());
     int time = startTime.hour * 60 + startTime.minute;
-    await dio.put('$base/$irrigationPeriods/1/$valveId/$periodId', data: {
+    await dio
+        .put('$base/$irrigationPeriods/$stationId/$valveId/$periodId', data: {
       "period_id": periodId,
       "valve_id": valveId,
       "starting_time": time,
