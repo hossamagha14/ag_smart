@@ -12,12 +12,12 @@ class CustomIrrigationModel {
     DaysModel(day: 'THU', isOn: false),
     DaysModel(day: 'FRI', isOn: false),
   ];
-  List<TimeOfDay> timeList = [TimeOfDay.now()];
-  List<TextEditingController> controllersList = [TextEditingController()];
+  List<TimeOfDay> timeList = [];
+  List<TextEditingController> controllersList = [];
   List<bool> isBeingDeleted = [false];
   bool? accordingToHour;
   bool? accordingToQuantity;
-  
+  String ? intial;
   int noDayIsChosen = 7;
   CustomIrrigationModel(
       {required this.accordingToHour, required this.accordingToQuantity});

@@ -19,6 +19,7 @@ class CustomIrrigationCubit extends Cubit<CustomIrrigationStates> {
   IrrigationSettingsModel? irrigationSettingsModel;
   bool visible = false;
   bool allSent = false;
+  List periodsList = [];
   int? statusCode;
   int? irrigationMethod1;
   int? irrigationMethod2;
@@ -197,6 +198,30 @@ class CustomIrrigationCubit extends Cubit<CustomIrrigationStates> {
     }).catchError((onError) {
       print(onError.toString());
       emit(CustomIrrigationPutFailState());
+    });
+  }
+
+  getPeriods({
+    required int stationId,
+    required int lineIndex,
+  }) async {
+    await dio.get('$base/$irrigationSettings/$stationId').then((value) {
+      irrigationSettingsModel = IrrigationSettingsModel.fromJson(value.data);
+      for (int i = 0;
+          i < irrigationSettingsModel!.irrigationPeriods!.length;
+          i++) {
+        if (irrigationSettingsModel!.irrigationPeriods![i].valveId ==
+            lineIndex+1) {
+          addContainer(lineIndex);
+        }
+      }
+      if (value.statusCode == 200) {
+        print(value.data);
+        emit(CustomIrrigationGetSuccessState());
+      }
+    }).catchError((onError) {
+      print(onError.toString());
+      emit(CustomIrrigationGetFailState());
     });
   }
 }

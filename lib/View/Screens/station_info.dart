@@ -1,3 +1,5 @@
+import 'package:ag_smart/View%20Model/bloc/Bottom%20navigation%20bar/bottom_nav_bar_cubit.dart';
+import 'package:ag_smart/View%20Model/bloc/Bottom%20navigation%20bar/bottom_nav_bar_states.dart';
 import 'package:ag_smart/View%20Model/bloc/Lines%20activation/lines_activation_cubit.dart';
 import 'package:ag_smart/View%20Model/bloc/Lines%20activation/lines_activation_states.dart';
 import 'package:ag_smart/View/Reusable/choose_days_widget.dart';
@@ -24,10 +26,10 @@ class StationInfoScreen extends StatelessWidget {
         automaticallyImplyLeading: false,
       ),
       body: SafeArea(
-        child: BlocConsumer<IrrigationTypeCubit, IrrigationTypesStates>(
+        child: BlocConsumer<BottomNavBarCubit, BottomNavBarStates>(
             listener: (context, state) {},
             builder: (context, state) {
-              IrrigationTypeCubit myCubit = IrrigationTypeCubit.get(context);
+              BottomNavBarCubit myCubit = BottomNavBarCubit.get(context);
               return Column(
                 children: [
                   MainCard(
@@ -114,11 +116,21 @@ class StationInfoScreen extends StatelessWidget {
                             IrrigationTypeCubit.get(context);
                         return MainIconsRowWidget(
                           icon1: 'm',
-                          icon2:
-                              irrigationCubit.irrigationType == 1 ? 'r' : 't',
-                          icon3: myCubit.accordingToHour == true ? 'u' : 'w',
-                          icon4:
-                              myCubit.accordingToQuantity == true ? 'c' : 'x',
+                          icon2: myCubit.stationModel!.irrigationSettings![0]
+                                      .settingsType ==
+                                  1
+                              ? 'r'
+                              : 't',
+                          icon3: myCubit.stationModel!.irrigationSettings![0]
+                                      .irrigationMethod1 ==
+                                  2
+                              ? 'u'
+                              : 'w',
+                          icon4: myCubit.stationModel!.irrigationSettings![0]
+                                      .irrigationMethod2 ==
+                                  1
+                              ? 'x'
+                              : 'c',
                         );
                       },
                     ),
