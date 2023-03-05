@@ -9,3 +9,4 @@ const fertilizerPeriods= '/station/fertilization_settings/periods';
 const fertilizerSettings= '/station/fertilizer_settings';
 const animalRepellent= '/station/animal_repellent';
 const light= '/station/light_settings';
+const irrigationPeriodsList= '/station/irrigation_settings/periods_list';

@@ -1,6 +1,7 @@
-import 'package:ag_smart/View%20Model/bloc/Device%20setup/device_setup_cubit.dart';
-import 'package:ag_smart/View%20Model/bloc/Device%20setup/device_setup_states.dart';
+import 'package:ag_smart/View%20Model/bloc/Stations/station_cubit.dart';
+import 'package:ag_smart/View%20Model/bloc/Stations/station_states.dart';
 import 'package:ag_smart/View/Reusable/colors.dart';
+import 'package:ag_smart/View/Reusable/error_toast.dart';
 import 'package:ag_smart/View/Reusable/main_card.dart';
 import 'package:ag_smart/View/Reusable/my_text_field.dart';
 import 'package:ag_smart/View/Reusable/text.dart';
@@ -30,68 +31,80 @@ class DeviceSetupScreen extends StatelessWidget {
               height: MediaQuery.of(context).size.height * 0.8,
               child: Column(
                 children: [
-                  BlocProvider(
-                    create: (context) => DeviceSetupCubit(),
-                    child: BlocConsumer<DeviceSetupCubit, DeviceSetupStates>(
-                      listener: (context, state) {},
-                      builder: (context, state) {
-                        DeviceSetupCubit myCubit =
-                            DeviceSetupCubit.get(context);
-                        return MainCard(
-                          function: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      const DeviceFeaturesScreen(
-                                    isEdit: false,
-                                  ),
-                                ));
-                          },
-                          //this is the widget from main_card.dart
-                          mainWidget: Column(
-                            children: [
-                              MyTextField(
-                                label: text[chosenLanguage]![
-                                    'Change network name']!,
-                                controller: changeNameController,
-                                color: backgroundColor,
+                  BlocConsumer<StationsCubit, StationsStates>(
+                    listener: (context, state) {
+                      if (state is StationsAddToDBSuccessState) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const DeviceFeaturesScreen(
+                                isEdit: false,
                               ),
-                              MyTextField(
-                                  secureText: myCubit.securePassword,
-                                  suffixIcon: InkWell(
-                                      onTap: () {
-                                        myCubit.showPassword();
-                                      },
-                                      child: myCubit.securePassword == true
-                                          ? const Icon(Icons.visibility)
-                                          : const Icon(Icons.visibility_off)),
-                                  label: text[chosenLanguage]!['Password']!,
-                                  controller: passwordController,
-                                  color: backgroundColor),
-                              MyTextField(
-                                  secureText: myCubit.secureConfirmPassword,
-                                  suffixIcon: InkWell(
-                                      onTap: () {
-                                        myCubit.showConfirmPassword();
-                                      },
-                                      child: myCubit.secureConfirmPassword == true
-                                          ? const Icon(Icons.visibility)
-                                          : const Icon(Icons.visibility_off)),
-                                  label: text[chosenLanguage]![
-                                      'confirm password']!,
-                                  controller: rePasswordController,
-                                  color: backgroundColor)
-                            ],
-                          ),
-                          rowWidget: const MainIconsRowWidget(
-                            icon1: 'm',
-                          ),
-                          buttonColor: greenButtonColor,
-                          buttonTitle: 'Next',
-                        );
-                      },
-                    ),
+                            ));
+                      } else if (state is StationsAddToDBSuccessState) {
+                        errorToast('An error has occurred');
+                      }
+                    },
+                    builder: (context, state) {
+                      StationsCubit myCubit = StationsCubit.get(context);
+                      return MainCard(
+                        function: () {
+                          if (changeNameController.text.isEmpty ||
+                              passwordController.text.isEmpty ||
+                              rePasswordController.text.isEmpty) {
+                            errorToast('Please fill all the data');
+                          } else if (passwordController.text !=
+                              rePasswordController.text) {
+                            errorToast('Password doesn\'t match');
+                          } else {
+                            myCubit.insertInDatabase(
+                                name: changeNameController.text,
+                                password: passwordController.text);
+                          }
+                        },
+                        //this is the widget from main_card.dart
+                        mainWidget: Column(
+                          children: [
+                            MyTextField(
+                              label:
+                                  text[chosenLanguage]!['Change network name']!,
+                              controller: changeNameController,
+                              color: backgroundColor,
+                            ),
+                            MyTextField(
+                                secureText: myCubit.securePassword,
+                                suffixIcon: InkWell(
+                                    onTap: () {
+                                      myCubit.showPassword();
+                                    },
+                                    child: myCubit.securePassword == true
+                                        ? const Icon(Icons.visibility)
+                                        : const Icon(Icons.visibility_off)),
+                                label: text[chosenLanguage]!['Password']!,
+                                controller: passwordController,
+                                color: backgroundColor),
+                            MyTextField(
+                                secureText: myCubit.secureConfirmPassword,
+                                suffixIcon: InkWell(
+                                    onTap: () {
+                                      myCubit.showConfirmPassword();
+                                    },
+                                    child: myCubit.secureConfirmPassword == true
+                                        ? const Icon(Icons.visibility)
+                                        : const Icon(Icons.visibility_off)),
+                                label:
+                                    text[chosenLanguage]!['confirm password']!,
+                                controller: rePasswordController,
+                                color: backgroundColor)
+                          ],
+                        ),
+                        rowWidget: const MainIconsRowWidget(
+                          icon1: 'm',
+                        ),
+                        buttonColor: greenButtonColor,
+                        buttonTitle: 'Next',
+                      );
+                    },
                   ),
                 ],
               ),

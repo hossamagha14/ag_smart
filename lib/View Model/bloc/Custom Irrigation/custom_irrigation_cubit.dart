@@ -19,7 +19,7 @@ class CustomIrrigationCubit extends Cubit<CustomIrrigationStates> {
   IrrigationSettingsModel? irrigationSettingsModel;
   bool visible = false;
   bool allSent = false;
-  List periodsList = [];
+  List<Map<String, dynamic>> periodsList = [];
   int? statusCode;
   int? irrigationMethod1;
   int? irrigationMethod2;
@@ -47,13 +47,15 @@ class CustomIrrigationCubit extends Cubit<CustomIrrigationStates> {
 
   chooseAccordingToQuantity(int index) {
     customIrrigationModelList[index].accordingToQuantity = true;
+    print(customIrrigationModelList[index].accordingToQuantity);
     irrigationMethod2 = 2;
     emit(CustomIrrigationQuantityState());
   }
 
   chooseAccordingToTime(int index) {
     customIrrigationModelList[index].accordingToQuantity = false;
-    irrigationMethod2 = 2;
+    print(customIrrigationModelList[index].accordingToQuantity);
+    irrigationMethod2 = 1;
     emit(CustomIrrigationTimeState());
   }
 
@@ -75,6 +77,7 @@ class CustomIrrigationCubit extends Cubit<CustomIrrigationStates> {
   }
 
   addContainer(int lineIndex) {
+    print(customIrrigationModelList[0].accordingToQuantity);
     customIrrigationModelList[lineIndex]
         .controllersList
         .add(TextEditingController());
@@ -106,6 +109,9 @@ class CustomIrrigationCubit extends Cubit<CustomIrrigationStates> {
         .then((value) {
       if (value.statusCode == 200) {
         print(value.data);
+        if (value.data == {"message": "valve period deleted"}) {
+          print('a7a');
+        }
         removeContainer(lineIndex: lineIndex, containerIndex: containerIndex);
         emit(CustomIrrigationDeleteSuccessState());
       }
@@ -172,25 +178,12 @@ class CustomIrrigationCubit extends Cubit<CustomIrrigationStates> {
   }
 
   putIrrigationHour({
-    required int periodId,
     required int stationId,
-    required int valveId,
-    required TimeOfDay startTime,
-    required int duration,
-    required int quantity,
-    required int weekDays,
+    required List<Map<String, dynamic>> periodsList,
   }) async {
     emit(CustomIrrigationLoadingState());
-    int time = startTime.hour * 60 + startTime.minute;
-    await dio
-        .put('$base/$irrigationPeriods/$stationId/$valveId/$periodId', data: {
-      "period_id": periodId,
-      "valve_id": valveId,
-      "starting_time": time,
-      "duration": duration,
-      "quantity": quantity,
-      "week_days": weekDays
-    }).then((value) {
+    await dio.put('$base/$irrigationPeriodsList/$stationId',
+        data: {'list': periodsList}).then((value) {
       if (value.statusCode == 200) {
         print(value.data);
         emit(CustomIrrigationPutSuccessState());
@@ -211,8 +204,11 @@ class CustomIrrigationCubit extends Cubit<CustomIrrigationStates> {
           i < irrigationSettingsModel!.irrigationPeriods!.length;
           i++) {
         if (irrigationSettingsModel!.irrigationPeriods![i].valveId ==
-            lineIndex+1) {
+            lineIndex + 1) {
           addContainer(lineIndex);
+          customIrrigationModelList[lineIndex].controllersList[i].text =
+              irrigationSettingsModel!.irrigationPeriods![i].duration
+                  .toString();
         }
       }
       if (value.statusCode == 200) {
@@ -223,5 +219,32 @@ class CustomIrrigationCubit extends Cubit<CustomIrrigationStates> {
       print(onError.toString());
       emit(CustomIrrigationGetFailState());
     });
+  }
+
+  List<Map<String, dynamic>> makeAList(
+      {required int lineIndex, required weekday}) {
+    for (int i = 0;
+        i < customIrrigationModelList[lineIndex].controllersList.length;
+        i++) {
+      periodsList.add({
+        "period_id": i + 1,
+        "valve_id": lineIndex + 1,
+        "starting_time":
+            customIrrigationModelList[lineIndex].timeList[i].hour * 60 +
+                customIrrigationModelList[lineIndex].timeList[i].minute,
+        "duration": customIrrigationModelList[lineIndex].accordingToQuantity ==
+                false
+            ? int.parse(
+                customIrrigationModelList[lineIndex].controllersList[i].text)
+            : 0,
+        "quantity": customIrrigationModelList[lineIndex].accordingToQuantity ==
+                true
+            ? int.parse(
+                customIrrigationModelList[lineIndex].controllersList[i].text)
+            : 0,
+        "week_days": weekday
+      });
+    }
+    return periodsList;
   }
 }

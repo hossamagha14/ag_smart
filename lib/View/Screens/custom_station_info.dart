@@ -83,16 +83,21 @@ class CustomStationInfoScreen extends StatelessWidget {
                                 LinesActivationStates>(
                             listener: (context, state) {},
                             builder: (context, state) {
-                              LinesActivationCubit activeLineCubit =LinesActivationCubit.get(context);
+                              LinesActivationCubit activeLineCubit =
+                                  LinesActivationCubit.get(context);
                               return ListView.separated(
                                   physics: const BouncingScrollPhysics(),
                                   itemBuilder: (context, lineIndex) {
                                     return Visibility(
-                                      visible: activeLineCubit.valves[lineIndex].isActive,
+                                      visible: activeLineCubit
+                                          .valves[lineIndex].isActive,
                                       child: Container(
-                                        width: MediaQuery.of(context).size.width *
-                                            0.8,
-                                        height: MediaQuery.of(context).size.height*0.05,
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.8,
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.05,
                                         decoration: BoxDecoration(
                                             color: backgroundColor,
                                             borderRadius:
@@ -116,7 +121,8 @@ class CustomStationInfoScreen extends StatelessWidget {
                                               child: ListView.separated(
                                                   scrollDirection:
                                                       Axis.horizontal,
-                                                  itemBuilder: (context, index) {
+                                                  itemBuilder:
+                                                      (context, index) {
                                                     return CircleAvatar(
                                                       radius: 7,
                                                       backgroundColor: myCubit
@@ -179,6 +185,9 @@ class CustomStationInfoScreen extends StatelessWidget {
                                                   ),
                                             InkWell(
                                               onTap: () {
+                                                myCubit.getPeriods(
+                                                    stationId: 1,
+                                                    lineIndex: lineIndex);
                                                 Navigator.push(
                                                     context,
                                                     MaterialPageRoute(
@@ -223,7 +232,8 @@ class CustomStationInfoScreen extends StatelessWidget {
                                   },
                                   separatorBuilder: (context, index) {
                                     return Visibility(
-                                      visible: activeLineCubit.valves[index].isActive,
+                                      visible: activeLineCubit
+                                          .valves[index].isActive,
                                       child: SizedBox(
                                         height:
                                             MediaQuery.of(context).size.height *

@@ -5,6 +5,7 @@ import 'package:ag_smart/View%20Model/bloc/Language/language_cubit.dart';
 import 'package:ag_smart/View%20Model/bloc/Lines%20activation/lines_activation_cubit.dart';
 import 'package:ag_smart/View%20Model/bloc/Pump%20settings/pump_settingd_cubit.dart';
 import 'package:ag_smart/View%20Model/bloc/Scarcrow/Scarcrow_cubit.dart';
+import 'package:ag_smart/View%20Model/bloc/Stations/station_cubit.dart';
 import 'package:ag_smart/View%20Model/bloc/light/light_cubit.dart';
 import 'package:ag_smart/View%20Model/database/cache_helpher.dart';
 import 'package:ag_smart/View/Reusable/colors.dart';
@@ -55,6 +56,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => LanguageCubit(),
+        ),
+        BlocProvider(
+          create: (context) => StationsCubit()..createDataBase(),
         ),
       ],
       child: MaterialApp(
