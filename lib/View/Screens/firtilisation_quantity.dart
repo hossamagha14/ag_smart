@@ -37,6 +37,8 @@ class FirtilisatiopnQuantityScreen extends StatelessWidget {
                         FirtiliserSettingsCubit.get(context);
                     return MainCard2(
                         mainWidget: SetSettings3RowsContainer(
+                          visible: false,
+                          function: (){},
                             firstRowTitle: text[chosenLanguage]!['Set day']!,
                             firstRowWidget: MyDatePicker(
                                 date:

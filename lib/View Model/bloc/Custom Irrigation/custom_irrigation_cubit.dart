@@ -77,7 +77,6 @@ class CustomIrrigationCubit extends Cubit<CustomIrrigationStates> {
   }
 
   addContainer(int lineIndex) {
-    print(customIrrigationModelList[0].accordingToQuantity);
     customIrrigationModelList[lineIndex]
         .controllersList
         .add(TextEditingController());
@@ -133,7 +132,6 @@ class CustomIrrigationCubit extends Cubit<CustomIrrigationStates> {
     required int irrigationMethod1,
     required int irrigationMethod2,
   }) async {
-    emit(CustomIrrigationLoadingState());
     await dio.put('$base/$irrigationSettings/1', data: {
       "station_id": 1,
       "active_valves": activeValves,
@@ -143,7 +141,8 @@ class CustomIrrigationCubit extends Cubit<CustomIrrigationStates> {
     }).then((value) {
       if (value.statusCode == 200) {
         print(value.data);
-        statusCode = value.statusCode;
+        
+
         emit(CustomIrrigationPutSuccessState());
       }
     }).catchError((onError) {
@@ -159,7 +158,6 @@ class CustomIrrigationCubit extends Cubit<CustomIrrigationStates> {
     required int quantity,
     required int weekDays,
   }) async {
-    emit(CustomIrrigationLoadingState());
     await dio.put('$base/$irrigationCycle/1/$valveId', data: {
       "valve_id": valveId,
       "interval": interval,
@@ -169,6 +167,7 @@ class CustomIrrigationCubit extends Cubit<CustomIrrigationStates> {
     }).then((value) {
       if (value.statusCode == 200) {
         print(value.data);
+        
         emit(CustomIrrigationPutSuccessState());
       }
     }).catchError((onError) {
@@ -181,11 +180,10 @@ class CustomIrrigationCubit extends Cubit<CustomIrrigationStates> {
     required int stationId,
     required List<Map<String, dynamic>> periodsList,
   }) async {
-    emit(CustomIrrigationLoadingState());
     await dio.put('$base/$irrigationPeriodsList/$stationId',
         data: {'list': periodsList}).then((value) {
       if (value.statusCode == 200) {
-        print(value.data);
+        print(1);
         emit(CustomIrrigationPutSuccessState());
       }
     }).catchError((onError) {
@@ -198,21 +196,27 @@ class CustomIrrigationCubit extends Cubit<CustomIrrigationStates> {
     required int stationId,
     required int lineIndex,
   }) async {
+    customIrrigationModelList[lineIndex].timeList=[];
+    customIrrigationModelList[lineIndex].controllersList=[];
+    int j=0;
     await dio.get('$base/$irrigationSettings/$stationId').then((value) {
       irrigationSettingsModel = IrrigationSettingsModel.fromJson(value.data);
+      print(lineIndex+1);
       for (int i = 0;
           i < irrigationSettingsModel!.irrigationPeriods!.length;
           i++) {
         if (irrigationSettingsModel!.irrigationPeriods![i].valveId ==
             lineIndex + 1) {
           addContainer(lineIndex);
-          customIrrigationModelList[lineIndex].controllersList[i].text =
+          customIrrigationModelList[lineIndex].controllersList[j].text =
               irrigationSettingsModel!.irrigationPeriods![i].duration
                   .toString();
+          j++;
         }
       }
       if (value.statusCode == 200) {
         print(value.data);
+       
         emit(CustomIrrigationGetSuccessState());
       }
     }).catchError((onError) {
@@ -226,6 +230,7 @@ class CustomIrrigationCubit extends Cubit<CustomIrrigationStates> {
     for (int i = 0;
         i < customIrrigationModelList[lineIndex].controllersList.length;
         i++) {
+      print('$i makeList');
       periodsList.add({
         "period_id": i + 1,
         "valve_id": lineIndex + 1,

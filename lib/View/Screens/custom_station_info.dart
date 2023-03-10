@@ -2,17 +2,17 @@ import 'package:ag_smart/View%20Model/bloc/Custom%20Irrigation/custom_irrigation
 import 'package:ag_smart/View%20Model/bloc/Custom%20Irrigation/custom_irrigation_states.dart';
 import 'package:ag_smart/View%20Model/bloc/Lines%20activation/lines_activation_cubit.dart';
 import 'package:ag_smart/View/Reusable/colors.dart';
-import 'package:ag_smart/View/Reusable/firtilisers_scarcrow_light_widget.dart';
 import 'package:ag_smart/View/Reusable/main_card.dart';
 import 'package:ag_smart/View/Reusable/main_icons_row_widget.dart';
+import 'package:ag_smart/View/Reusable/pop_screen.dart';
 import 'package:ag_smart/View/Reusable/text.dart';
 import 'package:ag_smart/View/Reusable/text_style.dart';
-import 'package:ag_smart/View/Screens/custom_duration_settings.dart';
 import 'package:ag_smart/View/Screens/edit_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../View Model/bloc/Lines activation/lines_activation_states.dart';
+import '../Reusable/scare_light.dart';
 
 class CustomStationInfoScreen extends StatelessWidget {
   const CustomStationInfoScreen({Key? key}) : super(key: key);
@@ -185,17 +185,20 @@ class CustomStationInfoScreen extends StatelessWidget {
                                                   ),
                                             InkWell(
                                               onTap: () {
-                                                myCubit.getPeriods(
-                                                    stationId: 1,
-                                                    lineIndex: lineIndex);
-                                                Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          CustomDurationSettingsScreen(
-                                                              lineIndex:
-                                                                  lineIndex),
-                                                    ));
+                                                showDialog(
+                                                  context: context,
+                                                  builder: (context) =>
+                                                      AlertDialog(
+                                                          shape: RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          20)),
+                                                          content: PopUpScreen(
+                                                            lineIndex:
+                                                                lineIndex,
+                                                          )),
+                                                );
                                               },
                                               child: Container(
                                                 height: MediaQuery.of(context)
@@ -245,7 +248,7 @@ class CustomStationInfoScreen extends StatelessWidget {
                             }),
                       ),
                       const Spacer(),
-                      const FirScarLightWidget()
+                      const ScarLightWidget()
                     ],
                   ),
                 ),

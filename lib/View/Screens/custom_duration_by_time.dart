@@ -40,6 +40,9 @@ class CustomDurationByTime extends StatelessWidget {
                 (route) => false);
           } else if (state is CustomIrrigationPutFailState) {
             errorToast('An error has occured');
+          } else if (state is CustomIrrigationGetFailState) {
+            errorToast('An error has occured');
+            Navigator.pop(context);
           }
         },
         builder: (context, state) {
@@ -70,38 +73,49 @@ class CustomDurationByTime extends StatelessWidget {
                                   child: ListView.separated(
                                       physics: const BouncingScrollPhysics(),
                                       shrinkWrap: true,
-                                      itemBuilder: (context, index) => myCubit
-                                                  .customIrrigationModelList[
-                                                      lineIndex]
-                                                  .isBeingDeleted[index] ==
+                                      itemBuilder: (context, index) => myCubit.customIrrigationModelList[lineIndex].isBeingDeleted[index] ==
                                               false
                                           ? SetSettings2RowsContainer(
                                               visible: myCubit.visible,
                                               function: () {
-                                                myCubit.removeContainerFromdb(
-                                                    lineIndex: lineIndex,
-                                                    containerIndex: index,
-                                                    stationId: 1,
-                                                    valveId: lineIndex + 1,
-                                                    periodId: myCubit
+                                                if (index <
+                                                    myCubit
                                                         .irrigationSettingsModel!
-                                                        .irrigationPeriods![
-                                                            index]
-                                                        .periodId!);
+                                                        .irrigationPeriods!
+                                                        .length) {
+                                                  myCubit.removeContainerFromdb(
+                                                      lineIndex: lineIndex,
+                                                      containerIndex: index,
+                                                      stationId: 1,
+                                                      valveId: lineIndex + 1,
+                                                      periodId: myCubit
+                                                          .irrigationSettingsModel!
+                                                          .irrigationPeriods![
+                                                              index]
+                                                          .periodId!);
+                                                } else {
+                                                  myCubit.removeContainer(
+                                                      lineIndex: lineIndex,
+                                                      containerIndex: index);
+                                                }
                                               },
                                               firstRowTitle: text[
                                                   chosenLanguage]!['Set time']!,
                                               firstRowWidget: MyTimePicker(
-                                                  time: myCubit.customIrrigationModelList[lineIndex].timeList[index]
+                                                  time: myCubit
+                                                      .customIrrigationModelList[
+                                                          lineIndex]
+                                                      .timeList[index]
                                                       .format(context)
                                                       .toString(),
-                                                  function: (value) =>
-                                                      myCubit.pickTime(
-                                                          value, index, lineIndex)),
-                                              secondRowTitle:
-                                                  myCubit.customIrrigationModelList[lineIndex].accordingToQuantity == false
-                                                      ? text[chosenLanguage]!['Open valve time']!
-                                                      : text[chosenLanguage]!['Amount of water']!,
+                                                  function: (value) => myCubit.pickTime(
+                                                      value, index, lineIndex)),
+                                              secondRowTitle: myCubit
+                                                          .customIrrigationModelList[lineIndex]
+                                                          .accordingToQuantity ==
+                                                      false
+                                                  ? text[chosenLanguage]!['Open valve time']!
+                                                  : text[chosenLanguage]!['Amount of water']!,
                                               secondRowWidget: OpenValvePeriodTextField(
                                                 control: myCubit
                                                     .customIrrigationModelList[
@@ -181,6 +195,7 @@ class CustomDurationByTime extends StatelessWidget {
                                           .controllersList
                                           .length;
                                   i++) {
+                                    
                                 if (myCubit.customIrrigationModelList[lineIndex]
                                     .controllersList[i].text.isEmpty) {
                                   allFull = false;

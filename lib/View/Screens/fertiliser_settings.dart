@@ -61,6 +61,8 @@ class FirtiliserSettingsScreen extends StatelessWidget {
                                 physics: const BouncingScrollPhysics(),
                                 itemBuilder: (context, index) {
                                   return SetSettings3RowsContainer(
+                                    visible: false,
+                                    function: (){},
                                       firstRowTitle:
                                           text[chosenLanguage]!['Set day']!,
                                       firstRowWidget: MyDatePicker(

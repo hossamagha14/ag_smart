@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../Model/irrigation_settings_model.dart';
 import 'duration_settings_states.dart';
 
 class DurationSettingsCubit extends Cubit<DurationSettingsStates> {
@@ -15,8 +16,10 @@ class DurationSettingsCubit extends Cubit<DurationSettingsStates> {
 
   var dio = Dio();
   DurationModel durationModel = DurationModel();
-  List<DurationModel> durations = [DurationModel()];
+  List<DurationModel> durations = [];
+  List<Map<String, dynamic>> periodsList = [];
   bool visible = false;
+  IrrigationSettingsModel? irrigationSettingsModel;
   int noDayIsChosen = 7;
   List<DaysModel> days = [
     DaysModel(day: 'SAT', isOn: false),
@@ -118,7 +121,8 @@ class DurationSettingsCubit extends Cubit<DurationSettingsStates> {
     required int weekDays,
   }) async {
     int time = startTime.hour * 60 + startTime.minute;
-    await dio.put('$base/$irrigationPeriods/$stationId/$valveId/$periodId', data: {
+    await dio
+        .put('$base/$irrigationPeriods/$stationId/$valveId/$periodId', data: {
       "period_id": periodId,
       "valve_id": valveId,
       "starting_time": time,
@@ -133,6 +137,51 @@ class DurationSettingsCubit extends Cubit<DurationSettingsStates> {
     }).catchError((onError) {
       print(onError.toString());
       emit(DurationSettingsSendFailedState());
+    });
+  }
+
+  List<Map<String, dynamic>> makeAList({required weekday}) {
+    for (int i = 0; i < durations.length; i++) {
+      periodsList.add({
+        "period_id": i + 1,
+        "valve_id": 0,
+        "starting_time": durations[i].time.hour * 60 + durations[i].time.minute,
+        "duration": irrigationSettingsModel!.irrigationMethod2 == 1
+            ? int.parse(durations[i].controller.text)
+            : 0,
+        "quantity": irrigationSettingsModel!.irrigationMethod2 == 2
+            ? int.parse(durations[i].controller.text)
+            : 0,
+        "week_days": weekday
+      });
+    }
+    return periodsList;
+  }
+
+  putIrrigationHourList({
+    required int stationId,
+    required List<Map<String, dynamic>> periodsList,
+  }) async {
+    await dio.put('$base/$irrigationPeriodsList/$stationId',
+        data: {'list': periodsList}).then((value) {
+      if (value.statusCode == 200) {
+        print(value.data);
+        emit(DurationSettingsSendSuccessState());
+      }
+    }).catchError((onError) {
+      print(onError.toString());
+      emit(DurationSettingsSendFailedState());
+    });
+  }
+
+  getIrrigationSettings({required int stationId}) async {
+    await dio.get('$base/$irrigationSettings/$stationId').then((value) {
+      irrigationSettingsModel = IrrigationSettingsModel.fromJson(value.data);
+      if (value.statusCode == 200) {
+        emit(DurationSettingsGetSuccessState());
+      }
+    }).catchError((onError) {
+      emit(DurationSettingsGetFailState());
     });
   }
 }

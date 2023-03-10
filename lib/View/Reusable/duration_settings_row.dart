@@ -47,8 +47,15 @@ class DurationSettingsRow extends StatelessWidget {
                   child: firstButtonIcon,
                 ),
               ),
-              const SizedBox(height: 5,),
-              Text(firstButtonTitle)
+              const SizedBox(
+                height: 5,
+              ),
+              SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.25,
+                  child: Text(
+                    firstButtonTitle,
+                    textAlign: TextAlign.center,
+                  ))
             ],
           ),
           Column(
@@ -67,8 +74,15 @@ class DurationSettingsRow extends StatelessWidget {
                   child: secondButtonIcon,
                 ),
               ),
-              const SizedBox(height: 5,),
-              Text(secondButtonTitle)
+              const SizedBox(
+                height: 5,
+              ),
+              SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.25,
+                  child: Text(
+                    secondButtonTitle,
+                    textAlign: TextAlign.center,
+                  ))
             ],
           )
         ],

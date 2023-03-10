@@ -39,7 +39,7 @@ class BottomNavBarCubit extends Cubit<BottomNavBarStates> {
         ];
       } else if (settingsType == 3) {
         bottomNavBarScreens = [
-          const CustomStationInfoScreen(),
+           const CustomStationInfoScreen(),
           const ReportScreen(),
           const SettingsScreen()
         ];

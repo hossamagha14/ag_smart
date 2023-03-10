@@ -23,15 +23,15 @@ class LinesActivationScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(text[chosenLanguage]!['Device Setup']!),
       ),
-      body: Column(
-        children: [
-          BlocConsumer<LinesActivationCubit, LinesActivationStates>(
-            listener: (context, state) {},
-            builder: (context, state) {
-              LinesActivationCubit myCubit = LinesActivationCubit.get(context);
-              return state is LinesActivationLoadingState
-                  ? const Center(child: CircularProgressIndicator())
-                  : MainCard2(
+      body: BlocConsumer<LinesActivationCubit, LinesActivationStates>(
+        listener: (context, state) {},
+        builder: (context, state) {
+          LinesActivationCubit myCubit = LinesActivationCubit.get(context);
+          return state is LinesActivationLoadingState
+              ? const Center(child: CircularProgressIndicator())
+              : Column(
+                children: [
+                  MainCard2(
                       function: () {
                         myCubit.toBinary(myCubit.valves.length);
                         print(binaryValves);
@@ -95,10 +95,10 @@ class LinesActivationScreen extends StatelessWidget {
                         'm',
                         style: mainIcon,
                       ),
-                      cardtitle: text[chosenLanguage]!['Lines Activation']!);
-            },
-          ),
-        ],
+                      cardtitle: text[chosenLanguage]!['Lines Activation']!),
+                ],
+              );
+        },
       ),
     );
   }

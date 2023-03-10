@@ -1,3 +1,4 @@
+import 'package:ag_smart/View%20Model/bloc/Custom%20Firtilization/custom_fertilization_cubit.dart';
 import 'package:ag_smart/View%20Model/bloc/Custom%20Irrigation/custom_irrigation_cubit.dart';
 import 'package:ag_smart/View%20Model/bloc/Duration%20settings/duration_settings_cubit.dart';
 import 'package:ag_smart/View%20Model/bloc/Irrigation%20type/irrigation_type_cubit.dart';
@@ -40,7 +41,7 @@ class MyApp extends StatelessWidget {
           create: (context) => IrrigationTypeCubit(),
         ),
         BlocProvider(
-          create: (context) => DurationSettingsCubit(),
+          create: (context) => DurationSettingsCubit()..getIrrigationSettings(stationId: 1),
         ),
         BlocProvider(
           create: (context) => FirtiliserSettingsCubit(),
@@ -60,6 +61,9 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => StationsCubit()..createDataBase(),
         ),
+        BlocProvider(
+          create: (context) => CustomFertilizationCubit(),
+        ),
       ],
       child: MaterialApp(
         theme: ThemeData(
@@ -73,9 +77,7 @@ class MyApp extends StatelessWidget {
                 color: backgroundColor,
                 centerTitle: true)),
         home: CacheHelper.getData(key: 'languageChoosen') == true
-            ? const LinesActivationScreen(
-                isEdit: false,
-              )
+            ?  const LinesActivationScreen(isEdit: false,)
             : const ChooseLanguageScreen(isEdit: false),
       ),
     );

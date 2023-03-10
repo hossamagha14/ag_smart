@@ -25,3 +25,7 @@ class DurationSettingsSendSuccessState extends DurationSettingsStates {}
 class DurationSettingsSendFailedState extends DurationSettingsStates {}
 
 class DurationSettingsShowDeleteButtonState extends DurationSettingsStates {}
+
+class DurationSettingsGetSuccessState extends DurationSettingsStates {}
+
+class DurationSettingsGetFailState extends DurationSettingsStates {}

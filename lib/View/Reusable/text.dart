@@ -1,7 +1,7 @@
 import 'package:ag_smart/View%20Model/database/cache_helpher.dart';
 
 String chosenLanguage = CacheHelper.getData(key: 'language');
-int numOfActiveLines=0;
+int numOfActiveLines = 0;
 
 Map<String, Map<String, String>> text = {
   'en': {
@@ -66,7 +66,11 @@ Map<String, Map<String, String>> text = {
     'Sure': 'Are you sure?',
     'Yes': 'Yes',
     'No': 'No',
-    'Auto duration': 'Auto duration'
+    'Auto duration': 'Auto duration',
+    'Irrigation Settings': 'Irrigation Settings',
+    'Fertilization Settings': 'Fertilization Settings',
+    'Fertilizing by duration': 'Fertilizing by duration',
+    'Fertilizing by quantity': 'Fertilizing by quantity',
   },
   'ar': {
     'sign in name': 'اسم الشبكة',
@@ -130,6 +134,10 @@ Map<String, Map<String, String>> text = {
     'Sure': 'هل أنت واثق؟',
     'Yes': 'نعم',
     'No': 'لا',
-    'Auto duration': 'مدة أوتوماتيكية'
+    'Auto duration': 'مدة أوتوماتيكية',
+    'Irrigation Settings': 'اعدادات الري',
+    'Fertilization Settings': 'اعدادات التسميد',
+    'Fertilization by duration': 'تسميد حسب الساعة',
+    'Fertilization by quantity': 'تسميد حسب الكمية',
   },
 };
