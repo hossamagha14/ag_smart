@@ -1,6 +1,7 @@
+import 'package:ag_smart/View%20Model/bloc/Bottom%20navigation%20bar/bottom_nav_bar_cubit.dart';
+import 'package:ag_smart/View%20Model/bloc/Bottom%20navigation%20bar/bottom_nav_bar_states.dart';
 import 'package:ag_smart/View%20Model/bloc/Custom%20Irrigation/custom_irrigation_cubit.dart';
 import 'package:ag_smart/View%20Model/bloc/Custom%20Irrigation/custom_irrigation_states.dart';
-import 'package:ag_smart/View%20Model/bloc/Lines%20activation/lines_activation_cubit.dart';
 import 'package:ag_smart/View/Reusable/colors.dart';
 import 'package:ag_smart/View/Reusable/main_card.dart';
 import 'package:ag_smart/View/Reusable/main_icons_row_widget.dart';
@@ -11,7 +12,6 @@ import 'package:ag_smart/View/Screens/edit_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../View Model/bloc/Lines activation/lines_activation_states.dart';
 import '../Reusable/scare_light.dart';
 
 class CustomStationInfoScreen extends StatelessWidget {
@@ -79,18 +79,21 @@ class CustomStationInfoScreen extends StatelessWidget {
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.8,
                         height: MediaQuery.of(context).size.height * 0.41,
-                        child: BlocConsumer<LinesActivationCubit,
-                                LinesActivationStates>(
+                        child: BlocConsumer<BottomNavBarCubit,
+                                BottomNavBarStates>(
                             listener: (context, state) {},
                             builder: (context, state) {
-                              LinesActivationCubit activeLineCubit =
-                                  LinesActivationCubit.get(context);
+                              BottomNavBarCubit stationCubit =
+                                  BottomNavBarCubit.get(context);
                               return ListView.separated(
                                   physics: const BouncingScrollPhysics(),
                                   itemBuilder: (context, lineIndex) {
                                     return Visibility(
-                                      visible: activeLineCubit
-                                          .valves[lineIndex].isActive,
+                                      visible: stationCubit
+                                                  .activeValves[lineIndex] ==
+                                              0
+                                          ? false
+                                          : true,
                                       child: Container(
                                         width:
                                             MediaQuery.of(context).size.width *
@@ -189,6 +192,16 @@ class CustomStationInfoScreen extends StatelessWidget {
                                                   context: context,
                                                   builder: (context) =>
                                                       AlertDialog(
+                                                          contentPadding:
+                                                              EdgeInsets.fromLTRB(
+                                                                  0,
+                                                                  MediaQuery.of(
+                                                                              context)
+                                                                          .size
+                                                                          .height *
+                                                                      0.05,
+                                                                  0,
+                                                                  0),
                                                           shape: RoundedRectangleBorder(
                                                               borderRadius:
                                                                   BorderRadius
@@ -235,8 +248,10 @@ class CustomStationInfoScreen extends StatelessWidget {
                                   },
                                   separatorBuilder: (context, index) {
                                     return Visibility(
-                                      visible: activeLineCubit
-                                          .valves[index].isActive,
+                                      visible:
+                                          stationCubit.activeValves[index] == 0
+                                              ? false
+                                              : true,
                                       child: SizedBox(
                                         height:
                                             MediaQuery.of(context).size.height *
@@ -244,7 +259,7 @@ class CustomStationInfoScreen extends StatelessWidget {
                                       ),
                                     );
                                   },
-                                  itemCount: activeLineCubit.valves.length);
+                                  itemCount: stationCubit.activeValves.length);
                             }),
                       ),
                       const Spacer(),

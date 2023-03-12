@@ -27,29 +27,33 @@ class CustomFirtiliserSettingsScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(text[chosenLanguage]!['Device Setup']!),
       ),
-      body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        child: SizedBox(
-          height: MediaQuery.of(context).size.height * 0.85,
-          child: Column(
-            children: [
-              BlocConsumer<CustomFertilizationCubit, CustomFertilizationStates>(
-                listener: (context, state) {
-                  if (state is CustomFertilizationPutSuccessState) {
-                    Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const BottomNavBarScreen(),
-                        ),
-                        (route) => false);
-                  } else if (state is CustomFertilizationPutFailState) {
-                    errorToast('An error has occurred');
-                  }
-                },
-                builder: (context, state) {
-                  CustomFertilizationCubit myCubit =
-                      CustomFertilizationCubit.get(context);
-                  return MainCard2(
+      body: BlocConsumer<CustomFertilizationCubit, CustomFertilizationStates>(
+        listener: (context, state) {
+          if (state is CustomFertilizationPutSuccessState) {
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const BottomNavBarScreen(),
+                ),
+                (route) => false);
+          } else if (state is CustomFertilizationPutFailState) {
+            errorToast('An error has occurred');
+          }
+        },
+        builder: (context, state) {
+          CustomFertilizationCubit myCubit =
+              CustomFertilizationCubit.get(context);
+          return
+              //  myCubit.fertilizationModel == null
+              //     ? const Center(child: CircularProgressIndicator())
+              //     :
+              SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: SizedBox(
+              height: MediaQuery.of(context).size.height * 0.85,
+              child: Column(
+                children: [
+                  MainCard2(
                       function: () {
                         bool allFull = true;
                         for (int i = 0;
@@ -58,13 +62,16 @@ class CustomFirtiliserSettingsScreen extends StatelessWidget {
                                     .controllers.length;
                             i++) {
                           if (myCubit.customFertilizationModelList[lineIndex]
-                              .controllers[i].text.isEmpty || myCubit.customFertilizationModelList[lineIndex]
-                              .daysList.length-1<i) {
+                                  .controllers[i].text.isEmpty ||
+                              myCubit.customFertilizationModelList[lineIndex]
+                                          .daysList.length -
+                                      1 <
+                                  i) {
                             allFull = false;
                           }
                         }
                         if (allFull == true) {
-                          myCubit.putFertilizationDurationsSettings(
+                          myCubit.putFertilizationPeriods(
                               stationId: 1,
                               periodsList:
                                   myCubit.makeAList(lineIndex: lineIndex));
@@ -102,28 +109,32 @@ class CustomFirtiliserSettingsScreen extends StatelessWidget {
                                                   .customFertilizationModelList[
                                                       lineIndex]
                                                   .daysList[index],
-                                          items: myCubit
-                                              .customFertilizationModelList[
-                                                  lineIndex]
-                                              .days
+                                          items: myCubit.customFertilizationModelList[lineIndex].days
                                               .map((e) => DropdownMenuItem(
                                                   value: e,
                                                   child: Text(e.toString())))
                                               .toList(),
                                           function: (value) {
-                                            myCubit.chooseDay(value, lineIndex);
+                                            myCubit.chooseDay(
+                                                value, lineIndex, index);
+                                            print(myCubit
+                                                .customFertilizationModelList[
+                                                    lineIndex]
+                                                .daysList
+                                                .length);
                                           }),
                                       secondRowTitle:
                                           text[chosenLanguage]!['Set time']!,
                                       secondRowWidget: MyTimePicker(
-                                          time: myCubit
-                                              .customFertilizationModelList[lineIndex]
-                                              .time[index]
+                                          time: myCubit.customFertilizationModelList[lineIndex].time[index]
                                               .format(context)
                                               .toString(),
-                                          function: (value) => myCubit.chooseTime(value, index, lineIndex)),
-                                      thirdRowTitle: text[chosenLanguage]!['Open valve time']!,
-                                      thirdRowWidget: OpenValvePeriodTextField(hintText: '00', unit: text[chosenLanguage]!['Minutes']!, control: myCubit.customFertilizationModelList[lineIndex].controllers[index]));
+                                          function: (value) => myCubit.chooseTime(
+                                              value, index, lineIndex)),
+                                      thirdRowTitle: myCubit.fertilizationType == 1
+                                          ? text[chosenLanguage]!['Open valve time']!
+                                          : text[chosenLanguage]!['Fertillization amount']!,
+                                      thirdRowWidget: OpenValvePeriodTextField(hintText: '00', unit: myCubit.fertilizationType == 1 ? text[chosenLanguage]!['Minutes']! : text[chosenLanguage]!['ml']!, control: myCubit.customFertilizationModelList[lineIndex].controllers[index]));
                                 },
                                 separatorBuilder: (context, index) {
                                   return SizedBox(
@@ -150,12 +161,12 @@ class CustomFirtiliserSettingsScreen extends StatelessWidget {
                         'g',
                         style: yellowIcon,
                       ),
-                      cardtitle: text[chosenLanguage]!['Fertilizer Settings']!);
-                },
+                      cardtitle: text[chosenLanguage]!['Fertilizer Settings']!),
+                ],
               ),
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
     );
   }

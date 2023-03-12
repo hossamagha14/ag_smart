@@ -14,7 +14,7 @@ import '../Reusable/colors.dart';
 // ignore: must_be_immutable
 class PumpSettingsScreen extends StatelessWidget {
   final bool isEdit;
-  PumpSettingsScreen({Key? key,required this.isEdit}) : super(key: key);
+  PumpSettingsScreen({Key? key, required this.isEdit}) : super(key: key);
   TextEditingController hoursePowerControl = TextEditingController();
 
   @override
@@ -40,14 +40,13 @@ class PumpSettingsScreen extends StatelessWidget {
                             if (myCubit.groupValue == 0) {
                               errorToast('Please choose pump settings');
                             } else {
-                              if(isEdit==false){Navigator.push(
+                              Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => LinesSettingsScreen(isEdit: isEdit,),
-                                  ));}
-                                  else{
-                                    Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => LinesSettingsScreen(isEdit: isEdit),));
-                                  }
+                                    builder: (context) => LinesSettingsScreen(
+                                      isEdit: isEdit,
+                                    ),
+                                  ));
                             }
                           },
                           buttonColor: greenButtonColor,

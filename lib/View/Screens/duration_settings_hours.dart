@@ -150,7 +150,7 @@ class DurationSettingsByHourScreen extends StatelessWidget {
                                 myCubit.putIrrigationHourList(
                                     stationId: 1,
                                     periodsList:
-                                        myCubit.makeAList(weekday: 90));
+                                        myCubit.makeAList(weekday: myCubit.toBinary()));
                               }
                             } else if (allFull == false) {
                               errorToast('Please add the open valve time');

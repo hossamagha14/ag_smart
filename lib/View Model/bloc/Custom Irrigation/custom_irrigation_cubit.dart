@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:ag_smart/Model/custom_cycle_model.dart';
 import 'package:ag_smart/Model/custom_irrigation_model.dart';
 import 'package:ag_smart/View%20Model/bloc/Custom%20Irrigation/custom_irrigation_states.dart';
@@ -131,8 +133,13 @@ class CustomIrrigationCubit extends Cubit<CustomIrrigationStates> {
     required int activeValves,
     required int irrigationMethod1,
     required int irrigationMethod2,
+    required int deleteIrrigationMethod1,
+    required int deleteIrrigationMethod2,
+    required int valveId,
+    required int stationId,
+    required int lineIndex,
   }) async {
-    await dio.put('$base/$irrigationSettings/1', data: {
+    await dio.put('$base/$irrigationSettings/$stationId', data: {
       "station_id": 1,
       "active_valves": activeValves,
       "settings_type": 3,
@@ -140,10 +147,12 @@ class CustomIrrigationCubit extends Cubit<CustomIrrigationStates> {
       "irrigation_method_2": irrigationMethod2
     }).then((value) {
       if (value.statusCode == 200) {
-        print(value.data);
-        
-
-        emit(CustomIrrigationPutSuccessState());
+        delete(
+            valveId: valveId,
+            stationId: stationId,
+            method1: deleteIrrigationMethod1,
+            method2: deleteIrrigationMethod2,
+            lineIndex: lineIndex);
       }
     }).catchError((onError) {
       print(onError.toString());
@@ -167,7 +176,7 @@ class CustomIrrigationCubit extends Cubit<CustomIrrigationStates> {
     }).then((value) {
       if (value.statusCode == 200) {
         print(value.data);
-        
+
         emit(CustomIrrigationPutSuccessState());
       }
     }).catchError((onError) {
@@ -183,7 +192,6 @@ class CustomIrrigationCubit extends Cubit<CustomIrrigationStates> {
     await dio.put('$base/$irrigationPeriodsList/$stationId',
         data: {'list': periodsList}).then((value) {
       if (value.statusCode == 200) {
-        print(1);
         emit(CustomIrrigationPutSuccessState());
       }
     }).catchError((onError) {
@@ -196,12 +204,12 @@ class CustomIrrigationCubit extends Cubit<CustomIrrigationStates> {
     required int stationId,
     required int lineIndex,
   }) async {
-    customIrrigationModelList[lineIndex].timeList=[];
-    customIrrigationModelList[lineIndex].controllersList=[];
-    int j=0;
+    customIrrigationModelList[lineIndex].timeList = [];
+    customIrrigationModelList[lineIndex].controllersList = [];
+    int j = 0;
     await dio.get('$base/$irrigationSettings/$stationId').then((value) {
       irrigationSettingsModel = IrrigationSettingsModel.fromJson(value.data);
-      print(lineIndex+1);
+      print(lineIndex + 1);
       for (int i = 0;
           i < irrigationSettingsModel!.irrigationPeriods!.length;
           i++) {
@@ -216,7 +224,7 @@ class CustomIrrigationCubit extends Cubit<CustomIrrigationStates> {
       }
       if (value.statusCode == 200) {
         print(value.data);
-       
+
         emit(CustomIrrigationGetSuccessState());
       }
     }).catchError((onError) {
@@ -230,7 +238,6 @@ class CustomIrrigationCubit extends Cubit<CustomIrrigationStates> {
     for (int i = 0;
         i < customIrrigationModelList[lineIndex].controllersList.length;
         i++) {
-      print('$i makeList');
       periodsList.add({
         "period_id": i + 1,
         "valve_id": lineIndex + 1,
@@ -251,5 +258,40 @@ class CustomIrrigationCubit extends Cubit<CustomIrrigationStates> {
       });
     }
     return periodsList;
+  }
+
+  delete(
+      {required int valveId,
+      required int stationId,
+      required int method1,
+      required int method2,
+      required int lineIndex}) async {
+    await dio.delete('$base/$valveSettingsDelete/$stationId', data: {
+      "valve_id": valveId,
+      "station_id": stationId,
+      "method_1": method1,
+      "method_2": method2
+    }).then((value) {
+      if (value.statusCode == 200) {
+        getPeriods(stationId: stationId, lineIndex: lineIndex);
+        emit(CustomIrrigationDeleteSuccessState());
+      }
+    }).catchError((onError) {
+      print(onError.toString());
+      emit(CustomIrrigationDeleteFailedState());
+    });
+  }
+
+  int toBinary({required int lineIndex}) {
+    int activeDays = 0;
+    for (int i = 0; i < 7; i++) {
+      customIrrigationModelList[lineIndex].days[i].binaryDays =
+          pow(2, i).toInt();
+      if (customIrrigationModelList[lineIndex].days[i].isOn == true) {
+        activeDays = activeDays +
+            customIrrigationModelList[lineIndex].days[i].binaryDays;
+      }
+    }
+    return activeDays;
   }
 }

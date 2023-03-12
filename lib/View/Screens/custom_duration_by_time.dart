@@ -210,7 +210,7 @@ class CustomDurationByTime extends StatelessWidget {
                                   myCubit.putIrrigationHour(
                                       stationId: 1,
                                       periodsList: myCubit.makeAList(
-                                          lineIndex: lineIndex, weekday: 90));
+                                          lineIndex: lineIndex, weekday: myCubit.toBinary(lineIndex: lineIndex)));
                                 } else if (allFull == false) {
                                   errorToast(myCubit
                                               .customIrrigationModelList[

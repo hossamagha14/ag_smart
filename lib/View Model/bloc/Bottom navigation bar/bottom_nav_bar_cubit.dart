@@ -19,6 +19,7 @@ class BottomNavBarCubit extends Cubit<BottomNavBarStates> {
   static int settingsType = 0;
   StationModel? stationModel;
   List<Widget>? bottomNavBarScreens;
+  List<int> activeValves = [];
   int index = 0;
 
   chooseIndex(int value) {
@@ -39,7 +40,7 @@ class BottomNavBarCubit extends Cubit<BottomNavBarStates> {
         ];
       } else if (settingsType == 3) {
         bottomNavBarScreens = [
-           const CustomStationInfoScreen(),
+          const CustomStationInfoScreen(),
           const ReportScreen(),
           const SettingsScreen()
         ];
@@ -53,11 +54,25 @@ class BottomNavBarCubit extends Cubit<BottomNavBarStates> {
       print(value.data);
       print(settingsType);
       if (value.statusCode == 200) {
+        getActiveValves(decimalNumber: stationModel!.irrigationSettings![0].activeValves!);
         emit(BottomNavBarGetSuccessState());
       }
     }).catchError((onError) {
       print(onError.toString());
       emit(BottomNavBarGetFailState());
     });
+  }
+
+  List<int> getActiveValves({required int decimalNumber}) {
+    activeValves=[];
+    while (decimalNumber > 0) {
+      int n = (decimalNumber % 2);
+      activeValves.add(n);
+      double x = decimalNumber / 2;
+      decimalNumber = x.toInt();
+    }
+    
+    print(activeValves);
+    return activeValves;
   }
 }

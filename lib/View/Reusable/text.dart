@@ -55,7 +55,7 @@ Map<String, Map<String, String>> text = {
     'ml': 'ml',
     'Amount of water': 'Amount of water',
     'Lighting time': 'Lighting time',
-    'Fertillization amount': 'Fertillization amount',
+    'Fertillization amount': 'Fertillizer amount',
     'Back to home page': 'Back to home page',
     'Device Setup': 'Device Setup',
     'Station info': 'Station info',
@@ -71,6 +71,8 @@ Map<String, Map<String, String>> text = {
     'Fertilization Settings': 'Fertilization Settings',
     'Fertilizing by duration': 'Fertilizing by duration',
     'Fertilizing by quantity': 'Fertilizing by quantity',
+    'Series Fertilization': 'Series Fertilization',
+    'Parallel Fertilization': 'Parallel Fertilization',
   },
   'ar': {
     'sign in name': 'اسم الشبكة',
@@ -139,5 +141,7 @@ Map<String, Map<String, String>> text = {
     'Fertilization Settings': 'اعدادات التسميد',
     'Fertilization by duration': 'تسميد حسب الساعة',
     'Fertilization by quantity': 'تسميد حسب الكمية',
+    'Series Fertilization': 'تسميد بالتوالي',
+    'Parallel Fertilization': 'تسميد بالتوازي',
   },
 };

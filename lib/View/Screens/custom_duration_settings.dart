@@ -27,7 +27,7 @@ class CustomDurationSettingsScreen extends StatelessWidget {
       body: BlocConsumer<CustomIrrigationCubit, CustomIrrigationStates>(
         listener: (context, state) {
           CustomIrrigationCubit myCubit = CustomIrrigationCubit.get(context);
-          if (state is CustomIrrigationPutSuccessState) {
+          if (state is CustomIrrigationGetSuccessState) {
             if (myCubit.customIrrigationModelList[lineIndex].accordingToHour ==
                 true) {
               Navigator.push(
@@ -68,9 +68,13 @@ class CustomDurationSettingsScreen extends StatelessWidget {
                     } else {
                       myCubit.putIrrigationSettings(
                           activeValves: binaryValves,
-                          irrigationMethod1: 1,
-                          irrigationMethod2: 1);
-                      myCubit.getPeriods(stationId: 1, lineIndex: lineIndex);
+                          irrigationMethod1: myCubit.irrigationMethod1!,
+                          irrigationMethod2: myCubit.irrigationMethod1!,
+                          lineIndex: lineIndex,
+                          valveId: lineIndex + 1,
+                          deleteIrrigationMethod1: myCubit.irrigationMethod1!,
+                          deleteIrrigationMethod2: myCubit.irrigationMethod1!,
+                          stationId: 1);
                     }
                   },
                   buttonColor: greenButtonColor,

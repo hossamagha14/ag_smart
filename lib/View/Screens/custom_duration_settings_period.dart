@@ -118,7 +118,7 @@ class CustomDurationSettingsByPeriodScreen extends StatelessWidget {
                                       true
                                   ? int.parse(minutesControl.text)
                                   : 0,
-                              weekDays: 9);
+                              weekDays: myCubit.toBinary(lineIndex: lineIndex));
                         }
                       },
                       cardtitle: text[chosenLanguage]!['Duration settings']!,

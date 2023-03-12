@@ -3,9 +3,9 @@ import 'dart:math';
 import 'package:ag_smart/Model/features_model.dart';
 import 'package:ag_smart/Model/valve_model.dart';
 import 'package:ag_smart/View%20Model/bloc/Lines%20activation/lines_activation_states.dart';
-import 'package:ag_smart/View%20Model/database/cache_helpher.dart';
 import 'package:ag_smart/View%20Model/database/dio_helper.dart';
 import 'package:ag_smart/View%20Model/database/end_points.dart';
+import 'package:ag_smart/View/Reusable/global.dart';
 import 'package:ag_smart/View/Reusable/text.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -77,6 +77,6 @@ class LinesActivationCubit extends Cubit<LinesActivationStates> {
         activeValves = activeValves + valves[i].valveBinary!;
       }
     }
-    CacheHelper.saveData(key: 'binary valves', value: activeValves);
+    binaryValves=activeValves;
   }
 }

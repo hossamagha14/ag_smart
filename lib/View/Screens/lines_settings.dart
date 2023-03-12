@@ -27,22 +27,12 @@ class LinesSettingsScreen extends StatelessWidget {
           child: BlocConsumer<LinesActivationCubit, LinesActivationStates>(
             listener: (context, state) {
               if (state is LinesActivationSendSuccessState) {
-                if (isEdit == false) {
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => LinesActivationScreen(
-                          isEdit: isEdit,
-                        ),
-                      ));
-                } else {
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            LinesActivationScreen(isEdit: isEdit),
-                      ));
-                }
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          LinesActivationScreen(isEdit: isEdit),
+                    ));
               } else if (state is LinesActivationSendFailState) {
                 errorToast('An error has occurred');
               }
@@ -78,7 +68,7 @@ class LinesSettingsScreen extends StatelessWidget {
                                 }
                               } else {
                                 errorToast(
-                                    'Please fill the datat for each valve');
+                                    'Please fill the data for each valve');
                               }
                             },
                             buttonColor: greenButtonColor,

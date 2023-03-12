@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:ag_smart/Model/days_model.dart';
 import 'package:ag_smart/Model/durationModel.dart';
 import 'package:ag_smart/View%20Model/database/end_points.dart';
@@ -183,5 +185,16 @@ class DurationSettingsCubit extends Cubit<DurationSettingsStates> {
     }).catchError((onError) {
       emit(DurationSettingsGetFailState());
     });
+  }
+
+  int toBinary() {
+    int activeDays = 0;
+    for (int i = 0; i < 7; i++) {
+      days[i].binaryDays = pow(2, i).toInt();
+      if (days[i].isOn == true) {
+        activeDays = activeDays + days[i].binaryDays;
+      }
+    }
+    return activeDays;
   }
 }

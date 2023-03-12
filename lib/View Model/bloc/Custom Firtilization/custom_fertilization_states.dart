@@ -12,7 +12,12 @@ class CustomFertilizationPutSuccessState extends CustomFertilizationStates {}
 
 class CustomFertilizationPutFailState extends CustomFertilizationStates {}
 
-class CustomFertilizationShowDeleteButtonState extends CustomFertilizationStates {}
+class CustomFertilizationGetSuccessState extends CustomFertilizationStates {}
+
+class CustomFertilizationGetFailState extends CustomFertilizationStates {}
+
+class CustomFertilizationShowDeleteButtonState
+    extends CustomFertilizationStates {}
 
 class CustomFirtiliserSettingsAddContainerState
     extends CustomFertilizationStates {}

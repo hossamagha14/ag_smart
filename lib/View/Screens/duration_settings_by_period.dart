@@ -46,7 +46,7 @@ class DurationSettingsByPeriodScreen extends StatelessWidget {
                         interval: int.parse(numberOfHoursControl.text),
                         duration: int.parse(numberOfMinutesControl.text),
                         quantity: 0,
-                        weekDays: 9);
+                        weekDays: myCubit.toBinary());
                   } else if (state is DurationSettingsErrorState) {
                     errorToast('Input error');
                   } else if (state is DurationSettingsSendSuccessState) {

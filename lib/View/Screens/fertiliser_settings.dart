@@ -61,8 +61,8 @@ class FirtiliserSettingsScreen extends StatelessWidget {
                                 physics: const BouncingScrollPhysics(),
                                 itemBuilder: (context, index) {
                                   return SetSettings3RowsContainer(
-                                    visible: false,
-                                    function: (){},
+                                      visible: false,
+                                      function: () {},
                                       firstRowTitle:
                                           text[chosenLanguage]!['Set day']!,
                                       firstRowWidget: MyDatePicker(
@@ -79,12 +79,17 @@ class FirtiliserSettingsScreen extends StatelessWidget {
                                               .toString(),
                                           function: (value) =>
                                               myCubit.chooseTime(value, index)),
-                                      thirdRowTitle: text[chosenLanguage]![
-                                          'Open valve time']!,
+                                      thirdRowTitle: myCubit.method2 == 1
+                                          ? text[chosenLanguage]![
+                                              'Open valve time']!
+                                          : text[chosenLanguage]![
+                                              'Fertillization amount']!,
                                       thirdRowWidget: OpenValvePeriodTextField(
                                           hintText: '00',
-                                          unit:
-                                              text[chosenLanguage]!['Minutes']!,
+                                          unit: myCubit.method2 == 1
+                                              ? text[chosenLanguage]![
+                                                  'Minutes']!
+                                              : text[chosenLanguage]!['ml']!,
                                           control: myCubit.firtiliserModel
                                               .controllersList[index]));
                                 },

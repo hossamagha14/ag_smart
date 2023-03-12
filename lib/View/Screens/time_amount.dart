@@ -117,17 +117,10 @@ class TimeAmountScreen extends StatelessWidget {
                           errorToast('Please choose the days of work');
                         }
                         if (allFull == true) {
-                          for (int i = 0; i < myCubit.durations.length; i++) {
-                            myCubit.putIrrigationHour(
-                                stationId: 1,
-                                valveId: 0,
-                                startTime: myCubit.durations[i].time,
-                                duration: 0,
-                                quantity: int.parse(
-                                    myCubit.durations[i].controller.text),
-                                weekDays: 9,
-                                periodId: i + 1);
-                          }
+                          myCubit.putIrrigationHourList(
+                              stationId: 1,
+                              periodsList: myCubit.makeAList(
+                                  weekday: myCubit.toBinary()));
                         } else {
                           errorToast('Please add the open valve time');
                         }

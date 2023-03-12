@@ -85,16 +85,17 @@ class PeriodAmountScreen extends StatelessWidget {
                           if (hoursControl.text.isEmpty ||
                               mlControl.text.isEmpty) {
                             errorToast('Please fill both categories');
-                          }
-                          if (myCubit.noDayIsChosen == 7) {
-                            errorToast('Please choose the days of work');
                           } else {
-                            myCubit.putIrrigationCycle(
-                                valveId: 0,
-                                interval: int.parse(hoursControl.text),
-                                duration: 0,
-                                quantity: int.parse(mlControl.text),
-                                weekDays: 9);
+                            if (myCubit.noDayIsChosen == 7) {
+                              errorToast('Please choose the days of work');
+                            } else {
+                              myCubit.putIrrigationCycle(
+                                  valveId: 0,
+                                  interval: int.parse(hoursControl.text),
+                                  duration: 0,
+                                  quantity: int.parse(mlControl.text),
+                                  weekDays: myCubit.toBinary());
+                            }
                           }
                         },
                         cardtitle: text[chosenLanguage]!['Duration settings']!,

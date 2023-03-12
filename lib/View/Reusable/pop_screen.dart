@@ -11,105 +11,108 @@ class PopUpScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      alignment: AlignmentDirectional.topEnd,
-      children: [
-        Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            SizedBox(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * 0.18,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    return SizedBox(
+      height: MediaQuery.of(context).size.height * 0.2,
+      width: MediaQuery.of(context).size.width,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    CustomDurationSettingsScreen(
-                                        lineIndex: lineIndex),
-                              ));
-                        },
-                        child: Text(
-                          'c',
-                          style: TextStyle(
-                              fontSize: 45,
-                              fontFamily: 'icons',
-                              color: settingsColor),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.2,
-                        child: Text(
-                          text[chosenLanguage]!['Irrigation Settings']!,
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(fontSize: 12),
-                        ),
-                      )
-                    ],
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => CustomDurationSettingsScreen(
+                                lineIndex: lineIndex),
+                          ));
+                    },
+                    child: const Text(
+                      'D',
+                      style: TextStyle(
+                          fontSize: 45,
+                          fontFamily: 'icons',
+                          color: Colors.blue),
+                    ),
                   ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    CustomFirtilizationTypesScreen(
-                                  lineIndex: lineIndex,
-                                ),
-                              ));
-                        },
-                        child: SizedBox(
-                          child: Text(
-                            'y',
-                            style: TextStyle(
-                                fontSize: 45,
-                                fontFamily: 'icons',
-                                color: yellowColor),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.2,
-                        child: Text(
-                          text[chosenLanguage]!['Fertilization Settings']!,
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(fontSize: 12),
-                        ),
-                      )
-                    ],
+                  const SizedBox(
+                    height: 5,
                   ),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.2,
+                    child: Text(
+                      text[chosenLanguage]!['Irrigation Settings']!,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(fontSize: 12),
+                    ),
+                  )
                 ],
               ),
-            ),
-          ],
-        ),
-        InkWell(
-          onTap: () => Navigator.pop(context),
-          child: CircleAvatar(
-              backgroundColor: settingsColor,
-              radius: 15,
-              child: const Icon(
-                Icons.close,
-                color: Colors.white,
-              )),
-        )
-      ],
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                CustomFirtilizationTypesScreen(
+                              lineIndex: lineIndex,
+                            ),
+                          ));
+                    },
+                    child: SizedBox(
+                      child: Text(
+                        'A',
+                        style: TextStyle(
+                            fontSize: 45,
+                            fontFamily: 'icons',
+                            color: yellowColor),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.2,
+                    child: Text(
+                      text[chosenLanguage]!['Fertilization Settings']!,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(fontSize: 12),
+                    ),
+                  )
+                ],
+              ),
+            ],
+          ),
+          const Spacer(),
+          SizedBox(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height * 0.065,
+            child: ElevatedButton(
+                style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(settingsColor),
+                    shape: MaterialStateProperty.all<OutlinedBorder>(
+                        const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(20),
+                                bottomRight: Radius.circular(20))))),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text('Close')),
+          )
+        ],
+      ),
     );
   }
 }

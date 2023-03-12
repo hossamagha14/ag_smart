@@ -12,6 +12,15 @@ class FirtiliserSettingsIsDoneState extends FirtiliserSettingsStates {}
 
 class FirtiliserSettingsAccordingToTimeState extends FirtiliserSettingsStates {}
 
-class FirtiliserSettingssAccordingToQuantityState extends FirtiliserSettingsStates {}
+class FirtiliserSettingssAccordingToQuantityState
+    extends FirtiliserSettingsStates {}
 
 class FirtiliserSettingssGetDataState extends FirtiliserSettingsStates {}
+
+class FirtiliserSettingsSeriesState extends FirtiliserSettingsStates {}
+
+class FirtiliserSettingssParallelState extends FirtiliserSettingsStates {}
+
+class FirtiliserSettingsSendSuccessState extends FirtiliserSettingsStates {}
+
+class FirtiliserSettingsSendFailState extends FirtiliserSettingsStates {}

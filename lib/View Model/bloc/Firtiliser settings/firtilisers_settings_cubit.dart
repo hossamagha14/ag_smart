@@ -1,4 +1,6 @@
 import 'package:ag_smart/Model/firtiliser_model.dart';
+import 'package:ag_smart/View%20Model/database/end_points.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -16,6 +18,10 @@ class FirtiliserSettingsCubit extends Cubit<FirtiliserSettingsStates> {
   List<String> controllersStringList = [];
   bool done = false;
   bool? accordingToTime;
+  bool? seriesFertilization;
+  int? method1;
+  int? method2;
+  var dio = Dio();
 
   chooseTime(value, int containerIndex) {
     firtiliserModel.timeList[containerIndex] = value;
@@ -50,12 +56,26 @@ class FirtiliserSettingsCubit extends Cubit<FirtiliserSettingsStates> {
 
   firtiliseAccordingToTime() {
     accordingToTime = true;
+    method2 = 1;
     emit(FirtiliserSettingsAccordingToTimeState());
   }
 
   firtiliseAccordingToQuantity() {
     accordingToTime = false;
+    method2 = 2;
     emit(FirtiliserSettingssAccordingToQuantityState());
+  }
+
+  chooseSeriesFertilization() {
+    seriesFertilization = true;
+    method1 = 1;
+    emit(FirtiliserSettingsSeriesState());
+  }
+
+  chooseParallelFertilization() {
+    seriesFertilization = false;
+    method1 = 2;
+    emit(FirtiliserSettingssParallelState());
   }
 
   getData(context) {
@@ -68,5 +88,23 @@ class FirtiliserSettingsCubit extends Cubit<FirtiliserSettingsStates> {
           .add(firtiliserModel.timeList[i].format(context).toString());
       controllersStringList.add(firtiliserModel.controllersList[i].text);
     }
+  }
+
+  putFertilizationSettings({
+    required int stationId,
+    required int ferMethod1,
+    required int ferMethod2,
+  }) async {
+    await dio.put('$base/$fertilizerSettings/$stationId', data: {
+      "station_id": stationId,
+      "fertilization_method_1": ferMethod1,
+      "fertilization_method_2": ferMethod2
+    }).then((value) {
+      print(value.data);
+      emit(FirtiliserSettingsSendSuccessState());
+    }).catchError((onError) {
+      print(onError);
+      emit(FirtiliserSettingsSendFailState());
+    });
   }
 }
