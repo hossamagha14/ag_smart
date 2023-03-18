@@ -1,23 +1,41 @@
 class StationModel {
   int? id;
+  int? internetAccess;
   String? email;
   String? password;
+  int? configured;
+  String? serialNumber;
+  String? version;
   List<Features>? features;
   List<LinesInfo>? linesInfo;
   List<IrrigationSettings>? irrigationSettings;
+  List<FertilizationSettings>? fertilizationSettings;
+  List<AnimalRepellent>? animalRepellent;
+  List<LightSettings>? lightSettings;
 
   StationModel(
       {this.id,
+      this.internetAccess,
       this.email,
       this.password,
+      this.configured,
+      this.serialNumber,
+      this.version,
       this.features,
       this.linesInfo,
-      this.irrigationSettings});
+      this.irrigationSettings,
+      this.fertilizationSettings,
+      this.animalRepellent,
+      this.lightSettings});
 
   StationModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
+    internetAccess = json['internet_access'];
     email = json['email'];
     password = json['password'];
+    configured = json['configured'];
+    serialNumber = json['serial_number'];
+    version = json['version'];
     if (json['features'] != null) {
       features = <Features>[];
       json['features'].forEach((v) {
@@ -36,13 +54,35 @@ class StationModel {
         irrigationSettings!.add(IrrigationSettings.fromJson(v));
       });
     }
+    if (json['fertilization_settings'] != null) {
+      fertilizationSettings = <FertilizationSettings>[];
+      json['fertilization_settings'].forEach((v) {
+        fertilizationSettings!.add(FertilizationSettings.fromJson(v));
+      });
+    }
+    if (json['animal_repellent'] != null) {
+      animalRepellent = <AnimalRepellent>[];
+      json['animal_repellent'].forEach((v) {
+        animalRepellent!.add(AnimalRepellent.fromJson(v));
+      });
+    }
+    if (json['light_settings'] != null) {
+      lightSettings = <LightSettings>[];
+      json['light_settings'].forEach((v) {
+        lightSettings!.add(LightSettings.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
+    data['internet_access'] = internetAccess;
     data['email'] = email;
     data['password'] = password;
+    data['configured'] = configured;
+    data['serial_number'] = serialNumber;
+    data['version'] = version;
     if (features != null) {
       data['features'] = features!.map((v) => v.toJson()).toList();
     }
@@ -52,6 +92,18 @@ class StationModel {
     if (irrigationSettings != null) {
       data['irrigation_settings'] =
           irrigationSettings!.map((v) => v.toJson()).toList();
+    }
+    if (fertilizationSettings != null) {
+      data['fertilization_settings'] =
+          fertilizationSettings!.map((v) => v.toJson()).toList();
+    }
+    if (animalRepellent != null) {
+      data['animal_repellent'] =
+          animalRepellent!.map((v) => v.toJson()).toList();
+    }
+    if (lightSettings != null) {
+      data['light_settings'] =
+          lightSettings!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -128,8 +180,8 @@ class Features {
 
 class LinesInfo {
   int? valveId;
-  double? holeDiameter;
-  double? holeNumber;
+  double?holeDiameter;
+  double?holeNumber;
 
   LinesInfo({this.valveId, this.holeDiameter, this.holeNumber});
 
@@ -155,6 +207,7 @@ class IrrigationSettings {
   int? irrigationMethod2;
   List<IrrigationPeriods>? irrigationPeriods;
   List<IrrigationCycles>? irrigationCycles;
+  List<CustomValvesSettings>? customValvesSettings;
 
   IrrigationSettings(
       {this.activeValves,
@@ -162,7 +215,8 @@ class IrrigationSettings {
       this.irrigationMethod1,
       this.irrigationMethod2,
       this.irrigationPeriods,
-      this.irrigationCycles});
+      this.irrigationCycles,
+      this.customValvesSettings});
 
   IrrigationSettings.fromJson(Map<String, dynamic> json) {
     activeValves = json['active_valves'];
@@ -181,6 +235,12 @@ class IrrigationSettings {
         irrigationCycles!.add(IrrigationCycles.fromJson(v));
       });
     }
+    if (json['custom_valves_settings'] != null) {
+      customValvesSettings = <CustomValvesSettings>[];
+      json['custom_valves_settings'].forEach((v) {
+        customValvesSettings!.add(CustomValvesSettings.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -196,6 +256,10 @@ class IrrigationSettings {
     if (irrigationCycles != null) {
       data['irrigation_cycles'] =
           irrigationCycles!.map((v) => v.toJson()).toList();
+    }
+    if (customValvesSettings != null) {
+      data['custom_valves_settings'] =
+          customValvesSettings!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -267,6 +331,181 @@ class IrrigationCycles {
     data['duration'] = duration;
     data['quantity'] = quantity;
     data['week_days'] = weekDays;
+    return data;
+  }
+}
+
+class CustomValvesSettings {
+  int? stationId;
+  int? valveId;
+  int? irrigationMethod1;
+  int? irrigationMethod2;
+  List<IrrigationPeriods>? irrigationPeriods;
+  List<IrrigationCycles>? irrigationCycles;
+
+  CustomValvesSettings(
+      {this.stationId,
+      this.valveId,
+      this.irrigationMethod1,
+      this.irrigationMethod2,
+      this.irrigationPeriods,
+      this.irrigationCycles});
+
+  CustomValvesSettings.fromJson(Map<String, dynamic> json) {
+    stationId = json['station_id'];
+    valveId = json['valve_id'];
+    irrigationMethod1 = json['irrigation_method_1'];
+    irrigationMethod2 = json['irrigation_method_2'];
+    if (json['irrigation_periods'] != null) {
+      irrigationPeriods = <IrrigationPeriods>[];
+      json['irrigation_periods'].forEach((v) {
+        irrigationPeriods!.add(IrrigationPeriods.fromJson(v));
+      });
+    }
+    if (json['irrigation_cycles'] != null) {
+      irrigationCycles = <IrrigationCycles>[];
+      json['irrigation_cycles'].forEach((v) {
+        irrigationCycles!.add(IrrigationCycles.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['station_id'] = stationId;
+    data['valve_id'] = valveId;
+    data['irrigation_method_1'] = irrigationMethod1;
+    data['irrigation_method_2'] = irrigationMethod2;
+    if (irrigationPeriods != null) {
+      data['irrigation_periods'] =
+          irrigationPeriods!.map((v) => v.toJson()).toList();
+    }
+    if (irrigationCycles != null) {
+      data['irrigation_cycles'] =
+          irrigationCycles!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class FertilizationSettings {
+  int? fertilizationMethod1;
+  int? fertilizationMethod2;
+  List<FertilizerPeriods>? fertilizerPeriods;
+
+  FertilizationSettings(
+      {this.fertilizationMethod1,
+      this.fertilizationMethod2,
+      this.fertilizerPeriods});
+
+  FertilizationSettings.fromJson(Map<String, dynamic> json) {
+    fertilizationMethod1 = json['fertilization_method_1'];
+    fertilizationMethod2 = json['fertilization_method_2'];
+    if (json['fertilizer_periods'] != null) {
+      fertilizerPeriods = <FertilizerPeriods>[];
+      json['fertilizer_periods'].forEach((v) {
+        fertilizerPeriods!.add(FertilizerPeriods.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['fertilization_method_1'] = fertilizationMethod1;
+    data['fertilization_method_2'] = fertilizationMethod2;
+    if (fertilizerPeriods != null) {
+      data['fertilizer_periods'] =
+          fertilizerPeriods!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class FertilizerPeriods {
+  int? periodId;
+  int? valveId;
+  int? startingTime;
+  int? duration;
+  int? quantity;
+  int? date;
+
+  FertilizerPeriods(
+      {this.periodId,
+      this.valveId,
+      this.startingTime,
+      this.duration,
+      this.quantity,
+      this.date});
+
+  FertilizerPeriods.fromJson(Map<String, dynamic> json) {
+    periodId = json['period_id'];
+    valveId = json['valve_id'];
+    startingTime = json['starting_time'];
+    duration = json['duration'];
+    quantity = json['quantity'];
+    date = json['date'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['period_id'] = periodId;
+    data['valve_id'] = valveId;
+    data['starting_time'] = startingTime;
+    data['duration'] = duration;
+    data['quantity'] = quantity;
+    data['date'] = date;
+    return data;
+  }
+}
+
+class AnimalRepellent {
+  int? stationId;
+  int? startTime;
+  int? finishTime;
+  int? onTime;
+  int? offTime;
+
+  AnimalRepellent(
+      {this.stationId,
+      this.startTime,
+      this.finishTime,
+      this.onTime,
+      this.offTime});
+
+  AnimalRepellent.fromJson(Map<String, dynamic> json) {
+    stationId = json['station_id'];
+    startTime = json['start_time'];
+    finishTime = json['finish_time'];
+    onTime = json['on_time'];
+    offTime = json['off_time'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['station_id'] = stationId;
+    data['start_time'] = startTime;
+    data['finish_time'] = finishTime;
+    data['on_time'] = onTime;
+    data['off_time'] = offTime;
+    return data;
+  }
+}
+
+class LightSettings {
+  int? startingTime;
+  int? duration;
+
+  LightSettings({this.startingTime, this.duration});
+
+  LightSettings.fromJson(Map<String, dynamic> json) {
+    startingTime = json['starting_time'];
+    duration = json['duration'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['starting_time'] = startingTime;
+    data['duration'] = duration;
     return data;
   }
 }

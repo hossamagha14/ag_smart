@@ -1,7 +1,5 @@
 import 'package:ag_smart/View%20Model/bloc/Bottom%20navigation%20bar/bottom_nav_bar_cubit.dart';
 import 'package:ag_smart/View%20Model/bloc/Bottom%20navigation%20bar/bottom_nav_bar_states.dart';
-import 'package:ag_smart/View%20Model/bloc/Custom%20Irrigation/custom_irrigation_cubit.dart';
-import 'package:ag_smart/View%20Model/bloc/Custom%20Irrigation/custom_irrigation_states.dart';
 import 'package:ag_smart/View/Reusable/colors.dart';
 import 'package:ag_smart/View/Reusable/main_card.dart';
 import 'package:ag_smart/View/Reusable/main_icons_row_widget.dart';
@@ -23,10 +21,10 @@ class CustomStationInfoScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(text[chosenLanguage]!['Station info']!),
       ),
-      body: BlocConsumer<CustomIrrigationCubit, CustomIrrigationStates>(
+      body: BlocConsumer<BottomNavBarCubit, BottomNavBarStates>(
         listener: (context, state) {},
         builder: (context, state) {
-          CustomIrrigationCubit myCubit = CustomIrrigationCubit.get(context);
+          BottomNavBarCubit myCubit = BottomNavBarCubit.get(context);
           return Column(
             children: [
               MainCard(
@@ -79,188 +77,176 @@ class CustomStationInfoScreen extends StatelessWidget {
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.8,
                         height: MediaQuery.of(context).size.height * 0.41,
-                        child: BlocConsumer<BottomNavBarCubit,
-                                BottomNavBarStates>(
-                            listener: (context, state) {},
-                            builder: (context, state) {
-                              BottomNavBarCubit stationCubit =
-                                  BottomNavBarCubit.get(context);
-                              return ListView.separated(
-                                  physics: const BouncingScrollPhysics(),
-                                  itemBuilder: (context, lineIndex) {
-                                    return Visibility(
-                                      visible: stationCubit
-                                                  .activeValves[lineIndex] ==
-                                              0
-                                          ? false
-                                          : true,
+                        child: ListView.separated(
+                            physics: const BouncingScrollPhysics(),
+                            itemBuilder: (context, lineIndex) {
+                              return Container(
+                                width: MediaQuery.of(context).size.width * 0.8,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.05,
+                                decoration: BoxDecoration(
+                                    color: backgroundColor,
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.01,
+                                    ),
+                                    Text(
+                                        'Line ${myCubit.stationModel!.irrigationSettings![0].customValvesSettings![lineIndex].valveId.toString()}'),
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.4,
+                                      child: ListView.separated(
+                                          scrollDirection: Axis.horizontal,
+                                          itemBuilder: (context, index) {
+                                            print(myCubit.customActiveDays);
+                                            return CircleAvatar(
+                                              radius: 7,
+                                              backgroundColor: myCubit
+                                                          .customActiveDays[
+                                                              lineIndex]
+                                                          .isEmpty ||
+                                                      myCubit.customActiveDays[
+                                                                  lineIndex]
+                                                              [index] ==
+                                                          0
+                                                  ? Colors.grey
+                                                  : Colors.green,
+                                            );
+                                          },
+                                          separatorBuilder: (context, index) {
+                                            return SizedBox(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.02,
+                                            );
+                                          },
+                                          itemCount: 7),
+                                    ),
+                                    myCubit
+                                                .stationModel!
+                                                .irrigationSettings![0]
+                                                .customValvesSettings![
+                                                    lineIndex]
+                                                .irrigationMethod2 ==
+                                            1
+                                        ? Text(
+                                            'x',
+                                            style: smallIcon,
+                                          )
+                                        : myCubit
+                                                    .stationModel!
+                                                    .irrigationSettings![0]
+                                                    .customValvesSettings![
+                                                        lineIndex]
+                                                    .irrigationMethod2 ==
+                                                2
+                                            ? Text(
+                                                'c',
+                                                style: smallIcon,
+                                              )
+                                            : const SizedBox(
+                                                width: 18,
+                                              ),
+                                    myCubit
+                                                .stationModel!
+                                                .irrigationSettings![0]
+                                                .customValvesSettings!
+                                                .isEmpty ||
+                                            myCubit
+                                                    .stationModel!
+                                                    .irrigationSettings![0]
+                                                    .customValvesSettings![
+                                                        lineIndex]
+                                                    .irrigationMethod1 ==
+                                                0
+                                        ? const SizedBox(
+                                            width: 18,
+                                          )
+                                        : Text(
+                                            myCubit
+                                                        .stationModel!
+                                                        .irrigationSettings![0]
+                                                        .customValvesSettings![
+                                                            lineIndex]
+                                                        .irrigationMethod1 ==
+                                                    2
+                                                ? 'u'
+                                                : 'w',
+                                            style: smallIcon,
+                                          ),
+                                    InkWell(
+                                      onTap: () {
+                                        showDialog(
+                                          context: context,
+                                          builder: (context) => AlertDialog(
+                                              contentPadding:
+                                                  EdgeInsets.fromLTRB(
+                                                      0,
+                                                      MediaQuery.of(context)
+                                                              .size
+                                                              .height *
+                                                          0.05,
+                                                      0,
+                                                      0),
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          20)),
+                                              content: PopUpScreen(
+                                                lineIndex: lineIndex,
+                                                valveId: myCubit
+                                                    .stationModel!
+                                                    .irrigationSettings![0]
+                                                    .customValvesSettings![
+                                                        lineIndex]
+                                                    .valveId!,
+                                              )),
+                                        );
+                                      },
                                       child: Container(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.8,
                                         height:
                                             MediaQuery.of(context).size.height *
                                                 0.05,
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.1,
                                         decoration: BoxDecoration(
-                                            color: backgroundColor,
+                                            color: Colors.blue.withOpacity(0.6),
                                             borderRadius:
-                                                BorderRadius.circular(10)),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            SizedBox(
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.01,
-                                            ),
-                                            Text('Line ${lineIndex + 1}'),
-                                            SizedBox(
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.4,
-                                              child: ListView.separated(
-                                                  scrollDirection:
-                                                      Axis.horizontal,
-                                                  itemBuilder:
-                                                      (context, index) {
-                                                    return CircleAvatar(
-                                                      radius: 7,
-                                                      backgroundColor: myCubit
-                                                                  .customIrrigationModelList[
-                                                                      lineIndex]
-                                                                  .days[index]
-                                                                  .isOn ==
-                                                              true
-                                                          ? Colors.green
-                                                          : Colors.grey,
-                                                    );
-                                                  },
-                                                  separatorBuilder:
-                                                      (context, index) {
-                                                    return SizedBox(
-                                                      width:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .width *
-                                                              0.02,
-                                                    );
-                                                  },
-                                                  itemCount: 7),
-                                            ),
-                                            myCubit
-                                                        .customIrrigationModelList[
-                                                            lineIndex]
-                                                        .accordingToQuantity ==
-                                                    null
-                                                ? const SizedBox(
-                                                    width: 18,
-                                                  )
-                                                : Text(
-                                                    myCubit
-                                                                .customIrrigationModelList[
-                                                                    lineIndex]
-                                                                .accordingToQuantity ==
-                                                            true
-                                                        ? 'c'
-                                                        : 'x',
-                                                    style: smallIcon,
-                                                  ),
-                                            myCubit
-                                                        .customIrrigationModelList[
-                                                            lineIndex]
-                                                        .accordingToHour ==
-                                                    null
-                                                ? const SizedBox(
-                                                    width: 18,
-                                                  )
-                                                : Text(
-                                                    myCubit
-                                                                .customIrrigationModelList[
-                                                                    lineIndex]
-                                                                .accordingToHour ==
-                                                            true
-                                                        ? 'u'
-                                                        : 'w',
-                                                    style: smallIcon,
-                                                  ),
-                                            InkWell(
-                                              onTap: () {
-                                                showDialog(
-                                                  context: context,
-                                                  builder: (context) =>
-                                                      AlertDialog(
-                                                          contentPadding:
-                                                              EdgeInsets.fromLTRB(
-                                                                  0,
-                                                                  MediaQuery.of(
-                                                                              context)
-                                                                          .size
-                                                                          .height *
-                                                                      0.05,
-                                                                  0,
-                                                                  0),
-                                                          shape: RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          20)),
-                                                          content: PopUpScreen(
-                                                            lineIndex:
-                                                                lineIndex,
-                                                          )),
-                                                );
-                                              },
-                                              child: Container(
-                                                height: MediaQuery.of(context)
-                                                        .size
-                                                        .height *
-                                                    0.05,
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    0.1,
-                                                decoration: BoxDecoration(
-                                                    color: Colors.blue
-                                                        .withOpacity(0.6),
-                                                    borderRadius:
-                                                        const BorderRadius.only(
-                                                            topRight:
-                                                                Radius.circular(
-                                                                    10),
-                                                            bottomRight:
-                                                                Radius.circular(
-                                                                    10))),
-                                                child: Center(
-                                                  child: Text(
-                                                    'q',
-                                                    style: smallIcon,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
+                                                const BorderRadius.only(
+                                                    topRight:
+                                                        Radius.circular(10),
+                                                    bottomRight:
+                                                        Radius.circular(10))),
+                                        child: Center(
+                                          child: Text(
+                                            'q',
+                                            style: smallIcon,
+                                          ),
                                         ),
                                       ),
-                                    );
-                                  },
-                                  separatorBuilder: (context, index) {
-                                    return Visibility(
-                                      visible:
-                                          stationCubit.activeValves[index] == 0
-                                              ? false
-                                              : true,
-                                      child: SizedBox(
-                                        height:
-                                            MediaQuery.of(context).size.height *
-                                                0.01,
-                                      ),
-                                    );
-                                  },
-                                  itemCount: stationCubit.activeValves.length);
-                            }),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                            separatorBuilder: (context, index) {
+                              return SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.01,
+                              );
+                            },
+                            itemCount: myCubit
+                                .stationModel!
+                                .irrigationSettings![0]
+                                .customValvesSettings!
+                                .length),
                       ),
                       const Spacer(),
                       const ScarLightWidget()

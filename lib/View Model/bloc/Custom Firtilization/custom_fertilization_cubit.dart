@@ -1,4 +1,5 @@
 import 'package:ag_smart/Model/custom_fertilization_model.dart';
+import 'package:ag_smart/Model/features_model.dart';
 import 'package:ag_smart/View%20Model/bloc/Custom%20Firtilization/custom_fertilization_states.dart';
 import 'package:ag_smart/View%20Model/database/end_points.dart';
 import 'package:dio/dio.dart';
@@ -14,7 +15,8 @@ class CustomFertilizationCubit extends Cubit<CustomFertilizationStates> {
   bool? isDuration;
   int? choosenValue;
   int? quantityDayValue;
-
+  int dayValue = 0;
+  FeaturesModel? featuresModel;
   TimeOfDay quantityTime = TimeOfDay.now();
   List<Map<String, dynamic>> periodsList = [];
   List<Map<String, dynamic>> getPeriodsList = [];
@@ -63,6 +65,34 @@ class CustomFertilizationCubit extends Cubit<CustomFertilizationStates> {
     emit(CustomFirtiliserSettingsAddContainerState());
   }
 
+  // removeContainerFromdb(
+  //     {required int lineIndex,
+  //     required int containerIndex,
+  //     required int stationId,
+  //     required int valveId,
+  //     required int weekday,
+  //     required int periodId}) async {
+  //   customIrrigationModelList[lineIndex].isBeingDeleted[containerIndex] = true;
+  //   await dio
+  //       .delete('$base/$irrigationPeriods/$stationId/$valveId/$periodId')
+  //       .then((value) {
+  //     if (value.statusCode == 200) {
+  //       removeContainer(lineIndex: lineIndex, containerIndex: containerIndex);
+  //       makeAList(lineIndex: lineIndex, weekday: weekday, valveId: valveId);
+  //       putIrrigationHourAftreDelete(
+  //           valveId: valveId,
+  //           stationId: stationId,
+  //           lineIndex: lineIndex,
+  //           periodsList: periodsList);
+  //     }
+  //   }).catchError((onError) {
+  //     customIrrigationModelList[lineIndex].isBeingDeleted[containerIndex] =
+  //         true;
+  //     print(onError.toString());
+  //     emit(CustomIrrigationDeleteFailedState());
+  //   });
+  // }
+
   removeContainer(int lineIndex, int containerIndex) {
     customFertilizationModelList[lineIndex].time.removeAt(containerIndex);
     customFertilizationModelList[lineIndex]
@@ -78,29 +108,36 @@ class CustomFertilizationCubit extends Cubit<CustomFertilizationStates> {
   }
 
   chooseDay(int value, int lineIndex, int containerIndex) {
-    choosenValue = value;
+    dayValue = value;
     if (customFertilizationModelList[lineIndex].daysList.length - 1 <
         containerIndex) {
-      customFertilizationModelList[lineIndex].daysList.add(choosenValue!);
+      customFertilizationModelList[lineIndex].daysList.add(dayValue);
     } else {
       customFertilizationModelList[lineIndex].daysList[containerIndex] =
-          choosenValue!;
+          dayValue;
     }
 
     emit(CustomFirtiliserSettingsChooseDayState());
   }
 
-  putFertilizationType({
-    required int stationId,
-    required int fertilizationMethod,
-  }) async {
+  putFertilizationType(
+      {required int stationId,
+      required int fertilizationMethod,
+      required int valveId,
+      required int lineIndex}) async {
     await dio.put('$base/$fertilizerSettings/$stationId', data: {
       "station_id": stationId,
       "fertilization_method_1": 3,
       "fertilization_method_2": fertilizationMethod,
     }).then((value) {
-      print(value.data);
-      emit(CustomFertilizationPutSuccessState());
+      if (value.statusCode == 200) {
+        delete(
+            stationId: stationId,
+            lineIndex: lineIndex,
+            valveId: valveId,
+            method1: fertilizationMethod);
+        emit(CustomFertilizationPutSuccessState());
+      }
     }).catchError((onError) {
       print(onError);
       emit(CustomFertilizationPutFailState());
@@ -113,22 +150,24 @@ class CustomFertilizationCubit extends Cubit<CustomFertilizationStates> {
   }) async {
     await dio.put('$base/$fertilizerPeriodsList/$stationId',
         data: {'list': periodsList}).then((value) {
-      print(value.data);
-      emit(CustomFertilizationPutSuccessState());
+      if (value.statusCode == 200) {
+        emit(CustomFertilizationPutSuccessState());
+      }
     }).catchError((onError) {
       print(onError.toString());
-      print(makeAList(lineIndex: 1));
       emit(CustomFertilizationPutFailState());
     });
   }
 
-  List<Map<String, dynamic>> makeAList({required int lineIndex}) {
+  List<Map<String, dynamic>> makeAList(
+      {required int lineIndex, required int valveId}) {
+        periodsList=[];
     for (int i = 0;
         i < customFertilizationModelList[lineIndex].controllers.length;
         i++) {
       periodsList.add({
         "period_id": i + 1,
-        "valve_id": lineIndex + 1,
+        "valve_id": valveId,
         "starting_time":
             customFertilizationModelList[lineIndex].time[i].hour * 60 +
                 customFertilizationModelList[lineIndex].time[i].minute,
@@ -143,46 +182,87 @@ class CustomFertilizationCubit extends Cubit<CustomFertilizationStates> {
         "date": customFertilizationModelList[lineIndex].daysList[i]
       });
     }
+    print(periodsList);
     return periodsList;
   }
 
   getPeriods({
     required int stationId,
     required int lineIndex,
+    required int valveId,
   }) async {
     customFertilizationModelList[lineIndex].time = [];
     customFertilizationModelList[lineIndex].controllers = [];
-    customFertilizationModelList[lineIndex].days = [];
+    customFertilizationModelList[lineIndex].daysList = [];
     int j = 0;
     await dio.get('$base/$fertilizerSettings/$stationId').then((value) {
       fertilizationModel = FertilizationModel.fromJson(value.data);
       print(value.data);
       for (int i = 0; i < fertilizationModel!.fertilizerPeriods!.length; i++) {
-        if (fertilizationModel!.fertilizerPeriods![i].valveId ==
-            lineIndex + 1) {
+        if (fertilizationModel!.fertilizerPeriods![i].valveId == valveId) {
           addContainer(lineIndex);
           customFertilizationModelList[lineIndex].daysList.add(1);
           customFertilizationModelList[lineIndex].controllers[j].text =
               fertilizationModel!.fertilizerPeriods![i].duration.toString();
           customFertilizationModelList[lineIndex].daysList[j] =
               fertilizationModel!.fertilizerPeriods![i].date!;
-
-          print(
-              '${customFertilizationModelList[lineIndex].daysList} ahmed ahmed ahmed');
-          print(
-              '${customFertilizationModelList[lineIndex].time} ahmed ahmed ahmed');
-
           j++;
         }
       }
       if (value.statusCode == 200) {
-        print(value.data);
-
         emit(CustomFertilizationGetSuccessState());
       }
     }).catchError((onError) {
       print(onError.toString());
       emit(CustomFertilizationGetFailState());
+    });
+  }
+
+  delete({
+    required int stationId,
+    required int valveId,
+    required int lineIndex,
+    required int method1,
+  }) async {
+    await dio.delete('$base/$fertilizerSettingsDelete/$stationId', data: {
+      "valve_id": valveId,
+      "station_id": stationId,
+      "method_1": method1
+    }).then((value) {
+      if (value.statusCode == 200) {
+        getPeriods(
+            lineIndex: lineIndex, valveId: valveId, stationId: stationId);
+        emit(CustomFertilizationDeleteSuccessState());
+      }
+    }).catchError((onError) {
+      emit(CustomFertilizationDeleteFailState());
+    });
+  }
+
+  getFertilizationSettings({required int stationId}) async {
+    await dio.get('$base/$fertilizerSettings/$stationId').then((value) {
+      print(value.data);
+      fertilizationModel = FertilizationModel.fromJson(value.data);
+      if (value.statusCode == 200) {
+        emit(CustomFertilizationGetSuccessState());
+      }
+    }).catchError((onError) {
+      print(onError.toString());
+      emit(CustomFertilizationGetFailState());
+    });
+  }
+
+  getNumberOfValves({required int stationId}) {
+    customFertilizationModelList = [];
+    dio.get('$base/$features/$stationId').then((value) {
+      featuresModel = FeaturesModel.fromJson(value.data);
+      for (int i = 0; i < featuresModel!.linesNumber!; i++) {
+        customFertilizationModelList.add(CustomFertilizationModel());
+      }
+      emit(CustomFertilizationGetValvesSuccessState());
+    }).catchError((onError) {
+      print(onError);
+      emit(CustomFertilizationGetValvesFailState());
     });
   }
 }

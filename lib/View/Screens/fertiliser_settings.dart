@@ -4,14 +4,16 @@ import 'package:ag_smart/View/Reusable/add_new_container_button.dart';
 import 'package:ag_smart/View/Reusable/colors.dart';
 import 'package:ag_smart/View/Reusable/error_toast.dart';
 import 'package:ag_smart/View/Reusable/main_card02.dart';
-import 'package:ag_smart/View/Reusable/my_date_picker.dart';
 import 'package:ag_smart/View/Reusable/my_time_picker.dart';
 import 'package:ag_smart/View/Reusable/open_valve_period_text_field.dart';
 import 'package:ag_smart/View/Reusable/set_settings_3rows_container.dart';
 import 'package:ag_smart/View/Reusable/text.dart';
 import 'package:ag_smart/View/Reusable/text_style.dart';
+import 'package:ag_smart/View/Screens/bottom_nav_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../Reusable/day_picker_pop_up.dart';
 
 // ignore: must_be_immutable
 class FirtiliserSettingsScreen extends StatelessWidget {
@@ -23,104 +25,184 @@ class FirtiliserSettingsScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(text[chosenLanguage]!['Device Setup']!),
       ),
-      body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        child: SizedBox(
-          height: MediaQuery.of(context).size.height * 0.85,
-          child: Column(
-            children: [
-              BlocConsumer<FirtiliserSettingsCubit, FirtiliserSettingsStates>(
-                listener: (context, state) {},
-                builder: (context, state) {
-                  FirtiliserSettingsCubit myCubit =
-                      FirtiliserSettingsCubit.get(context);
-                  return MainCard2(
-                      function: () {
-                        if (myCubit
-                            .firtiliserModel.controllersList[0].text.isEmpty) {
-                          errorToast('Please add the open valve time');
-                        } else {
-                          myCubit.getData(context);
-                          myCubit.issDone();
-                          Navigator.of(context)
-                            ..pop()
-                            ..pop();
-                        }
-                      },
-                      buttonColor: yellowColor,
-                      mainWidget: Column(
-                        children: [
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.01,
-                          ),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.8,
-                            height: MediaQuery.of(context).size.height * 0.35,
-                            child: ListView.separated(
-                                shrinkWrap: true,
-                                physics: const BouncingScrollPhysics(),
-                                itemBuilder: (context, index) {
-                                  return SetSettings3RowsContainer(
-                                      visible: false,
-                                      function: () {},
-                                      firstRowTitle:
-                                          text[chosenLanguage]!['Set day']!,
-                                      firstRowWidget: MyDatePicker(
-                                          date:
-                                              '${myCubit.firtiliserModel.dateList[index].day}/${myCubit.firtiliserModel.dateList[index].month}/${myCubit.firtiliserModel.dateList[index].year}',
-                                          function: (value) =>
-                                              myCubit.chooseDate(value, index)),
-                                      secondRowTitle:
-                                          text[chosenLanguage]!['Set time']!,
-                                      secondRowWidget: MyTimePicker(
-                                          time: myCubit
-                                              .firtiliserModel.timeList[index]
-                                              .format(context)
-                                              .toString(),
-                                          function: (value) =>
-                                              myCubit.chooseTime(value, index)),
-                                      thirdRowTitle: myCubit.method2 == 1
-                                          ? text[chosenLanguage]![
-                                              'Open valve time']!
-                                          : text[chosenLanguage]![
-                                              'Fertillization amount']!,
-                                      thirdRowWidget: OpenValvePeriodTextField(
-                                          hintText: '00',
-                                          unit: myCubit.method2 == 1
-                                              ? text[chosenLanguage]![
-                                                  'Minutes']!
-                                              : text[chosenLanguage]!['ml']!,
-                                          control: myCubit.firtiliserModel
-                                              .controllersList[index]));
-                                },
-                                separatorBuilder: (context, index) {
-                                  return SizedBox(
-                                    height: MediaQuery.of(context).size.height *
-                                        0.01,
-                                  );
-                                },
-                                itemCount: myCubit.index),
-                          ),
-                          AddNewContainerButton(
-                            functionAdd: () {
-                              myCubit.addContainer();
+      body: BlocConsumer<FirtiliserSettingsCubit, FirtiliserSettingsStates>(
+        listener: (context, state) {
+          if (state is FirtiliserSettingsSendSuccessState) {
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const BottomNavBarScreen(),
+                ),
+                (route) => false);
+          }else if(state is FirtiliserSettingsSendFailState){
+            errorToast('An error has occurred');
+          }
+        },
+        builder: (context, state) {
+          FirtiliserSettingsCubit myCubit =
+              FirtiliserSettingsCubit.get(context);
+          return myCubit.fertilizationModel == null
+              ? const Center(child: CircularProgressIndicator())
+              : SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  child: SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.85,
+                    child: Column(
+                      children: [
+                        MainCard2(
+                            function: () {
+                              bool allFull = true;
+                              for (int i = 0;
+                                  i <
+                                      myCubit.firtiliserModel.controllersList
+                                          .length;
+                                  i++) {
+                                if (myCubit.firtiliserModel.controllersList[i]
+                                        .text.isEmpty ||
+                                    myCubit.firtiliserModel.dateList.length -
+                                            1 <
+                                        i ||
+                                    myCubit.firtiliserModel.dateList[i] == 0) {
+                                  allFull = false;
+                                }
+                              }
+                              if (allFull == true) {
+                                myCubit.issDone();
+                                myCubit.putFertilizationPeriods(
+                                    stationId: 1,
+                                    periodsList: myCubit.makeAList());
+                              } else if (allFull == false) {
+                                errorToast('Please fill all the data');
+                              }
                             },
-                            functionRemove: () {
-                              myCubit.removeContainer();
-                            },
-                          )
-                        ],
-                      ),
-                      rowWidget: Text(
-                        'g',
-                        style: yellowIcon,
-                      ),
-                      cardtitle: text[chosenLanguage]!['Fertilizer Settings']!);
-                },
-              ),
-            ],
-          ),
-        ),
+                            buttonColor: yellowColor,
+                            mainWidget: Column(
+                              children: [
+                                SizedBox(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.01,
+                                ),
+                                SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.8,
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.35,
+                                  child: ListView.separated(
+                                      shrinkWrap: true,
+                                      physics: const BouncingScrollPhysics(),
+                                      itemBuilder: (context, index) {
+                                        return SetSettings3RowsContainer(
+                                            visible: false,
+                                            function: () {},
+                                            firstRowTitle: text[
+                                                chosenLanguage]!['Set day']!,
+                                            firstRowWidget: InkWell(
+                                              onTap: () {
+                                                showDialog(
+                                                  context: context,
+                                                  builder: (context) => BlocBuilder<
+                                                      FirtiliserSettingsCubit,
+                                                      FirtiliserSettingsStates>(
+                                                    builder: (context, state) {
+                                                      return DayPickerPopUp(
+                                                          function: (value) {
+                                                            myCubit.chooseDay(
+                                                                value, index);
+                                                          },
+                                                          value:
+                                                              myCubit.dayValue,
+                                                          lineIndex: 0,
+                                                          index: index);
+                                                    },
+                                                  ),
+                                                );
+                                              },
+                                              child: Container(
+                                                height: MediaQuery.of(context)
+                                                        .size
+                                                        .height *
+                                                    0.05,
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.31,
+                                                decoration: BoxDecoration(
+                                                    color: Colors.white,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10)),
+                                                child: Center(
+                                                  child: Text(
+                                                    myCubit.firtiliserModel.dateList
+                                                                    .length -
+                                                                1 <
+                                                            index
+                                                        ? 'Date'
+                                                        : myCubit
+                                                            .firtiliserModel
+                                                            .dateList[index]
+                                                            .toString(),
+                                                    textAlign: TextAlign.center,
+                                                    textDirection:
+                                                        TextDirection.ltr,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            secondRowTitle: text[
+                                                chosenLanguage]!['Set time']!,
+                                            secondRowWidget: MyTimePicker(
+                                                time: myCubit.firtiliserModel
+                                                    .timeList[index]
+                                                    .format(context)
+                                                    .toString(),
+                                                function: (value) => myCubit
+                                                    .chooseTime(value, index)),
+                                            thirdRowTitle: myCubit.method2 == 1
+                                                ? text[chosenLanguage]![
+                                                    'Open valve time']!
+                                                : text[chosenLanguage]![
+                                                    'Fertillization amount']!,
+                                            thirdRowWidget: OpenValvePeriodTextField(
+                                                hintText: '00',
+                                                unit: myCubit.method2 == 1
+                                                    ? text[chosenLanguage]![
+                                                        'Minutes']!
+                                                    : text[chosenLanguage]!['ml']!,
+                                                control: myCubit.firtiliserModel.controllersList[index]));
+                                      },
+                                      separatorBuilder: (context, index) {
+                                        return SizedBox(
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.01,
+                                        );
+                                      },
+                                      itemCount: myCubit.firtiliserModel
+                                          .controllersList.length),
+                                ),
+                                AddNewContainerButton(
+                                  functionAdd: () {
+                                    myCubit.addContainer();
+                                  },
+                                  functionRemove: () {
+                                    myCubit.removeContainer();
+                                  },
+                                )
+                              ],
+                            ),
+                            rowWidget: Text(
+                              'g',
+                              style: yellowIcon,
+                            ),
+                            cardtitle:
+                                text[chosenLanguage]!['Fertilizer Settings']!),
+                      ],
+                    ),
+                  ),
+                );
+        },
       ),
     );
   }

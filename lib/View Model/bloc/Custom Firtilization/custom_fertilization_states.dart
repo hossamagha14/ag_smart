@@ -14,7 +14,15 @@ class CustomFertilizationPutFailState extends CustomFertilizationStates {}
 
 class CustomFertilizationGetSuccessState extends CustomFertilizationStates {}
 
+class CustomFertilizationGetValvesFailState extends CustomFertilizationStates {}
+
+class CustomFertilizationGetValvesSuccessState extends CustomFertilizationStates {}
+
 class CustomFertilizationGetFailState extends CustomFertilizationStates {}
+
+class CustomFertilizationDeleteSuccessState extends CustomFertilizationStates {}
+
+class CustomFertilizationDeleteFailState extends CustomFertilizationStates {}
 
 class CustomFertilizationShowDeleteButtonState
     extends CustomFertilizationStates {}

@@ -9,17 +9,20 @@ import 'package:ag_smart/View/Reusable/my_time_picker.dart';
 import 'package:ag_smart/View/Reusable/open_valve_period_text_field.dart';
 import 'package:ag_smart/View/Reusable/set_settings_2rows_container.dart';
 import 'package:ag_smart/View/Reusable/text.dart';
-import 'package:ag_smart/View/Screens/bottom_nav_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../Reusable/custom_irrigation_choose_day.dart';
 import '../Reusable/loading_set_settings_2_rows.dart';
+import 'bottom_nav_bar.dart';
 
 // ignore: must_be_immutable
 class CustomDurationByTime extends StatelessWidget {
   final int lineIndex;
-  CustomDurationByTime({Key? key, required this.lineIndex}) : super(key: key);
+  final int valveId;
+  CustomDurationByTime(
+      {Key? key, required this.lineIndex, required this.valveId})
+      : super(key: key);
   TextEditingController openValveControl = TextEditingController();
 
   @override
@@ -43,6 +46,8 @@ class CustomDurationByTime extends StatelessWidget {
           } else if (state is CustomIrrigationGetFailState) {
             errorToast('An error has occured');
             Navigator.pop(context);
+          } else if (state is CustomIrrigationDeleteFailedState) {
+            errorToast('An error has occured');
           }
         },
         builder: (context, state) {
@@ -73,26 +78,34 @@ class CustomDurationByTime extends StatelessWidget {
                                   child: ListView.separated(
                                       physics: const BouncingScrollPhysics(),
                                       shrinkWrap: true,
-                                      itemBuilder: (context, index) => myCubit.customIrrigationModelList[lineIndex].isBeingDeleted[index] ==
+                                      itemBuilder: (context, index) => myCubit
+                                                  .customIrrigationModelList[
+                                                      lineIndex]
+                                                  .isBeingDeleted[index] ==
                                               false
                                           ? SetSettings2RowsContainer(
                                               visible: myCubit.visible,
                                               function: () {
-                                                if (index <
-                                                    myCubit
+                                                if (myCubit
                                                         .irrigationSettingsModel!
+                                                        .customValvesSettings![
+                                                            lineIndex]
                                                         .irrigationPeriods!
-                                                        .length) {
+                                                        .length >
+                                                    index) {
                                                   myCubit.removeContainerFromdb(
                                                       lineIndex: lineIndex,
+                                                      weekday: myCubit.toBinary(
+                                                          lineIndex: lineIndex),
                                                       containerIndex: index,
                                                       stationId: 1,
-                                                      valveId: lineIndex + 1,
+                                                      valveId: valveId,
                                                       periodId: myCubit
                                                           .irrigationSettingsModel!
-                                                          .irrigationPeriods![
-                                                              index]
-                                                          .periodId!);
+                                                          .customValvesSettings![
+                                                              lineIndex]
+                                                          .irrigationPeriods!
+                                                          .length);
                                                 } else {
                                                   myCubit.removeContainer(
                                                       lineIndex: lineIndex,
@@ -102,10 +115,7 @@ class CustomDurationByTime extends StatelessWidget {
                                               firstRowTitle: text[
                                                   chosenLanguage]!['Set time']!,
                                               firstRowWidget: MyTimePicker(
-                                                  time: myCubit
-                                                      .customIrrigationModelList[
-                                                          lineIndex]
-                                                      .timeList[index]
+                                                  time: myCubit.customIrrigationModelList[lineIndex].timeList[index]
                                                       .format(context)
                                                       .toString(),
                                                   function: (value) => myCubit.pickTime(
@@ -160,10 +170,6 @@ class CustomDurationByTime extends StatelessWidget {
                                 AddNewContainerButton(
                                   functionAdd: () {
                                     myCubit.addContainer(lineIndex);
-                                    print(myCubit
-                                        .customIrrigationModelList[lineIndex]
-                                        .controllersList
-                                        .length);
                                   },
                                   functionRemove: () {
                                     myCubit.showDeleteButton();
@@ -195,7 +201,6 @@ class CustomDurationByTime extends StatelessWidget {
                                           .controllersList
                                           .length;
                                   i++) {
-                                    
                                 if (myCubit.customIrrigationModelList[lineIndex]
                                     .controllersList[i].text.isEmpty) {
                                   allFull = false;
@@ -210,7 +215,10 @@ class CustomDurationByTime extends StatelessWidget {
                                   myCubit.putIrrigationHour(
                                       stationId: 1,
                                       periodsList: myCubit.makeAList(
-                                          lineIndex: lineIndex, weekday: myCubit.toBinary(lineIndex: lineIndex)));
+                                          lineIndex: lineIndex,
+                                          valveId: valveId,
+                                          weekday: myCubit.toBinary(
+                                              lineIndex: lineIndex)));
                                 } else if (allFull == false) {
                                   errorToast(myCubit
                                               .customIrrigationModelList[

@@ -1,10 +1,8 @@
 import 'package:ag_smart/View%20Model/bloc/Bottom%20navigation%20bar/bottom_nav_bar_cubit.dart';
 import 'package:ag_smart/View%20Model/bloc/Bottom%20navigation%20bar/bottom_nav_bar_states.dart';
-import 'package:ag_smart/View%20Model/bloc/Lines%20activation/lines_activation_cubit.dart';
-import 'package:ag_smart/View%20Model/bloc/Lines%20activation/lines_activation_states.dart';
-import 'package:ag_smart/View/Reusable/choose_days_widget.dart';
 import 'package:ag_smart/View/Reusable/colors.dart';
 import 'package:ag_smart/View/Reusable/firtilisers_scarcrow_light_widget.dart';
+import 'package:ag_smart/View/Reusable/get_choosen_days.dart';
 import 'package:ag_smart/View/Reusable/main_card.dart';
 import 'package:ag_smart/View/Reusable/main_icons_row_widget.dart';
 import 'package:ag_smart/View/Reusable/text.dart';
@@ -45,27 +43,28 @@ class StationInfoScreen extends StatelessWidget {
                         SizedBox(
                           height: MediaQuery.of(context).size.height * 0.02,
                         ),
-                        const ChooseDyasWidget(
-                          useFunction: false,
-                        ),
+                        const GetChooseDyasWidget(),
                         SizedBox(
                           height: MediaQuery.of(context).size.height * 0.02,
                         ),
                         SizedBox(
                           height: MediaQuery.of(context).size.height * 0.36,
                           width: MediaQuery.of(context).size.width * 0.8,
-                          child: BlocConsumer<LinesActivationCubit,
-                                  LinesActivationStates>(
+                          child: BlocConsumer<BottomNavBarCubit,
+                                  BottomNavBarStates>(
                               listener: (context, state) {},
                               builder: (context, state) {
-                                LinesActivationCubit activationCubit =
-                                    LinesActivationCubit.get(context);
+                                BottomNavBarCubit stationCubit =
+                                    BottomNavBarCubit.get(context);
                                 return ListView.separated(
                                     physics: const BouncingScrollPhysics(),
                                     itemBuilder: (context, index) {
                                       return Visibility(
-                                        visible: activationCubit
-                                            .valves[index].isActive,
+                                        visible:
+                                            stationCubit.activeValves[index] ==
+                                                    0
+                                                ? false
+                                                : true,
                                         child: Container(
                                           height: MediaQuery.of(context)
                                                   .size
@@ -92,8 +91,11 @@ class StationInfoScreen extends StatelessWidget {
                                     },
                                     separatorBuilder: (context, index) {
                                       return Visibility(
-                                        visible: activationCubit
-                                            .valves[index].isActive,
+                                        visible:
+                                            stationCubit.activeValves[index] ==
+                                                    0
+                                                ? false
+                                                : true,
                                         child: SizedBox(
                                           height: MediaQuery.of(context)
                                                   .size
@@ -102,7 +104,7 @@ class StationInfoScreen extends StatelessWidget {
                                         ),
                                       );
                                     },
-                                    itemCount: activationCubit.valves.length);
+                                    itemCount: stationCubit.activeValves.length);
                               }),
                         ),
                         const FirScarLightWidget()

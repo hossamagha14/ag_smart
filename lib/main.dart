@@ -10,16 +10,14 @@ import 'package:ag_smart/View%20Model/bloc/Stations/station_cubit.dart';
 import 'package:ag_smart/View%20Model/bloc/light/light_cubit.dart';
 import 'package:ag_smart/View%20Model/database/cache_helpher.dart';
 import 'package:ag_smart/View/Reusable/colors.dart';
+import 'package:ag_smart/View/Screens/bottom_nav_bar.dart';
 import 'package:ag_smart/View/Screens/choose_language.dart';
-import 'package:ag_smart/View/Screens/lines_activation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'View Model/bloc/Firtiliser settings/firtilisers_settings_cubit.dart';
-import 'View Model/database/dio_helper.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  DioHelper.init();
   await CacheHelper.init();
   runApp(const MyApp());
 }
@@ -35,19 +33,21 @@ class MyApp extends StatelessWidget {
           create: (context) => PumpSettingsCubit(),
         ),
         BlocProvider(
-          create: (context) => LinesActivationCubit()..getNumberOfValves(),
+          create: (context) =>
+              LinesActivationCubit()..getNumberOfValves(stationId: 1),
         ),
         BlocProvider(
           create: (context) => IrrigationTypeCubit(),
         ),
         BlocProvider(
-          create: (context) => DurationSettingsCubit()..getIrrigationSettings(stationId: 1),
+          create: (context) =>
+              DurationSettingsCubit()..getPeriods(stationId: 1),
         ),
         BlocProvider(
           create: (context) => FirtiliserSettingsCubit(),
         ),
         BlocProvider(
-          create: (context) => CustomIrrigationCubit(),
+          create: (context) => CustomIrrigationCubit()..getNumberOfValves(stationId: 1),
         ),
         BlocProvider(
           create: (context) => ScarecrowCubit(),
@@ -62,7 +62,7 @@ class MyApp extends StatelessWidget {
           create: (context) => StationsCubit()..createDataBase(),
         ),
         BlocProvider(
-          create: (context) => CustomFertilizationCubit(),
+          create: (context) => CustomFertilizationCubit()..getNumberOfValves(stationId: 1),
         ),
       ],
       child: MaterialApp(
@@ -77,7 +77,7 @@ class MyApp extends StatelessWidget {
                 color: backgroundColor,
                 centerTitle: true)),
         home: CacheHelper.getData(key: 'languageChoosen') == true
-            ?  const LinesActivationScreen(isEdit: false,)
+            ? const BottomNavBarScreen()
             : const ChooseLanguageScreen(isEdit: false),
       ),
     );

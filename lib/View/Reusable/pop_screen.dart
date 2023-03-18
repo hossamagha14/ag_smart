@@ -7,7 +7,8 @@ import 'colors.dart';
 
 class PopUpScreen extends StatelessWidget {
   final int lineIndex;
-  const PopUpScreen({Key? key, required this.lineIndex}) : super(key: key);
+  final int valveId;
+  const PopUpScreen({Key? key, required this.valveId, required this.lineIndex}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +31,7 @@ class PopUpScreen extends StatelessWidget {
                           context,
                           MaterialPageRoute(
                             builder: (context) => CustomDurationSettingsScreen(
+                              valveId: valveId,
                                 lineIndex: lineIndex),
                           ));
                     },
@@ -65,6 +67,7 @@ class PopUpScreen extends StatelessWidget {
                             builder: (context) =>
                                 CustomFirtilizationTypesScreen(
                               lineIndex: lineIndex,
+                              valveId: valveId,
                             ),
                           ));
                     },

@@ -16,7 +16,8 @@ import 'bottom_nav_bar.dart';
 // ignore: must_be_immutable
 class CustomDurationSettingsByPeriodScreen extends StatelessWidget {
   final int lineIndex;
-  CustomDurationSettingsByPeriodScreen({Key? key, required this.lineIndex})
+  final int valveId;
+  CustomDurationSettingsByPeriodScreen({Key? key, required this.lineIndex, required this.valveId})
       : super(key: key);
   TextEditingController hourControl = TextEditingController();
   TextEditingController minutesControl = TextEditingController();
@@ -105,7 +106,8 @@ class CustomDurationSettingsByPeriodScreen extends StatelessWidget {
                         } else {
                           myCubit.putIrrigationCycle(
                               interval: int.parse(hourControl.text),
-                              valveId: lineIndex + 1,
+                              stationId: 1,
+                              valveId: valveId,
                               duration: myCubit
                                           .customIrrigationModelList[lineIndex]
                                           .accordingToQuantity ==

@@ -2,7 +2,6 @@ import 'package:ag_smart/View%20Model/bloc/Custom%20Irrigation/custom_irrigation
 import 'package:ag_smart/View%20Model/bloc/Custom%20Irrigation/custom_irrigation_states.dart';
 import 'package:ag_smart/View/Reusable/duration_settings_row.dart';
 import 'package:ag_smart/View/Reusable/error_toast.dart';
-import 'package:ag_smart/View/Reusable/global.dart';
 import 'package:ag_smart/View/Reusable/main_card02.dart';
 import 'package:ag_smart/View/Reusable/text.dart';
 import 'package:ag_smart/View/Reusable/text_style.dart';
@@ -15,7 +14,8 @@ import 'custom_duration_by_time.dart';
 
 class CustomDurationSettingsScreen extends StatelessWidget {
   final int lineIndex;
-  const CustomDurationSettingsScreen({Key? key, required this.lineIndex})
+  final int valveId;
+  const CustomDurationSettingsScreen({Key? key, required this.lineIndex, required this.valveId})
       : super(key: key);
 
   @override
@@ -34,6 +34,7 @@ class CustomDurationSettingsScreen extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) => CustomDurationByTime(
+                      valveId: valveId,
                       lineIndex: lineIndex,
                     ),
                   ));
@@ -44,6 +45,7 @@ class CustomDurationSettingsScreen extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) => CustomDurationSettingsByPeriodScreen(
+                      valveId: valveId,
                       lineIndex: lineIndex,
                     ),
                   ));
@@ -54,7 +56,7 @@ class CustomDurationSettingsScreen extends StatelessWidget {
         },
         builder: (context, state) {
           CustomIrrigationCubit myCubit = CustomIrrigationCubit.get(context);
-          return Column(
+          return myCubit.featuresModel==null? const Center(child: CircularProgressIndicator()) :Column(
             children: [
               MainCard2(
                   function: () {
@@ -67,13 +69,10 @@ class CustomDurationSettingsScreen extends StatelessWidget {
                       errorToast('Please select both categories');
                     } else {
                       myCubit.putIrrigationSettings(
-                          activeValves: binaryValves,
                           irrigationMethod1: myCubit.irrigationMethod1!,
-                          irrigationMethod2: myCubit.irrigationMethod1!,
+                          irrigationMethod2: myCubit.irrigationMethod2!,
+                          valveId: valveId,
                           lineIndex: lineIndex,
-                          valveId: lineIndex + 1,
-                          deleteIrrigationMethod1: myCubit.irrigationMethod1!,
-                          deleteIrrigationMethod2: myCubit.irrigationMethod1!,
                           stationId: 1);
                     }
                   },
@@ -153,7 +152,7 @@ class CustomDurationSettingsScreen extends StatelessWidget {
                     icon1: 'm',
                     icon2: 'f',
                   ),
-                  cardtitle: 'Line ${lineIndex + 1}'),
+                  cardtitle: 'Line $valveId'),
             ],
           );
         },

@@ -24,7 +24,7 @@ class FirtilisationTypeScreen extends StatelessWidget {
           children: [
             BlocConsumer<FirtiliserSettingsCubit, FirtiliserSettingsStates>(
               listener: (context, state) {
-                if (state is FirtiliserSettingsSendSuccessState) {
+                if (state is FirtiliserSettingsGetSuccessState) {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -115,6 +115,7 @@ class FirtilisationTypeScreen extends StatelessWidget {
                             stationId: 1,
                             ferMethod1: myCubit.method1!,
                             ferMethod2: myCubit.method2!);
+                            
                       }
                     },
                     cardtitle: text[chosenLanguage]!['Fertilizer Settings']!,

@@ -5,7 +5,6 @@ import 'package:ag_smart/Model/durationModel.dart';
 import 'package:ag_smart/View%20Model/database/end_points.dart';
 import 'package:ag_smart/View/Reusable/text.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../Model/irrigation_settings_model.dart';
@@ -113,35 +112,6 @@ class DurationSettingsCubit extends Cubit<DurationSettingsStates> {
     });
   }
 
-  putIrrigationHour({
-    required int stationId,
-    required int periodId,
-    required int valveId,
-    required TimeOfDay startTime,
-    required int duration,
-    required int quantity,
-    required int weekDays,
-  }) async {
-    int time = startTime.hour * 60 + startTime.minute;
-    await dio
-        .put('$base/$irrigationPeriods/$stationId/$valveId/$periodId', data: {
-      "period_id": periodId,
-      "valve_id": valveId,
-      "starting_time": time,
-      "duration": duration,
-      "quantity": quantity,
-      "week_days": weekDays
-    }).then((value) {
-      if (value.statusCode == 200) {
-        print(value.data);
-        emit(DurationSettingsSendSuccessState());
-      }
-    }).catchError((onError) {
-      print(onError.toString());
-      emit(DurationSettingsSendFailedState());
-    });
-  }
-
   List<Map<String, dynamic>> makeAList({required weekday}) {
     for (int i = 0; i < durations.length; i++) {
       periodsList.add({
@@ -176,17 +146,6 @@ class DurationSettingsCubit extends Cubit<DurationSettingsStates> {
     });
   }
 
-  getIrrigationSettings({required int stationId}) async {
-    await dio.get('$base/$irrigationSettings/$stationId').then((value) {
-      irrigationSettingsModel = IrrigationSettingsModel.fromJson(value.data);
-      if (value.statusCode == 200) {
-        emit(DurationSettingsGetSuccessState());
-      }
-    }).catchError((onError) {
-      emit(DurationSettingsGetFailState());
-    });
-  }
-
   int toBinary() {
     int activeDays = 0;
     for (int i = 0; i < 7; i++) {
@@ -196,5 +155,32 @@ class DurationSettingsCubit extends Cubit<DurationSettingsStates> {
       }
     }
     return activeDays;
+  }
+
+  getPeriods({
+    required int stationId,
+  }) async {
+    durations = [];
+    await dio.get('$base/$irrigationSettings/$stationId').then((value) {
+      irrigationSettingsModel = IrrigationSettingsModel.fromJson(value.data);
+      for (int i = 0;
+          i < irrigationSettingsModel!.customValvesSettings!.length;
+          i++) {
+        addContainer();
+        irrigationSettingsModel!.irrigationMethod2 == 1
+            ? durations[i].controller.text = irrigationSettingsModel!
+                .irrigationPeriods![i].duration
+                .toString()
+            : durations[i].controller.text = irrigationSettingsModel!
+                .irrigationPeriods![i].quantity
+                .toString();
+      }
+      if (value.statusCode == 200) {
+        emit(DurationSettingsGetSuccessState());
+      }
+    }).catchError((onError) {
+      print(onError.toString());
+      emit(DurationSettingsGetFailState());
+    });
   }
 }

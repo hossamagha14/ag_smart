@@ -9,3 +9,5 @@ class BottomNavBarLoadingState extends BottomNavBarStates {}
 class BottomNavBarGetSuccessState extends BottomNavBarStates {}
 
 class BottomNavBarGetFailState extends BottomNavBarStates {}
+
+class BottomNavBarDaysListFilledState extends BottomNavBarStates {}

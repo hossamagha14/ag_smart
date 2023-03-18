@@ -1,4 +1,4 @@
-const base = 'http://192.168.1.202:5000';
+const base = 'http://192.168.1.101:5000';
 const stationInfo = 'station';
 const features = '/station/features';
 const valveInfo = '/station/valve_info';
@@ -12,3 +12,6 @@ const light= '/station/light_settings';
 const irrigationPeriodsList= '/station/irrigation_settings/periods_list';
 const fertilizerPeriodsList= '/station/fertilization_settings/periods_list';
 const valveSettingsDelete= '/station/irrigation_settings/update';
+const fertilizerSettingsDelete= '/station/fertilizer_settings/update';
+const customIrrigationSettings='/station/irrigation_settings/custom';
+const getCustomIrrigationSettings='/station/irrigation_settings/all_custom';

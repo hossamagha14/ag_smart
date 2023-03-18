@@ -9,6 +9,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../Model/custom_irrigation_model.dart';
+import '../../../Model/days_model.dart';
 import '../../database/end_points.dart';
 
 class BottomNavBarCubit extends Cubit<BottomNavBarStates> {
@@ -20,7 +22,19 @@ class BottomNavBarCubit extends Cubit<BottomNavBarStates> {
   StationModel? stationModel;
   List<Widget>? bottomNavBarScreens;
   List<int> activeValves = [];
+  List<int> activeDays = [];
+  List<List<int>> customActiveDays = [];
   int index = 0;
+  List<CustomIrrigationModel> customIrrigationModelList = [];
+  List<DaysModel> days = [
+    DaysModel(day: 'SAT', isOn: false),
+    DaysModel(day: 'SUN', isOn: false),
+    DaysModel(day: 'MON', isOn: false),
+    DaysModel(day: 'TUE', isOn: false),
+    DaysModel(day: 'WED', isOn: false),
+    DaysModel(day: 'THU', isOn: false),
+    DaysModel(day: 'FRI', isOn: false),
+  ];
 
   chooseIndex(int value) {
     index = value;
@@ -51,10 +65,47 @@ class BottomNavBarCubit extends Cubit<BottomNavBarStates> {
           const SettingsScreen()
         ];
       }
-      print(value.data);
-      print(settingsType);
+
       if (value.statusCode == 200) {
-        getActiveValves(decimalNumber: stationModel!.irrigationSettings![0].activeValves!);
+        customActiveDays = [];
+        getActiveValves(
+            decimalNumber: stationModel!.irrigationSettings![0].activeValves!);
+        if (settingsType == 1 || settingsType == 2) {
+          stationModel!.irrigationSettings![0].irrigationPeriods!.isEmpty
+              ? getActiveDays(
+                  decimalNumber: stationModel!
+                      .irrigationSettings![0].irrigationCycles![0].weekDays!)
+              : getActiveDays(
+                  decimalNumber: stationModel!
+                      .irrigationSettings![0].irrigationPeriods![0].weekDays!);
+        } else if (settingsType == 3) {
+          for (int valve = 0;
+              valve <
+                  stationModel!
+                      .irrigationSettings![0].customValvesSettings!.length;
+              valve++) {
+            stationModel!.irrigationSettings![0].customValvesSettings![valve]
+                    .irrigationPeriods!.isNotEmpty
+                ? customActiveDays.add(getActiveDays(
+                    decimalNumber: stationModel!
+                        .irrigationSettings![0]
+                        .customValvesSettings![valve]
+                        .irrigationPeriods![0]
+                        .weekDays!))
+                : stationModel!
+                        .irrigationSettings![0]
+                        .customValvesSettings![valve]
+                        .irrigationCycles!
+                        .isNotEmpty
+                    ? customActiveDays.add(getActiveDays(
+                        decimalNumber: stationModel!
+                            .irrigationSettings![0]
+                            .customValvesSettings![valve]
+                            .irrigationCycles![0]
+                            .weekDays!))
+                    : customActiveDays.add([]);
+          }
+        }
         emit(BottomNavBarGetSuccessState());
       }
     }).catchError((onError) {
@@ -63,16 +114,27 @@ class BottomNavBarCubit extends Cubit<BottomNavBarStates> {
     });
   }
 
-  List<int> getActiveValves({required int decimalNumber}) {
-    activeValves=[];
+  getActiveValves({required int decimalNumber}) {
+    activeValves = [];
     while (decimalNumber > 0) {
       int n = (decimalNumber % 2);
       activeValves.add(n);
       double x = decimalNumber / 2;
       decimalNumber = x.toInt();
     }
-    
-    print(activeValves);
-    return activeValves;
+  }
+
+  List<int> getActiveDays({required int decimalNumber}) {
+    activeDays = [];
+    while (decimalNumber > 0) {
+      int n = (decimalNumber % 2);
+      activeDays.add(n);
+      double x = decimalNumber / 2;
+      decimalNumber = x.toInt();
+    }
+    while (activeDays.length < 7) {
+      activeDays.add(0);
+    }
+    return activeDays;
   }
 }

@@ -16,6 +16,8 @@ class CustomIrrigationPickTimeState extends CustomIrrigationStates {}
 
 class CustomIrrigationAddContainerState extends CustomIrrigationStates {}
 
+class CustomIrrigationRemoveContainerState extends CustomIrrigationStates {}
+
 class CustomIrrigationGetControllersState extends CustomIrrigationStates {}
 
 class CustomIrrigationActiveLineState extends CustomIrrigationStates {}
@@ -23,6 +25,10 @@ class CustomIrrigationActiveLineState extends CustomIrrigationStates {}
 class CustomIrrigationPutSuccessState extends CustomIrrigationStates {}
 
 class CustomIrrigationPutFailState extends CustomIrrigationStates {}
+
+class CustomIrrigationPutDeleteSuccessState extends CustomIrrigationStates {}
+
+class CustomIrrigationPutDeleteFailState extends CustomIrrigationStates {}
 
 class CustomIrrigationPostSuccessState extends CustomIrrigationStates {}
 
