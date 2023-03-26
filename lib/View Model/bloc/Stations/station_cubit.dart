@@ -2,6 +2,8 @@ import 'package:ag_smart/View%20Model/bloc/Stations/station_states.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sqflite/sqflite.dart';
 
+import '../../database/cache_helpher.dart';
+
 class StationsCubit extends Cubit<StationsStates> {
   StationsCubit() : super(StationsIntialState());
 
@@ -9,6 +11,7 @@ class StationsCubit extends Cubit<StationsStates> {
   Database? dataBase;
   bool securePassword = true;
   bool secureConfirmPassword = true;
+  List<Map> stations = [];
 
   showPassword() {
     securePassword = !securePassword;
@@ -27,10 +30,11 @@ class StationsCubit extends Cubit<StationsStates> {
       onCreate: (dataBase, version) async {
         print('data base created successfully');
         await dataBase.execute(
-            'CREATE TABLE stations (stationID INTEGER PRIMARY KEY,stationName TEXT,password TEXT)');
+            'CREATE TABLE stations (stationID INTEGER PRIMARY KEY,email TEXT,stationName TEXT,password TEXT,irrigationType INTEGER)');
         print('table created');
       },
       onOpen: (dataBase) {
+        getData(dataBase);
         print('dataBase opened');
       },
     );
@@ -39,17 +43,36 @@ class StationsCubit extends Cubit<StationsStates> {
   insertInDatabase({
     required String name,
     required String password,
+    required String email,
+    required int irrigationType,
   }) async {
     await dataBase!.transaction((txn) async {
       await txn
           .rawInsert(
-              'INSERT INTO stations (stationName,password) VALUES ("$name","$password")')
+              'INSERT INTO stations (email,stationName,password,irrigationType) VALUES ("$email","$name","$password","$irrigationType")')
           .then((value) {
-            emit(StationsAddToDBSuccessState());
+        getData(dataBase!);
+        emit(StationsAddToDBSuccessState());
         print(value);
-      }).catchError((onError){
+      }).catchError((onError) {
         emit(StationsAddToDBFailState());
       });
     });
   }
+
+  getData(Database database) async {
+    stations = await database.rawQuery('SELECT * FROM stations');
+    print(stations);
+    emit(StationsGetSuccessState());
+  }
+
+  saveVariables(int index) {
+    CacheHelper.saveData(key: 'stationId', value: index + 1);
+    CacheHelper.saveData(
+        key: 'stationName', value: stations[index]['stationName']);
+    emit(StationsSaveState());
+  }
+
+  Future<void> deleteDatabase(String path) =>
+      databaseFactory.deleteDatabase(path);
 }

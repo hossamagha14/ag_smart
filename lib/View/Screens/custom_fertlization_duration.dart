@@ -19,8 +19,12 @@ import '../Reusable/error_toast.dart';
 class CustomFirtiliserSettingsScreen extends StatelessWidget {
   final int lineIndex;
   final int valveId;
+  final int fertiliationType;
   const CustomFirtiliserSettingsScreen(
-      {Key? key, required this.lineIndex, required this.valveId})
+      {Key? key,
+      required this.lineIndex,
+      required this.valveId,
+      required this.fertiliationType})
       : super(key: key);
 
   @override
@@ -56,6 +60,7 @@ class CustomFirtiliserSettingsScreen extends StatelessWidget {
                         MainCard2(
                             function: () {
                               bool allFull = true;
+                              bool validInfo = true;
                               for (int i = 0;
                                   i <
                                       myCubit
@@ -85,6 +90,13 @@ class CustomFirtiliserSettingsScreen extends StatelessWidget {
                                 }
                               }
                               if (allFull == true) {
+                                if (fertiliationType == 1) {
+                                  validInfo =
+                                      myCubit.checkOpenValveTimeParallel(
+                                          lineIndex: lineIndex);
+                                }
+                              }
+                              if (allFull == true && validInfo == true) {
                                 myCubit.putFertilizationPeriods(
                                     stationId: 1,
                                     periodsList: myCubit.makeAList(
@@ -92,6 +104,8 @@ class CustomFirtiliserSettingsScreen extends StatelessWidget {
                                         valveId: valveId));
                               } else if (allFull == false) {
                                 errorToast('Please fill all the data');
+                              } else if (validInfo == false) {
+                                errorToast('Input error');
                               }
                             },
                             buttonColor: yellowColor,

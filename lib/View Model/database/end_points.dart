@@ -1,4 +1,4 @@
-const base = 'http://192.168.1.101:5000';
+const base = 'http://192.168.1.106:5000';
 const stationInfo = 'station';
 const features = '/station/features';
 const valveInfo = '/station/valve_info';

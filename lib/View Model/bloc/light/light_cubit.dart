@@ -26,7 +26,7 @@ class LightCubit extends Cubit<LightStates> {
   TimeOfDay lightTime = TimeOfDay.now();
 
   chooseTime(value) {
-    lightTime = value;
+    lightTime = value??TimeOfDay.now();
     emit(LightChooseTimeState());
   }
 

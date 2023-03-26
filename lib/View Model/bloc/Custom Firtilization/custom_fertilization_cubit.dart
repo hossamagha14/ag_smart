@@ -24,11 +24,7 @@ class CustomFertilizationCubit extends Cubit<CustomFertilizationStates> {
   bool visible = false;
   FertilizationModel? fertilizationModel;
   var dio = Dio();
-  List<CustomFertilizationModel> customFertilizationModelList = [
-    CustomFertilizationModel(),
-    CustomFertilizationModel(),
-    CustomFertilizationModel()
-  ];
+  List<CustomFertilizationModel> customFertilizationModelList = [];
 
   chooseDuration() {
     isDuration = true;
@@ -43,12 +39,8 @@ class CustomFertilizationCubit extends Cubit<CustomFertilizationStates> {
   }
 
   chooseTime(value, int containerIndex, int lineIndex) {
-    customFertilizationModelList[lineIndex].time[containerIndex] = value;
-    emit(CustomFirtilizationSettingsChooseTimeState());
-  }
-
-  chooseQuantityTime(value) {
-    quantityTime = value;
+    customFertilizationModelList[lineIndex].time[containerIndex] =
+        value ?? TimeOfDay.now();
     emit(CustomFirtilizationSettingsChooseTimeState());
   }
 
@@ -161,7 +153,7 @@ class CustomFertilizationCubit extends Cubit<CustomFertilizationStates> {
 
   List<Map<String, dynamic>> makeAList(
       {required int lineIndex, required int valveId}) {
-        periodsList=[];
+    periodsList = [];
     for (int i = 0;
         i < customFertilizationModelList[lineIndex].controllers.length;
         i++) {
@@ -264,5 +256,30 @@ class CustomFertilizationCubit extends Cubit<CustomFertilizationStates> {
       print(onError);
       emit(CustomFertilizationGetValvesFailState());
     });
+  }
+
+  bool checkOpenValveTimeParallel({required int lineIndex}) {
+    bool validInput = true;
+    for (int i = 0;
+        i < customFertilizationModelList[lineIndex].controllers.length;
+        i++) {
+      for (int j = i + 1;
+          j < customFertilizationModelList[lineIndex].controllers.length;
+          j++) {
+        if (customFertilizationModelList[lineIndex].daysList[i] ==
+            customFertilizationModelList[lineIndex].daysList[j]) {
+          if (customFertilizationModelList[lineIndex].time[i].hour * 60 +
+                  customFertilizationModelList[lineIndex].time[i].minute +
+                  int.parse(customFertilizationModelList[lineIndex]
+                      .controllers[i]
+                      .text) >
+              customFertilizationModelList[lineIndex].time[j].hour * 60 +
+                  customFertilizationModelList[lineIndex].time[j].minute) {
+            validInput = false;
+          }
+        }
+      }
+    }
+    return validInput;
   }
 }

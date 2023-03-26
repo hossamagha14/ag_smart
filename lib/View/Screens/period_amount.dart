@@ -94,7 +94,7 @@ class PeriodAmountScreen extends StatelessWidget {
                                   interval: int.parse(hoursControl.text),
                                   duration: 0,
                                   quantity: int.parse(mlControl.text),
-                                  weekDays: myCubit.toBinary());
+                                  weekDays: myCubit.toDecimal());
                             }
                           }
                         },

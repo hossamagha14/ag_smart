@@ -37,11 +37,11 @@ class MainCard extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.fromLTRB(30, 25, 0, 0),
+                   Padding(
+                    padding: const EdgeInsets.fromLTRB(30, 25, 0, 0),
                     child: Text(
-                      'Agritopia',
-                      style: TextStyle(),
+                      stationName,
+                      style: const TextStyle(fontSize: 18,fontWeight: FontWeight.w500),
                     ),
                   ),
                   Padding(

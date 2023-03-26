@@ -84,26 +84,30 @@ class BottomNavBarCubit extends Cubit<BottomNavBarStates> {
                   stationModel!
                       .irrigationSettings![0].customValvesSettings!.length;
               valve++) {
-            stationModel!.irrigationSettings![0].customValvesSettings![valve]
-                    .irrigationPeriods!.isNotEmpty
-                ? customActiveDays.add(getActiveDays(
-                    decimalNumber: stationModel!
-                        .irrigationSettings![0]
-                        .customValvesSettings![valve]
-                        .irrigationPeriods![0]
-                        .weekDays!))
-                : stationModel!
-                        .irrigationSettings![0]
-                        .customValvesSettings![valve]
-                        .irrigationCycles!
-                        .isNotEmpty
-                    ? customActiveDays.add(getActiveDays(
-                        decimalNumber: stationModel!
-                            .irrigationSettings![0]
-                            .customValvesSettings![valve]
-                            .irrigationCycles![0]
-                            .weekDays!))
-                    : customActiveDays.add([]);
+            customIrrigationModelList.add(CustomIrrigationModel(
+                accordingToHour: null, accordingToQuantity: null));
+            if (stationModel!.irrigationSettings![0]
+                .customValvesSettings![valve].irrigationPeriods!.isNotEmpty) {
+              customActiveDays.add(getActiveDays(
+                  decimalNumber: stationModel!
+                      .irrigationSettings![0]
+                      .customValvesSettings![valve]
+                      .irrigationPeriods![0]
+                      .weekDays!));
+              customIrrigationModelList[valve].statusType = 2;
+            } else if (stationModel!.irrigationSettings![0]
+                .customValvesSettings![valve].irrigationCycles!.isNotEmpty) {
+              customActiveDays.add(getActiveDays(
+                  decimalNumber: stationModel!
+                      .irrigationSettings![0]
+                      .customValvesSettings![valve]
+                      .irrigationCycles![0]
+                      .weekDays!));
+              customIrrigationModelList[valve].statusType = 3;
+            } else {
+              customActiveDays.add([]);
+              customIrrigationModelList[valve].statusType = 1;
+            }
           }
         }
         emit(BottomNavBarGetSuccessState());

@@ -1,6 +1,7 @@
 import 'package:ag_smart/Model/fertilizationModel.dart';
 import 'package:ag_smart/Model/firtiliser_model.dart';
 import 'package:ag_smart/View%20Model/database/end_points.dart';
+import 'package:ag_smart/View/Reusable/text.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,7 +17,6 @@ class FirtiliserSettingsCubit extends Cubit<FirtiliserSettingsStates> {
   List<String> timeStringList = [];
   FirtiliserModel firtiliserModel = FirtiliserModel();
   FertilizationModel? fertilizationModel;
-  List<String> controllersStringList = [];
   bool done = false;
   int dayValue = 0;
   List<Map<String, dynamic>> periodsList = [];
@@ -27,7 +27,7 @@ class FirtiliserSettingsCubit extends Cubit<FirtiliserSettingsStates> {
   var dio = Dio();
 
   chooseTime(value, int containerIndex) {
-    firtiliserModel.timeList[containerIndex] = value;
+    firtiliserModel.timeList[containerIndex] = value??TimeOfDay.now();
     emit(FirtiliserSettingsChooseTimeState());
   }
 
@@ -39,11 +39,6 @@ class FirtiliserSettingsCubit extends Cubit<FirtiliserSettingsStates> {
       firtiliserModel.dateList[containerIndex] = dayValue;
     }
     emit(FirtiliserSettingsChooseDayState());
-  }
-
-  chooseDate(value, int containerIndex) {
-    firtiliserModel.dateList[containerIndex] = value;
-    emit(FirtiliserSettingsChooseDateState());
   }
 
   addContainer() {
@@ -135,8 +130,11 @@ class FirtiliserSettingsCubit extends Cubit<FirtiliserSettingsStates> {
       for (int i = 0; i < fertilizationModel!.fertilizerPeriods!.length; i++) {
         addContainer();
         firtiliserModel.dateList.add(1);
+
         firtiliserModel.controllersList[i].text =
-            fertilizationModel!.fertilizerPeriods![i].duration.toString();
+            fertilizationModel!.fertilizerPeriods![i].duration == 0
+                ? fertilizationModel!.fertilizerPeriods![i].quantity.toString()
+                : fertilizationModel!.fertilizerPeriods![i].duration.toString();
         firtiliserModel.dateList[i] =
             fertilizationModel!.fertilizerPeriods![i].date!;
       }
@@ -183,5 +181,45 @@ class FirtiliserSettingsCubit extends Cubit<FirtiliserSettingsStates> {
     }
     print(periodsList);
     return periodsList;
+  }
+
+  bool checkOpenValveTimeParallel() {
+    bool validInput = true;
+    for (int i = 0; i < firtiliserModel.controllersList.length; i++) {
+      for (int j = i + 1; j < firtiliserModel.controllersList.length; j++) {
+        if (firtiliserModel.dateList[i] == firtiliserModel.dateList[j]) {
+          if (firtiliserModel.timeList[i].hour * 60 +
+                  firtiliserModel.timeList[i].minute +
+                  int.parse(firtiliserModel.controllersList[i].text) >
+              firtiliserModel.timeList[j].hour * 60 +
+                  firtiliserModel.timeList[j].minute) {
+            validInput = false;
+          }
+        }
+      }
+    }
+    return validInput;
+  }
+
+  bool checkOpenValveTimeSeriesByTime() {
+    bool validInput = true;
+    for (int i = 0; i < firtiliserModel.controllersList.length; i++) {
+      int irrigationTime =
+          int.parse(firtiliserModel.controllersList[i].text) * numOfActiveLines;
+      int startTime1 = firtiliserModel.timeList[i].hour * 60 +
+          firtiliserModel.timeList[i].minute;
+      for (int j = i + 1; j < firtiliserModel.controllersList.length; j++) {
+        int startTime2 = firtiliserModel.timeList[j].hour * 60 +
+            firtiliserModel.timeList[j].minute;
+        if (firtiliserModel.dateList[i] == firtiliserModel.dateList[j]) {
+          if (startTime1 + irrigationTime > startTime2) {
+            validInput = false;
+            print(startTime1 + irrigationTime);
+            print(startTime2);
+          }
+        }
+      }
+    }
+    return validInput;
   }
 }

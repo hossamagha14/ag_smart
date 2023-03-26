@@ -28,6 +28,7 @@ class CustomFirtilizationTypesScreen extends StatelessWidget {
           child:
               BlocConsumer<CustomFertilizationCubit, CustomFertilizationStates>(
         listener: (context, state) {
+          CustomFertilizationCubit myCubit =CustomFertilizationCubit.get(context);
           if (state is CustomFertilizationGetSuccessState) {
             Navigator.push(
                 context,
@@ -35,6 +36,7 @@ class CustomFirtilizationTypesScreen extends StatelessWidget {
                   builder: (context) => CustomFirtiliserSettingsScreen(
                     lineIndex: lineIndex,
                     valveId: valveId,
+                    fertiliationType: myCubit.fertilizationType!,
                   ),
                 ));
             if (state is CustomFertilizationGetFailState) {

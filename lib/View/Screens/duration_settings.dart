@@ -39,6 +39,7 @@ class DurationSettingsScreen extends StatelessWidget {
                       MaterialPageRoute(
                         builder: (context) => DurationSettingsByHourScreen(
                           isEdit: isEdit,
+                          irrigationType: myCubit.irrigationType,
                         ),
                       ));
                 } else if (myCubit.accordingToHour == true &&
@@ -57,6 +58,7 @@ class DurationSettingsScreen extends StatelessWidget {
                       MaterialPageRoute(
                         builder: (context) => DurationSettingsByPeriodScreen(
                           isEdit: isEdit,
+                          irrigationType: myCubit.irrigationType,
                         ),
                       ));
                 } else if (myCubit.accordingToHour == false &&

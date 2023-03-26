@@ -1,14 +1,26 @@
 import 'package:ag_smart/View/Reusable/text.dart';
+import 'package:ag_smart/View/Screens/custom_duration_by_time.dart';
+import 'package:ag_smart/View/Screens/custom_duration_settings.dart';
+import 'package:ag_smart/View/Screens/custom_duration_settings_period.dart';
 import 'package:ag_smart/View/Screens/custom_ferilization_type.dart';
 import 'package:flutter/material.dart';
 
-import '../Screens/custom_duration_settings.dart';
 import 'colors.dart';
 
 class PopUpScreen extends StatelessWidget {
   final int lineIndex;
   final int valveId;
-  const PopUpScreen({Key? key, required this.valveId, required this.lineIndex}) : super(key: key);
+  final int stationId;
+  final int statusType;
+  final int irrigationMethod2;
+  const PopUpScreen(
+      {Key? key,
+      required this.valveId,
+      required this.lineIndex,
+      required this.stationId,
+      required this.statusType,
+      required this.irrigationMethod2})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,10 +42,22 @@ class PopUpScreen extends StatelessWidget {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => CustomDurationSettingsScreen(
-                              valveId: valveId,
-                                lineIndex: lineIndex),
-                          ));
+                              builder: (context) => statusType == 3
+                                  ? CustomDurationSettingsByPeriodScreen(
+                                    stationId: stationId,
+                                      lineIndex: lineIndex,
+                                      valveId: valveId,
+                                      irrigationMethod2: irrigationMethod2)
+                                  : statusType == 2
+                                      ? CustomDurationByTime(
+                                        stationId: stationId,
+                                          lineIndex: lineIndex,
+                                          valveId: valveId,
+                                          irrigationMethod2: irrigationMethod2)
+                                      : CustomDurationSettingsScreen(
+                                        stationId: stationId,
+                                          lineIndex: lineIndex,
+                                          valveId: valveId)));
                     },
                     child: const Text(
                       'D',

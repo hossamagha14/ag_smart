@@ -27,15 +27,11 @@ class CustomIrrigationCubit extends Cubit<CustomIrrigationStates> {
   int? irrigationMethod1;
   int? irrigationMethod2;
   FeaturesModel? featuresModel;
+  List<int> activeDays = [];
   var dio = Dio();
   List<String> controllersText = [];
   List<String> timeStringList = [];
-  List<CustomIrrigationModel> customIrrigationModelList = [
-    CustomIrrigationModel(accordingToHour: null, accordingToQuantity: null),
-    CustomIrrigationModel(accordingToHour: null, accordingToQuantity: null),
-    CustomIrrigationModel(accordingToHour: null, accordingToQuantity: null),
-    CustomIrrigationModel(accordingToHour: null, accordingToQuantity: null),
-  ];
+  List<CustomIrrigationModel> customIrrigationModelList = [];
 
   chooseAccordingToHour(int index) {
     customIrrigationModelList[index].accordingToHour = true;
@@ -76,8 +72,9 @@ class CustomIrrigationCubit extends Cubit<CustomIrrigationStates> {
     emit(CustomIrrigationChooseDayState());
   }
 
-  pickTime(TimeOfDay value, int timeIndex, int lineIndex) {
-    customIrrigationModelList[lineIndex].timeList[timeIndex] = value;
+  pickTime(value, int timeIndex, int lineIndex) {
+    customIrrigationModelList[lineIndex].timeList[timeIndex] =
+        value ?? TimeOfDay.now();
     emit(CustomIrrigationPickTimeState());
   }
 
@@ -147,9 +144,7 @@ class CustomIrrigationCubit extends Cubit<CustomIrrigationStates> {
       "irrigation_method2": irrigationMethod2
     }).then((value) {
       if (value.statusCode == 200) {
-        print(value.data);
-        getPeriods(
-            stationId: stationId, lineIndex: lineIndex, valveId: valveId);
+        emit(CustomIrrigationPutSuccessState());
       }
     }).catchError((onError) {
       print(onError.toString());
@@ -219,16 +214,37 @@ class CustomIrrigationCubit extends Cubit<CustomIrrigationStates> {
     required int lineIndex,
     required int valveId,
   }) async {
-    customIrrigationModelList[lineIndex].timeList = [];
-    customIrrigationModelList[lineIndex].controllersList = [];
+    customIrrigationModelList = [];
     int j = 0;
     await dio.get('$base/$irrigationSettings/$stationId').then((value) {
       irrigationSettingsModel = IrrigationSettingsModel.fromJson(value.data);
       for (int i = 0;
           i < irrigationSettingsModel!.customValvesSettings!.length;
           i++) {
+        customIrrigationModelList.add(CustomIrrigationModel(
+          accordingToHour: irrigationSettingsModel!
+                      .customValvesSettings![i].irrigationMethod1 ==
+                  2
+              ? true
+              : false,
+          accordingToQuantity: irrigationSettingsModel!
+                      .customValvesSettings![i].irrigationMethod2 ==
+                  2
+              ? true
+              : false,
+        ));
         if (irrigationSettingsModel!.customValvesSettings![i].valveId ==
             valveId) {
+          getActiveDays(
+              decimalNumber: irrigationSettingsModel!
+                  .customValvesSettings![i].irrigationPeriods![0].weekDays!);
+          for (int i = 0; i < activeDays.length; i++) {
+            if (activeDays[i] == 1) {
+              customIrrigationModelList[lineIndex].days[i].isOn = true;
+              customIrrigationModelList[lineIndex].noDayIsChosen--;
+            }
+          }
+
           for (int h = 0;
               h <
                   irrigationSettingsModel!
@@ -252,6 +268,7 @@ class CustomIrrigationCubit extends Cubit<CustomIrrigationStates> {
         }
       }
       if (value.statusCode == 200) {
+        print(value.data);
         emit(CustomIrrigationGetSuccessState());
       }
     }).catchError((onError) {
@@ -289,7 +306,7 @@ class CustomIrrigationCubit extends Cubit<CustomIrrigationStates> {
     return periodsList;
   }
 
-  int toBinary({required int lineIndex}) {
+  int toDecimal({required int lineIndex}) {
     int activeDays = 0;
     for (int i = 0; i < 7; i++) {
       customIrrigationModelList[lineIndex].days[i].binaryDays =
@@ -315,5 +332,52 @@ class CustomIrrigationCubit extends Cubit<CustomIrrigationStates> {
       print(onError);
       emit(CustomIrrigationGetFailState());
     });
+  }
+
+  bool checkOpenValveTimeSeriesByCycle({
+    required hours,
+    required openValveTime,
+  }) {
+    bool validInput = true;
+    double availableOpenValveTime = hours * 60;
+    if (openValveTime > availableOpenValveTime || openValveTime == 0) {
+      validInput = false;
+    }
+    return validInput;
+  }
+
+  bool checkOpenValveTimeParallel({required int lineIndex}) {
+    bool validInput = true;
+    for (int i = 0;
+        i < customIrrigationModelList[lineIndex].controllersList.length;
+        i++) {
+      for (int j = i + 1;
+          j < customIrrigationModelList[lineIndex].controllersList.length;
+          j++) {
+        if (customIrrigationModelList[lineIndex].timeList[i].hour * 60 +
+                customIrrigationModelList[lineIndex].timeList[i].minute +
+                int.parse(customIrrigationModelList[lineIndex]
+                    .controllersList[i]
+                    .text) >
+            customIrrigationModelList[lineIndex].timeList[j].hour * 60 +
+                customIrrigationModelList[lineIndex].timeList[j].minute) {
+          validInput = false;
+        }
+      }
+    }
+    return validInput;
+  }
+
+  getActiveDays({required int decimalNumber}) {
+    activeDays = [];
+    while (decimalNumber > 0) {
+      int n = (decimalNumber % 2);
+      activeDays.add(n);
+      double x = decimalNumber / 2;
+      decimalNumber = x.toInt();
+    }
+    while (activeDays.length < 7) {
+      activeDays.add(0);
+    }
   }
 }

@@ -12,12 +12,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'bottom_nav_bar.dart';
+import 'custom_duration_settings.dart';
 
 // ignore: must_be_immutable
 class CustomDurationSettingsByPeriodScreen extends StatelessWidget {
   final int lineIndex;
   final int valveId;
-  CustomDurationSettingsByPeriodScreen({Key? key, required this.lineIndex, required this.valveId})
+  final int irrigationMethod2;
+  final int stationId;
+  CustomDurationSettingsByPeriodScreen(
+      {Key? key,
+      required this.lineIndex,
+      required this.valveId,
+      required this.stationId,
+      required this.irrigationMethod2})
       : super(key: key);
   TextEditingController hourControl = TextEditingController();
   TextEditingController minutesControl = TextEditingController();
@@ -49,6 +57,29 @@ class CustomDurationSettingsByPeriodScreen extends StatelessWidget {
                   CustomIrrigationCubit myCubit =
                       CustomIrrigationCubit.get(context);
                   return MainCard2(
+                      editButton: InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    CustomDurationSettingsScreen(
+                                      stationId: stationId,
+                                        lineIndex: lineIndex, valveId: valveId),
+                              ));
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                              right: MediaQuery.of(context).size.width * 0.03),
+                          child: Text(
+                            'l',
+                            style: TextStyle(
+                                fontFamily: 'icons',
+                                fontSize: 25,
+                                color: iconColor),
+                          ),
+                        ),
+                      ),
                       mainWidget: Column(children: [
                         CustomIrrigationChooseDyasWidget(
                           lineIndex: lineIndex,
@@ -91,6 +122,7 @@ class CustomDurationSettingsByPeriodScreen extends StatelessWidget {
                             : 'c',
                       ),
                       function: () {
+                        bool validInfo = true;
                         if (myCubit.customIrrigationModelList[lineIndex]
                                 .noDayIsChosen ==
                             7) {
@@ -104,23 +136,31 @@ class CustomDurationSettingsByPeriodScreen extends StatelessWidget {
                               ? 'Please add the open valve time'
                               : 'Please add the amount of water needed');
                         } else {
-                          myCubit.putIrrigationCycle(
-                              interval: int.parse(hourControl.text),
-                              stationId: 1,
-                              valveId: valveId,
-                              duration: myCubit
-                                          .customIrrigationModelList[lineIndex]
-                                          .accordingToQuantity ==
-                                      false
-                                  ? int.parse(minutesControl.text)
-                                  : 0,
-                              quantity: myCubit
-                                          .customIrrigationModelList[lineIndex]
-                                          .accordingToQuantity ==
-                                      true
-                                  ? int.parse(minutesControl.text)
-                                  : 0,
-                              weekDays: myCubit.toBinary(lineIndex: lineIndex));
+                          validInfo = myCubit.checkOpenValveTimeSeriesByCycle(
+                              hours: double.parse(hourControl.text),
+                              openValveTime: double.parse(minutesControl.text));
+                          if (validInfo == true) {
+                            myCubit.putIrrigationCycle(
+                                interval: int.parse(hourControl.text),
+                                stationId: 1,
+                                valveId: valveId,
+                                duration:
+                                    myCubit.customIrrigationModelList[lineIndex]
+                                                .accordingToQuantity ==
+                                            false
+                                        ? int.parse(minutesControl.text)
+                                        : 0,
+                                quantity:
+                                    myCubit.customIrrigationModelList[lineIndex]
+                                                .accordingToQuantity ==
+                                            true
+                                        ? int.parse(minutesControl.text)
+                                        : 0,
+                                weekDays:
+                                    myCubit.toDecimal(lineIndex: lineIndex));
+                          } else if (validInfo == false) {
+                            errorToast('Input error');
+                          }
                         }
                       },
                       cardtitle: text[chosenLanguage]!['Duration settings']!,

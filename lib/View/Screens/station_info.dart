@@ -10,8 +10,6 @@ import 'package:ag_smart/View/Screens/edit_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../View Model/bloc/Irrigation type/irrigation_type_cubit.dart';
-import '../../View Model/bloc/Irrigation type/irrigation_type_states.dart';
 
 class StationInfoScreen extends StatelessWidget {
   const StationInfoScreen({Key? key}) : super(key: key);
@@ -104,37 +102,30 @@ class StationInfoScreen extends StatelessWidget {
                                         ),
                                       );
                                     },
-                                    itemCount: stationCubit.activeValves.length);
+                                    itemCount:
+                                        stationCubit.activeValves.length);
                               }),
                         ),
                         const FirScarLightWidget()
                       ],
                     ),
-                    rowWidget: BlocConsumer<IrrigationTypeCubit,
-                        IrrigationTypesStates>(
-                      listener: (context, state) {},
-                      builder: (context, state) {
-                        IrrigationTypeCubit irrigationCubit =
-                            IrrigationTypeCubit.get(context);
-                        return MainIconsRowWidget(
-                          icon1: 'm',
-                          icon2: myCubit.stationModel!.irrigationSettings![0]
-                                      .settingsType ==
-                                  1
-                              ? 'r'
-                              : 't',
-                          icon3: myCubit.stationModel!.irrigationSettings![0]
-                                      .irrigationMethod1 ==
-                                  2
-                              ? 'u'
-                              : 'w',
-                          icon4: myCubit.stationModel!.irrigationSettings![0]
-                                      .irrigationMethod2 ==
-                                  1
-                              ? 'x'
-                              : 'c',
-                        );
-                      },
+                    rowWidget: MainIconsRowWidget(
+                      icon1: 'm',
+                      icon2: myCubit.stationModel!.irrigationSettings![0]
+                                  .settingsType ==
+                              1
+                          ? 'r'
+                          : 't',
+                      icon3: myCubit.stationModel!.irrigationSettings![0]
+                                  .irrigationMethod1 ==
+                              2
+                          ? 'u'
+                          : 'w',
+                      icon4: myCubit.stationModel!.irrigationSettings![0]
+                                  .irrigationMethod2 ==
+                              1
+                          ? 'x'
+                          : 'c',
                     ),
                     buttonColor: settingsColor,
                     buttonTitle: text[chosenLanguage]!['Settings']!,

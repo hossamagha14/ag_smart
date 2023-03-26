@@ -18,7 +18,9 @@ import 'bottom_nav_bar.dart';
 // ignore: must_be_immutable
 class DurationSettingsByPeriodScreen extends StatelessWidget {
   final bool isEdit;
-  DurationSettingsByPeriodScreen({Key? key, required this.isEdit})
+  final int irrigationType;
+  DurationSettingsByPeriodScreen(
+      {Key? key, required this.isEdit, required this.irrigationType})
       : super(key: key);
   TextEditingController numberOfHoursControl = TextEditingController();
   TextEditingController numberOfMinutesControl = TextEditingController();
@@ -46,7 +48,7 @@ class DurationSettingsByPeriodScreen extends StatelessWidget {
                         interval: int.parse(numberOfHoursControl.text),
                         duration: int.parse(numberOfMinutesControl.text),
                         quantity: 0,
-                        weekDays: myCubit.toBinary());
+                        weekDays: myCubit.toDecimal());
                   } else if (state is DurationSettingsErrorState) {
                     errorToast('Input error');
                   } else if (state is DurationSettingsSendSuccessState) {
@@ -71,10 +73,17 @@ class DurationSettingsByPeriodScreen extends StatelessWidget {
                             numberOfMinutesControl.text.isEmpty) {
                           errorToast('Please fill both categories');
                         } else {
-                          myCubit.checkOpenValveTimeSeriesByCycle(
-                              hours: double.parse(numberOfHoursControl.text),
-                              openValveTime:
-                                  double.parse(numberOfMinutesControl.text));
+                          if (irrigationType == 1) {
+                            myCubit.checkOpenValveTimeSeriesByCycle(
+                                hours: double.parse(numberOfHoursControl.text),
+                                openValveTime:
+                                    double.parse(numberOfMinutesControl.text));
+                          } else if (irrigationType == 2) {
+                            myCubit.checkOpenValveTimeParallelByCycle(
+                                hours: double.parse(numberOfHoursControl.text),
+                                openValveTime:
+                                    double.parse(numberOfMinutesControl.text));
+                          }
                         }
                       },
                       buttonColor: greenButtonColor,

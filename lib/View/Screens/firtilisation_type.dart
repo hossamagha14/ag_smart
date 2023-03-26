@@ -1,5 +1,5 @@
 import 'package:ag_smart/View%20Model/bloc/Firtiliser%20settings/firtiliser_settings_states.dart';
-import 'package:ag_smart/View%20Model/bloc/Firtiliser%20settings/firtilisers_settings_cubit.dart';
+import 'package:ag_smart/View%20Model/bloc/Firtiliser%20settings/firtiliser_settings_cubit.dart';
 import 'package:ag_smart/View/Reusable/colors.dart';
 import 'package:ag_smart/View/Reusable/duration_settings_row.dart';
 import 'package:ag_smart/View/Reusable/error_toast.dart';
@@ -115,7 +115,6 @@ class FirtilisationTypeScreen extends StatelessWidget {
                             stationId: 1,
                             ferMethod1: myCubit.method1!,
                             ferMethod2: myCubit.method2!);
-                            
                       }
                     },
                     cardtitle: text[chosenLanguage]!['Fertilizer Settings']!,

@@ -5,6 +5,5 @@ import 'package:flutter/material.dart';
 class DurationModel {
   TimeOfDay time = TimeOfDay.now();
   TextEditingController controller = TextEditingController();
-
   DurationModel();
 }

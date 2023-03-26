@@ -13,7 +13,8 @@ import '../Reusable/main_icons_row_widget.dart';
 
 // ignore: must_be_immutable
 class DeviceSetupScreen extends StatelessWidget {
-  DeviceSetupScreen({Key? key}) : super(key: key);
+  final String email;
+  DeviceSetupScreen({Key? key, required this.email}) : super(key: key);
   TextEditingController changeNameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController rePasswordController = TextEditingController();
@@ -58,6 +59,8 @@ class DeviceSetupScreen extends StatelessWidget {
                             errorToast('Password doesn\'t match');
                           } else {
                             myCubit.insertInDatabase(
+                                email: 'hossam',
+                                irrigationType: 1,
                                 name: changeNameController.text,
                                 password: passwordController.text);
                           }
@@ -87,6 +90,7 @@ class DeviceSetupScreen extends StatelessWidget {
                                 secureText: myCubit.secureConfirmPassword,
                                 suffixIcon: InkWell(
                                     onTap: () {
+                                      myCubit.deleteDatabase('Stations.db');
                                       myCubit.showConfirmPassword();
                                     },
                                     child: myCubit.secureConfirmPassword == true

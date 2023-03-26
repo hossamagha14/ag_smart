@@ -13,3 +13,9 @@ class StationsShowConfirmPassWordState extends StationsStates {}
 class StationsAddToDBSuccessState extends StationsStates {}
 
 class StationsAddToDBFailState extends StationsStates {}
+
+class StationsGetSuccessState extends StationsStates {}
+
+class StationsSaveState extends StationsStates {}
+
+class StationsGetFailState extends StationsStates {}

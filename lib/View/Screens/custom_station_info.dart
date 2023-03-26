@@ -199,6 +199,17 @@ class CustomStationInfoScreen extends StatelessWidget {
                                                       BorderRadius.circular(
                                                           20)),
                                               content: PopUpScreen(
+                                                statusType: myCubit
+                                                    .customIrrigationModelList[
+                                                        lineIndex]
+                                                    .statusType,
+                                                stationId: 1,
+                                                irrigationMethod2: myCubit
+                                                    .stationModel!
+                                                    .irrigationSettings![0]
+                                                    .customValvesSettings![
+                                                        lineIndex]
+                                                    .irrigationMethod2!,
                                                 lineIndex: lineIndex,
                                                 valveId: myCubit
                                                     .stationModel!

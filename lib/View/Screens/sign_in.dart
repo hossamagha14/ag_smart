@@ -90,7 +90,9 @@ class SignInScreen extends StatelessWidget {
                               Navigator.pushAndRemoveUntil(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => const DashsboardScreen(),
+                                    builder: (context) => DashsboardScreen(
+                                      email: nameControl.text,
+                                    ),
                                   ),
                                   (route) => false);
                             } else {

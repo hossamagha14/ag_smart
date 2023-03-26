@@ -14,8 +14,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 // ignore: must_be_immutable
 class ScarecrowScreen extends StatelessWidget {
   ScarecrowScreen({Key? key}) : super(key: key);
-  TextEditingController startControl = TextEditingController();
-  TextEditingController endControl = TextEditingController();
+  TextEditingController onControl = TextEditingController();
+  TextEditingController offControl = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +39,7 @@ class ScarecrowScreen extends StatelessWidget {
                             builder: (context) => const BottomNavBarScreen(),
                           ),
                           (route) => false);
-                    }else if(state is ScarecrowPostFailState){
+                    } else if (state is ScarecrowPostFailState) {
                       errorToast('An error has occured');
                     }
                   },
@@ -108,7 +108,7 @@ class ScarecrowScreen extends StatelessWidget {
                                         height: 5,
                                       ),
                                       OpenValvePeriodTextField(
-                                          control: startControl,
+                                          control: onControl,
                                           hintText: '00',
                                           unit:
                                               text[chosenLanguage]!['Minutes']!)
@@ -121,7 +121,7 @@ class ScarecrowScreen extends StatelessWidget {
                                         height: 5,
                                       ),
                                       OpenValvePeriodTextField(
-                                          control: endControl,
+                                          control: offControl,
                                           hintText: '00',
                                           unit:
                                               text[chosenLanguage]!['Minutes']!)
@@ -137,16 +137,23 @@ class ScarecrowScreen extends StatelessWidget {
                           style: yellowIcon,
                         ),
                         function: () {
-                          if (startControl.text.isEmpty ||
-                              endControl.text.isEmpty) {
+                          if (onControl.text.isEmpty ||
+                              offControl.text.isEmpty) {
                             errorToast('Please fill the on and off periods');
                           } else {
-                            myCubit.issDone();
-                            myCubit.put(
-                                startingTime: myCubit.time1,
-                                finishTime: myCubit.time2,
-                                onTime: int.parse(startControl.text),
-                                offTime: int.parse(endControl.text));
+                            int availableTime = myCubit.checkTime();
+                            int onTime = int.parse(onControl.text);
+                            int offTime = int.parse(offControl.text);
+                            if (availableTime >= onTime + offTime) {
+                              myCubit.issDone();
+                              myCubit.put(
+                                  startingTime: myCubit.time1,
+                                  finishTime: myCubit.time2,
+                                  onTime: int.parse(onControl.text),
+                                  offTime: int.parse(offControl.text));
+                            }else{
+                              errorToast('Input error');
+                            }
                           }
                         },
                         cardtitle: text[chosenLanguage]!['Scarecrow Settings']!,

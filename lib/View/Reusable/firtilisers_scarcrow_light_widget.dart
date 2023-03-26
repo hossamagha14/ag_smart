@@ -1,5 +1,5 @@
 import 'package:ag_smart/View%20Model/bloc/Firtiliser%20settings/firtiliser_settings_states.dart';
-import 'package:ag_smart/View%20Model/bloc/Firtiliser%20settings/firtilisers_settings_cubit.dart';
+import 'package:ag_smart/View%20Model/bloc/Firtiliser%20settings/firtiliser_settings_cubit.dart';
 import 'package:ag_smart/View%20Model/bloc/Scarcrow/Scarcrow_cubit.dart';
 import 'package:ag_smart/View%20Model/bloc/Scarcrow/scarcrow_states.dart';
 import 'package:ag_smart/View%20Model/bloc/light/light_cubit.dart';

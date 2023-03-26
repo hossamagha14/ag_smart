@@ -10,11 +10,12 @@ import 'package:ag_smart/View%20Model/bloc/Stations/station_cubit.dart';
 import 'package:ag_smart/View%20Model/bloc/light/light_cubit.dart';
 import 'package:ag_smart/View%20Model/database/cache_helpher.dart';
 import 'package:ag_smart/View/Reusable/colors.dart';
-import 'package:ag_smart/View/Screens/bottom_nav_bar.dart';
+import 'package:ag_smart/View/Reusable/text.dart';
 import 'package:ag_smart/View/Screens/choose_language.dart';
+import 'package:ag_smart/View/Screens/dashboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'View Model/bloc/Firtiliser settings/firtilisers_settings_cubit.dart';
+import 'View Model/bloc/Firtiliser settings/firtiliser_settings_cubit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -47,7 +48,8 @@ class MyApp extends StatelessWidget {
           create: (context) => FirtiliserSettingsCubit(),
         ),
         BlocProvider(
-          create: (context) => CustomIrrigationCubit()..getNumberOfValves(stationId: 1),
+          create: (context) =>
+              CustomIrrigationCubit()..getNumberOfValves(stationId: 1),
         ),
         BlocProvider(
           create: (context) => ScarecrowCubit(),
@@ -62,7 +64,8 @@ class MyApp extends StatelessWidget {
           create: (context) => StationsCubit()..createDataBase(),
         ),
         BlocProvider(
-          create: (context) => CustomFertilizationCubit()..getNumberOfValves(stationId: 1),
+          create: (context) =>
+              CustomFertilizationCubit()..getNumberOfValves(stationId: stationId),
         ),
       ],
       child: MaterialApp(
@@ -77,7 +80,7 @@ class MyApp extends StatelessWidget {
                 color: backgroundColor,
                 centerTitle: true)),
         home: CacheHelper.getData(key: 'languageChoosen') == true
-            ? const BottomNavBarScreen()
+            ? const DashsboardScreen(email: 'hossam',)
             : const ChooseLanguageScreen(isEdit: false),
       ),
     );

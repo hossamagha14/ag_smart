@@ -16,12 +16,12 @@ class ScarecrowCubit extends Cubit<ScarecrowStates> {
   bool done = false;
 
   chooseTime1(value) {
-    time1 = value;
+    time1 = value ?? TimeOfDay.now();
     emit(ScarecrowChooseTtimeState());
   }
 
   chooseTime2(value) {
-    time2 = value;
+    time2 = value ?? TimeOfDay.now();
     emit(ScarecrowChooseTtimeState());
   }
 
@@ -36,8 +36,8 @@ class ScarecrowCubit extends Cubit<ScarecrowStates> {
     required int onTime,
     required int offTime,
   }) async {
-    int firstTime=startingTime.hour*60+startingTime.minute;
-    int secondTime=finishTime.hour*60+finishTime.minute;
+    int firstTime = startingTime.hour * 60 + startingTime.minute;
+    int secondTime = finishTime.hour * 60 + finishTime.minute;
     await dio.put('$base/$animalRepellent/1', data: {
       "station_id": 1,
       "starting_time": firstTime,
@@ -52,4 +52,11 @@ class ScarecrowCubit extends Cubit<ScarecrowStates> {
       emit(ScarecrowPostFailState());
     });
   }
+
+  int checkTime(){
+    int startTime=time1.hour*60+time1.minute;
+    int endTime=time2.hour*60+time2.minute;
+    return startTime-endTime;
+  }
+
 }

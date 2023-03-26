@@ -2,6 +2,7 @@ import 'package:ag_smart/View/Reusable/colors.dart';
 import 'package:ag_smart/View/Reusable/settings_button.dart';
 import 'package:ag_smart/View/Reusable/text.dart';
 import 'package:ag_smart/View/Screens/choose_language.dart';
+import 'package:ag_smart/View/Screens/dashboard.dart';
 import 'package:ag_smart/View/Screens/sign_in.dart';
 import 'package:flutter/material.dart';
 
@@ -12,13 +13,21 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:  Text(text[chosenLanguage]!['Settings']!),
+        title: Text(text[chosenLanguage]!['Settings']!),
       ),
       body: SafeArea(
           child: Column(
         children: [
           SettingsButton(
-              title: text[chosenLanguage]!['Contact us']!, function: () {}),
+              title: text[chosenLanguage]!['Contact us']!,
+              function: () {
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const DashsboardScreen(email: 'hossam'),
+                    ),
+                    (route) => false);
+              }),
           SettingsButton(
               title: text[chosenLanguage]!['About us']!, function: () {}),
           SettingsButton(
@@ -27,7 +36,8 @@ class SettingsScreen extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const ChooseLanguageScreen(isEdit: true),
+                      builder: (context) =>
+                          const ChooseLanguageScreen(isEdit: true),
                     ));
               }),
           SettingsButton(

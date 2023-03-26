@@ -1,7 +1,9 @@
 import 'package:ag_smart/View%20Model/database/cache_helpher.dart';
 
 String chosenLanguage = CacheHelper.getData(key: 'language');
-int numOfActiveLines = 0;
+String stationName = CacheHelper.getData(key: 'stationName');
+int numOfActiveLines = CacheHelper.getData(key: 'numOfActiveLines');
+int stationId = CacheHelper.getData(key: 'stationId');
 
 Map<String, Map<String, String>> text = {
   'en': {

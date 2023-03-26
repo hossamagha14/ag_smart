@@ -19,7 +19,9 @@ import 'bottom_nav_bar.dart';
 // ignore: must_be_immutable
 class DurationSettingsByHourScreen extends StatelessWidget {
   final bool isEdit;
-  const DurationSettingsByHourScreen({Key? key, required this.isEdit})
+  final int irrigationType;
+  const DurationSettingsByHourScreen(
+      {Key? key, required this.isEdit, required this.irrigationType})
       : super(key: key);
 
   @override
@@ -136,24 +138,35 @@ class DurationSettingsByHourScreen extends StatelessWidget {
                               text[chosenLanguage]!['Duration settings']!,
                           function: () {
                             bool allFull = true;
+                            bool checkTime = true;
                             for (int i = 0; i < myCubit.durations.length; i++) {
                               if (myCubit
                                   .durations[i].controller.text.isEmpty) {
                                 allFull = false;
                               }
-                              print(myCubit.durations);
                             }
                             if (allFull == true) {
+                              if (irrigationType == 1) {
+                                checkTime =
+                                    myCubit.checkOpenValveTimeSeriesByTime();
+                              } else if (irrigationType == 2) {
+                                checkTime =
+                                    myCubit.checkOpenValveTimeParallel();
+                              }
+                            }
+                            if (allFull == true && checkTime == true) {
                               if (myCubit.noDayIsChosen == 7) {
                                 errorToast('Please choose the days of work');
                               } else {
                                 myCubit.putIrrigationHourList(
                                     stationId: 1,
-                                    periodsList:
-                                        myCubit.makeAList(weekday: myCubit.toBinary()));
+                                    periodsList: myCubit.makeAList(
+                                        weekday: myCubit.toDecimal()));
                               }
                             } else if (allFull == false) {
                               errorToast('Please add the open valve time');
+                            } else if (checkTime == false) {
+                              errorToast('Input error');
                             }
                           },
                         ),

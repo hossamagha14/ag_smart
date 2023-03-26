@@ -5,6 +5,7 @@ import 'package:ag_smart/Model/durationModel.dart';
 import 'package:ag_smart/View%20Model/database/end_points.dart';
 import 'package:ag_smart/View/Reusable/text.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../Model/irrigation_settings_model.dart';
@@ -22,6 +23,7 @@ class DurationSettingsCubit extends Cubit<DurationSettingsStates> {
   bool visible = false;
   IrrigationSettingsModel? irrigationSettingsModel;
   int noDayIsChosen = 7;
+  List<int> activeDays = [];
   List<DaysModel> days = [
     DaysModel(day: 'SAT', isOn: false),
     DaysModel(day: 'SUN', isOn: false),
@@ -33,7 +35,7 @@ class DurationSettingsCubit extends Cubit<DurationSettingsStates> {
   ];
 
   pickTime(value, int containerIndex) {
-    durations[containerIndex].time = value;
+    durations[containerIndex].time = value ?? TimeOfDay.now();
     emit(DurationSettingsPickTimeState());
   }
 
@@ -76,16 +78,53 @@ class DurationSettingsCubit extends Cubit<DurationSettingsStates> {
     }
   }
 
-  checkOpenValveTimeParallel({
+  checkOpenValveTimeParallelByCycle({
     required hours,
     required openValveTime,
   }) {
     double availableOpenValveTime = hours * 60;
-    if (openValveTime > availableOpenValveTime || openValveTime == 0) {
+    if (availableOpenValveTime < openValveTime || openValveTime == 0) {
       emit(DurationSettingsErrorState());
     } else {
       emit(DurationSettingsMoveToNextPageState());
     }
+  }
+
+  bool checkOpenValveTimeParallel() {
+    bool validInput = true;
+    for (int i = 0; i < durations.length; i++) {
+      for (int j = i + 1; j < durations.length; j++) {
+        if (durations[i].time.hour * 60 +
+                durations[i].time.minute +
+                int.parse(durations[i].controller.text) >
+            durations[j].time.hour * 60 + durations[j].time.minute) {
+          validInput = false;
+          print(durations[i].time.hour * 60 +
+              durations[i].time.minute +
+              int.parse(durations[i].controller.text));
+          print(durations[j].time.hour * 60 + durations[j].time.minute);
+        }
+      }
+    }
+    return validInput;
+  }
+
+  bool checkOpenValveTimeSeriesByTime() {
+    bool validInput = true;
+    for (int i = 0; i < durations.length; i++) {
+      int irrigationTime =
+          int.parse(durations[i].controller.text) * numOfActiveLines;
+      int startTime1 = durations[i].time.hour * 60 + durations[i].time.minute;
+      for (int j = i + 1; j < durations.length; j++) {
+        int startTime2 = durations[j].time.hour * 60 + durations[j].time.minute;
+        if (startTime1 + irrigationTime > startTime2) {
+          validInput = false;
+          print(startTime1 + irrigationTime);
+          print(startTime2);
+        }
+      }
+    }
+    return validInput;
   }
 
   putIrrigationCycle({
@@ -146,7 +185,7 @@ class DurationSettingsCubit extends Cubit<DurationSettingsStates> {
     });
   }
 
-  int toBinary() {
+  int toDecimal() {
     int activeDays = 0;
     for (int i = 0; i < 7; i++) {
       days[i].binaryDays = pow(2, i).toInt();
@@ -163,8 +202,17 @@ class DurationSettingsCubit extends Cubit<DurationSettingsStates> {
     durations = [];
     await dio.get('$base/$irrigationSettings/$stationId').then((value) {
       irrigationSettingsModel = IrrigationSettingsModel.fromJson(value.data);
+      getActiveDays(
+          decimalNumber:
+              irrigationSettingsModel!.irrigationPeriods![0].weekDays!);
+      for (int i = 0; i < activeDays.length; i++) {
+        if (activeDays[i] == 1) {
+          days[i].isOn = true;
+          noDayIsChosen--;
+        }
+      }
       for (int i = 0;
-          i < irrigationSettingsModel!.customValvesSettings!.length;
+          i < irrigationSettingsModel!.irrigationPeriods!.length;
           i++) {
         addContainer();
         irrigationSettingsModel!.irrigationMethod2 == 1
@@ -176,11 +224,25 @@ class DurationSettingsCubit extends Cubit<DurationSettingsStates> {
                 .toString();
       }
       if (value.statusCode == 200) {
+        print('${value.data} get');
         emit(DurationSettingsGetSuccessState());
       }
     }).catchError((onError) {
       print(onError.toString());
       emit(DurationSettingsGetFailState());
     });
+  }
+
+  getActiveDays({required int decimalNumber}) {
+    activeDays = [];
+    while (decimalNumber > 0) {
+      int n = (decimalNumber % 2);
+      activeDays.add(n);
+      double x = decimalNumber / 2;
+      decimalNumber = x.toInt();
+    }
+    while (activeDays.length < 7) {
+      activeDays.add(0);
+    }
   }
 }

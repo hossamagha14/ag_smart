@@ -120,7 +120,7 @@ class TimeAmountScreen extends StatelessWidget {
                           myCubit.putIrrigationHourList(
                               stationId: 1,
                               periodsList: myCubit.makeAList(
-                                  weekday: myCubit.toBinary()));
+                                  weekday: myCubit.toDecimal()));
                         } else {
                           errorToast('Please add the open valve time');
                         }

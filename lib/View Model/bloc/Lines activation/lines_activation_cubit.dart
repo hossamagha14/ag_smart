@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:ag_smart/Model/features_model.dart';
 import 'package:ag_smart/Model/valve_model.dart';
 import 'package:ag_smart/View%20Model/bloc/Lines%20activation/lines_activation_states.dart';
+import 'package:ag_smart/View%20Model/database/cache_helpher.dart';
 import 'package:ag_smart/View%20Model/database/end_points.dart';
 import 'package:ag_smart/View/Reusable/global.dart';
 import 'package:ag_smart/View/Reusable/text.dart';
@@ -30,6 +31,8 @@ class LinesActivationCubit extends Cubit<LinesActivationStates> {
         numOfActiveLines++;
       }
     }
+    CacheHelper.saveData(key: 'numOfActiveLines', value: numOfActiveLines);
+    print('$numOfActiveLines active valves');
   }
 
   getNumberOfValves({required int stationId}) {

@@ -1,5 +1,5 @@
 import 'package:ag_smart/View%20Model/bloc/Firtiliser%20settings/firtiliser_settings_states.dart';
-import 'package:ag_smart/View%20Model/bloc/Firtiliser%20settings/firtilisers_settings_cubit.dart';
+import 'package:ag_smart/View%20Model/bloc/Firtiliser%20settings/firtiliser_settings_cubit.dart';
 import 'package:ag_smart/View/Reusable/add_new_container_button.dart';
 import 'package:ag_smart/View/Reusable/colors.dart';
 import 'package:ag_smart/View/Reusable/error_toast.dart';
@@ -34,7 +34,7 @@ class FirtiliserSettingsScreen extends StatelessWidget {
                   builder: (context) => const BottomNavBarScreen(),
                 ),
                 (route) => false);
-          }else if(state is FirtiliserSettingsSendFailState){
+          } else if (state is FirtiliserSettingsSendFailState) {
             errorToast('An error has occurred');
           }
         },
@@ -52,6 +52,7 @@ class FirtiliserSettingsScreen extends StatelessWidget {
                         MainCard2(
                             function: () {
                               bool allFull = true;
+                              bool validInfo = true;
                               for (int i = 0;
                                   i <
                                       myCubit.firtiliserModel.controllersList
@@ -65,14 +66,28 @@ class FirtiliserSettingsScreen extends StatelessWidget {
                                     myCubit.firtiliserModel.dateList[i] == 0) {
                                   allFull = false;
                                 }
+                                if (allFull == true) {
+                                  if (myCubit.method2 == 1) {
+                                    if (myCubit.method1 == 1) {
+                                      validInfo = myCubit
+                                          .checkOpenValveTimeSeriesByTime();
+                                    } else if (myCubit.method1 == 2) {
+                                      validInfo =
+                                          myCubit.checkOpenValveTimeParallel();
+                                    }
+                                  }
+                                }
                               }
-                              if (allFull == true) {
+
+                              if (allFull == true && validInfo) {
                                 myCubit.issDone();
                                 myCubit.putFertilizationPeriods(
                                     stationId: 1,
                                     periodsList: myCubit.makeAList());
                               } else if (allFull == false) {
                                 errorToast('Please fill all the data');
+                              } else if (validInfo == false) {
+                                errorToast('Input error');
                               }
                             },
                             buttonColor: yellowColor,

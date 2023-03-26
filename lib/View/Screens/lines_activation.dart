@@ -1,7 +1,6 @@
 import 'package:ag_smart/View%20Model/bloc/Lines%20activation/lines_activation_cubit.dart';
 import 'package:ag_smart/View%20Model/bloc/Lines%20activation/lines_activation_states.dart';
 import 'package:ag_smart/View/Reusable/colors.dart';
-import 'package:ag_smart/View/Reusable/global.dart';
 import 'package:ag_smart/View/Reusable/text.dart';
 import 'package:ag_smart/View/Reusable/text_style.dart';
 import 'package:ag_smart/View/Screens/irrigation_type.dart';
@@ -33,7 +32,7 @@ class LinesActivationScreen extends StatelessWidget {
                     MainCard2(
                         function: () {
                           myCubit.toBinary(myCubit.valves.length);
-                          print(binaryValves);
+                          myCubit.numberOfActivelines();
                           if (isEdit == false) {
                             Navigator.push(
                                 context,

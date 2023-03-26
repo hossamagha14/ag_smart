@@ -17,8 +17,9 @@ class CustomIrrigationModel {
   List<bool> isBeingDeleted = [false];
   bool? accordingToHour;
   bool? accordingToQuantity;
-  String ? intial;
+  String? intial;
   int noDayIsChosen = 7;
+  int statusType = 0;
   CustomIrrigationModel(
       {required this.accordingToHour, required this.accordingToQuantity});
 }
