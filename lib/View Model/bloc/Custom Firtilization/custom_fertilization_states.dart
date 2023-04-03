@@ -2,13 +2,15 @@ abstract class CustomFertilizationStates {}
 
 class CustomFertilizationIntialState extends CustomFertilizationStates {}
 
-class CustomFertilizationChooseDurationState extends CustomFertilizationStates {
-}
+class CustomFertilizationChooseDurationState
+    extends CustomFertilizationStates {}
 
-class CustomFertilizationChooseQuantityState extends CustomFertilizationStates {
-}
+class CustomFertilizationChooseQuantityState
+    extends CustomFertilizationStates {}
 
 class CustomFertilizationPutSuccessState extends CustomFertilizationStates {}
+
+class CustomFertilizationPutDelSuccessState extends CustomFertilizationStates {}
 
 class CustomFertilizationPutFailState extends CustomFertilizationStates {}
 
@@ -16,7 +18,8 @@ class CustomFertilizationGetSuccessState extends CustomFertilizationStates {}
 
 class CustomFertilizationGetValvesFailState extends CustomFertilizationStates {}
 
-class CustomFertilizationGetValvesSuccessState extends CustomFertilizationStates {}
+class CustomFertilizationGetValvesSuccessState
+    extends CustomFertilizationStates {}
 
 class CustomFertilizationGetFailState extends CustomFertilizationStates {}
 
@@ -33,8 +36,8 @@ class CustomFirtiliserSettingsAddContainerState
 class CustomFirtiliserSettingsRemoveContainerState
     extends CustomFertilizationStates {}
 
-class CustomFirtiliserSettingsChooseDayState extends CustomFertilizationStates {
-}
+class CustomFirtiliserSettingsChooseDayState
+    extends CustomFertilizationStates {}
 
 class CustomFirtilizationSettingsChooseTimeState
     extends CustomFertilizationStates {}

@@ -1,6 +1,6 @@
 import 'package:ag_smart/View%20Model/bloc/Irrigation%20type/irrigation_type_cubit.dart';
 import 'package:ag_smart/View%20Model/bloc/Irrigation%20type/irrigation_type_states.dart';
-import 'package:ag_smart/View/Reusable/error_toast.dart';
+import 'package:ag_smart/View/Reusable/toasts.dart';
 import 'package:ag_smart/View/Reusable/global.dart';
 import 'package:ag_smart/View/Reusable/irrigation_type_container.dart';
 import 'package:ag_smart/View/Reusable/main_card02.dart';
@@ -30,7 +30,7 @@ class IrrigationTypeScreen extends StatelessWidget {
           BlocConsumer<IrrigationTypeCubit, IrrigationTypesStates>(
             listener: (context, state) {
               IrrigationTypeCubit myCubit = IrrigationTypeCubit.get(context);
-              if (myCubit.irrigationType == 3 || myCubit.irrigationType == 4) {
+              if (myCubit.irrigationType == 3 || myCubit.irrigationType == 4 || myCubit.irrigationType == 5) {
                 if (state is IrrigationTypeSendSuccessState) {
                   Navigator.pushAndRemoveUntil(
                       context,
@@ -57,7 +57,7 @@ class IrrigationTypeScreen extends StatelessWidget {
                             ),
                           ));
                     } else if (myCubit.irrigationType == 3 ||
-                        myCubit.irrigationType == 4) {
+                        myCubit.irrigationType == 4 || myCubit.irrigationType == 5) {
                       if (isEdit == false) {
                         myCubit.postIrrigationType(
                             activeValves: binaryValves,
@@ -109,21 +109,13 @@ class IrrigationTypeScreen extends StatelessWidget {
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  BlocConsumer<IrrigationTypeCubit,
-                                      IrrigationTypesStates>(
-                                    listener: (context, state) {},
-                                    builder: (context, state) {
-                                      IrrigationTypeCubit myCubit =
-                                          IrrigationTypeCubit.get(context);
-                                      return CupertinoSwitch(
-                                          value: myCubit.irrigationType == 2
-                                              ? myCubit.active
-                                              : false,
-                                          onChanged: (value) {
-                                            myCubit.activate();
-                                          });
-                                    },
-                                  ),
+                                  CupertinoSwitch(
+                                      value: myCubit.irrigationType == 2
+                                          ? myCubit.active
+                                          : false,
+                                      onChanged: (value) {
+                                        myCubit.activate();
+                                      }),
                                   Padding(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 10),
@@ -164,6 +156,16 @@ class IrrigationTypeScreen extends StatelessWidget {
                               ),
                               irrigationType: text[chosenLanguage]![
                                   'Automatic Irrigation']!),
+                          IrrigationTypeContainer(
+                              function: () {
+                                myCubit.chooseManualIrrigation();
+                              },
+                              color: myCubit.irrigationType == 5
+                                  ? selectedColor
+                                  : backgroundColor,
+                              icon: Text('f', style: bigIcon),
+                              irrigationType:
+                                  text[chosenLanguage]!['Manual Irrigation']!),
                         ],
                       ),
                     ),

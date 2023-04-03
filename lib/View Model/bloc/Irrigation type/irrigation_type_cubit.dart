@@ -30,6 +30,13 @@ class IrrigationTypeCubit extends Cubit<IrrigationTypesStates> {
     emit(IrrigationTypeSeriesStates());
   }
 
+  chooseManualIrrigation() {
+    irrigationType = 5;
+    isSeries = false;
+    active = false;
+    emit(IrrigationTypeManualStates());
+  }
+
   chooseParallelIrrigation() {
     irrigationType = 2;
     isSeries = false;

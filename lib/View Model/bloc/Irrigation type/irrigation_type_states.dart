@@ -6,6 +6,8 @@ class IrrigationTypeActivateState extends IrrigationTypesStates {}
 
 class IrrigationTypeSeriesStates extends IrrigationTypesStates {}
 
+class IrrigationTypeManualStates extends IrrigationTypesStates {}
+
 class IrrigationTypeParallelStates extends IrrigationTypesStates {}
 
 class IrrigationTypeCustomStates extends IrrigationTypesStates {}

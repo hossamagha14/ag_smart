@@ -79,5 +79,6 @@ class LinesActivationCubit extends Cubit<LinesActivationStates> {
       }
     }
     binaryValves = activeValves;
+    print(binaryValves);
   }
 }

@@ -3,7 +3,7 @@ import 'package:ag_smart/View%20Model/bloc/Duration%20settings/duration_settings
 import 'package:ag_smart/View/Reusable/add_new_container_button.dart';
 import 'package:ag_smart/View/Reusable/choose_days_widget.dart';
 import 'package:ag_smart/View/Reusable/colors.dart';
-import 'package:ag_smart/View/Reusable/error_toast.dart';
+import 'package:ag_smart/View/Reusable/toasts.dart';
 import 'package:ag_smart/View/Reusable/main_card02.dart';
 import 'package:ag_smart/View/Reusable/main_icons_row_widget.dart';
 import 'package:ag_smart/View/Reusable/my_time_picker.dart';
@@ -75,12 +75,20 @@ class DurationSettingsByHourScreen extends StatelessWidget {
                                     itemBuilder: (context, index) {
                                       return SetSettings2RowsContainer(
                                           visible: myCubit.visible,
-                                          function: () {},
+                                          function: () {
+                                            myCubit.removeContainerFromdb(
+                                                containerIndex: index,
+                                                stationId: stationId,
+                                                valveId: 0,
+                                                weekday: myCubit.toDecimal(),
+                                                periodId: myCubit.durationModel
+                                                    .controller.length);
+                                          },
                                           firstRowTitle: text[chosenLanguage]![
                                               'Set time']!,
                                           firstRowWidget: MyTimePicker(
                                               time: myCubit
-                                                  .durations[index].time
+                                                  .durationModel.time[index]
                                                   .format(context)
                                                   .toString(),
                                               function: (value) =>
@@ -95,9 +103,8 @@ class DurationSettingsByHourScreen extends StatelessWidget {
                                                       text[
                                                               chosenLanguage]![
                                                           'Minutes']!,
-                                                  control: myCubit
-                                                      .durations[index]
-                                                      .controller));
+                                                  control: myCubit.durationModel
+                                                      .controller[index]));
                                     },
                                     separatorBuilder: (context, index) {
                                       return SizedBox(
@@ -106,11 +113,12 @@ class DurationSettingsByHourScreen extends StatelessWidget {
                                                 0.01,
                                       );
                                     },
-                                    itemCount: myCubit.durations.length),
+                                    itemCount: myCubit
+                                        .durationModel.controller.length),
                               ),
                               AddNewContainerButton(
                                 functionAdd: () {
-                                  myCubit.addContainer();
+                                  myCubit.addContainer(hour: 0, minute: 0);
                                 },
                                 functionRemove: () {
                                   myCubit.showDeleteButton();
@@ -139,9 +147,11 @@ class DurationSettingsByHourScreen extends StatelessWidget {
                           function: () {
                             bool allFull = true;
                             bool checkTime = true;
-                            for (int i = 0; i < myCubit.durations.length; i++) {
+                            for (int i = 0;
+                                i < myCubit.durationModel.controller.length;
+                                i++) {
                               if (myCubit
-                                  .durations[i].controller.text.isEmpty) {
+                                  .durationModel.controller[i].text.isEmpty) {
                                 allFull = false;
                               }
                             }

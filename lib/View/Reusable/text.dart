@@ -1,8 +1,8 @@
 import 'package:ag_smart/View%20Model/database/cache_helpher.dart';
 
 String chosenLanguage = CacheHelper.getData(key: 'language');
-String stationName = CacheHelper.getData(key: 'stationName');
-int numOfActiveLines = CacheHelper.getData(key: 'numOfActiveLines');
+String stationName = CacheHelper.getData(key: 'stationName')??'';
+int numOfActiveLines = CacheHelper.getData(key: 'numOfActiveLines')??0;
 int stationId = CacheHelper.getData(key: 'stationId');
 
 Map<String, Map<String, String>> text = {
@@ -19,6 +19,7 @@ Map<String, Map<String, String>> text = {
     'Diameter': 'Diameter',
     'Number': 'Number',
     'Series Irrigation': 'Series Irrigation',
+    'Manual Irrigation': 'Manual Irrigation',
     'Parallel Irrigation': 'Parallel Irrigation',
     'Custom Irrigation': 'Custom Irrigation',
     'Automatic Irrigation': 'Automatic Irrigation',
@@ -45,6 +46,7 @@ Map<String, Map<String, String>> text = {
     'Pump Settings': 'Pump Settings',
     'Irrigation type': 'Irrigation type',
     'Duration settings': 'Duration settings',
+    'Duration': 'Duration',
     'Each cycle': 'Each cycle',
     'Set day': 'Set day',
     'Set date': 'Set date',
@@ -89,6 +91,7 @@ Map<String, Map<String, String>> text = {
     'Diameter': 'قطر',
     'Number': 'عدد',
     'Series Irrigation': 'الري بالتوالي',
+    'Manual Irrigation': 'الري اليدوي',
     'Parallel Irrigation': 'الري بالتوازي',
     'Custom Irrigation': 'الري المخصص',
     'Automatic Irrigation': 'الري الأوتوماتيكي',
@@ -115,6 +118,7 @@ Map<String, Map<String, String>> text = {
     'Pump Settings': 'إعدادات المضخة',
     'Irrigation type': 'نوع الري',
     'Duration settings': 'إعدادات المدة',
+    'Duration': 'المدة',
     'Each cycle': 'كل دورة ري',
     'Set day': 'تحديد اليوم',
     'Set date': 'تحديد التاريخ',

@@ -1,4 +1,4 @@
-import 'package:ag_smart/Model/fertilizationModel.dart';
+import 'package:ag_smart/Model/fertilization_model.dart';
 import 'package:ag_smart/Model/firtiliser_model.dart';
 import 'package:ag_smart/View%20Model/database/end_points.dart';
 import 'package:ag_smart/View/Reusable/text.dart';
@@ -41,8 +41,8 @@ class FirtiliserSettingsCubit extends Cubit<FirtiliserSettingsStates> {
     emit(FirtiliserSettingsChooseDayState());
   }
 
-  addContainer() {
-    firtiliserModel.timeList.add(TimeOfDay.now());
+  addContainer({required int hour,required int minute}) {
+    firtiliserModel.timeList.add(TimeOfDay(hour: hour, minute: minute));
     firtiliserModel.controllersList.add(TextEditingController());
     emit(FirtiliserSettingsAddContainerState());
   }
@@ -128,7 +128,10 @@ class FirtiliserSettingsCubit extends Cubit<FirtiliserSettingsStates> {
     await dio.get('$base/$fertilizerSettings/$stationId').then((value) {
       fertilizationModel = FertilizationModel.fromJson(value.data);
       for (int i = 0; i < fertilizationModel!.fertilizerPeriods!.length; i++) {
-        addContainer();
+        double hourDouble=fertilizationModel!.fertilizerPeriods![i].startingTime!/60;
+        int hour=hourDouble.toInt();
+        int minute=fertilizationModel!.fertilizerPeriods![i].startingTime!-hour*60;
+        addContainer(hour: hour,minute: minute);
         firtiliserModel.dateList.add(1);
 
         firtiliserModel.controllersList[i].text =

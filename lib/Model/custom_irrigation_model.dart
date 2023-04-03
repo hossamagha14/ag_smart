@@ -14,12 +14,13 @@ class CustomIrrigationModel {
   ];
   List<TimeOfDay> timeList = [];
   List<TextEditingController> controllersList = [];
-  List<bool> isBeingDeleted = [false];
+  List<bool> isBeingDeleted = [];
   bool? accordingToHour;
   bool? accordingToQuantity;
   String? intial;
   int noDayIsChosen = 7;
   int statusType = 0;
+  int fertilizationStatusType = 0;
   CustomIrrigationModel(
       {required this.accordingToHour, required this.accordingToQuantity});
 }

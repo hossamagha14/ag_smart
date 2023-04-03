@@ -29,6 +29,7 @@ class OpenValvePeriodTextField extends StatelessWidget {
             SizedBox(
               width: MediaQuery.of(context).size.width * 0.12,
               child: TextFormField(
+                textAlign: TextAlign.center,
                 keyboardType: TextInputType.number,
                 controller: control,
                 decoration: InputDecoration(

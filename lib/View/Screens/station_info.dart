@@ -71,7 +71,7 @@ class StationInfoScreen extends StatelessWidget {
                                           decoration: BoxDecoration(
                                               color: backgroundColor,
                                               borderRadius:
-                                                  BorderRadius.circular(10)),
+                                                  BorderRadius.circular(5)),
                                           child: Padding(
                                             padding: const EdgeInsets.symmetric(
                                                 horizontal: 20),

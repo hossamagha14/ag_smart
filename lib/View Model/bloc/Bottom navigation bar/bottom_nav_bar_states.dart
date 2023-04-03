@@ -10,4 +10,8 @@ class BottomNavBarGetSuccessState extends BottomNavBarStates {}
 
 class BottomNavBarGetFailState extends BottomNavBarStates {}
 
+class BottomNavBarPutSuccessState extends BottomNavBarStates {}
+
+class BottomNavBarPutFailState extends BottomNavBarStates {}
+
 class BottomNavBarDaysListFilledState extends BottomNavBarStates {}

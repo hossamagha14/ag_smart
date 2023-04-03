@@ -5,6 +5,7 @@ import 'package:ag_smart/View/Screens/custom_duration_settings_period.dart';
 import 'package:ag_smart/View/Screens/custom_ferilization_type.dart';
 import 'package:flutter/material.dart';
 
+import '../Screens/custom_fertlization_duration.dart';
 import 'colors.dart';
 
 class PopUpScreen extends StatelessWidget {
@@ -12,6 +13,8 @@ class PopUpScreen extends StatelessWidget {
   final int valveId;
   final int stationId;
   final int statusType;
+  final int ferStatusType;
+  final int fertiliationType;
   final int irrigationMethod2;
   const PopUpScreen(
       {Key? key,
@@ -19,6 +22,8 @@ class PopUpScreen extends StatelessWidget {
       required this.lineIndex,
       required this.stationId,
       required this.statusType,
+      required this.ferStatusType,
+      required this.fertiliationType,
       required this.irrigationMethod2})
       : super(key: key);
 
@@ -44,18 +49,18 @@ class PopUpScreen extends StatelessWidget {
                           MaterialPageRoute(
                               builder: (context) => statusType == 3
                                   ? CustomDurationSettingsByPeriodScreen(
-                                    stationId: stationId,
+                                      stationId: stationId,
                                       lineIndex: lineIndex,
                                       valveId: valveId,
                                       irrigationMethod2: irrigationMethod2)
                                   : statusType == 2
                                       ? CustomDurationByTime(
-                                        stationId: stationId,
+                                          stationId: stationId,
                                           lineIndex: lineIndex,
                                           valveId: valveId,
                                           irrigationMethod2: irrigationMethod2)
                                       : CustomDurationSettingsScreen(
-                                        stationId: stationId,
+                                          stationId: stationId,
                                           lineIndex: lineIndex,
                                           valveId: valveId)));
                     },
@@ -88,11 +93,14 @@ class PopUpScreen extends StatelessWidget {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) =>
-                                CustomFirtilizationTypesScreen(
-                              lineIndex: lineIndex,
-                              valveId: valveId,
-                            ),
+                            builder: (context) => ferStatusType == 1
+                                ? CustomFirtiliserSettingsScreen(
+                                    valveId: valveId,
+                                    lineIndex: lineIndex,
+                                    fertiliationType: fertiliationType,
+                                  )
+                                : CustomFirtilizationTypesScreen(
+                                    lineIndex: lineIndex, valveId: valveId),
                           ));
                     },
                     child: SizedBox(

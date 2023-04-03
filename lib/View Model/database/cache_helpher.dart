@@ -24,7 +24,7 @@ class CacheHelper {
     return sharedPreferences.get(key);
   }
 
-  static Future<bool> clearToken({required String key}) async {
+  static Future<bool> remove({required String key}) async {
     return await sharedPreferences.remove(key);
   }
 }

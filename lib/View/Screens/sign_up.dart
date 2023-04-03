@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../Reusable/colors.dart';
-import '../Reusable/error_toast.dart';
+import '../Reusable/toasts.dart';
 
 // ignore: must_be_immutable
 class SignUpScreen extends StatelessWidget {

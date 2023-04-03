@@ -2,7 +2,7 @@ import 'package:ag_smart/View%20Model/bloc/Duration%20settings/duration_settings
 import 'package:ag_smart/View%20Model/bloc/Duration%20settings/duration_settings_states.dart';
 import 'package:ag_smart/View/Reusable/choose_days_widget.dart';
 import 'package:ag_smart/View/Reusable/colors.dart';
-import 'package:ag_smart/View/Reusable/error_toast.dart';
+import 'package:ag_smart/View/Reusable/toasts.dart';
 import 'package:ag_smart/View/Reusable/main_card02.dart';
 import 'package:ag_smart/View/Reusable/main_icons_row_widget.dart';
 import 'package:ag_smart/View/Reusable/open_valve_period_text_field.dart';

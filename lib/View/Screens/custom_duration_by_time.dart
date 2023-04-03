@@ -2,7 +2,7 @@ import 'package:ag_smart/View%20Model/bloc/Custom%20Irrigation/custom_irrigation
 import 'package:ag_smart/View%20Model/bloc/Custom%20Irrigation/custom_irrigation_states.dart';
 import 'package:ag_smart/View/Reusable/add_new_container_button.dart';
 import 'package:ag_smart/View/Reusable/colors.dart';
-import 'package:ag_smart/View/Reusable/error_toast.dart';
+import 'package:ag_smart/View/Reusable/toasts.dart';
 import 'package:ag_smart/View/Reusable/main_card02.dart';
 import 'package:ag_smart/View/Reusable/main_icons_row_widget.dart';
 import 'package:ag_smart/View/Reusable/my_time_picker.dart';
@@ -208,7 +208,7 @@ class CustomDurationByTime extends StatelessWidget {
                                   ),
                                   AddNewContainerButton(
                                     functionAdd: () {
-                                      myCubit.addContainer(lineIndex);
+                                      myCubit.addContainer(lineIndex,hour: 0,minute: 0);
                                     },
                                     functionRemove: () {
                                       myCubit.showDeleteButton();

@@ -1,7 +1,7 @@
 import 'package:ag_smart/View%20Model/bloc/Custom%20Irrigation/custom_irrigation_cubit.dart';
 import 'package:ag_smart/View%20Model/bloc/Custom%20Irrigation/custom_irrigation_states.dart';
 import 'package:ag_smart/View/Reusable/duration_settings_row.dart';
-import 'package:ag_smart/View/Reusable/error_toast.dart';
+import 'package:ag_smart/View/Reusable/toasts.dart';
 import 'package:ag_smart/View/Reusable/main_card02.dart';
 import 'package:ag_smart/View/Reusable/text.dart';
 import 'package:ag_smart/View/Reusable/text_style.dart';

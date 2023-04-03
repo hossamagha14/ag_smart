@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 
 class DurationModel {
-  TimeOfDay time = TimeOfDay.now();
-  TextEditingController controller = TextEditingController();
+  List<TimeOfDay> time = [];
+  List<TextEditingController> controller = [];
   DurationModel();
 }

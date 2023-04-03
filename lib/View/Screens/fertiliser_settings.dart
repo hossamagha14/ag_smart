@@ -2,7 +2,7 @@ import 'package:ag_smart/View%20Model/bloc/Firtiliser%20settings/firtiliser_sett
 import 'package:ag_smart/View%20Model/bloc/Firtiliser%20settings/firtiliser_settings_cubit.dart';
 import 'package:ag_smart/View/Reusable/add_new_container_button.dart';
 import 'package:ag_smart/View/Reusable/colors.dart';
-import 'package:ag_smart/View/Reusable/error_toast.dart';
+import 'package:ag_smart/View/Reusable/toasts.dart';
 import 'package:ag_smart/View/Reusable/main_card02.dart';
 import 'package:ag_smart/View/Reusable/my_time_picker.dart';
 import 'package:ag_smart/View/Reusable/open_valve_period_text_field.dart';
@@ -199,7 +199,7 @@ class FirtiliserSettingsScreen extends StatelessWidget {
                                 ),
                                 AddNewContainerButton(
                                   functionAdd: () {
-                                    myCubit.addContainer();
+                                    myCubit.addContainer(hour: 0,minute: 0);
                                   },
                                   functionRemove: () {
                                     myCubit.removeContainer();

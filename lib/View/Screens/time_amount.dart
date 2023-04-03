@@ -13,7 +13,7 @@ import 'package:ag_smart/View/Screens/bottom_nav_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../Reusable/error_toast.dart';
+import '../Reusable/toasts.dart';
 
 // ignore: must_be_immutable
 class TimeAmountScreen extends StatelessWidget {
@@ -66,11 +66,19 @@ class TimeAmountScreen extends StatelessWidget {
                                 itemBuilder: (context, index) =>
                                     SetSettings2RowsContainer(
                                       visible: myCubit.visible,
-                                      function: () {},
+                                      function: () {
+                                        myCubit.removeContainerFromdb(
+                                            containerIndex: index,
+                                            stationId: stationId,
+                                            valveId: 0,
+                                            weekday: myCubit.toDecimal(),
+                                            periodId: myCubit.durationModel.controller.length);
+                                      },
                                       firstRowTitle:
                                           text[chosenLanguage]!['Set time']!,
                                       firstRowWidget: MyTimePicker(
-                                          time: myCubit.durations[index].time
+                                          time: myCubit
+                                              .durationModel.time[index]
                                               .format(context)
                                               .toString(),
                                           function: (value) =>
@@ -79,7 +87,7 @@ class TimeAmountScreen extends StatelessWidget {
                                           'Amount of water']!,
                                       secondRowWidget: OpenValvePeriodTextField(
                                           control: myCubit
-                                              .durations[index].controller,
+                                              .durationModel.controller[index],
                                           hintText: '00',
                                           unit: text[chosenLanguage]!['ml']!),
                                     ),
@@ -88,11 +96,12 @@ class TimeAmountScreen extends StatelessWidget {
                                           MediaQuery.of(context).size.height *
                                               0.01,
                                     ),
-                                itemCount: myCubit.durations.length),
+                                itemCount:
+                                    myCubit.durationModel.controller.length),
                           ),
                           AddNewContainerButton(
                             functionAdd: () {
-                              myCubit.addContainer();
+                              myCubit.addContainer(hour: 0, minute: 0);
                             },
                             functionRemove: () {
                               myCubit.showDeleteButton();
@@ -108,8 +117,11 @@ class TimeAmountScreen extends StatelessWidget {
                       ),
                       function: () {
                         bool allFull = true;
-                        for (int i = 0; i < myCubit.durations.length; i++) {
-                          if (myCubit.durations[i].controller.text.isEmpty) {
+                        for (int i = 0;
+                            i < myCubit.durationModel.controller.length;
+                            i++) {
+                          if (myCubit
+                              .durationModel.controller[i].text.isEmpty) {
                             allFull = false;
                           }
                         }

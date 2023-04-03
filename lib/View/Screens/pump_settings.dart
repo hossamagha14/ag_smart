@@ -1,6 +1,6 @@
 import 'package:ag_smart/View%20Model/bloc/Pump%20settings/pump_settingd_cubit.dart';
 import 'package:ag_smart/View%20Model/bloc/Pump%20settings/pump_settings_states.dart';
-import 'package:ag_smart/View/Reusable/error_toast.dart';
+import 'package:ag_smart/View/Reusable/toasts.dart';
 import 'package:ag_smart/View/Reusable/main_card02.dart';
 import 'package:ag_smart/View/Reusable/pump_settings_container.dart';
 import 'package:ag_smart/View/Reusable/text.dart';
@@ -56,7 +56,7 @@ class PumpSettingsScreen extends StatelessWidget {
                                   value: 1,
                                   groupValue: myCubit.groupValue,
                                   function: (value) {
-                                    myCubit.choosePumpSettings(value!);
+                                    myCubit.choosePumpSettings(value!,hoursePowerControl);
                                   },
                                   widget: Row(
                                     textDirection: chosenLanguage == 'ar'
@@ -118,7 +118,7 @@ class PumpSettingsScreen extends StatelessWidget {
                                           fontSize: 18,
                                           fontWeight: FontWeight.w400)),
                                   function: (value) {
-                                    myCubit.choosePumpSettings(value!);
+                                    myCubit.choosePumpSettings(value!,hoursePowerControl);
                                   })
                             ],
                           ),

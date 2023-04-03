@@ -86,14 +86,14 @@ class CustomStationInfoScreen extends StatelessWidget {
                                     MediaQuery.of(context).size.height * 0.05,
                                 decoration: BoxDecoration(
                                     color: backgroundColor,
-                                    borderRadius: BorderRadius.circular(10)),
+                                    borderRadius: BorderRadius.circular(5)),
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     SizedBox(
                                       width: MediaQuery.of(context).size.width *
-                                          0.01,
+                                          0.02,
                                     ),
                                     Text(
                                         'Line ${myCubit.stationModel!.irrigationSettings![0].customValvesSettings![lineIndex].valveId.toString()}'),
@@ -199,6 +199,16 @@ class CustomStationInfoScreen extends StatelessWidget {
                                                       BorderRadius.circular(
                                                           20)),
                                               content: PopUpScreen(
+                                                fertiliationType: myCubit
+                                                    .stationModel!
+                                                    .fertilizationSettings![0]
+                                                    .customFertilizerSettings![
+                                                        lineIndex]
+                                                    .fertilizerMethod1!,
+                                                ferStatusType: myCubit
+                                                    .customIrrigationModelList[
+                                                        lineIndex]
+                                                    .fertilizationStatusType,
                                                 statusType: myCubit
                                                     .customIrrigationModelList[
                                                         lineIndex]

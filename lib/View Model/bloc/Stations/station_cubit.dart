@@ -61,12 +61,14 @@ class StationsCubit extends Cubit<StationsStates> {
   }
 
   getData(Database database) async {
-    stations = await database.rawQuery('SELECT * FROM stations');
+    stations = await database.rawQuery('SELECT * FROM stations WHERE email=?',['hossam']);
     print(stations);
     emit(StationsGetSuccessState());
   }
 
   saveVariables(int index) {
+    CacheHelper.remove(key: 'stationId');
+    CacheHelper.remove(key: 'stationName');
     CacheHelper.saveData(key: 'stationId', value: index + 1);
     CacheHelper.saveData(
         key: 'stationName', value: stations[index]['stationName']);
