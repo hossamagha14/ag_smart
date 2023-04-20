@@ -4,11 +4,11 @@ import 'package:ag_smart/Model/days_model.dart';
 import 'package:ag_smart/Model/durationModel.dart';
 import 'package:ag_smart/View%20Model/database/end_points.dart';
 import 'package:ag_smart/View/Reusable/text.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../Model/irrigation_settings_model.dart';
+import '../../database/dio_helper.dart';
 import 'duration_settings_states.dart';
 
 class DurationSettingsCubit extends Cubit<DurationSettingsStates> {
@@ -16,7 +16,7 @@ class DurationSettingsCubit extends Cubit<DurationSettingsStates> {
 
   static DurationSettingsCubit get(context) => BlocProvider.of(context);
 
-  var dio = Dio();
+  DioHelper dio = DioHelper();
   DurationModel durationModel = DurationModel();
   List<Map<String, dynamic>> periodsList = [];
   bool visible = false;
@@ -117,11 +117,23 @@ class DurationSettingsCubit extends Cubit<DurationSettingsStates> {
     bool validInput = true;
     for (int i = 0; i < durationModel.controller.length; i++) {
       for (int j = i + 1; j < durationModel.controller.length; j++) {
-        if (durationModel.time[i].hour * 60 +
-                durationModel.time[i].minute +
-                int.parse(durationModel.controller[i].text) >
+        if (durationModel.time[i].hour * 60 + durationModel.time[i].minute <
             durationModel.time[j].hour * 60 + durationModel.time[j].minute) {
-          validInput = false;
+          if (durationModel.time[i].hour * 60 +
+                  durationModel.time[i].minute +
+                  int.parse(durationModel.controller[i].text) >
+              durationModel.time[j].hour * 60 + durationModel.time[j].minute) {
+            validInput = false;
+          }
+        } else if (durationModel.time[i].hour * 60 +
+                durationModel.time[i].minute >
+            durationModel.time[j].hour * 60 + durationModel.time[j].minute) {
+          if (durationModel.time[j].hour * 60 +
+                  durationModel.time[j].minute +
+                  int.parse(durationModel.controller[j].text) >
+              durationModel.time[i].hour * 60 + durationModel.time[i].minute) {
+            validInput = false;
+          }
         }
       }
     }
@@ -171,7 +183,7 @@ class DurationSettingsCubit extends Cubit<DurationSettingsStates> {
   }
 
   List<Map<String, dynamic>> makeAList({required weekday}) {
-    periodsList=[];
+    periodsList = [];
     for (int i = 0; i < durationModel.controller.length; i++) {
       periodsList.add({
         "period_id": i + 1,

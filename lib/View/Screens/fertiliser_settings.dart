@@ -12,7 +12,7 @@ import 'package:ag_smart/View/Reusable/text_style.dart';
 import 'package:ag_smart/View/Screens/bottom_nav_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:intl/intl.dart' as intl;
 import '../Reusable/day_picker_pop_up.dart';
 
 // ignore: must_be_immutable
@@ -107,8 +107,17 @@ class FirtiliserSettingsScreen extends StatelessWidget {
                                       physics: const BouncingScrollPhysics(),
                                       itemBuilder: (context, index) {
                                         return SetSettings3RowsContainer(
-                                            visible: false,
-                                            function: () {},
+                                            visible: myCubit.deleteVisibile,
+                                            function: () {
+                                              myCubit.removeContainerFromdb(
+                                                  containerIndex: index,
+                                                  stationId: stationId,
+                                                  valveId: 0,
+                                                  periodId: myCubit
+                                                      .firtiliserModel
+                                                      .controllersList
+                                                      .length);
+                                            },
                                             firstRowTitle: text[
                                                 chosenLanguage]!['Set day']!,
                                             firstRowWidget: InkWell(
@@ -167,24 +176,26 @@ class FirtiliserSettingsScreen extends StatelessWidget {
                                             secondRowTitle: text[
                                                 chosenLanguage]!['Set time']!,
                                             secondRowWidget: MyTimePicker(
-                                                time: myCubit.firtiliserModel
-                                                    .timeList[index]
-                                                    .format(context)
-                                                    .toString(),
+                                                time: intl.DateFormat('HH:mm')
+                                                    .format(DateTime(
+                                                        2023,
+                                                        1,
+                                                        1,
+                                                        myCubit
+                                                            .firtiliserModel
+                                                            .timeList[index]
+                                                            .hour,
+                                                        myCubit
+                                                            .firtiliserModel
+                                                            .timeList[index]
+                                                            .minute)),
                                                 function: (value) => myCubit
                                                     .chooseTime(value, index)),
                                             thirdRowTitle: myCubit.method2 == 1
                                                 ? text[chosenLanguage]![
                                                     'Open valve time']!
-                                                : text[chosenLanguage]![
-                                                    'Fertillization amount']!,
-                                            thirdRowWidget: OpenValvePeriodTextField(
-                                                hintText: '00',
-                                                unit: myCubit.method2 == 1
-                                                    ? text[chosenLanguage]![
-                                                        'Minutes']!
-                                                    : text[chosenLanguage]!['ml']!,
-                                                control: myCubit.firtiliserModel.controllersList[index]));
+                                                : text[chosenLanguage]!['Fertillization amount']!,
+                                            thirdRowWidget: OpenValvePeriodTextField(hintText: '00', unit: myCubit.method2 == 1 ? text[chosenLanguage]!['Minutes']! : text[chosenLanguage]!['ml']!, control: myCubit.firtiliserModel.controllersList[index]));
                                       },
                                       separatorBuilder: (context, index) {
                                         return SizedBox(
@@ -199,10 +210,10 @@ class FirtiliserSettingsScreen extends StatelessWidget {
                                 ),
                                 AddNewContainerButton(
                                   functionAdd: () {
-                                    myCubit.addContainer(hour: 0,minute: 0);
+                                    myCubit.addContainer(hour: 0, minute: 0);
                                   },
                                   functionRemove: () {
-                                    myCubit.removeContainer();
+                                    myCubit.showDeleteButton();
                                   },
                                 )
                               ],

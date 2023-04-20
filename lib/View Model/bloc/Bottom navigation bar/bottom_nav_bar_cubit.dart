@@ -8,20 +8,20 @@ import 'package:ag_smart/View/Screens/manual_irrigation.dart';
 import 'package:ag_smart/View/Screens/report.dart';
 import 'package:ag_smart/View/Screens/settings.dart';
 import 'package:ag_smart/View/Screens/station_info.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../Model/custom_irrigation_model.dart';
 import '../../../Model/days_model.dart';
 import '../../../View/Reusable/text.dart';
+import '../../database/dio_helper.dart';
 import '../../database/end_points.dart';
 
 class BottomNavBarCubit extends Cubit<BottomNavBarStates> {
   BottomNavBarCubit() : super(BottomNavBarIntialState());
 
   static BottomNavBarCubit get(context) => BlocProvider.of(context);
-  var dio = Dio();
+  DioHelper dio = DioHelper();
   static int settingsType = 0;
   StationModel? stationModel;
   List<Widget>? bottomNavBarScreens;
@@ -50,7 +50,7 @@ class BottomNavBarCubit extends Cubit<BottomNavBarStates> {
 
   getStation(int stationId) async {
     emit(BottomNavBarLoadingState());
-    await dio.get('$base/$stationInfo/$stationId').then((value) {
+    await dio.get('$base/$stationBySerial/$serialNumber').then((value) {
       stationModel = StationModel.fromJson(value.data);
       settingsType = stationModel!.irrigationSettings![0].settingsType!;
       if (settingsType == 1 || settingsType == 2) {
@@ -80,59 +80,21 @@ class BottomNavBarCubit extends Cubit<BottomNavBarStates> {
       }
 
       if (value.statusCode == 200) {
-        CacheHelper.saveData(
-            key: 'features', value: stationModel!.routes![0].features);
-        CacheHelper.saveData(
-            key: 'valveInfo', value: stationModel!.routes![0].valveInfo);
-        CacheHelper.saveData(
-            key: 'irrigationSettings',
-            value: stationModel!.routes![0].irrigationSettings);
-        CacheHelper.saveData(
-            key: 'irrigationPeriods',
-            value: stationModel!.routes![0].irrigationPeriods);
-        CacheHelper.saveData(
-            key: 'irrigationCycle',
-            value: stationModel!.routes![0].irrigationCycle);
-        CacheHelper.saveData(
-            key: 'fertilizerPeriods',
-            value: stationModel!.routes![0].fertilizerPeriods);
-        CacheHelper.saveData(
-            key: 'fertilizerSettings',
-            value: stationModel!.routes![0].fertilizerSettings);
-        CacheHelper.saveData(
-            key: 'animalRepellent',
-            value: stationModel!.routes![0].animalRepellent);
-        CacheHelper.saveData(
-            key: 'light', value: stationModel!.routes![0].light);
-        CacheHelper.saveData(
-            key: 'irrigationPeriodsList',
-            value: stationModel!.routes![0].irrigationPeriodsList);
-        CacheHelper.saveData(
-            key: 'fertilizerPeriodsList',
-            value: stationModel!.routes![0].fertilizerPeriodsList);
-        CacheHelper.saveData(
-            key: 'valveSettingsDelete',
-            value: stationModel!.routes![0].valveSettingsDelete);
-        CacheHelper.saveData(
-            key: 'fertilizerSettingsDelete',
-            value: stationModel!.routes![0].fertilizerSettingsDelete);
-        CacheHelper.saveData(
-            key: 'customIrrigationSettings',
-            value: stationModel!.routes![0].customIrrigationSettings);
-        CacheHelper.saveData(
-            key: 'getCustomIrrigationSettings',
-            value: stationModel!.routes![0].getCustomIrrigationSettings);
         customActiveDays = [];
         getActiveValves(
             decimalNumber: stationModel!.irrigationSettings![0].activeValves!);
         if (settingsType == 1 || settingsType == 2) {
-          stationModel!.irrigationSettings![0].irrigationPeriods!.isEmpty
-              ? getActiveDays(
-                  decimalNumber: stationModel!
-                      .irrigationSettings![0].irrigationCycles![0].weekDays!)
-              : getActiveDays(
-                  decimalNumber: stationModel!
-                      .irrigationSettings![0].irrigationPeriods![0].weekDays!);
+          if (stationModel!
+              .irrigationSettings![0].irrigationPeriods!.isNotEmpty) {
+            getActiveDays(
+                decimalNumber: stationModel!
+                    .irrigationSettings![0].irrigationPeriods![0].weekDays!);
+          } else if (stationModel!
+              .irrigationSettings![0].irrigationCycles!.isNotEmpty) {
+            getActiveDays(
+                decimalNumber: stationModel!
+                    .irrigationSettings![0].irrigationCycles![0].weekDays!);
+          }
         } else if (settingsType == 3) {
           for (int valve = 0;
               valve <
@@ -169,8 +131,8 @@ class BottomNavBarCubit extends Cubit<BottomNavBarStates> {
                   stationModel!.fertilizationSettings![0]
                       .customFertilizerSettings!.length;
               valve++) {
-            if (stationModel!
-                .fertilizationSettings![0].customFertilizerSettings![valve].fertilizerPeriods!.isEmpty) {
+            if (stationModel!.fertilizationSettings![0]
+                .customFertilizerSettings![valve].fertilizerPeriods!.isEmpty) {
               customIrrigationModelList[valve].fertilizationStatusType = 2;
             } else {
               customIrrigationModelList[valve].fertilizationStatusType = 1;
@@ -197,6 +159,7 @@ class BottomNavBarCubit extends Cubit<BottomNavBarStates> {
       double x = decimalNumber / 2;
       decimalNumber = x.toInt();
     }
+
     for (int i = 0; i < activeValves.length; i++) {
       if (activeValves[i] == 1) {
         numberOfOnValves++;

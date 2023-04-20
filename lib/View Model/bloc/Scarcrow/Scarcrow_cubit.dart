@@ -2,15 +2,16 @@
 
 import 'package:ag_smart/View%20Model/bloc/Scarcrow/scarcrow_states.dart';
 import 'package:ag_smart/View%20Model/database/end_points.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../database/dio_helper.dart';
 
 class ScarecrowCubit extends Cubit<ScarecrowStates> {
   ScarecrowCubit() : super(ScarecrowIntialState());
 
   static ScarecrowCubit get(context) => BlocProvider.of(context);
-  var dio = Dio();
+  DioHelper dio = DioHelper();
   TimeOfDay time1 = TimeOfDay.now();
   TimeOfDay time2 = TimeOfDay.now();
   bool done = false;
@@ -53,10 +54,9 @@ class ScarecrowCubit extends Cubit<ScarecrowStates> {
     });
   }
 
-  int checkTime(){
-    int startTime=time1.hour*60+time1.minute;
-    int endTime=time2.hour*60+time2.minute;
-    return startTime-endTime;
+  int checkTime() {
+    int startTime = time1.hour * 60 + time1.minute;
+    int endTime = time2.hour * 60 + time2.minute;
+    return startTime - endTime;
   }
-
 }

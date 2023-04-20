@@ -88,6 +88,7 @@ class ManualIrrigationScreen extends StatelessWidget {
                                                 TextInputAction.next,
                                             controller: myCubit
                                                 .manualList[index].controller,
+                                                
                                             decoration: InputDecoration(
                                               border: InputBorder.none,
                                               hintText: text[chosenLanguage]![

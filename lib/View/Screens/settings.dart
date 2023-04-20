@@ -24,7 +24,7 @@ class SettingsScreen extends StatelessWidget {
                 Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const DashsboardScreen(email: 'hossam'),
+                      builder: (context) => const DashsboardScreen(),
                     ),
                     (route) => false);
               }),

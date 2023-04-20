@@ -1,12 +1,8 @@
 class StationModel {
   int? id;
   int? internetAccess;
-  String? email;
-  String? password;
   int? configured;
   String? serialNumber;
-  String? version;
-  List<Routes>? routes;
   List<Features>? features;
   List<LinesInfo>? linesInfo;
   List<IrrigationSettings>? irrigationSettings;
@@ -17,12 +13,8 @@ class StationModel {
   StationModel(
       {this.id,
       this.internetAccess,
-      this.email,
-      this.password,
       this.configured,
       this.serialNumber,
-      this.version,
-      this.routes,
       this.features,
       this.linesInfo,
       this.irrigationSettings,
@@ -33,17 +25,8 @@ class StationModel {
   StationModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     internetAccess = json['internet_access'];
-    email = json['email'];
-    password = json['password'];
     configured = json['configured'];
     serialNumber = json['serial_number'];
-    version = json['version'];
-    if (json['routes'] != null) {
-      routes = <Routes>[];
-      json['routes'].forEach((v) {
-        routes!.add(Routes.fromJson(v));
-      });
-    }
     if (json['features'] != null) {
       features = <Features>[];
       json['features'].forEach((v) {
@@ -86,14 +69,8 @@ class StationModel {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['internet_access'] = internetAccess;
-    data['email'] = email;
-    data['password'] = password;
     data['configured'] = configured;
     data['serial_number'] = serialNumber;
-    data['version'] = version;
-    if (routes != null) {
-      data['routes'] = routes!.map((v) => v.toJson()).toList();
-    }
     if (features != null) {
       data['features'] = features!.map((v) => v.toJson()).toList();
     }
@@ -113,8 +90,7 @@ class StationModel {
           animalRepellent!.map((v) => v.toJson()).toList();
     }
     if (lightSettings != null) {
-      data['light_settings'] =
-          lightSettings!.map((v) => v.toJson()).toList();
+      data['light_settings'] = lightSettings!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -247,7 +223,7 @@ class Features {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['light'] = light;
     data['animal'] = animal;
     data['pump'] = pump;
@@ -506,7 +482,7 @@ class FertilizationSettings {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['fertilization_method_1'] = fertilizationMethod1;
     data['fertilization_method_2'] = fertilizationMethod2;
     if (fertilizerPeriods != null) {
@@ -583,7 +559,7 @@ class CustomFertilizerSettings {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['station_id'] = stationId;
     data['valve_id'] = valveId;
     data['fertilizer_method_1'] = fertilizerMethod1;

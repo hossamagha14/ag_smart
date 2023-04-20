@@ -12,9 +12,16 @@ class MyTimePicker extends StatelessWidget {
     return InkWell(
       onTap: () {
         showTimePicker(
-          
-          context: context, initialTime: TimeOfDay.now())
-            .then(function);
+            context: context,
+            initialTime: TimeOfDay.now(),
+            builder: (context, childWidget) {
+              return MediaQuery(
+                  data: MediaQuery.of(context).copyWith(
+                      // Using 24-Hour format
+                      alwaysUse24HourFormat: true),
+                  // If you want 12-Hour format, just change alwaysUse24HourFormat to false or remove all the builder argument
+                  child: childWidget!);
+            }).then(function);
       },
       child: Container(
         height: MediaQuery.of(context).size.height * 0.05,

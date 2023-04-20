@@ -12,7 +12,7 @@ import 'package:ag_smart/View/Reusable/text.dart';
 import 'package:ag_smart/View/Screens/bottom_nav_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:intl/intl.dart' as intl;
 import '../Reusable/toasts.dart';
 
 // ignore: must_be_immutable
@@ -72,15 +72,21 @@ class TimeAmountScreen extends StatelessWidget {
                                             stationId: stationId,
                                             valveId: 0,
                                             weekday: myCubit.toDecimal(),
-                                            periodId: myCubit.durationModel.controller.length);
+                                            periodId: myCubit.durationModel
+                                                .controller.length);
                                       },
                                       firstRowTitle:
                                           text[chosenLanguage]!['Set time']!,
                                       firstRowWidget: MyTimePicker(
-                                          time: myCubit
-                                              .durationModel.time[index]
-                                              .format(context)
-                                              .toString(),
+                                          time: intl.DateFormat('HH:mm').format(
+                                              DateTime(
+                                                  2023,
+                                                  1,
+                                                  1,
+                                                  myCubit.durationModel
+                                                      .time[index].hour,
+                                                  myCubit.durationModel
+                                                      .time[index].minute)),
                                           function: (value) =>
                                               myCubit.pickTime(value, index)),
                                       secondRowTitle: text[chosenLanguage]![

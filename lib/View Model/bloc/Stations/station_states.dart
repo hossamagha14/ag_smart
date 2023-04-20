@@ -19,3 +19,5 @@ class StationsGetSuccessState extends StationsStates {}
 class StationsSaveState extends StationsStates {}
 
 class StationsGetFailState extends StationsStates {}
+
+class StationsLoadinglState extends StationsStates {}

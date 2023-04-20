@@ -2,10 +2,10 @@ import 'package:ag_smart/Model/fertilization_model.dart';
 import 'package:ag_smart/Model/firtiliser_model.dart';
 import 'package:ag_smart/View%20Model/database/end_points.dart';
 import 'package:ag_smart/View/Reusable/text.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../database/dio_helper.dart';
 import 'firtiliser_settings_states.dart';
 
 class FirtiliserSettingsCubit extends Cubit<FirtiliserSettingsStates> {
@@ -18,16 +18,17 @@ class FirtiliserSettingsCubit extends Cubit<FirtiliserSettingsStates> {
   FirtiliserModel firtiliserModel = FirtiliserModel();
   FertilizationModel? fertilizationModel;
   bool done = false;
+  bool deleteVisibile = false;
   int dayValue = 0;
   List<Map<String, dynamic>> periodsList = [];
   bool? accordingToTime;
   bool? seriesFertilization;
   int? method1;
   int? method2;
-  var dio = Dio();
+  DioHelper dio = DioHelper();
 
   chooseTime(value, int containerIndex) {
-    firtiliserModel.timeList[containerIndex] = value??TimeOfDay.now();
+    firtiliserModel.timeList[containerIndex] = value ?? TimeOfDay.now();
     emit(FirtiliserSettingsChooseTimeState());
   }
 
@@ -41,15 +42,36 @@ class FirtiliserSettingsCubit extends Cubit<FirtiliserSettingsStates> {
     emit(FirtiliserSettingsChooseDayState());
   }
 
-  addContainer({required int hour,required int minute}) {
+  addContainer({required int hour, required int minute}) {
     firtiliserModel.timeList.add(TimeOfDay(hour: hour, minute: minute));
     firtiliserModel.controllersList.add(TextEditingController());
     emit(FirtiliserSettingsAddContainerState());
   }
 
-  removeContainer() {
-    firtiliserModel.timeList.remove(TimeOfDay.now());
-    firtiliserModel.controllersList.remove(TextEditingController());
+  removeContainerFromdb(
+      {required int containerIndex,
+      required int stationId,
+      required int valveId,
+      required int periodId}) async {
+    await dio
+        .delete('$base/$fertilizerPeriods/$stationId/$valveId/$periodId')
+        .then((value) {
+      if (value.statusCode == 200) {
+        removeContainer(
+          containerIndex: containerIndex,
+        );
+        makeAList();
+        putFerListAfterDelete(stationId: stationId, periodsList: periodsList);
+      }
+    }).catchError((onError) {
+      emit(FirtiliserSettingsDeleteFailState());
+    });
+  }
+
+  removeContainer({required int containerIndex}) {
+    firtiliserModel.timeList.removeAt(containerIndex);
+    firtiliserModel.controllersList.removeAt(containerIndex);
+    firtiliserModel.dateList.removeAt(containerIndex);
     emit(FirtiliserSettingsAddContainerState());
   }
 
@@ -118,6 +140,11 @@ class FirtiliserSettingsCubit extends Cubit<FirtiliserSettingsStates> {
     });
   }
 
+  showDeleteButton() {
+    deleteVisibile = !deleteVisibile;
+    emit(FirtiliserSettingsShowDeleteState());
+  }
+
   getPeriods({
     required int stationId,
   }) async {
@@ -128,10 +155,12 @@ class FirtiliserSettingsCubit extends Cubit<FirtiliserSettingsStates> {
     await dio.get('$base/$fertilizerSettings/$stationId').then((value) {
       fertilizationModel = FertilizationModel.fromJson(value.data);
       for (int i = 0; i < fertilizationModel!.fertilizerPeriods!.length; i++) {
-        double hourDouble=fertilizationModel!.fertilizerPeriods![i].startingTime!/60;
-        int hour=hourDouble.toInt();
-        int minute=fertilizationModel!.fertilizerPeriods![i].startingTime!-hour*60;
-        addContainer(hour: hour,minute: minute);
+        double hourDouble =
+            fertilizationModel!.fertilizerPeriods![i].startingTime! / 60;
+        int hour = hourDouble.toInt();
+        int minute =
+            fertilizationModel!.fertilizerPeriods![i].startingTime! - hour * 60;
+        addContainer(hour: hour, minute: minute);
         firtiliserModel.dateList.add(1);
 
         firtiliserModel.controllersList[i].text =
@@ -158,6 +187,21 @@ class FirtiliserSettingsCubit extends Cubit<FirtiliserSettingsStates> {
         data: {'list': periodsList}).then((value) {
       if (value.statusCode == 200) {
         emit(FirtiliserSettingsSendSuccessState());
+      }
+    }).catchError((onError) {
+      print(onError.toString());
+      emit(FirtiliserSettingsSendFailState());
+    });
+  }
+
+  putFerListAfterDelete({
+    required int stationId,
+    required List<Map<String, dynamic>> periodsList,
+  }) async {
+    await dio.put('$base/$fertilizerPeriodsList/$stationId',
+        data: {'list': periodsList}).then((value) {
+      if (value.statusCode == 200) {
+        emit(FirtiliserSettingsSendDelSuccessState());
       }
     }).catchError((onError) {
       print(onError.toString());
@@ -192,11 +236,27 @@ class FirtiliserSettingsCubit extends Cubit<FirtiliserSettingsStates> {
       for (int j = i + 1; j < firtiliserModel.controllersList.length; j++) {
         if (firtiliserModel.dateList[i] == firtiliserModel.dateList[j]) {
           if (firtiliserModel.timeList[i].hour * 60 +
-                  firtiliserModel.timeList[i].minute +
-                  int.parse(firtiliserModel.controllersList[i].text) >
+                  firtiliserModel.timeList[i].minute <
               firtiliserModel.timeList[j].hour * 60 +
                   firtiliserModel.timeList[j].minute) {
-            validInput = false;
+            if (firtiliserModel.timeList[i].hour * 60 +
+                    firtiliserModel.timeList[i].minute +
+                    int.parse(firtiliserModel.controllersList[i].text) >
+                firtiliserModel.timeList[j].hour * 60 +
+                    firtiliserModel.timeList[j].minute) {
+              validInput = false;
+            }
+          } else if (firtiliserModel.timeList[i].hour * 60 +
+                  firtiliserModel.timeList[i].minute >
+              firtiliserModel.timeList[j].hour * 60 +
+                  firtiliserModel.timeList[j].minute) {
+            if (firtiliserModel.timeList[j].hour * 60 +
+                    firtiliserModel.timeList[j].minute +
+                    int.parse(firtiliserModel.controllersList[j].text) >
+                firtiliserModel.timeList[i].hour * 60 +
+                    firtiliserModel.timeList[i].minute) {
+              validInput = false;
+            }
           }
         }
       }

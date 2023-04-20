@@ -1,7 +1,7 @@
 import 'package:ag_smart/View%20Model/database/cache_helpher.dart';
 
-const base = 'http://192.168.1.106:5000';
-const stationInfo = '/station';
+const base = 'http://192.168.1.101:5000';
+String  stationInfo = CacheHelper.getData(key: 'stationInfo');
 String features = CacheHelper.getData(key: 'features');
 String valveInfo = CacheHelper.getData(key: 'valveInfo');
 String irrigationSettings = CacheHelper.getData(key: 'irrigationSettings');
@@ -19,3 +19,5 @@ String customIrrigationSettings=CacheHelper.getData(key: 'customIrrigationSettin
 String getCustomIrrigationSettings=CacheHelper.getData(key: 'getCustomIrrigationSettings');
 const manualIrrigationSettings='/station/irrigation_settings/manual';
 const customFertilization='/station/fertilizer_settings/custom';
+const stationBySerial='station/by_serial';
+const refresh='refresh';

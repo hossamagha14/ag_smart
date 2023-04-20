@@ -27,7 +27,18 @@ class SignInScreen extends StatelessWidget {
         child: BlocProvider(
           create: (context) => SignInCubit(),
           child: BlocConsumer<SignInCubit, SignInStates>(
-            listener: (context, state) {},
+            listener: (context, state) {
+              if (state is SignInLoginSuccessState) {
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const DashsboardScreen(),
+                    ),
+                    (route) => false);
+              } else if (state is SignInLoginFailState) {
+                errorToast('The email or password might be incorrect');
+              }
+            },
             builder: (context, state) {
               SignInCubit myCubit = SignInCubit.get(context);
               return SingleChildScrollView(
@@ -87,14 +98,9 @@ class SignInScreen extends StatelessWidget {
                           function: () {
                             if (nameControl.text.isNotEmpty ||
                                 passwordControl.text.isNotEmpty) {
-                              Navigator.pushAndRemoveUntil(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => DashsboardScreen(
-                                      email: nameControl.text,
-                                    ),
-                                  ),
-                                  (route) => false);
+                              myCubit.signIn(
+                                  username: nameControl.text,
+                                  password: passwordControl.text);
                             } else {
                               errorToast('Please add your email and password');
                             }

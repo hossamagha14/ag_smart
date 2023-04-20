@@ -4,13 +4,13 @@ import 'package:ag_smart/Model/custom_cycle_model.dart';
 import 'package:ag_smart/Model/custom_irrigation_model.dart';
 import 'package:ag_smart/View%20Model/bloc/Custom%20Irrigation/custom_irrigation_states.dart';
 import 'package:ag_smart/View%20Model/database/end_points.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../../Model/custom_period_model.dart';
 import '../../../Model/features_model.dart';
 import '../../../Model/irrigation_settings_model.dart';
+import '../../../View/Reusable/text.dart';
+import '../../database/dio_helper.dart';
 
 class CustomIrrigationCubit extends Cubit<CustomIrrigationStates> {
   CustomIrrigationCubit() : super(CustomIrrigationIntialState());
@@ -28,7 +28,7 @@ class CustomIrrigationCubit extends Cubit<CustomIrrigationStates> {
   int? irrigationMethod2;
   FeaturesModel? featuresModel;
   List<int> activeDays = [];
-  var dio = Dio();
+  DioHelper dio = DioHelper();
   List<String> controllersText = [];
   List<String> timeStringList = [];
   List<CustomIrrigationModel> customIrrigationModelList = [];
@@ -202,8 +202,7 @@ class CustomIrrigationCubit extends Cubit<CustomIrrigationStates> {
     await dio.put('$base/$irrigationPeriodsList/$stationId',
         data: {'list': periodsList}).then((value) {
       if (value.statusCode == 200) {
-        getPeriods(
-            stationId: stationId, lineIndex: lineIndex, valveId: valveId);
+        emit(CustomIrrigationPutDeleteSuccessState());
       }
     }).catchError((onError) {
       print(onError.toString());
@@ -257,14 +256,16 @@ class CustomIrrigationCubit extends Cubit<CustomIrrigationStates> {
                       .customValvesSettings![i].irrigationPeriods!.length;
               h++) {
             double doubleHour = irrigationSettingsModel!
-                    .customValvesSettings![i].irrigationPeriods![h].startingTime!/
+                    .customValvesSettings![i]
+                    .irrigationPeriods![h]
+                    .startingTime! /
                 60;
             int hour = doubleHour.toInt();
-            int minute = irrigationSettingsModel!
-                    .customValvesSettings![i].irrigationPeriods![h].startingTime! -
+            int minute = irrigationSettingsModel!.customValvesSettings![i]
+                    .irrigationPeriods![h].startingTime! -
                 hour * 60;
             print(irrigationSettingsModel!
-                    .customValvesSettings![i].irrigationPeriods![h].startingTime!);
+                .customValvesSettings![i].irrigationPeriods![h].startingTime!);
             print(hour);
             print(minute);
             addContainer(lineIndex, hour: hour, minute: minute);
@@ -336,9 +337,9 @@ class CustomIrrigationCubit extends Cubit<CustomIrrigationStates> {
     return activeDays;
   }
 
-  getNumberOfValves({required int stationId}) {
+  getNumberOfValves() {
     customIrrigationModelList = [];
-    dio.get('$base/$features/$stationId').then((value) {
+    dio.get('$base/$features/$serialNumber').then((value) {
       featuresModel = FeaturesModel.fromJson(value.data);
       for (int i = 0; i < featuresModel!.linesNumber!; i++) {
         customIrrigationModelList.add(CustomIrrigationModel(
@@ -372,13 +373,31 @@ class CustomIrrigationCubit extends Cubit<CustomIrrigationStates> {
           j < customIrrigationModelList[lineIndex].controllersList.length;
           j++) {
         if (customIrrigationModelList[lineIndex].timeList[i].hour * 60 +
-                customIrrigationModelList[lineIndex].timeList[i].minute +
-                int.parse(customIrrigationModelList[lineIndex]
-                    .controllersList[i]
-                    .text) >
+                customIrrigationModelList[lineIndex].timeList[i].minute <
             customIrrigationModelList[lineIndex].timeList[j].hour * 60 +
                 customIrrigationModelList[lineIndex].timeList[j].minute) {
-          validInput = false;
+          if (customIrrigationModelList[lineIndex].timeList[i].hour * 60 +
+                  customIrrigationModelList[lineIndex].timeList[i].minute +
+                  int.parse(customIrrigationModelList[lineIndex]
+                      .controllersList[i]
+                      .text) >
+              customIrrigationModelList[lineIndex].timeList[j].hour * 60 +
+                  customIrrigationModelList[lineIndex].timeList[j].minute) {
+            validInput = false;
+          }
+        } else if (customIrrigationModelList[lineIndex].timeList[i].hour * 60 +
+                customIrrigationModelList[lineIndex].timeList[i].minute >
+            customIrrigationModelList[lineIndex].timeList[j].hour * 60 +
+                customIrrigationModelList[lineIndex].timeList[j].minute) {
+          if (customIrrigationModelList[lineIndex].timeList[j].hour * 60 +
+                  customIrrigationModelList[lineIndex].timeList[j].minute +
+                  int.parse(customIrrigationModelList[lineIndex]
+                      .controllersList[j]
+                      .text) >
+              customIrrigationModelList[lineIndex].timeList[i].hour * 60 +
+                  customIrrigationModelList[lineIndex].timeList[i].minute) {
+            validInput = false;
+          }
         }
       }
     }

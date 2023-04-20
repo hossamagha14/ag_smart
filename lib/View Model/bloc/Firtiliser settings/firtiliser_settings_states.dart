@@ -25,11 +25,15 @@ class FirtiliserSettingsSendSuccessState extends FirtiliserSettingsStates {}
 
 class FirtiliserSettingsSendFailState extends FirtiliserSettingsStates {}
 
+class FirtiliserSettingsShowDeleteState extends FirtiliserSettingsStates {}
+
 class FirtiliserSettingsDeleteSuccessState extends FirtiliserSettingsStates {}
 
 class FirtiliserSettingsChooseDayState extends FirtiliserSettingsStates {}
 
 class FirtiliserSettingsDeleteFailState extends FirtiliserSettingsStates {}
+
+class FirtiliserSettingsSendDelSuccessState extends FirtiliserSettingsStates {}
 
 class FirtiliserSettingsGetSuccessState extends FirtiliserSettingsStates {}
 

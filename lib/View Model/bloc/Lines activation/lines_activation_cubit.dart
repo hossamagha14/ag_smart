@@ -6,17 +6,21 @@ import 'package:ag_smart/View%20Model/database/cache_helpher.dart';
 import 'package:ag_smart/View%20Model/database/end_points.dart';
 import 'package:ag_smart/View/Reusable/global.dart';
 import 'package:ag_smart/View/Reusable/text.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../Model/station_model.dart';
+import '../../database/dio_helper.dart';
 
 class LinesActivationCubit extends Cubit<LinesActivationStates> {
   LinesActivationCubit() : super(LinesActivationIntialState());
 
   static LinesActivationCubit get(context) => BlocProvider.of(context);
   List<ValveModel> valves = [];
-  var dio = Dio();
+  DioHelper dio = DioHelper();
   int? statusCode;
+  StationModel? stationModel;
   List<int> activeBinary = [];
+  List<int> activeValves = [];
   FeaturesModel? featuresModel;
 
   activateLine(int index) {
@@ -35,15 +39,46 @@ class LinesActivationCubit extends Cubit<LinesActivationStates> {
     print('$numOfActiveLines active valves');
   }
 
-  getNumberOfValves({required int stationId}) {
+  getNumberOfValves() {
     emit(LinesActivationLoadingState());
     valves = [];
-    dio.get('$base/$features/$stationId').then((value) {
-      featuresModel = FeaturesModel.fromJson(value.data);
-      for (int i = 0; i < featuresModel!.linesNumber!; i++) {
-        valves.add(ValveModel());
+    dio.get('$base/$stationBySerial/$serialNumber').then((value) {
+      if (value.statusCode == 200) {
+        stationModel = StationModel.fromJson(value.data);
+        for (int i = 0; i < stationModel!.features![0].linesNumber!; i++) {
+          valves.add(ValveModel());
+        }
+        if (stationModel!.irrigationSettings!.isNotEmpty) {
+          activeValves = [];
+          int numberOfOnValves = 0;
+          int decimalNumber =
+              stationModel!.irrigationSettings![0].activeValves!;
+          while (decimalNumber > 0) {
+            int n = (decimalNumber % 2);
+            activeValves.add(n);
+            double x = decimalNumber / 2;
+            decimalNumber = x.toInt();
+          }
+          while (
+              activeValves.length < stationModel!.features![0].linesNumber!) {
+            activeValves.add(0);
+          }
+          for (int i = 0; i < activeValves.length; i++) {
+            if (activeValves[i] == 1) {
+              numberOfOnValves++;
+            }
+          }
+          CacheHelper.saveData(
+              key: 'numOfActiveLines', value: numberOfOnValves);
+        }
+        for (int i = 0; i < valves.length; i++) {
+          if (activeValves[i] == 1) {
+            valves[i].isActive = true;
+          }
+        }
+
+        emit(LinesActivationGetSuccessState());
       }
-      emit(LinesActivationGetSuccessState());
     }).catchError((onError) {
       print(onError);
       emit(LinesActivationGetFailState());
@@ -55,7 +90,7 @@ class LinesActivationCubit extends Cubit<LinesActivationStates> {
     required double valveDiameter,
     required double valveNumber,
   }) async {
-    await dio.put('$base$valveInfo/1/$valveId', data: {
+  await dio.put('$base$valveInfo/$stationId/$valveId', data: {
       "valve_id": valveId,
       "hole_diameter": valveDiameter,
       "hole_number": valveNumber

@@ -26,7 +26,7 @@ class CustomFirtilizationTypesScreen extends StatelessWidget {
       ),
       body: BlocProvider(
         create: (context) => CustomFertilizationCubit()
-          ..getNumberOfValvesOnly(stationId: stationId),
+          ..getNumberOfValvesOnly(serialNumber: serialNumber),
         child: SafeArea(
             child: BlocConsumer<CustomFertilizationCubit,
                 CustomFertilizationStates>(

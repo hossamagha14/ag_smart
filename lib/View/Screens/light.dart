@@ -12,6 +12,7 @@ import 'package:ag_smart/View/Reusable/text_style.dart';
 import 'package:ag_smart/View/Screens/bottom_nav_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart' as intl;
 
 // ignore: must_be_immutable
 class LightScreen extends StatelessWidget {
@@ -60,9 +61,13 @@ class LightScreen extends StatelessWidget {
                                   firstRowTitle:
                                       text[chosenLanguage]!['Set time']!,
                                   firstRowWidget: MyTimePicker(
-                                      time: myCubit.lightTime
-                                          .format(context)
-                                          .toString(),
+                                      time: intl.DateFormat('HH:mm').format(
+                                          DateTime(
+                                              2023,
+                                              1,
+                                              1,
+                                              myCubit.lightTime.hour,
+                                              myCubit.lightTime.minute)),
                                       function: (value) =>
                                           myCubit.chooseTime(value)),
                                   secondRowTitle:

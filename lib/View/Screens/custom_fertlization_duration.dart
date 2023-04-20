@@ -13,7 +13,7 @@ import 'package:ag_smart/View/Screens/bottom_nav_bar.dart';
 import 'package:ag_smart/View/Screens/custom_ferilization_type.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:intl/intl.dart';
 import '../Reusable/toasts.dart';
 
 // ignore: must_be_immutable
@@ -37,7 +37,9 @@ class CustomFirtiliserSettingsScreen extends StatelessWidget {
       body: BlocProvider(
         create: (context) => CustomFertilizationCubit()
           ..getNumberOfValvesandperiods(
-              stationId: stationId, lineIndex: lineIndex, valveId: valveId),
+              serialNumber: serialNumber,
+              lineIndex: lineIndex,
+              valveId: valveId),
         child:
             BlocConsumer<CustomFertilizationCubit, CustomFertilizationStates>(
           listener: (context, state) {
@@ -172,8 +174,8 @@ class CustomFirtiliserSettingsScreen extends StatelessWidget {
                                                         .controllers
                                                         .length);
                                               },
-                                              firstRowTitle: text[chosenLanguage]![
-                                                  'Set day']!,
+                                              firstRowTitle: text[
+                                                  chosenLanguage]!['Set day']!,
                                               firstRowWidget: InkWell(
                                                 onTap: () {
                                                   showDialog(
@@ -230,8 +232,6 @@ class CustomFirtiliserSettingsScreen extends StatelessWidget {
                                                               .toString(),
                                                       textAlign:
                                                           TextAlign.center,
-                                                      textDirection:
-                                                          TextDirection.ltr,
                                                     ),
                                                   ),
                                                 ),
@@ -239,10 +239,21 @@ class CustomFirtiliserSettingsScreen extends StatelessWidget {
                                               secondRowTitle: text[
                                                   chosenLanguage]!['Set time']!,
                                               secondRowWidget: MyTimePicker(
-                                                  time:
-                                                      myCubit.customFertilizationModelList[lineIndex].time[index]
-                                                          .format(context)
-                                                          .toString(),
+                                                  time: DateFormat('HH:mm')
+                                                      .format(DateTime(
+                                                          2023,
+                                                          1,
+                                                          1,
+                                                          myCubit
+                                                              .customFertilizationModelList[
+                                                                  lineIndex]
+                                                              .time[index]
+                                                              .hour,
+                                                          myCubit
+                                                              .customFertilizationModelList[
+                                                                  lineIndex]
+                                                              .time[index]
+                                                              .minute)),
                                                   function: (value) =>
                                                       myCubit.chooseTime(
                                                           value, index, lineIndex)),
@@ -250,14 +261,8 @@ class CustomFirtiliserSettingsScreen extends StatelessWidget {
                                                   myCubit.fertilizationType == 1
                                                       ? text[chosenLanguage]![
                                                           'Open valve time']!
-                                                      : text[chosenLanguage]![
-                                                          'Fertillization amount']!,
-                                              thirdRowWidget: OpenValvePeriodTextField(
-                                                  hintText: '00',
-                                                  unit: fertiliationType == 1
-                                                      ? text[chosenLanguage]!['Minutes']!
-                                                      : text[chosenLanguage]!['ml']!,
-                                                  control: myCubit.customFertilizationModelList[lineIndex].controllers[index]));
+                                                      : text[chosenLanguage]!['Fertillization amount']!,
+                                              thirdRowWidget: OpenValvePeriodTextField(hintText: '00', unit: fertiliationType == 1 ? text[chosenLanguage]!['Minutes']! : text[chosenLanguage]!['ml']!, control: myCubit.customFertilizationModelList[lineIndex].controllers[index]));
                                         },
                                         separatorBuilder: (context, index) {
                                           return SizedBox(

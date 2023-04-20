@@ -1,13 +1,15 @@
 import 'package:ag_smart/View%20Model/bloc/Irrigation%20type/irrigation_type_states.dart';
 import 'package:ag_smart/View%20Model/database/end_points.dart';
-import 'package:dio/dio.dart';
+import 'package:ag_smart/View/Reusable/text.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../database/dio_helper.dart';
 
 class IrrigationTypeCubit extends Cubit<IrrigationTypesStates> {
   IrrigationTypeCubit() : super(IrrigationTypeIntialState());
 
   static IrrigationTypeCubit get(context) => BlocProvider.of(context);
-  var dio = Dio();
+  DioHelper dio = DioHelper();
   bool active = false;
   int irrigationType = 0;
   bool? isSeries;
@@ -87,7 +89,7 @@ class IrrigationTypeCubit extends Cubit<IrrigationTypesStates> {
     required int irrigationMethod1,
     required int irrigationMethod2,
   }) async {
-    await dio.put('$base/$irrigationSettings/1', data: {
+    await dio.put('$base/$irrigationSettings/$stationId', data: {
       "station_id": 1,
       "active_valves": activeValves,
       "settings_type": irrigationType,
@@ -110,7 +112,7 @@ class IrrigationTypeCubit extends Cubit<IrrigationTypesStates> {
     required int irrigationMethod1,
     required int irrigationMethod2,
   }) async {
-    await dio.post('$base/$irrigationSettings/1', data: {
+    await dio.post('$base/$irrigationSettings/$stationId', data: {
       "station_id": 1,
       "active_valves": activeValves,
       "settings_type": irrigationType,

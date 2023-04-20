@@ -6,6 +6,7 @@ import 'package:ag_smart/View/Reusable/main_card.dart';
 import 'package:ag_smart/View/Reusable/my_text_field.dart';
 import 'package:ag_smart/View/Reusable/text.dart';
 import 'package:ag_smart/View/Screens/device_features.dart';
+import 'package:ag_smart/View/Screens/pump_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -13,8 +14,7 @@ import '../Reusable/main_icons_row_widget.dart';
 
 // ignore: must_be_immutable
 class DeviceSetupScreen extends StatelessWidget {
-  final String email;
-  DeviceSetupScreen({Key? key, required this.email}) : super(key: key);
+  DeviceSetupScreen({Key? key}) : super(key: key);
   TextEditingController changeNameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController rePasswordController = TextEditingController();
@@ -58,11 +58,13 @@ class DeviceSetupScreen extends StatelessWidget {
                               rePasswordController.text) {
                             errorToast('Password doesn\'t match');
                           } else {
-                            myCubit.insertInDatabase(
-                                email: 'hossam',
-                                irrigationType: 1,
-                                name: changeNameController.text,
-                                password: passwordController.text);
+                            Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      PumpSettingsScreen(isEdit: false),
+                                ),
+                                (route) => false);
                           }
                         },
                         //this is the widget from main_card.dart
@@ -90,7 +92,6 @@ class DeviceSetupScreen extends StatelessWidget {
                                 secureText: myCubit.secureConfirmPassword,
                                 suffixIcon: InkWell(
                                     onTap: () {
-                                      myCubit.deleteDatabase('Stations.db');
                                       myCubit.showConfirmPassword();
                                     },
                                     child: myCubit.secureConfirmPassword == true

@@ -10,6 +10,7 @@ import 'package:ag_smart/View/Reusable/text_style.dart';
 import 'package:ag_smart/View/Screens/bottom_nav_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart' as intl;
 
 // ignore: must_be_immutable
 class ScarecrowScreen extends StatelessWidget {
@@ -69,9 +70,13 @@ class ScarecrowScreen extends StatelessWidget {
                                         height: 5,
                                       ),
                                       MyTimePicker(
-                                        time: myCubit.time1
-                                            .format(context)
-                                            .toString(),
+                                        time: intl.DateFormat('HH:mm').format(
+                                            DateTime(
+                                                2023,
+                                                1,
+                                                1,
+                                                myCubit.time1.hour,
+                                                myCubit.time1.minute)),
                                         function: (value) =>
                                             myCubit.chooseTime1(value),
                                       )
@@ -84,9 +89,13 @@ class ScarecrowScreen extends StatelessWidget {
                                         height: 5,
                                       ),
                                       MyTimePicker(
-                                        time: myCubit.time2
-                                            .format(context)
-                                            .toString(),
+                                        time: intl.DateFormat('HH:mm').format(
+                                            DateTime(
+                                                2023,
+                                                1,
+                                                1,
+                                                myCubit.time2.hour,
+                                                myCubit.time2.minute)),
                                         function: (value) =>
                                             myCubit.chooseTime2(value),
                                       )
@@ -151,7 +160,7 @@ class ScarecrowScreen extends StatelessWidget {
                                   finishTime: myCubit.time2,
                                   onTime: int.parse(onControl.text),
                                   offTime: int.parse(offControl.text));
-                            }else{
+                            } else {
                               errorToast('Input error');
                             }
                           }

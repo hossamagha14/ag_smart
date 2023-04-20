@@ -15,6 +15,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../View Model/bloc/Irrigation type/irrigation_type_cubit.dart';
 import '../../View Model/bloc/Irrigation type/irrigation_type_states.dart';
 import 'bottom_nav_bar.dart';
+import 'package:intl/intl.dart' as intl;
 
 // ignore: must_be_immutable
 class DurationSettingsByHourScreen extends StatelessWidget {
@@ -87,10 +88,18 @@ class DurationSettingsByHourScreen extends StatelessWidget {
                                           firstRowTitle: text[chosenLanguage]![
                                               'Set time']!,
                                           firstRowWidget: MyTimePicker(
-                                              time: myCubit
-                                                  .durationModel.time[index]
-                                                  .format(context)
-                                                  .toString(),
+                                              time:
+                                                  intl.DateFormat('HH:mm').format(
+                                                      DateTime(
+                                                          2023,
+                                                          1,
+                                                          1,
+                                                          myCubit.durationModel
+                                                              .time[index].hour,
+                                                          myCubit
+                                                              .durationModel
+                                                              .time[index]
+                                                              .minute)),
                                               function: (value) =>
                                                   myCubit.pickTime(value,
                                                       index)),
@@ -100,8 +109,7 @@ class DurationSettingsByHourScreen extends StatelessWidget {
                                               OpenValvePeriodTextField(
                                                   hintText: '00',
                                                   unit:
-                                                      text[
-                                                              chosenLanguage]![
+                                                      text[chosenLanguage]![
                                                           'Minutes']!,
                                                   control: myCubit.durationModel
                                                       .controller[index]));

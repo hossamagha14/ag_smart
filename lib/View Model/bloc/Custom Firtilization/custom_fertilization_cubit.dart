@@ -2,11 +2,12 @@ import 'package:ag_smart/Model/custom_fertilization_model.dart';
 import 'package:ag_smart/Model/features_model.dart';
 import 'package:ag_smart/View%20Model/bloc/Custom%20Firtilization/custom_fertilization_states.dart';
 import 'package:ag_smart/View%20Model/database/end_points.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../Model/fertilization_model.dart';
+import '../../../View/Reusable/text.dart';
+import '../../database/dio_helper.dart';
 
 class CustomFertilizationCubit extends Cubit<CustomFertilizationStates> {
   CustomFertilizationCubit() : super(CustomFertilizationIntialState());
@@ -23,7 +24,7 @@ class CustomFertilizationCubit extends Cubit<CustomFertilizationStates> {
   int fertilizationType = 0;
   bool visible = false;
   FertilizationModel? fertilizationModel;
-  var dio = Dio();
+  DioHelper dio = DioHelper();
   List<CustomFertilizationModel> customFertilizationModelList = [];
 
   chooseDuration() {
@@ -292,10 +293,11 @@ class CustomFertilizationCubit extends Cubit<CustomFertilizationStates> {
   }
 
   getNumberOfValvesOnly({
-    required int stationId,
+    required String serialNumber,
   }) {
     customFertilizationModelList = [];
-    dio.get('$base/$features/$stationId').then((value) {
+
+    dio.get('$base/$features/$serialNumber').then((value) {
       featuresModel = FeaturesModel.fromJson(value.data);
       for (int i = 0; i < featuresModel!.linesNumber!; i++) {
         customFertilizationModelList.add(CustomFertilizationModel());
@@ -308,12 +310,13 @@ class CustomFertilizationCubit extends Cubit<CustomFertilizationStates> {
   }
 
   getNumberOfValvesandperiods({
-    required int stationId,
+    required String serialNumber,
     required int lineIndex,
     required int valveId,
   }) {
     customFertilizationModelList = [];
-    dio.get('$base/$features/$stationId').then((value) {
+
+    dio.get('$base/$features/$serialNumber').then((value) {
       featuresModel = FeaturesModel.fromJson(value.data);
       for (int i = 0; i < featuresModel!.linesNumber!; i++) {
         customFertilizationModelList.add(CustomFertilizationModel());
@@ -336,13 +339,31 @@ class CustomFertilizationCubit extends Cubit<CustomFertilizationStates> {
         if (customFertilizationModelList[lineIndex].daysList[i] ==
             customFertilizationModelList[lineIndex].daysList[j]) {
           if (customFertilizationModelList[lineIndex].time[i].hour * 60 +
-                  customFertilizationModelList[lineIndex].time[i].minute +
-                  int.parse(customFertilizationModelList[lineIndex]
-                      .controllers[i]
-                      .text) >
+                  customFertilizationModelList[lineIndex].time[i].minute <
               customFertilizationModelList[lineIndex].time[j].hour * 60 +
                   customFertilizationModelList[lineIndex].time[j].minute) {
-            validInput = false;
+            if (customFertilizationModelList[lineIndex].time[i].hour * 60 +
+                    customFertilizationModelList[lineIndex].time[i].minute +
+                    int.parse(customFertilizationModelList[lineIndex]
+                        .controllers[i]
+                        .text) >
+                customFertilizationModelList[lineIndex].time[j].hour * 60 +
+                    customFertilizationModelList[lineIndex].time[j].minute) {
+              validInput = false;
+            }
+          } else if (customFertilizationModelList[lineIndex].time[i].hour * 60 +
+                  customFertilizationModelList[lineIndex].time[i].minute >
+              customFertilizationModelList[lineIndex].time[j].hour * 60 +
+                  customFertilizationModelList[lineIndex].time[j].minute) {
+            if (customFertilizationModelList[lineIndex].time[j].hour * 60 +
+                    customFertilizationModelList[lineIndex].time[j].minute +
+                    int.parse(customFertilizationModelList[lineIndex]
+                        .controllers[j]
+                        .text) >
+                customFertilizationModelList[lineIndex].time[i].hour * 60 +
+                    customFertilizationModelList[lineIndex].time[i].minute) {
+              validInput = false;
+            }
           }
         }
       }

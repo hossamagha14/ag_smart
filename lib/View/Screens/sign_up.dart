@@ -25,7 +25,19 @@ class SignUpScreen extends StatelessWidget {
           child: BlocProvider(
         create: (context) => SignUpCubit(),
         child: BlocConsumer<SignUpCubit, SignUpStates>(
-          listener: (context, state) {},
+          listener: (context, state) {
+            if (state is SignUpSuccessState) {
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SignInScreen(),
+                  ),
+                  (route) => false);
+                  successToast(state.accountCreatedMessage);
+            } else if (state is SignUpFailState) {
+              errorToast(state.errorMessage);
+            }
+          },
           builder: (context, state) {
             SignUpCubit myCubit = SignUpCubit.get(context);
             return SingleChildScrollView(
@@ -96,7 +108,7 @@ class SignUpScreen extends StatelessWidget {
                         ),
                       ),
                       MainButton(
-                          buttonLabel:text[chosenLanguage]!['Create account']!,
+                          buttonLabel: text[chosenLanguage]!['Create account']!,
                           function: () {
                             {
                               if (nameControl.text.isEmpty ||
@@ -105,14 +117,11 @@ class SignUpScreen extends StatelessWidget {
                                 errorToast('Please fill all');
                               } else if (passwordControl.text !=
                                   rePasswordControl.text) {
-                                errorToast('Password not the same as re');
+                                errorToast('Password doesn\'t match');
                               } else {
-                                Navigator.pushAndRemoveUntil(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => SignInScreen(),
-                                    ),
-                                    (route) => false);
+                                myCubit.createAccount(
+                                    username: nameControl.text,
+                                    password: passwordControl.text);
                               }
                             }
                           })

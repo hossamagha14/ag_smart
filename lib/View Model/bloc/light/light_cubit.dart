@@ -1,10 +1,10 @@
 import 'package:ag_smart/View%20Model/bloc/light/light_states.dart';
 import 'package:ag_smart/View%20Model/database/end_points.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../Model/days_model.dart';
+import '../../database/dio_helper.dart';
 
 class LightCubit extends Cubit<LightStates> {
   LightCubit() : super(LightIntialState());
@@ -12,7 +12,7 @@ class LightCubit extends Cubit<LightStates> {
   static LightCubit get(context) => BlocProvider.of(context);
 
   int noDayIsChosen = 7;
-  var dio = Dio();
+  DioHelper dio = DioHelper();
   bool done = false;
   List<DaysModel> days = [
     DaysModel(day: 'SAT', isOn: false),
@@ -26,7 +26,7 @@ class LightCubit extends Cubit<LightStates> {
   TimeOfDay lightTime = TimeOfDay.now();
 
   chooseTime(value) {
-    lightTime = value??TimeOfDay.now();
+    lightTime = value ?? TimeOfDay.now();
     emit(LightChooseTimeState());
   }
 

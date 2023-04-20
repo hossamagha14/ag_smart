@@ -45,3 +45,5 @@ class CustomIrrigationLoadingState extends CustomIrrigationStates {}
 class CustomIrrigationDeleteSuccessState extends CustomIrrigationStates {}
 
 class CustomIrrigationDeleteFailedState extends CustomIrrigationStates {}
+
+class CustomIrrigationFinishEditState extends CustomIrrigationStates {}
