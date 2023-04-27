@@ -150,8 +150,16 @@ class DurationSettingsCubit extends Cubit<DurationSettingsStates> {
       for (int j = i + 1; j < durationModel.controller.length; j++) {
         int startTime2 =
             durationModel.time[j].hour * 60 + durationModel.time[j].minute;
-        if (startTime1 + irrigationTime > startTime2) {
-          validInput = false;
+        int irrigationTime2 =
+            int.parse(durationModel.controller[j].text) * numOfActiveLines;
+        if (startTime1 < startTime2) {
+          if (startTime1 + irrigationTime > startTime2) {
+            validInput = false;
+          }
+        } else if (startTime1 < startTime2) {
+          if (startTime2 + irrigationTime2 > startTime1) {
+            validInput = false;
+          }
         }
       }
     }
@@ -227,6 +235,8 @@ class DurationSettingsCubit extends Cubit<DurationSettingsStates> {
       if (value.statusCode == 200) {
         print(value.data);
         emit(DurationSettingsSendSuccessState());
+        durationModel.controller = [];
+        durationModel.time = [];
       }
     }).catchError((onError) {
       print(onError.toString());

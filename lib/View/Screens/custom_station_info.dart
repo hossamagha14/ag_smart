@@ -1,5 +1,4 @@
 import 'package:ag_smart/View%20Model/bloc/Bottom%20navigation%20bar/bottom_nav_bar_cubit.dart';
-import 'package:ag_smart/View%20Model/bloc/Bottom%20navigation%20bar/bottom_nav_bar_states.dart';
 import 'package:ag_smart/View/Reusable/colors.dart';
 import 'package:ag_smart/View/Reusable/main_card.dart';
 import 'package:ag_smart/View/Reusable/main_icons_row_widget.dart';
@@ -7,9 +6,10 @@ import 'package:ag_smart/View/Reusable/pop_screen.dart';
 import 'package:ag_smart/View/Reusable/text.dart';
 import 'package:ag_smart/View/Reusable/text_style.dart';
 import 'package:ag_smart/View/Screens/edit_settings.dart';
+import 'package:ag_smart/View/Screens/sign_in.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import '../../View Model/bloc/commom_states.dart';
 import '../Reusable/scare_light.dart';
 
 class CustomStationInfoScreen extends StatelessWidget {
@@ -21,8 +21,18 @@ class CustomStationInfoScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(text[chosenLanguage]!['Station info']!),
       ),
-      body: BlocConsumer<BottomNavBarCubit, BottomNavBarStates>(
-        listener: (context, state) {},
+      body: BlocConsumer<BottomNavBarCubit, CommonStates>(
+        listener: (context, state) {
+          if (state is ExpiredTokenState) {
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SignInScreen(),
+                ),
+                (route) => false);
+          }
+          
+        },
         builder: (context, state) {
           BottomNavBarCubit myCubit = BottomNavBarCubit.get(context);
           return Column(
@@ -213,7 +223,7 @@ class CustomStationInfoScreen extends StatelessWidget {
                                                     .customIrrigationModelList[
                                                         lineIndex]
                                                     .statusType,
-                                                stationId: 1,
+                                                stationId: stationId,
                                                 irrigationMethod2: myCubit
                                                     .stationModel!
                                                     .irrigationSettings![0]

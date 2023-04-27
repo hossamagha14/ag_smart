@@ -1,5 +1,5 @@
 import 'package:ag_smart/View%20Model/bloc/Bottom%20navigation%20bar/bottom_nav_bar_cubit.dart';
-import 'package:ag_smart/View%20Model/bloc/Bottom%20navigation%20bar/bottom_nav_bar_states.dart';
+import 'package:ag_smart/View%20Model/bloc/commom_states.dart';
 import 'package:ag_smart/View/Reusable/choose_days_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,7 +9,7 @@ class GetChooseDyasWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<BottomNavBarCubit, BottomNavBarStates>(
+    return BlocConsumer<BottomNavBarCubit, CommonStates>(
       listener: (context, state) {},
       builder: (context, state) {
         BottomNavBarCubit myCubit = BottomNavBarCubit.get(context);

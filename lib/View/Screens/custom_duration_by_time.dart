@@ -137,7 +137,7 @@ class CustomDurationByTime extends StatelessWidget {
                                                                 lineIndex:
                                                                     lineIndex),
                                                         containerIndex: index,
-                                                        stationId: 1,
+                                                        stationId: stationId,
                                                         valveId: valveId,
                                                         periodId: myCubit
                                                             .customIrrigationModelList[
@@ -265,7 +265,7 @@ class CustomDurationByTime extends StatelessWidget {
                                 } else {
                                   if (allFull == true && validInfo == true) {
                                     myCubit.putIrrigationHour(
-                                        stationId: 1,
+                                        stationId: stationId,
                                         periodsList: myCubit.makeAList(
                                             lineIndex: lineIndex,
                                             valveId: valveId,

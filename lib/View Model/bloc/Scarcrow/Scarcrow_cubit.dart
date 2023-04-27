@@ -57,6 +57,9 @@ class ScarecrowCubit extends Cubit<ScarecrowStates> {
   int checkTime() {
     int startTime = time1.hour * 60 + time1.minute;
     int endTime = time2.hour * 60 + time2.minute;
-    return startTime - endTime;
+    if(endTime<startTime){
+      endTime=endTime+1440;
+    }
+    return endTime - startTime;
   }
 }

@@ -5,6 +5,7 @@ import 'package:ag_smart/View/Reusable/toasts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../View Model/bloc/commom_states.dart';
 import '../Reusable/main_card02.dart';
 import '../Reusable/main_icons_row_widget.dart';
 import '../Reusable/text.dart';
@@ -19,7 +20,7 @@ class ManualIrrigationScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Station info.'),
       ),
-      body: BlocConsumer<BottomNavBarCubit, BottomNavBarStates>(
+      body: BlocConsumer<BottomNavBarCubit, CommonStates>(
         listener: (context, state) {
           if (state is BottomNavBarPutSuccessState) {
             successToast('Data sent successfully');

@@ -1,9 +1,11 @@
 import 'package:ag_smart/View%20Model/bloc/Bottom%20navigation%20bar/bottom_nav_bar_cubit.dart';
-import 'package:ag_smart/View%20Model/bloc/Bottom%20navigation%20bar/bottom_nav_bar_states.dart';
 import 'package:ag_smart/View/Reusable/colors.dart';
-import 'package:ag_smart/View/Screens/dashboard.dart';
+import 'package:ag_smart/View/Reusable/text.dart';
+import 'package:ag_smart/View/Screens/sign_in.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../View Model/bloc/commom_states.dart';
 
 class BottomNavBarScreen extends StatelessWidget {
   const BottomNavBarScreen({Key? key}) : super(key: key);
@@ -11,14 +13,14 @@ class BottomNavBarScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => BottomNavBarCubit()..getStation(1),
-      child: BlocConsumer<BottomNavBarCubit, BottomNavBarStates>(
+      create: (context) => BottomNavBarCubit()..getStation(stationId),
+      child: BlocConsumer<BottomNavBarCubit, CommonStates>(
           listener: (context, state) {
-        if (state is BottomNavBarGetFailState) {
+        if (state is ExpiredTokenState) {
           Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(
-                builder: (context) => const DashsboardScreen(),
+                builder: (context) => SignInScreen(),
               ),
               (route) => false);
         }

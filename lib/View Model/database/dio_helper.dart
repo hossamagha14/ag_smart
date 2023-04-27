@@ -6,6 +6,7 @@ import 'end_points.dart';
 class DioHelper {
   final Dio dio = Dio();
   final Dio refreshDio = Dio();
+  int errorStatusCode = 0;
   String? accessToken;
 
   DioHelper() {
@@ -19,6 +20,8 @@ class DioHelper {
         if (error.response?.statusCode == 401) {
           await refreshAccessToken();
           return handler.resolve(await _retry(error.requestOptions));
+        }else if(error.response?.statusCode == null){
+          errorStatusCode=-1;
         }
         return handler.next(error);
       },
@@ -62,12 +65,19 @@ class DioHelper {
         CacheHelper.saveData(key: 'token', value: accessToken);
       }
     } catch (e) {
-      // Navigator.pushAndRemoveUntil(
-      //     context,
-      //     MaterialPageRoute(
-      //       builder: (context) => SignInScreen(),
-      //     ),
-      //     (route) => false);
+      if (e is DioError) {
+        if (e.response!.statusCode == null) {
+          errorStatusCode = -1;
+        } else if (e.response!.statusCode == 401 &&
+            e.response!.data['error'] == 'token_expired') {
+          errorStatusCode = e.response!.statusCode!;
+        } else if (e.response!.statusCode == 401 &&
+            e.response!.data['error'] == 'token_revoked') {
+          errorStatusCode = 402;
+        }else{
+          errorStatusCode=400;
+        }
+      }
     }
   }
 }

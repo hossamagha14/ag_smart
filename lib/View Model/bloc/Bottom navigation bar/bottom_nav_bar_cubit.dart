@@ -10,14 +10,16 @@ import 'package:ag_smart/View/Screens/settings.dart';
 import 'package:ag_smart/View/Screens/station_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_month_picker/flutter_month_picker.dart';
 
 import '../../../Model/custom_irrigation_model.dart';
 import '../../../Model/days_model.dart';
 import '../../../View/Reusable/text.dart';
 import '../../database/dio_helper.dart';
 import '../../database/end_points.dart';
+import '../commom_states.dart';
 
-class BottomNavBarCubit extends Cubit<BottomNavBarStates> {
+class BottomNavBarCubit extends Cubit<CommonStates> {
   BottomNavBarCubit() : super(BottomNavBarIntialState());
 
   static BottomNavBarCubit get(context) => BlocProvider.of(context);
@@ -33,6 +35,13 @@ class BottomNavBarCubit extends Cubit<BottomNavBarStates> {
   List<Map<String, dynamic>> manualDurationsList = [];
   int index = 0;
   List<CustomIrrigationModel> customIrrigationModelList = [];
+  String dropDownValue = 'Last 7 days';
+  DateTime chosenYear = DateTime.now();
+  double maxX = 31;
+  double start = 0;
+  double end = 31;
+  DateTime? chosenMonth;
+  DateTimeRange? chosenRange;
   List<DaysModel> days = [
     DaysModel(day: 'SAT', isOn: false),
     DaysModel(day: 'SUN', isOn: false),
@@ -42,6 +51,43 @@ class BottomNavBarCubit extends Cubit<BottomNavBarStates> {
     DaysModel(day: 'THU', isOn: false),
     DaysModel(day: 'FRI', isOn: false),
   ];
+  List<String> dropDownValues = [
+    'Last 7 days',
+    'Monthly',
+    'Yearly',
+    'By Quarter',
+    'Custom Range',
+  ];
+
+  chooseYear(DateTime value) {
+    chosenYear = value;
+    emit(BottomNavBarChooseYearState());
+  }
+
+  chooseRange(context) async {
+    chosenRange = await showDateRangePicker(
+        context: context, firstDate: DateTime(2000), lastDate: DateTime.now());
+         start=chosenRange!.start.day.toDouble();
+         end=chosenRange!.end.day.toDouble();
+        
+    emit(BottomNavBarChooseRangeState());
+  }
+
+  chooseMonth(context) async {
+    chosenMonth = await showMonthPicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime.now(),
+    );
+    maxX = DateTime(chosenMonth!.year, chosenMonth!.month + 1, 0).day.toDouble();
+    emit(BottomNavBarChooseYearState());
+  }
+
+  chooseReport(String value) {
+    dropDownValue = value;
+    emit(BottomNavBarChooseDropDownValueState());
+  }
 
   chooseIndex(int value) {
     index = value;
@@ -145,7 +191,6 @@ class BottomNavBarCubit extends Cubit<BottomNavBarStates> {
         emit(BottomNavBarGetSuccessState());
       }
     }).catchError((onError) {
-      print(onError.toString());
       emit(BottomNavBarGetFailState());
     });
   }

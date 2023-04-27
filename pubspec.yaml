@@ -41,7 +41,11 @@ dependencies:
   shared_preferences:
   sqflite: ^2.2.5
   numberpicker: ^2.1.1
-  intl: ^0.18.1
+  calendar_date_picker2: ^0.5.2
+  fl_chart: ^0.62.0
+  intl: ^0.17.0
+  month_year_picker: ^0.2.0+2
+  flutter_month_picker: ^0.0.1
 
 dev_dependencies:
   flutter_test:

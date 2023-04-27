@@ -40,7 +40,7 @@ class CustomDurationSettingsScreen extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) => CustomDurationByTime(
-                      stationId: 1,
+                      stationId: stationId,
                       valveId: valveId,
                       lineIndex: lineIndex,
                       irrigationMethod2: myCubit.irrigationMethod2!,
@@ -86,7 +86,7 @@ class CustomDurationSettingsScreen extends StatelessWidget {
                                 irrigationMethod2: myCubit.irrigationMethod2!,
                                 valveId: valveId,
                                 lineIndex: lineIndex,
-                                stationId: 1);
+                                stationId: stationId);
                           }
                         },
                         buttonColor: greenButtonColor,

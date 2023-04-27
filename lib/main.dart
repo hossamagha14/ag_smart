@@ -16,6 +16,7 @@ import 'package:ag_smart/View/Screens/sign_in.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'View Model/bloc/Firtiliser settings/firtiliser_settings_cubit.dart';
+import 'View/Screens/bottom_nav_bar.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -78,7 +79,7 @@ class MyApp extends StatelessWidget {
                 centerTitle: true)),
         home: CacheHelper.getData(key: 'languageChoosen') == false
             ? const ChooseLanguageScreen(isEdit: false)
-            : SignInScreen(),
+            : const BottomNavBarScreen(),
       ),
     );
   }

@@ -1,5 +1,4 @@
 import 'package:ag_smart/View%20Model/bloc/Bottom%20navigation%20bar/bottom_nav_bar_cubit.dart';
-import 'package:ag_smart/View%20Model/bloc/Bottom%20navigation%20bar/bottom_nav_bar_states.dart';
 import 'package:ag_smart/View/Reusable/colors.dart';
 import 'package:ag_smart/View/Reusable/firtilisers_scarcrow_light_widget.dart';
 import 'package:ag_smart/View/Reusable/get_choosen_days.dart';
@@ -9,6 +8,8 @@ import 'package:ag_smart/View/Reusable/text.dart';
 import 'package:ag_smart/View/Screens/edit_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../View Model/bloc/commom_states.dart';
 
 class StationInfoScreen extends StatelessWidget {
   const StationInfoScreen({Key? key}) : super(key: key);
@@ -21,7 +22,7 @@ class StationInfoScreen extends StatelessWidget {
         automaticallyImplyLeading: false,
       ),
       body: SafeArea(
-        child: BlocConsumer<BottomNavBarCubit, BottomNavBarStates>(
+        child: BlocConsumer<BottomNavBarCubit, CommonStates>(
             listener: (context, state) {},
             builder: (context, state) {
               BottomNavBarCubit myCubit = BottomNavBarCubit.get(context);
