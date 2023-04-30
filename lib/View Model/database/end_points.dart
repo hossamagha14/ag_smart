@@ -21,3 +21,7 @@ const manualIrrigationSettings='/station/irrigation_settings/manual';
 const customFertilization='/station/fertilizer_settings/custom';
 const stationBySerial='station/by_serial';
 const refresh='refresh';
+const dailyRecords='/daily_records/range';
+const yearlyRecords='/monthly_records/year';
+const monthlyRecords='/daily_records/month';
+const monthlyRange='/monthly_records/range';

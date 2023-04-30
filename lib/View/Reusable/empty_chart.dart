@@ -1,13 +1,8 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
-class CustomChart extends StatelessWidget {
-  final double start;
-  final double end;
-  final List<FlSpot> spots;
-  const CustomChart(
-      {Key? key, required this.start, required this.end, required this.spots})
-      : super(key: key);
+class EmptyChart extends StatelessWidget {
+  const EmptyChart({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,14 +11,13 @@ class CustomChart extends StatelessWidget {
       width: MediaQuery.of(context).size.width * 0.8,
       child: LineChart(
         LineChartData(
-          maxX: end,
-          minX: start,
-          maxY: 500,
+          maxX: 6,
+          maxY: 160,
           lineTouchData: LineTouchData(enabled: true),
           lineBarsData: [
             LineChartBarData(
-              spots:spots,
-              isCurved: false,
+              spots: [],
+              isCurved: true,
               barWidth: 4,
               gradient: LinearGradient(stops: const [
                 0.5,
@@ -54,7 +48,7 @@ class CustomChart extends StatelessWidget {
             topTitles: AxisTitles(),
             leftTitles: AxisTitles(
                 sideTitles: SideTitles(
-              interval: 50,
+              interval: 20,
               showTitles: true,
               getTitlesWidget: (value, meta) {
                 return Text(
@@ -68,16 +62,28 @@ class CustomChart extends StatelessWidget {
             )),
             bottomTitles: AxisTitles(
               sideTitles: SideTitles(
-                interval: 4,
                 showTitles: true,
                 getTitlesWidget: (value, meta) {
-                  return Text(
-                    '${value.toInt()}',
-                    style: const TextStyle(
-                        color: Colors.grey,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 12),
-                  );
+                  switch (value.toInt()) {
+                    case 0:
+                      return const Text('Sun',
+                          style: TextStyle(
+                              color: Colors.grey, fontWeight: FontWeight.bold));
+                    case 2:
+                      return const Text('Tue',
+                          style: TextStyle(
+                              color: Colors.grey, fontWeight: FontWeight.bold));
+                    case 4:
+                      return const Text('Thu',
+                          style: TextStyle(
+                              color: Colors.grey, fontWeight: FontWeight.bold));
+                    case 6:
+                      return const Text('Sat',
+                          style: TextStyle(
+                              color: Colors.grey, fontWeight: FontWeight.bold));
+                    default:
+                      return const Text('');
+                  }
                 },
               ),
             ),

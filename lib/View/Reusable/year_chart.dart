@@ -2,7 +2,8 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 class YearChart extends StatelessWidget {
-  const YearChart({Key? key}) : super(key: key);
+  final List<FlSpot> spots;
+  const YearChart({Key? key, required this.spots}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -12,25 +13,12 @@ class YearChart extends StatelessWidget {
       child: LineChart(
         LineChartData(
           maxX: 11,
-          maxY: 160,
+          maxY: 3750,
           lineTouchData: LineTouchData(enabled: true),
           lineBarsData: [
             LineChartBarData(
-              spots: [
-                const FlSpot(0, 60),
-                const FlSpot(1, 20),
-                const FlSpot(2, 30),
-                const FlSpot(3, 10),
-                const FlSpot(4, 50),
-                const FlSpot(5, 40),
-                const FlSpot(6, 60),
-                const FlSpot(7, 80),
-                const FlSpot(8, 90),
-                const FlSpot(9, 70),
-                const FlSpot(10, 110),
-                const FlSpot(11, 100),
-              ],
-              isCurved: true,
+              spots: spots,
+              isCurved: false,
               barWidth: 4,
               gradient: LinearGradient(stops: const [
                 0.5,
@@ -61,7 +49,7 @@ class YearChart extends StatelessWidget {
             topTitles: AxisTitles(),
             leftTitles: AxisTitles(
                 sideTitles: SideTitles(
-              interval: 20,
+              interval: 750,
               showTitles: true,
               getTitlesWidget: (value, meta) {
                 return Text(
@@ -112,7 +100,7 @@ class YearChart extends StatelessWidget {
           borderData: FlBorderData(show: false),
           gridData: FlGridData(
             show: true,
-            horizontalInterval: 20,
+            horizontalInterval: 750,
             verticalInterval: 1,
             drawVerticalLine: true,
             getDrawingHorizontalLine: (value) {

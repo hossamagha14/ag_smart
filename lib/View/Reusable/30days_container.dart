@@ -3,8 +3,8 @@ import 'package:intl/intl.dart';
 
 import 'colors.dart';
 
-class SevenDaysContainer extends StatelessWidget {
-  const SevenDaysContainer({Key? key}) : super(key: key);
+class ThirtyDaysContainer extends StatelessWidget {
+  const ThirtyDaysContainer({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class SevenDaysContainer extends StatelessWidget {
             RichText(
               text: TextSpan(children: [
                 TextSpan(
-                    text: '7',
+                    text: '30',
                     style: TextStyle(
                         color: iconColor,
                         fontSize: 35,
@@ -42,8 +42,8 @@ class SevenDaysContainer extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  DateFormat('d.MMMM.y')
-                      .format(DateTime.now().subtract(const Duration(days: 6))),
+                  DateFormat('d.MMMM.y').format(
+                      DateTime.now().subtract(const Duration(days: 29))),
                   style: TextStyle(
                       color: iconColor,
                       fontSize: 18,

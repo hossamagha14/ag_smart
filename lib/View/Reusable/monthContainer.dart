@@ -1,9 +1,8 @@
-import 'package:ag_smart/View%20Model/bloc/commom_states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-
-import '../../View Model/bloc/Bottom navigation bar/bottom_nav_bar_cubit.dart';
+import '../../View Model/bloc/Report/report_cubit.dart';
+import '../../View Model/bloc/Report/report_states.dart';
 import 'colors.dart';
 
 class MonthContainer extends StatelessWidget {
@@ -11,10 +10,10 @@ class MonthContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<BottomNavBarCubit, CommonStates>(
+    return BlocConsumer<ReportCubit, ReportStates>(
       listener: (context, state) {},
       builder: (context, state) {
-        BottomNavBarCubit myCubit = BottomNavBarCubit.get(context);
+        ReportCubit myCubit = ReportCubit.get(context);
         return Container(
           height: MediaQuery.of(context).size.height * 0.1,
           width: MediaQuery.of(context).size.width * 0.8,
@@ -24,17 +23,10 @@ class MonthContainer extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Padding(
-                padding: EdgeInsets.only(
-                    left: MediaQuery.of(context).size.width * 0.23),
-                child: Text(
-                  myCubit.chosenMonth == null
-                      ? DateFormat('MMMM.y').format(DateTime.now()).toString()
-                      : DateFormat('MMMM.y')
-                          .format(myCubit.chosenMonth!)
-                          .toString(),
-                  style: TextStyle(fontSize: 25, color: iconColor),
-                ),
+              SizedBox(width: MediaQuery.of(context).size.width * 0.05),
+              Text(
+                DateFormat('MMMM.y').format(myCubit.chosenMonth).toString(),
+                style: TextStyle(fontSize: 25, color: iconColor),
               ),
               InkWell(
                 child: Container(

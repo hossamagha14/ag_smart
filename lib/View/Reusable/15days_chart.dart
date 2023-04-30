@@ -2,9 +2,9 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class SevenDaysChart extends StatelessWidget {
+class FifteenDaysChart extends StatelessWidget {
   final List<FlSpot> spots;
-  const SevenDaysChart({Key? key,required this.spots }) : super(key: key);
+  const FifteenDaysChart({Key? key, required this.spots }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -13,12 +13,13 @@ class SevenDaysChart extends StatelessWidget {
       width: MediaQuery.of(context).size.width * 0.8,
       child: LineChart(
         LineChartData(
-          maxX: 6,
+          maxX: 14,
           maxY: 600,
+          minY: 0,
           lineTouchData: LineTouchData(enabled: true),
           lineBarsData: [
             LineChartBarData(
-              spots: spots,
+              spots:spots,
               isCurved: false,
               barWidth: 4,
               gradient: LinearGradient(stops: const [
@@ -44,7 +45,6 @@ class SevenDaysChart extends StatelessWidget {
                       ])),
             ),
           ],
-          minY: 0,
           titlesData: FlTitlesData(
             rightTitles: AxisTitles(),
             topTitles: AxisTitles(),
@@ -71,7 +71,7 @@ class SevenDaysChart extends StatelessWidget {
                       return Text(
                           DateFormat('d-M')
                               .format(DateTime.now()
-                                  .subtract(const Duration(days: 6)))
+                                  .subtract(const Duration(days: 14)))
                               .toString(),
                           style: const TextStyle(
                               color: Colors.grey, fontWeight: FontWeight.bold));
@@ -79,7 +79,7 @@ class SevenDaysChart extends StatelessWidget {
                       return Text(
                           DateFormat('d-M')
                               .format(DateTime.now()
-                                  .subtract(const Duration(days: 4)))
+                                  .subtract(const Duration(days: 12)))
                               .toString(),
                           style: const TextStyle(
                               color: Colors.grey, fontWeight: FontWeight.bold));
@@ -87,11 +87,43 @@ class SevenDaysChart extends StatelessWidget {
                       return Text(
                           DateFormat('d-M')
                               .format(DateTime.now()
-                                  .subtract(const Duration(days: 2)))
+                                  .subtract(const Duration(days: 10)))
                               .toString(),
                           style: const TextStyle(
                               color: Colors.grey, fontWeight: FontWeight.bold));
                     case 6:
+                      return Text(
+                          DateFormat('d-M')
+                              .format(DateTime.now()
+                                  .subtract(const Duration(days: 8)))
+                              .toString(),
+                          style: const TextStyle(
+                              color: Colors.grey, fontWeight: FontWeight.bold));
+                    case 8:
+                      return Text(
+                          DateFormat('d-M')
+                              .format(DateTime.now()
+                                  .subtract(const Duration(days: 6)))
+                              .toString(),
+                          style: const TextStyle(
+                              color: Colors.grey, fontWeight: FontWeight.bold));
+                    case 10:
+                      return Text(
+                          DateFormat('d-M')
+                              .format(DateTime.now()
+                                  .subtract(const Duration(days: 4)))
+                              .toString(),
+                          style: const TextStyle(
+                              color: Colors.grey, fontWeight: FontWeight.bold));
+                    case 12:
+                      return Text(
+                          DateFormat('d-M')
+                              .format(DateTime.now()
+                                  .subtract(const Duration(days: 2)))
+                              .toString(),
+                          style: const TextStyle(
+                              color: Colors.grey, fontWeight: FontWeight.bold));
+                    case 14:
                       return Text(
                           DateFormat('d-M').format(DateTime.now()).toString(),
                           style: const TextStyle(

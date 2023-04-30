@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 
 class MonthChart extends StatelessWidget {
   final double numberOfDays;
-  const MonthChart({Key? key,required this.numberOfDays}) : super(key: key);
+  final List<FlSpot> spots;
+  const MonthChart({Key? key,required this.numberOfDays, required this.spots }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -13,42 +14,13 @@ class MonthChart extends StatelessWidget {
       child: LineChart(
         LineChartData(
           maxX: numberOfDays,
-          maxY: 170,
+          maxY: 1000,
+          minX: 1,
           lineTouchData: LineTouchData(enabled: true),
           lineBarsData: [
             LineChartBarData(
-              spots: [
-                const FlSpot(0, 10),
-                const FlSpot(1, 20),
-                const FlSpot(2, 30),
-                const FlSpot(3, 40),
-                const FlSpot(4, 20),
-                const FlSpot(5, 60),
-                const FlSpot(6, 70),
-                const FlSpot(7, 100),
-                const FlSpot(8, 90),
-                const FlSpot(9, 100),
-                const FlSpot(10, 110),
-                const FlSpot(11, 120),
-                const FlSpot(12, 130),
-                const FlSpot(13, 140),
-                const FlSpot(14, 150),
-                const FlSpot(15, 155),
-                const FlSpot(16, 156),
-                const FlSpot(17, 155),
-                const FlSpot(18, 150),
-                const FlSpot(19, 140),
-                const FlSpot(20, 130),
-                const FlSpot(21, 120),
-                const FlSpot(22, 110),
-                const FlSpot(23, 100),
-                const FlSpot(24, 90),
-                const FlSpot(25, 110),
-                const FlSpot(26, 70),
-                const FlSpot(27, 60),
-                const FlSpot(28, 50),
-              ],
-              isCurved: true,
+              spots:spots,
+              isCurved: false,
               barWidth: 4,
               gradient: LinearGradient(stops: const [
                 0.5,
@@ -79,7 +51,7 @@ class MonthChart extends StatelessWidget {
             topTitles: AxisTitles(),
             leftTitles: AxisTitles(
                 sideTitles: SideTitles(
-              interval: 20,
+              interval: 100,
               showTitles: true,
               getTitlesWidget: (value, meta) {
                 return Text(
@@ -110,7 +82,7 @@ class MonthChart extends StatelessWidget {
           borderData: FlBorderData(show: false),
           gridData: FlGridData(
             show: true,
-            horizontalInterval: 20,
+            horizontalInterval: 100,
             verticalInterval: 1,
             drawVerticalLine: true,
             getDrawingHorizontalLine: (value) {

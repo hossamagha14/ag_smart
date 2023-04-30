@@ -5,6 +5,7 @@ import 'package:ag_smart/View%20Model/bloc/Irrigation%20type/irrigation_type_cub
 import 'package:ag_smart/View%20Model/bloc/Language/language_cubit.dart';
 import 'package:ag_smart/View%20Model/bloc/Lines%20activation/lines_activation_cubit.dart';
 import 'package:ag_smart/View%20Model/bloc/Pump%20settings/pump_settingd_cubit.dart';
+import 'package:ag_smart/View%20Model/bloc/Report/report_cubit.dart';
 import 'package:ag_smart/View%20Model/bloc/Scarcrow/Scarcrow_cubit.dart';
 import 'package:ag_smart/View%20Model/bloc/Stations/station_cubit.dart';
 import 'package:ag_smart/View%20Model/bloc/light/light_cubit.dart';
@@ -12,7 +13,6 @@ import 'package:ag_smart/View%20Model/database/cache_helpher.dart';
 import 'package:ag_smart/View/Reusable/colors.dart';
 import 'package:ag_smart/View/Reusable/text.dart';
 import 'package:ag_smart/View/Screens/choose_language.dart';
-import 'package:ag_smart/View/Screens/sign_in.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'View Model/bloc/Firtiliser settings/firtiliser_settings_cubit.dart';
@@ -64,6 +64,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => CustomFertilizationCubit(),
+        ),
+        BlocProvider(
+          create: (context) => ReportCubit()..get7days(),
         ),
       ],
       child: MaterialApp(

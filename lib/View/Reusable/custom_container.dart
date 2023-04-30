@@ -1,5 +1,5 @@
-import 'package:ag_smart/View%20Model/bloc/Bottom%20navigation%20bar/bottom_nav_bar_cubit.dart';
-import 'package:ag_smart/View%20Model/bloc/commom_states.dart';
+import 'package:ag_smart/View%20Model/bloc/Report/report_cubit.dart';
+import 'package:ag_smart/View%20Model/bloc/Report/report_states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -11,10 +11,10 @@ class CustomContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<BottomNavBarCubit, CommonStates>(
+    return BlocConsumer<ReportCubit, ReportStates>(
       listener: (context, state) {},
       builder: (context, state) {
-        BottomNavBarCubit myCubit = BottomNavBarCubit.get(context);
+        ReportCubit myCubit = ReportCubit.get(context);
         return Container(
           height: MediaQuery.of(context).size.height * 0.1,
           width: MediaQuery.of(context).size.width * 0.8,
@@ -40,7 +40,7 @@ class CustomContainer extends StatelessWidget {
                     : RichText(
                         text: TextSpan(children: [
                           TextSpan(
-                              text: '${myCubit.chosenRange!.duration.inDays}',
+                              text: '${myCubit.chosenRange![1]!.difference(myCubit.chosenRange![0]!).inDays+1}',
                               style: TextStyle(
                                   color: iconColor,
                                   fontSize: 35,
@@ -62,7 +62,7 @@ class CustomContainer extends StatelessWidget {
                         children: [
                           Text(
                             DateFormat('d.MMM.y')
-                                .format(myCubit.chosenRange!.start),
+                                .format(myCubit.chosenRange![0]!),
                             style: TextStyle(
                                 color: iconColor,
                                 fontSize: 18,
@@ -70,7 +70,7 @@ class CustomContainer extends StatelessWidget {
                           ),
                           Text(
                               DateFormat('d.MMM.y')
-                                  .format(myCubit.chosenRange!.end),
+                                  .format(myCubit.chosenRange![1]!),
                               style: TextStyle(
                                   color: iconColor,
                                   fontSize: 18,
