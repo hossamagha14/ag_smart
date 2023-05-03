@@ -1,5 +1,7 @@
 import 'package:ag_smart/View%20Model/bloc/Stations/station_states.dart';
 import 'package:ag_smart/View%20Model/database/end_points.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -16,6 +18,7 @@ class StationsCubit extends Cubit<StationsStates> {
   bool securePassword = true;
   bool secureConfirmPassword = true;
   StationModel? stationModel;
+  String barCode = '';
   List<StationModel> stations = [];
 
   showPassword() {
@@ -40,6 +43,15 @@ class StationsCubit extends Cubit<StationsStates> {
       print(onError);
       emit(StationsGetFailState());
     });
+
+    Future scan() async {
+      try {
+        barCode = await FlutterBarcodeScanner.scanBarcode(
+            '#E2BFE8', 'Cancel', true, ScanMode.QR);
+      } on PlatformException {
+        barCode = 'Failed';
+      }
+    }
   }
 
   // createDataBase() async {
