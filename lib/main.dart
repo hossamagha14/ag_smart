@@ -13,10 +13,10 @@ import 'package:ag_smart/View%20Model/database/cache_helpher.dart';
 import 'package:ag_smart/View/Reusable/colors.dart';
 import 'package:ag_smart/View/Reusable/text.dart';
 import 'package:ag_smart/View/Screens/choose_language.dart';
+import 'package:ag_smart/View/Screens/dashboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'View Model/bloc/Firtiliser settings/firtiliser_settings_cubit.dart';
-import 'View/Screens/bottom_nav_bar.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -66,7 +66,7 @@ class MyApp extends StatelessWidget {
           create: (context) => CustomFertilizationCubit(),
         ),
         BlocProvider(
-          create: (context) => ReportCubit()..get7days(),
+          create: (context) => ReportCubit()..getStations(),
         ),
       ],
       child: MaterialApp(
@@ -82,7 +82,7 @@ class MyApp extends StatelessWidget {
                 centerTitle: true)),
         home: CacheHelper.getData(key: 'languageChoosen') == false
             ? const ChooseLanguageScreen(isEdit: false)
-            : const BottomNavBarScreen(),
+            : const DashsboardScreen(),
       ),
     );
   }

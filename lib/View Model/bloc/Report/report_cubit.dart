@@ -7,6 +7,8 @@ import 'package:flutter_month_picker/flutter_month_picker.dart';
 import 'package:intl/intl.dart';
 
 import '../../../Model/range_model.dart';
+import '../../../Model/report_station_model.dart';
+import '../../../Model/station_model.dart';
 import '../../../View/Reusable/text.dart';
 import '../../database/dio_helper.dart';
 import '../../database/end_points.dart';
@@ -19,12 +21,18 @@ class ReportCubit extends Cubit<ReportStates> {
   String dropDownValue = 'Last 7 days';
   DateTime chosenYear = DateTime.now();
   double maxX = 31;
+  double maxY = 100;
   List<RangeModel> ranges = [];
   List<FlSpot> spots = [];
   DateTime chosenMonth = DateTime.now();
   List<DateTime?>? chosenRange;
   int? quarter;
   int quarterYear = 2023;
+  int reportStationId = stationId;
+  StationModel? stationModel;
+  List<StationModel> stations = [];
+  ReportStationModel reportStationModel = ReportStationModel();
+  String? currentStationName;
   List<String> dropDownValues = [
     'Last 7 days',
     'Last 15 days',
@@ -75,6 +83,7 @@ class ReportCubit extends Cubit<ReportStates> {
     dropDownValue = value;
     ranges = [];
     spots = [];
+    maxY = 100;
     chosenRange = null;
     if (dropDownValue == 'Last 7 days') {
       get7days();
@@ -95,9 +104,10 @@ class ReportCubit extends Cubit<ReportStates> {
     DateTime end = DateTime.now();
     int duration = end.difference(start).inDays;
     bool check = false;
+    maxY = 100;
     dio
         .get(
-            '$base/$dailyRecords/$stationId/${DateFormat('dd-MM-y').format(start)}/${DateFormat('dd-MM-y').format(end)}')
+            '$base/$dailyRecords/$reportStationId/${DateFormat('dd-MM-y').format(start)}/${DateFormat('dd-MM-y').format(end)}')
         .then((value) {
       for (int i = 0; i < value.data.length; i++) {
         ranges.insert(0, RangeModel.fromJson(value.data[i]));
@@ -112,12 +122,16 @@ class ReportCubit extends Cubit<ReportStates> {
             spots.add(FlSpot(i.toDouble(), ranges[j].amount!.toDouble()));
             check = true;
           }
+          if (maxY < ranges[j].amount!) {
+            maxY = ranges[j].amount!.toDouble();
+          }
         }
         if (check == false) {
           spots.add(FlSpot(i.toDouble(), 0));
         }
       }
       print(spots);
+      print(maxY);
       emit(ReportChooseRangeState());
     }).catchError((onError) {});
   }
@@ -127,9 +141,10 @@ class ReportCubit extends Cubit<ReportStates> {
     DateTime end = DateTime.now();
     int duration = end.difference(start).inDays;
     bool check = false;
+    maxY = 100;
     dio
         .get(
-            '$base/$dailyRecords/$stationId/${DateFormat('dd-MM-y').format(start)}/${DateFormat('dd-MM-y').format(end)}')
+            '$base/$dailyRecords/$reportStationId/${DateFormat('dd-MM-y').format(start)}/${DateFormat('dd-MM-y').format(end)}')
         .then((value) {
       for (int i = 0; i < value.data.length; i++) {
         ranges.insert(0, RangeModel.fromJson(value.data[i]));
@@ -144,12 +159,16 @@ class ReportCubit extends Cubit<ReportStates> {
             spots.add(FlSpot(i.toDouble(), ranges[j].amount!.toDouble()));
             check = true;
           }
+          if (maxY < ranges[j].amount!) {
+            maxY = ranges[j].amount!.toDouble();
+          }
         }
         if (check == false) {
           spots.add(FlSpot(i.toDouble(), 0));
         }
       }
       print(spots);
+      print(maxY);
       emit(ReportChooseRangeState());
     }).catchError((onError) {});
   }
@@ -159,9 +178,10 @@ class ReportCubit extends Cubit<ReportStates> {
     DateTime end = DateTime.now();
     int duration = end.difference(start).inDays;
     bool check = false;
+    maxY = 100;
     dio
         .get(
-            '$base/$dailyRecords/$stationId/${DateFormat('dd-MM-y').format(start)}/${DateFormat('dd-MM-y').format(end)}')
+            '$base/$dailyRecords/$reportStationId/${DateFormat('dd-MM-y').format(start)}/${DateFormat('dd-MM-y').format(end)}')
         .then((value) {
       for (int i = 0; i < value.data.length; i++) {
         ranges.insert(0, RangeModel.fromJson(value.data[i]));
@@ -176,12 +196,16 @@ class ReportCubit extends Cubit<ReportStates> {
             spots.add(FlSpot(i.toDouble(), ranges[j].amount!.toDouble()));
             check = true;
           }
+          if (maxY < ranges[j].amount!) {
+            maxY = ranges[j].amount!.toDouble();
+          }
         }
         if (check == false) {
           spots.add(FlSpot(i.toDouble(), 0));
         }
       }
       print(spots);
+      print(maxY);
       emit(ReportChooseRangeState());
     }).catchError((onError) {});
   }
@@ -190,9 +214,10 @@ class ReportCubit extends Cubit<ReportStates> {
     bool check = false;
     spots = [];
     ranges = [];
+    maxY = 100;
     dio
         .get(
-            '$base/$yearlyRecords/$stationId/${DateFormat('y').format(chosenYear)}')
+            '$base/$yearlyRecords/$reportStationId/${DateFormat('y').format(chosenYear)}')
         .then((value) {
       for (int i = 0; i < value.data.length; i++) {
         ranges.insert(0, RangeModel.fromJson(value.data[i]));
@@ -207,12 +232,16 @@ class ReportCubit extends Cubit<ReportStates> {
             spots.add(FlSpot(i.toDouble(), ranges[j].amount!.toDouble()));
             check = true;
           }
+          if (maxY < ranges[j].amount!) {
+            maxY = ranges[j].amount!.toDouble();
+          }
         }
         if (check == false) {
           spots.add(FlSpot(i.toDouble(), 0));
         }
       }
       print(spots);
+      print(maxY);
       emit(ReportChooseRangeState());
     }).catchError((onError) {});
   }
@@ -225,9 +254,10 @@ class ReportCubit extends Cubit<ReportStates> {
     print(duration);
     spots = [];
     ranges = [];
+    maxY = 100;
     dio
         .get(
-            '$base/$monthlyRecords/$stationId/${DateFormat('MM-y').format(chosenMonth)}')
+            '$base/$monthlyRecords/$reportStationId/${DateFormat('MM-y').format(chosenMonth)}')
         .then((value) {
       for (int i = 0; i < value.data.length; i++) {
         ranges.insert(0, RangeModel.fromJson(value.data[i]));
@@ -242,6 +272,9 @@ class ReportCubit extends Cubit<ReportStates> {
             spots.add(FlSpot(i + 1.toDouble(), ranges[j].amount!.toDouble()));
             check = true;
           }
+          if (maxY < ranges[j].amount!) {
+            maxY = ranges[j].amount!.toDouble();
+          }
         }
         if (check == false) {
           spots.add(FlSpot(i + 1.toDouble(), 0));
@@ -249,6 +282,7 @@ class ReportCubit extends Cubit<ReportStates> {
         emit(ReportChooseRangeState());
       }
       print(spots);
+      print(maxY);
       emit(ReportChooseRangeState());
     }).catchError((onError) {});
   }
@@ -258,11 +292,12 @@ class ReportCubit extends Cubit<ReportStates> {
     DateTime end = chosenRange![1]!;
     int duration = end.difference(start).inDays;
     bool check = false;
+    maxY = 100;
     spots = [];
     ranges = [];
     dio
         .get(
-            '$base/$dailyRecords/$stationId/${DateFormat('dd-MM-y').format(start)}/${DateFormat('dd-MM-y').format(end)}')
+            '$base/$dailyRecords/$reportStationId/${DateFormat('dd-MM-y').format(start)}/${DateFormat('dd-MM-y').format(end)}')
         .then((value) {
       for (int i = 0; i < value.data.length; i++) {
         ranges.insert(0, RangeModel.fromJson(value.data[i]));
@@ -280,6 +315,9 @@ class ReportCubit extends Cubit<ReportStates> {
                 ranges[j].amount!.toDouble()));
             check = true;
           }
+          if (maxY < ranges[j].amount!) {
+            maxY = ranges[j].amount!.toDouble();
+          }
         }
         if (check == false) {
           spots.add(FlSpot(
@@ -289,18 +327,19 @@ class ReportCubit extends Cubit<ReportStates> {
         }
       }
       print(spots);
+      print(maxY);
       emit(ReportChooseRangeState());
     }).catchError((onError) {});
   }
 
   firstQuarter() {
     quarter = 1;
-    spots=[];
-    ranges=[];
-    bool check=false;
+    spots = [];
+    ranges = [];
+    maxY = 100;
+    bool check = false;
     dio
-        .get(
-            '$base/$monthlyRange/$stationId/1-$quarterYear/3-$quarterYear')
+        .get('$base/$monthlyRange/$reportStationId/1-$quarterYear/3-$quarterYear')
         .then((value) {
       for (int i = 0; i < value.data.length; i++) {
         ranges.insert(0, RangeModel.fromJson(value.data[i]));
@@ -309,10 +348,13 @@ class ReportCubit extends Cubit<ReportStates> {
       for (int i = 0; i <= 2; i++) {
         check = false;
         for (int j = 0; j < ranges.length; j++) {
-          if (DateFormat('MM-y').format(DateTime(quarterYear,i+1)) ==
+          if (DateFormat('MM-y').format(DateTime(quarterYear, i + 1)) ==
               ranges[j].date) {
             spots.add(FlSpot(i.toDouble(), ranges[j].amount!.toDouble()));
             check = true;
+          }
+          if (maxY < ranges[j].amount!) {
+            maxY = ranges[j].amount!.toDouble();
           }
         }
         if (check == false) {
@@ -320,6 +362,7 @@ class ReportCubit extends Cubit<ReportStates> {
         }
       }
       print(spots);
+      print(maxY);
       emit(ReportChooseRangeState());
     }).catchError((onError) {});
     emit(ReportChooseQuarterState());
@@ -327,12 +370,12 @@ class ReportCubit extends Cubit<ReportStates> {
 
   secondQuarter() {
     quarter = 2;
-    bool check=false;
-    spots=[];
-    ranges=[];
+    bool check = false;
+    spots = [];
+    ranges = [];
+    maxY = 100;
     dio
-        .get(
-            '$base/$monthlyRange/$stationId/4-$quarterYear/6-$quarterYear')
+        .get('$base/$monthlyRange/$reportStationId/4-$quarterYear/6-$quarterYear')
         .then((value) {
       for (int i = 0; i < value.data.length; i++) {
         ranges.insert(0, RangeModel.fromJson(value.data[i]));
@@ -341,10 +384,13 @@ class ReportCubit extends Cubit<ReportStates> {
       for (int i = 0; i <= 2; i++) {
         check = false;
         for (int j = 0; j < ranges.length; j++) {
-          if (DateFormat('MM-y').format(DateTime(quarterYear,i+4)) ==
+          if (DateFormat('MM-y').format(DateTime(quarterYear, i + 4)) ==
               ranges[j].date) {
             spots.add(FlSpot(i.toDouble(), ranges[j].amount!.toDouble()));
             check = true;
+          }
+          if (maxY < ranges[j].amount!) {
+            maxY = ranges[j].amount!.toDouble();
           }
         }
         if (check == false) {
@@ -352,6 +398,7 @@ class ReportCubit extends Cubit<ReportStates> {
         }
       }
       print(spots);
+      print(maxY);
       emit(ReportChooseRangeState());
     }).catchError((onError) {});
     emit(ReportChooseQuarterState());
@@ -359,12 +406,12 @@ class ReportCubit extends Cubit<ReportStates> {
 
   thirdQuarter() {
     quarter = 3;
-    bool check=false;
-    spots=[];
-    ranges=[];
+    bool check = false;
+    maxY = 100;
+    spots = [];
+    ranges = [];
     dio
-        .get(
-            '$base/$monthlyRange/$stationId/7-$quarterYear/9-$quarterYear')
+        .get('$base/$monthlyRange/$reportStationId/7-$quarterYear/9-$quarterYear')
         .then((value) {
       for (int i = 0; i < value.data.length; i++) {
         ranges.insert(0, RangeModel.fromJson(value.data[i]));
@@ -373,10 +420,13 @@ class ReportCubit extends Cubit<ReportStates> {
       for (int i = 0; i <= 2; i++) {
         check = false;
         for (int j = 0; j < ranges.length; j++) {
-          if (DateFormat('MM-y').format(DateTime(quarterYear,i+7)) ==
+          if (DateFormat('MM-y').format(DateTime(quarterYear, i + 7)) ==
               ranges[j].date) {
             spots.add(FlSpot(i.toDouble(), ranges[j].amount!.toDouble()));
             check = true;
+          }
+          if (maxY < ranges[j].amount!) {
+            maxY = ranges[j].amount!.toDouble();
           }
         }
         if (check == false) {
@@ -384,6 +434,7 @@ class ReportCubit extends Cubit<ReportStates> {
         }
       }
       print(spots);
+      print(maxY);
       emit(ReportChooseRangeState());
     }).catchError((onError) {});
     emit(ReportChooseQuarterState());
@@ -391,12 +442,12 @@ class ReportCubit extends Cubit<ReportStates> {
 
   fourthQuarter() {
     quarter = 4;
-    bool check=false;
-    spots=[];
-    ranges=[];
+    bool check = false;
+    maxY = 100;
+    spots = [];
+    ranges = [];
     dio
-        .get(
-            '$base/$monthlyRange/$stationId/10-$quarterYear/12-$quarterYear')
+        .get('$base/$monthlyRange/$reportStationId/10-$quarterYear/12-$quarterYear')
         .then((value) {
       for (int i = 0; i < value.data.length; i++) {
         ranges.insert(0, RangeModel.fromJson(value.data[i]));
@@ -405,10 +456,13 @@ class ReportCubit extends Cubit<ReportStates> {
       for (int i = 0; i <= 2; i++) {
         check = false;
         for (int j = 0; j < ranges.length; j++) {
-          if (DateFormat('MM-y').format(DateTime(quarterYear,i+10)) ==
+          if (DateFormat('MM-y').format(DateTime(quarterYear, i + 10)) ==
               ranges[j].date) {
             spots.add(FlSpot(i.toDouble(), ranges[j].amount!.toDouble()));
             check = true;
+          }
+          if (maxY < ranges[j].amount!) {
+            maxY = ranges[j].amount!.toDouble();
           }
         }
         if (check == false) {
@@ -416,6 +470,7 @@ class ReportCubit extends Cubit<ReportStates> {
         }
       }
       print(spots);
+      print(maxY);
       emit(ReportChooseRangeState());
     }).catchError((onError) {});
     emit(ReportChooseQuarterState());
@@ -433,5 +488,31 @@ class ReportCubit extends Cubit<ReportStates> {
       quarterYear -= 1;
     }
     emit(ReportSubtractQuarterState());
+  }
+
+  getStations() {
+    emit(ReportLoadinglState());
+    reportStationModel.stationName = [];
+    reportStationModel.reportStationId = [];
+    dio.get('$base/$stationInfo/by_user/$userId').then((value) {
+      for (var e in value.data) {
+        stationModel = StationModel.fromJson(e);
+        stations.add(stationModel!);
+        reportStationModel.stationName.add(stationModel!.serialNumber!);
+        reportStationModel.reportStationId.add(stationModel!.id!);
+      }
+      currentStationName = serialNumber;
+      get7days();
+      emit(ReportGetSuccessState());
+    }).catchError((onError) {
+      print(onError);
+      emit(ReportGetFailState());
+    });
+  }
+
+  chooseStation(String value,int index) {
+    currentStationName = value;
+    reportStationId=reportStationModel.reportStationId[index];
+    chooseReport(dropDownValue);
   }
 }

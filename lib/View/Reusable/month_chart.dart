@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 
 class MonthChart extends StatelessWidget {
   final double numberOfDays;
+  final double maxY;
   final List<FlSpot> spots;
-  const MonthChart({Key? key,required this.numberOfDays, required this.spots }) : super(key: key);
+  const MonthChart({Key? key,required this.numberOfDays, required this.spots, required this.maxY}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +15,7 @@ class MonthChart extends StatelessWidget {
       child: LineChart(
         LineChartData(
           maxX: numberOfDays,
-          maxY: 1000,
+          maxY: maxY*1.3,
           minX: 1,
           lineTouchData: LineTouchData(enabled: true),
           lineBarsData: [
@@ -51,7 +52,7 @@ class MonthChart extends StatelessWidget {
             topTitles: AxisTitles(),
             leftTitles: AxisTitles(
                 sideTitles: SideTitles(
-              interval: 100,
+              interval: maxY/5,
               showTitles: true,
               getTitlesWidget: (value, meta) {
                 return Text(
@@ -82,7 +83,7 @@ class MonthChart extends StatelessWidget {
           borderData: FlBorderData(show: false),
           gridData: FlGridData(
             show: true,
-            horizontalInterval: 100,
+            horizontalInterval: maxY/5,
             verticalInterval: 1,
             drawVerticalLine: true,
             getDrawingHorizontalLine: (value) {

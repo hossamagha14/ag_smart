@@ -4,7 +4,8 @@ import 'package:intl/intl.dart';
 
 class SevenDaysChart extends StatelessWidget {
   final List<FlSpot> spots;
-  const SevenDaysChart({Key? key,required this.spots }) : super(key: key);
+  final double maxY;
+  const SevenDaysChart({Key? key,required this.spots,required this.maxY }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +15,7 @@ class SevenDaysChart extends StatelessWidget {
       child: LineChart(
         LineChartData(
           maxX: 6,
-          maxY: 600,
+          maxY: maxY*1.6,
           lineTouchData: LineTouchData(enabled: true),
           lineBarsData: [
             LineChartBarData(
@@ -50,7 +51,7 @@ class SevenDaysChart extends StatelessWidget {
             topTitles: AxisTitles(),
             leftTitles: AxisTitles(
                 sideTitles: SideTitles(
-              interval: 50,
+              interval: maxY/5,
               showTitles: true,
               getTitlesWidget: (value, meta) {
                 return Text(
@@ -106,7 +107,7 @@ class SevenDaysChart extends StatelessWidget {
           borderData: FlBorderData(show: false),
           gridData: FlGridData(
             show: true,
-            horizontalInterval: 20,
+            horizontalInterval: maxY/5,
             verticalInterval: 1,
             drawVerticalLine: true,
             getDrawingHorizontalLine: (value) {

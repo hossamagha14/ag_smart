@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 class CustomChart extends StatelessWidget {
   final double start;
   final double end;
+  final double maxY;
   final List<FlSpot> spots;
   const CustomChart(
-      {Key? key, required this.start, required this.end, required this.spots})
+      {Key? key, required this.start, required this.end, required this.spots, required this.maxY})
       : super(key: key);
 
   @override
@@ -18,7 +19,7 @@ class CustomChart extends StatelessWidget {
         LineChartData(
           maxX: end,
           minX: start,
-          maxY: 500,
+          maxY: maxY*1.6,
           lineTouchData: LineTouchData(enabled: true),
           lineBarsData: [
             LineChartBarData(
@@ -54,7 +55,7 @@ class CustomChart extends StatelessWidget {
             topTitles: AxisTitles(),
             leftTitles: AxisTitles(
                 sideTitles: SideTitles(
-              interval: 50,
+              interval: maxY/5,
               showTitles: true,
               getTitlesWidget: (value, meta) {
                 return Text(
@@ -85,7 +86,7 @@ class CustomChart extends StatelessWidget {
           borderData: FlBorderData(show: false),
           gridData: FlGridData(
             show: true,
-            horizontalInterval: 20,
+            horizontalInterval: maxY/5,
             verticalInterval: 1,
             drawVerticalLine: true,
             getDrawingHorizontalLine: (value) {

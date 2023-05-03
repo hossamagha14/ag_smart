@@ -4,7 +4,8 @@ import 'package:intl/intl.dart';
 
 class ThirtyDaysChart extends StatelessWidget {
   final List<FlSpot> spots;
-  const ThirtyDaysChart({Key? key, required this.spots}) : super(key: key);
+  final double maxY;
+  const ThirtyDaysChart({Key? key, required this.spots, required this.maxY}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +15,7 @@ class ThirtyDaysChart extends StatelessWidget {
       child: LineChart(
         LineChartData(
           maxX: 29,
-          maxY: 1200,
+          maxY: maxY*1.6,
           minY: 0,
           lineTouchData: LineTouchData(enabled: true),
           lineBarsData: [
@@ -50,7 +51,7 @@ class ThirtyDaysChart extends StatelessWidget {
             topTitles: AxisTitles(),
             leftTitles: AxisTitles(
                 sideTitles: SideTitles(
-              interval: 100,
+              interval: maxY/5,
               showTitles: true,
               getTitlesWidget: (value, meta) {
                 return Text(
@@ -203,7 +204,7 @@ class ThirtyDaysChart extends StatelessWidget {
           borderData: FlBorderData(show: false),
           gridData: FlGridData(
             show: true,
-            horizontalInterval: 20,
+            horizontalInterval: maxY/5,
             verticalInterval: 1,
             drawVerticalLine: true,
             getDrawingHorizontalLine: (value) {

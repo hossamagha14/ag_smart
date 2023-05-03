@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 class QuarterChart extends StatelessWidget {
   final List<FlSpot> spots;
   final int quarter;
-  const QuarterChart({Key? key, required this.spots, required this.quarter})
+  final double maxY;
+  const QuarterChart({Key? key, required this.spots, required this.quarter, required this.maxY})
       : super(key: key);
 
   @override
@@ -16,7 +17,7 @@ class QuarterChart extends StatelessWidget {
         LineChartData(
           maxX: 2,
           minX: 0,
-          maxY: 3800,
+          maxY: maxY*1.3,
           lineTouchData: LineTouchData(enabled: true),
           lineBarsData: [
             LineChartBarData(
@@ -52,7 +53,7 @@ class QuarterChart extends StatelessWidget {
             topTitles: AxisTitles(),
             leftTitles: AxisTitles(
                 sideTitles: SideTitles(
-              interval: 500,
+              interval: maxY/5,
               showTitles: true,
               getTitlesWidget: (value, meta) {
                 return Text(
@@ -149,7 +150,7 @@ class QuarterChart extends StatelessWidget {
           borderData: FlBorderData(show: false),
           gridData: FlGridData(
             show: true,
-            horizontalInterval: 500,
+            horizontalInterval: maxY/5,
             verticalInterval: 1,
             drawVerticalLine: true,
             getDrawingHorizontalLine: (value) {

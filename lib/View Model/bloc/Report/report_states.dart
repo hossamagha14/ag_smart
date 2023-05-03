@@ -15,3 +15,11 @@ class ReportChooseQuarterState extends ReportStates {}
 class ReportAddQuarterState extends ReportStates {}
 
 class ReportSubtractQuarterState extends ReportStates {}
+
+class ReportLoadinglState extends ReportStates {}
+
+class ReportGetSuccessState extends ReportStates {}
+
+class ReportGetFailState extends ReportStates {}
+
+class ReportChooseStationState extends ReportStates {}

@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 
 class YearChart extends StatelessWidget {
   final List<FlSpot> spots;
-  const YearChart({Key? key, required this.spots}) : super(key: key);
+  final double maxY;
+  const YearChart({Key? key, required this.spots, required this.maxY}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +14,7 @@ class YearChart extends StatelessWidget {
       child: LineChart(
         LineChartData(
           maxX: 11,
-          maxY: 3750,
+          maxY: maxY*1.3,
           lineTouchData: LineTouchData(enabled: true),
           lineBarsData: [
             LineChartBarData(
@@ -49,7 +50,7 @@ class YearChart extends StatelessWidget {
             topTitles: AxisTitles(),
             leftTitles: AxisTitles(
                 sideTitles: SideTitles(
-              interval: 750,
+              interval: maxY/5,
               showTitles: true,
               getTitlesWidget: (value, meta) {
                 return Text(
@@ -100,7 +101,7 @@ class YearChart extends StatelessWidget {
           borderData: FlBorderData(show: false),
           gridData: FlGridData(
             show: true,
-            horizontalInterval: 750,
+            horizontalInterval: maxY/5,
             verticalInterval: 1,
             drawVerticalLine: true,
             getDrawingHorizontalLine: (value) {
