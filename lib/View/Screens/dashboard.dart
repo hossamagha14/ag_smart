@@ -6,6 +6,7 @@ import 'package:ag_smart/View%20Model/database/cache_helpher.dart';
 import 'package:ag_smart/View/Reusable/colors.dart';
 import 'package:ag_smart/View/Reusable/toasts.dart';
 import 'package:ag_smart/View/Screens/bottom_nav_bar.dart';
+import 'package:ag_smart/View/Screens/pump_settings.dart';
 import 'package:ag_smart/View/Screens/sign_in.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -30,7 +31,7 @@ class DashsboardScreen extends StatelessWidget {
                   builder: (context) => SignInScreen(),
                 ),
                 (route) => false);
-          }else if(state is StationsFailQrState){
+          } else if (state is StationsFailQrState) {
             errorToast('Serial number couldn\'t be found');
           }
         },
@@ -92,13 +93,24 @@ class DashsboardScreen extends StatelessWidget {
                                     CacheHelper.saveData(
                                         key: 'stationId',
                                         value: myCubit.stations[index].id!);
-                                    Navigator.pushAndRemoveUntil(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              const BottomNavBarScreen(),
-                                        ),
-                                        (route) => false);
+                                    if (myCubit.stations[index].configured ==
+                                        1) {
+                                      Navigator.pushAndRemoveUntil(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const BottomNavBarScreen(),
+                                          ),
+                                          (route) => false);
+                                    } else {
+                                      Navigator.pushAndRemoveUntil(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  PumpSettingsScreen(
+                                                      isEdit: false)),
+                                          (route) => false);
+                                    }
                                   },
                                   child: SizedBox(
                                     height: MediaQuery.of(context).size.height *
@@ -116,52 +128,58 @@ class DashsboardScreen extends StatelessWidget {
                                           Padding(
                                             padding:
                                                 const EdgeInsets.only(left: 30),
-                                            child: Text(
-                                                myCubit.stations[index].stationName!),
+                                            child: Text(myCubit
+                                                .stations[index].stationName!),
                                           ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                right: 30),
-                                            child: Row(
-                                              children: [
-                                                Text(
-                                                  myCubit
-                                                              .stations[index]
-                                                              .irrigationSettings![
-                                                                  0]
-                                                              .settingsType ==
-                                                          1
-                                                      ? 'r'
-                                                      : myCubit
-                                                                  .stations[
-                                                                      index]
-                                                                  .irrigationSettings![
-                                                                      0]
-                                                                  .settingsType ==
-                                                              2
-                                                          ? 't'
-                                                          : 'f',
-                                                  style: TextStyle(
-                                                      fontFamily: 'icons',
-                                                      color: iconColor,
-                                                      fontSize: 25),
-                                                ),
-                                                SizedBox(
-                                                  width: MediaQuery.of(context)
-                                                          .size
-                                                          .width *
-                                                      0.025,
-                                                ),
-                                                Text(
-                                                  'm',
-                                                  style: TextStyle(
-                                                      fontFamily: 'icons',
-                                                      color: iconColor,
-                                                      fontSize: 25),
-                                                ),
-                                              ],
-                                            ),
-                                          )
+                                          myCubit.stations[index].configured ==
+                                                  null
+                                              ? const SizedBox()
+                                              : Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          right: 30),
+                                                  child: Row(
+                                                    children: [
+                                                      Text(
+                                                        myCubit
+                                                                    .stations[
+                                                                        index]
+                                                                    .irrigationSettings![
+                                                                        0]
+                                                                    .settingsType ==
+                                                                1
+                                                            ? 'r'
+                                                            : myCubit
+                                                                        .stations[
+                                                                            index]
+                                                                        .irrigationSettings![
+                                                                            0]
+                                                                        .settingsType ==
+                                                                    2
+                                                                ? 't'
+                                                                : 'f',
+                                                        style: TextStyle(
+                                                            fontFamily: 'icons',
+                                                            color: iconColor,
+                                                            fontSize: 25),
+                                                      ),
+                                                      SizedBox(
+                                                        width: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .width *
+                                                            0.025,
+                                                      ),
+                                                      Text(
+                                                        'm',
+                                                        style: TextStyle(
+                                                            fontFamily: 'icons',
+                                                            color: iconColor,
+                                                            fontSize: 25),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                )
                                         ],
                                       ),
                                     ),

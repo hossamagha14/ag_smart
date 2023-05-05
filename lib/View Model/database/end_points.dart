@@ -26,3 +26,4 @@ const yearlyRecords='/monthly_records/year';
 const monthlyRecords='/daily_records/month';
 const monthlyRange='/monthly_records/range';
 const serial='/serial_number';
+const station='/station';

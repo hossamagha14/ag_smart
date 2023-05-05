@@ -3,7 +3,6 @@ import 'package:ag_smart/View%20Model/bloc/Stations/station_states.dart';
 import 'package:ag_smart/View/Reusable/colors.dart';
 import 'package:ag_smart/View/Reusable/toasts.dart';
 import 'package:ag_smart/View/Reusable/main_card.dart';
-import 'package:ag_smart/View/Reusable/my_text_field.dart';
 import 'package:ag_smart/View/Reusable/text.dart';
 import 'package:ag_smart/View/Screens/device_features.dart';
 import 'package:flutter/material.dart';
@@ -60,7 +59,7 @@ class _DeviceSetupScreenState extends State<DeviceSetupScreen> {
                       return MainCard(
                         function: () {
                           if (changeNameController.text.isEmpty) {
-                            errorToast('Please fill all the data');
+                            errorToast('Please put the station name');
                           } else {
                             myCubit.postStation(context,
                                 stationName: changeNameController.text);
@@ -69,12 +68,49 @@ class _DeviceSetupScreenState extends State<DeviceSetupScreen> {
                         //this is the widget from main_card.dart
                         mainWidget: Column(
                           children: [
-                            MyTextField(
-                              label:
-                                  text[chosenLanguage]!['Change network name']!,
-                              controller: changeNameController,
-                              color: backgroundColor,
-                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 15),
+                              child: Container(
+                                width: MediaQuery.of(context).size.width * 0.8,
+                                decoration: BoxDecoration(
+                                    color: backgroundColor,
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal:
+                                          MediaQuery.of(context).size.width *
+                                              0.05),
+                                  child: Row(
+                                    textDirection: chosenLanguage == 'ar'
+                                        ? TextDirection.rtl
+                                        : TextDirection.ltr,
+                                    children: [
+                                      SizedBox(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.635,
+                                        child: TextFormField(
+                                          textDirection: chosenLanguage == 'ar'
+                                              ? TextDirection.rtl
+                                              : TextDirection.ltr,
+                                          controller: changeNameController,
+                                          textAlign: TextAlign.start,
+                                          // the widget between the top row (Agritopia1) and the next button
+                                          decoration: InputDecoration(
+                                            hintTextDirection:
+                                                chosenLanguage == 'ar'
+                                                    ? TextDirection.rtl
+                                                    : TextDirection.ltr,
+                                            label: const Text('Station name'),
+                                            border: InputBorder.none,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            )
                           ],
                         ),
                         rowWidget: const MainIconsRowWidget(

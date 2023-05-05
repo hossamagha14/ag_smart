@@ -1,6 +1,7 @@
 import 'package:ag_smart/View%20Model/bloc/Irrigation%20type/irrigation_type_states.dart';
 import 'package:ag_smart/View%20Model/database/end_points.dart';
 import 'package:ag_smart/View/Reusable/text.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../database/dio_helper.dart';
@@ -119,13 +120,24 @@ class IrrigationTypeCubit extends Cubit<IrrigationTypesStates> {
       "irrigation_method_1": irrigationMethod1,
       "irrigation_method_2": irrigationMethod2
     }).then((value) {
-      print(value.data);
       if (value.statusCode == 200) {
-        emit(IrrigationTypeSendSuccessState());
+        putStationConfig();
       }
     }).catchError((onError) {
       print(onError.toString());
       emit(IrrigationTypeSendFailState());
     });
+  }
+
+  putStationConfig() async {
+    try {
+      Response<dynamic> response = await dio.put('$base/$station',
+          data: {"serial_number": serialNumber, "configured": 1});
+      if (response.statusCode == 200) {
+        emit(IrrigationTypeSendSuccessState());
+      }
+    } catch (e) {
+      emit(IrrigationTypeSendFailState());
+    }
   }
 }
