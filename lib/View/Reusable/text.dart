@@ -1,13 +1,14 @@
 import 'package:ag_smart/View%20Model/database/cache_helpher.dart';
 
-String chosenLanguage = CacheHelper.getData(key: 'language');
+String chosenLanguage = CacheHelper.getData(key: 'language') ?? '';
 String stationName = CacheHelper.getData(key: 'stationName') ?? '';
 int numOfActiveLines = CacheHelper.getData(key: 'numOfActiveLines') ?? 0;
-int stationId = CacheHelper.getData(key: 'stationId');
-String token = CacheHelper.getData(key: 'token')??'';
-String refreshToken = CacheHelper.getData(key: 'refreshToken');
-int userId = CacheHelper.getData(key: 'user_id');
-String serialNumber = CacheHelper.getData(key: 'serialNumber');
+int stationId = CacheHelper.getData(key: 'stationId') ?? 0;
+String token = CacheHelper.getData(key: 'token') ?? '';
+String refreshToken = CacheHelper.getData(key: 'refreshToken') ?? "";
+int userId = CacheHelper.getData(key: 'user_id') ?? 0;
+String serialNumber = CacheHelper.getData(key: 'serialNumber') ?? "";
+bool isLanguageChosen = CacheHelper.getData(key: 'languageChoosen') ?? false;
 
 Map<String, Map<String, String>> text = {
   'en': {

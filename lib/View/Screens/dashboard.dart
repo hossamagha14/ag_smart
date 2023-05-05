@@ -6,11 +6,9 @@ import 'package:ag_smart/View%20Model/database/cache_helpher.dart';
 import 'package:ag_smart/View/Reusable/colors.dart';
 import 'package:ag_smart/View/Reusable/toasts.dart';
 import 'package:ag_smart/View/Screens/bottom_nav_bar.dart';
-import 'package:ag_smart/View/Screens/device_setup.dart';
 import 'package:ag_smart/View/Screens/sign_in.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 
 class DashsboardScreen extends StatelessWidget {
   const DashsboardScreen({Key? key}) : super(key: key);
@@ -32,6 +30,8 @@ class DashsboardScreen extends StatelessWidget {
                   builder: (context) => SignInScreen(),
                 ),
                 (route) => false);
+          }else if(state is StationsFailQrState){
+            errorToast('Serial number couldn\'t be found');
           }
         },
         builder: (context, state) {
@@ -65,14 +65,14 @@ class DashsboardScreen extends StatelessWidget {
                                           MaterialStateProperty.all<Color>(
                                               const Color(0xFF42C4FF))),
                                   onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              DeviceSetupScreen(),
-                                        ));
+                                    myCubit.scan(context);
                                   },
-                                  child: const Text('[+] Add Device')),
+                                  child: const Text(
+                                    '[ + ]  Add Device',
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w700),
+                                  )),
                             ),
                           ),
                         ),
@@ -117,7 +117,7 @@ class DashsboardScreen extends StatelessWidget {
                                             padding:
                                                 const EdgeInsets.only(left: 30),
                                             child: Text(
-                                                'station ${myCubit.stations[index].id}'),
+                                                myCubit.stations[index].stationName!),
                                           ),
                                           Padding(
                                             padding: const EdgeInsets.only(

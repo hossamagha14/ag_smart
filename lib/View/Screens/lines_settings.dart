@@ -115,6 +115,8 @@ class LinesSettingsScreen extends StatelessWidget {
                                                     controller: myCubit
                                                         .valves[index]
                                                         .diameterController,
+                                                    textInputAction:
+                                                        TextInputAction.next,
                                                     keyboardType:
                                                         TextInputType.number,
                                                     textAlign: TextAlign.center,
@@ -153,6 +155,8 @@ class LinesSettingsScreen extends StatelessWidget {
                                                     controller: myCubit
                                                         .valves[index]
                                                         .numberController,
+                                                    textInputAction:
+                                                        TextInputAction.next,
                                                     keyboardType:
                                                         TextInputType.number,
                                                     textAlign: TextAlign.center,

@@ -90,7 +90,7 @@ class IrrigationTypeCubit extends Cubit<IrrigationTypesStates> {
     required int irrigationMethod2,
   }) async {
     await dio.put('$base/$irrigationSettings/$stationId', data: {
-      "station_id": 1,
+      "station_id": stationId,
       "active_valves": activeValves,
       "settings_type": irrigationType,
       "irrigation_method_1": irrigationMethod1,
@@ -113,7 +113,7 @@ class IrrigationTypeCubit extends Cubit<IrrigationTypesStates> {
     required int irrigationMethod2,
   }) async {
     await dio.post('$base/$irrigationSettings/$stationId', data: {
-      "station_id": 1,
+      "station_id": stationId,
       "active_valves": activeValves,
       "settings_type": irrigationType,
       "irrigation_method_1": irrigationMethod1,

@@ -57,25 +57,25 @@ class BottomNavBarCubit extends Cubit<CommonStates> {
       if (settingsType == 1 || settingsType == 2) {
         bottomNavBarScreens = [
           const StationInfoScreen(),
-          const ReportScreen(),
+          ReportScreen(),
           const SettingsScreen()
         ];
       } else if (settingsType == 3) {
         bottomNavBarScreens = [
           const CustomStationInfoScreen(),
-          const ReportScreen(),
+          ReportScreen(),
           const SettingsScreen()
         ];
       } else if (settingsType == 4) {
         bottomNavBarScreens = [
           const AutoScreen(),
-          const ReportScreen(),
+          ReportScreen(),
           const SettingsScreen()
         ];
       } else if (settingsType == 5) {
         bottomNavBarScreens = [
           const ManualIrrigationScreen(),
-          const ReportScreen(),
+          ReportScreen(),
           const SettingsScreen()
         ];
       }

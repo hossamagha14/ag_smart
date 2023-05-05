@@ -6,18 +6,27 @@ import 'package:ag_smart/View/Reusable/main_card.dart';
 import 'package:ag_smart/View/Reusable/my_text_field.dart';
 import 'package:ag_smart/View/Reusable/text.dart';
 import 'package:ag_smart/View/Screens/device_features.dart';
-import 'package:ag_smart/View/Screens/pump_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../Reusable/main_icons_row_widget.dart';
 
 // ignore: must_be_immutable
-class DeviceSetupScreen extends StatelessWidget {
-  DeviceSetupScreen({Key? key}) : super(key: key);
+class DeviceSetupScreen extends StatefulWidget {
+  final String serial;
+  const DeviceSetupScreen({Key? key, required this.serial}) : super(key: key);
+
+  @override
+  State<DeviceSetupScreen> createState() => _DeviceSetupScreenState();
+}
+
+class _DeviceSetupScreenState extends State<DeviceSetupScreen> {
   TextEditingController changeNameController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-  TextEditingController rePasswordController = TextEditingController();
+  @override
+  void initState() {
+    super.initState();
+    changeNameController.text = widget.serial;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,21 +59,11 @@ class DeviceSetupScreen extends StatelessWidget {
                       StationsCubit myCubit = StationsCubit.get(context);
                       return MainCard(
                         function: () {
-                          if (changeNameController.text.isEmpty ||
-                              passwordController.text.isEmpty ||
-                              rePasswordController.text.isEmpty) {
+                          if (changeNameController.text.isEmpty) {
                             errorToast('Please fill all the data');
-                          } else if (passwordController.text !=
-                              rePasswordController.text) {
-                            errorToast('Password doesn\'t match');
                           } else {
-                            Navigator.pushAndRemoveUntil(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      PumpSettingsScreen(isEdit: false),
-                                ),
-                                (route) => false);
+                            myCubit.postStation(context,
+                                stationName: changeNameController.text);
                           }
                         },
                         //this is the widget from main_card.dart
@@ -76,31 +75,6 @@ class DeviceSetupScreen extends StatelessWidget {
                               controller: changeNameController,
                               color: backgroundColor,
                             ),
-                            MyTextField(
-                                secureText: myCubit.securePassword,
-                                suffixIcon: InkWell(
-                                    onTap: () {
-                                      myCubit.showPassword();
-                                    },
-                                    child: myCubit.securePassword == true
-                                        ? const Icon(Icons.visibility)
-                                        : const Icon(Icons.visibility_off)),
-                                label: text[chosenLanguage]!['Password']!,
-                                controller: passwordController,
-                                color: backgroundColor),
-                            MyTextField(
-                                secureText: myCubit.secureConfirmPassword,
-                                suffixIcon: InkWell(
-                                    onTap: () {
-                                      myCubit.showConfirmPassword();
-                                    },
-                                    child: myCubit.secureConfirmPassword == true
-                                        ? const Icon(Icons.visibility)
-                                        : const Icon(Icons.visibility_off)),
-                                label:
-                                    text[chosenLanguage]!['confirm password']!,
-                                controller: rePasswordController,
-                                color: backgroundColor)
                           ],
                         ),
                         rowWidget: const MainIconsRowWidget(

@@ -5,7 +5,8 @@ import 'package:intl/intl.dart';
 class FifteenDaysChart extends StatelessWidget {
   final List<FlSpot> spots;
   final double maxY;
-  const FifteenDaysChart({Key? key, required this.spots, required this.maxY }) : super(key: key);
+  const FifteenDaysChart({Key? key, required this.spots, required this.maxY})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,21 +16,15 @@ class FifteenDaysChart extends StatelessWidget {
       child: LineChart(
         LineChartData(
           maxX: 14,
-          maxY: maxY*1.3,
+          maxY: maxY * 1.3,
           minY: 0,
           lineTouchData: LineTouchData(enabled: true),
           lineBarsData: [
             LineChartBarData(
-              spots:spots,
+              spots: spots,
               isCurved: false,
               barWidth: 4,
-              gradient: LinearGradient(stops: const [
-                0.5,
-                1
-              ], colors: [
-                Colors.purple.shade900.withOpacity(0.7),
-                Colors.purple.shade900.withOpacity(0.2)
-              ]),
+              color: Colors.purple.shade900.withOpacity(0.7),
               dotData: FlDotData(show: false),
               belowBarData: BarAreaData(
                   show: true,
@@ -51,7 +46,7 @@ class FifteenDaysChart extends StatelessWidget {
             topTitles: AxisTitles(),
             leftTitles: AxisTitles(
                 sideTitles: SideTitles(
-              interval: maxY/5,
+              interval: maxY / 5,
               showTitles: true,
               getTitlesWidget: (value, meta) {
                 return Text(
@@ -139,7 +134,7 @@ class FifteenDaysChart extends StatelessWidget {
           borderData: FlBorderData(show: false),
           gridData: FlGridData(
             show: true,
-            horizontalInterval: maxY/5,
+            horizontalInterval: maxY / 5,
             verticalInterval: 1,
             drawVerticalLine: true,
             getDrawingHorizontalLine: (value) {

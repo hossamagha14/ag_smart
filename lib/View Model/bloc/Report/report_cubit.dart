@@ -1,17 +1,21 @@
+import 'dart:io';
+
 import 'package:ag_smart/View%20Model/bloc/Report/report_states.dart';
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
+import 'package:dio/dio.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_month_picker/flutter_month_picker.dart';
 import 'package:intl/intl.dart';
-
+import 'package:permission_handler/permission_handler.dart';
 import '../../../Model/range_model.dart';
 import '../../../Model/report_station_model.dart';
 import '../../../Model/station_model.dart';
 import '../../../View/Reusable/text.dart';
 import '../../database/dio_helper.dart';
 import '../../database/end_points.dart';
+import 'package:path_provider/path_provider.dart';
 
 class ReportCubit extends Cubit<ReportStates> {
   ReportCubit() : super(ReportIntialState());
@@ -42,6 +46,48 @@ class ReportCubit extends Cubit<ReportStates> {
     'By Quarter',
     'Custom Range',
   ];
+
+  Future<void> downloadPdf() async {
+    try {
+      // Create Dio instance
+      Dio dio = Dio();
+
+      // Define the URL for the POST request
+      Response response = await dio.post(
+        '$base/daily_records/range/pdf/1/18-4-2023/30-4-2023',
+        options: Options(
+            responseType: ResponseType.bytes,
+            headers: {'Authorization': 'Bearer $token'}),
+      );
+
+      // Get the app's external storage directory path
+      Directory? storageDir = await getExternalStorageDirectory();
+      String storagePath = storageDir!.path;
+
+      // Create the necessary directories
+      Directory downloadsDir =
+          await Directory('$storagePath/Download').create(recursive: true);
+
+      // Define the file path and name for the downloaded PDF
+      String pdfPath = '${downloadsDir.path}/example.pdf';
+
+      // Write the PDF file to disk
+      File pdfFile = File(pdfPath);
+      await pdfFile.writeAsBytes(response.data, flush: true);
+
+      // Show a notification that the download is complete
+      print('PDF downloaded to: $pdfPath');
+    } catch (e) {
+      print('Error downloading PDF: $e');
+    }
+  }
+
+  reguestPermission() async {
+    final permission = await Permission.manageExternalStorage.request();
+    if (permission.isGranted) {
+      downloadPdf();
+    }
+  }
 
   chooseYear(DateTime value) {
     chosenYear = value;
@@ -95,6 +141,8 @@ class ReportCubit extends Cubit<ReportStates> {
       getMonth();
     } else if (dropDownValue == 'Yearly') {
       getYear();
+    } else if (dropDownValue == 'By Quarter') {
+      firstQuarter();
     }
     emit(ReportChooseDropDownValueState());
   }
@@ -339,7 +387,8 @@ class ReportCubit extends Cubit<ReportStates> {
     maxY = 100;
     bool check = false;
     dio
-        .get('$base/$monthlyRange/$reportStationId/1-$quarterYear/3-$quarterYear')
+        .get(
+            '$base/$monthlyRange/$reportStationId/1-$quarterYear/3-$quarterYear')
         .then((value) {
       for (int i = 0; i < value.data.length; i++) {
         ranges.insert(0, RangeModel.fromJson(value.data[i]));
@@ -375,7 +424,8 @@ class ReportCubit extends Cubit<ReportStates> {
     ranges = [];
     maxY = 100;
     dio
-        .get('$base/$monthlyRange/$reportStationId/4-$quarterYear/6-$quarterYear')
+        .get(
+            '$base/$monthlyRange/$reportStationId/4-$quarterYear/6-$quarterYear')
         .then((value) {
       for (int i = 0; i < value.data.length; i++) {
         ranges.insert(0, RangeModel.fromJson(value.data[i]));
@@ -411,7 +461,8 @@ class ReportCubit extends Cubit<ReportStates> {
     spots = [];
     ranges = [];
     dio
-        .get('$base/$monthlyRange/$reportStationId/7-$quarterYear/9-$quarterYear')
+        .get(
+            '$base/$monthlyRange/$reportStationId/7-$quarterYear/9-$quarterYear')
         .then((value) {
       for (int i = 0; i < value.data.length; i++) {
         ranges.insert(0, RangeModel.fromJson(value.data[i]));
@@ -447,7 +498,8 @@ class ReportCubit extends Cubit<ReportStates> {
     spots = [];
     ranges = [];
     dio
-        .get('$base/$monthlyRange/$reportStationId/10-$quarterYear/12-$quarterYear')
+        .get(
+            '$base/$monthlyRange/$reportStationId/10-$quarterYear/12-$quarterYear')
         .then((value) {
       for (int i = 0; i < value.data.length; i++) {
         ranges.insert(0, RangeModel.fromJson(value.data[i]));
@@ -510,9 +562,9 @@ class ReportCubit extends Cubit<ReportStates> {
     });
   }
 
-  chooseStation(String value,int index) {
+  chooseStation(String value, int index) {
     currentStationName = value;
-    reportStationId=reportStationModel.reportStationId[index];
+    reportStationId = reportStationModel.reportStationId[index];
     chooseReport(dropDownValue);
   }
 }

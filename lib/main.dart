@@ -13,7 +13,7 @@ import 'package:ag_smart/View%20Model/database/cache_helpher.dart';
 import 'package:ag_smart/View/Reusable/colors.dart';
 import 'package:ag_smart/View/Reusable/text.dart';
 import 'package:ag_smart/View/Screens/choose_language.dart';
-import 'package:ag_smart/View/Screens/dashboard.dart';
+import 'package:ag_smart/View/Screens/sign_in.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'View Model/bloc/Firtiliser settings/firtiliser_settings_cubit.dart';
@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) =>
-              DurationSettingsCubit()..getPeriods(stationId: stationId),
+              DurationSettingsCubit()..getPeriods(),
         ),
         BlocProvider(
           create: (context) => FirtiliserSettingsCubit(),
@@ -80,9 +80,9 @@ class MyApp extends StatelessWidget {
                 elevation: 0,
                 color: backgroundColor,
                 centerTitle: true)),
-        home: CacheHelper.getData(key: 'languageChoosen') == false
-            ? const ChooseLanguageScreen(isEdit: false)
-            : const DashsboardScreen(),
+        home: isLanguageChosen == true
+            ? SignInScreen()
+            : const ChooseLanguageScreen(isEdit: false),
       ),
     );
   }

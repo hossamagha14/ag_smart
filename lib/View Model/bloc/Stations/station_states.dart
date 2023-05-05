@@ -21,3 +21,7 @@ class StationsSaveState extends StationsStates {}
 class StationsGetFailState extends StationsStates {}
 
 class StationsLoadinglState extends StationsStates {}
+
+class StationsFailQrState extends StationsStates {}
+
+class StationsGetStationFailState extends StationsStates {}

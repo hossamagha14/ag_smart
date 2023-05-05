@@ -47,6 +47,10 @@ dependencies:
   month_year_picker: ^0.2.0+2
   flutter_month_picker: ^0.0.1
   flutter_barcode_scanner: ^2.0.0
+  path_provider: ^2.0.14
+  screenshot: ^1.3.0
+  image_gallery_saver: "^1.7.1"
+  permission_handler: ^10.2.0
 
 dev_dependencies:
   flutter_test:

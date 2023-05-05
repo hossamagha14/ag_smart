@@ -46,7 +46,6 @@ class DurationSettingsCubit extends Cubit<DurationSettingsStates> {
 
   removeContainerFromdb(
       {required int containerIndex,
-      required int stationId,
       required int valveId,
       required int weekday,
       required int periodId}) async {
@@ -58,8 +57,7 @@ class DurationSettingsCubit extends Cubit<DurationSettingsStates> {
           containerIndex: containerIndex,
         );
         makeAList(weekday: weekday);
-        putIrrigationHourListAfterDelete(
-            stationId: stationId, periodsList: periodsList);
+        putIrrigationHourListAfterDelete(periodsList: periodsList);
       }
     }).catchError((onError) {
       emit(DurationSettingsDelFailState());
@@ -173,7 +171,7 @@ class DurationSettingsCubit extends Cubit<DurationSettingsStates> {
     required int quantity,
     required int weekDays,
   }) async {
-    await dio.put('$base/$irrigationCycle/1/1', data: {
+    await dio.put('$base/$irrigationCycle/$stationId/0', data: {
       "valve_id": valveId,
       "interval": interval,
       "duration": duration,
@@ -211,7 +209,6 @@ class DurationSettingsCubit extends Cubit<DurationSettingsStates> {
   }
 
   putIrrigationHourListAfterDelete({
-    required int stationId,
     required List<Map<String, dynamic>> periodsList,
   }) async {
     await dio.put('$base/$irrigationPeriodsList/$stationId',
@@ -227,7 +224,6 @@ class DurationSettingsCubit extends Cubit<DurationSettingsStates> {
   }
 
   putIrrigationHourList({
-    required int stationId,
     required List<Map<String, dynamic>> periodsList,
   }) async {
     await dio.put('$base/$irrigationPeriodsList/$stationId',
@@ -255,9 +251,7 @@ class DurationSettingsCubit extends Cubit<DurationSettingsStates> {
     return activeDays;
   }
 
-  getPeriods({
-    required int stationId,
-  }) async {
+  getPeriods() async {
     durationModel.controller = [];
     durationModel.time = [];
     await dio.get('$base/$irrigationSettings/$stationId').then((value) {

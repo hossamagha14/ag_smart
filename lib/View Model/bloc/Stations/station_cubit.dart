@@ -1,5 +1,10 @@
 import 'package:ag_smart/View%20Model/bloc/Stations/station_states.dart';
+import 'package:ag_smart/View%20Model/database/cache_helpher.dart';
 import 'package:ag_smart/View%20Model/database/end_points.dart';
+import 'package:ag_smart/View/Reusable/toasts.dart';
+import 'package:ag_smart/View/Screens/device_setup.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,6 +12,7 @@ import 'package:sqflite/sqflite.dart';
 
 import '../../../Model/station_model.dart';
 import '../../../View/Reusable/text.dart';
+import '../../../View/Screens/pump_settings.dart';
 import '../../database/dio_helper.dart';
 
 class StationsCubit extends Cubit<StationsStates> {
@@ -18,7 +24,8 @@ class StationsCubit extends Cubit<StationsStates> {
   bool securePassword = true;
   bool secureConfirmPassword = true;
   StationModel? stationModel;
-  String barCode = '';
+  String? barCode;
+  String? x;
   List<StationModel> stations = [];
 
   showPassword() {
@@ -43,14 +50,62 @@ class StationsCubit extends Cubit<StationsStates> {
       print(onError);
       emit(StationsGetFailState());
     });
+  }
 
-    Future scan() async {
-      try {
-        barCode = await FlutterBarcodeScanner.scanBarcode(
-            '#E2BFE8', 'Cancel', true, ScanMode.QR);
-      } on PlatformException {
-        barCode = 'Failed';
+  Future scan(context) async {
+    try {
+      barCode = await FlutterBarcodeScanner.scanBarcode(
+          '#E2BFE8', 'Cancel', true, ScanMode.QR);
+      barCode = barCode!.split('=')[1];
+      if (barCode != null) {
+        try {
+          Response<dynamic> response = await dio.get('$base/$serial/$barCode');
+          if (response.statusCode == 200) {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => DeviceSetupScreen(
+                    serial: barCode!,
+                  ),
+                ));
+          }
+        } catch (e) {
+          emit(StationsFailQrState());
+        }
       }
+    } on PlatformException {
+      barCode = 'Failed';
+      emit(StationsFailQrState());
+    }
+  }
+
+  postStation(context, {required String stationName}) async {
+    try {
+      Response<dynamic> response = await dio.post('$base/$stationInfo', data: {
+        "serial_number": barCode,
+        "user_id": userId,
+        'station_name': stationName
+      });
+      if (response.statusCode == 200) {
+        stationModel=StationModel.fromJson(response.data);
+        CacheHelper.saveData(key: 'stationId', value: stationModel!.id);
+        CacheHelper.saveData(key: 'serialNumber', value: stationModel!.serialNumber);
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (context) => PumpSettingsScreen(isEdit: false),
+            ),
+            (route) => false);
+      }
+    } catch (e) {
+      if (e is DioError) {
+        if (e.response!.statusCode == 409) {
+          errorToast(e.response!.data['message']);
+        } else if (e.response!.statusCode == 500) {
+          errorToast(e.response!.data['message']);
+        }
+      }
+      emit(StationsGetStationFailState());
     }
   }
 

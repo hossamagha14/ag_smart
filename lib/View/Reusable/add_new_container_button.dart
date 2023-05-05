@@ -41,7 +41,7 @@ class AddNewContainerButton extends StatelessWidget {
                       : TextDirection.ltr,
                   style: const TextStyle(
                       color: Colors.black54,
-                      fontSize: 15,
+                      fontSize: 13,
                       fontWeight: FontWeight.bold),
                 ))),
           ),
@@ -72,7 +72,7 @@ class AddNewContainerButton extends StatelessWidget {
                       : TextDirection.ltr,
                   style: const TextStyle(
                       color: Colors.black54,
-                      fontSize: 15,
+                      fontSize: 13,
                       fontWeight: FontWeight.bold),
                 ))),
           ),

@@ -3,6 +3,7 @@ class StationModel {
   int? internetAccess;
   int? configured;
   String? serialNumber;
+  String? stationName;
   List<Features>? features;
   List<LinesInfo>? linesInfo;
   List<IrrigationSettings>? irrigationSettings;
@@ -16,6 +17,7 @@ class StationModel {
       this.configured,
       this.serialNumber,
       this.features,
+      this.stationName,
       this.linesInfo,
       this.irrigationSettings,
       this.fertilizationSettings,
@@ -24,6 +26,7 @@ class StationModel {
 
   StationModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
+    stationName = json['station_name'];
     internetAccess = json['internet_access'];
     configured = json['configured'];
     serialNumber = json['serial_number'];
@@ -68,6 +71,7 @@ class StationModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
+    data['station_name'] = stationName;
     data['internet_access'] = internetAccess;
     data['configured'] = configured;
     data['serial_number'] = serialNumber;

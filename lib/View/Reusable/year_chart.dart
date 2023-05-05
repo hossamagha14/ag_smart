@@ -21,13 +21,7 @@ class YearChart extends StatelessWidget {
               spots: spots,
               isCurved: false,
               barWidth: 4,
-              gradient: LinearGradient(stops: const [
-                0.5,
-                1
-              ], colors: [
-                Colors.purple.shade900.withOpacity(0.7),
-                Colors.purple.shade900.withOpacity(0.2)
-              ]),
+              color: Colors.purple.shade900.withOpacity(0.7),
               dotData: FlDotData(show: false),
               belowBarData: BarAreaData(
                   show: true,

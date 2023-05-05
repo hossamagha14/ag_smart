@@ -50,7 +50,6 @@ class FirtiliserSettingsCubit extends Cubit<FirtiliserSettingsStates> {
 
   removeContainerFromdb(
       {required int containerIndex,
-      required int stationId,
       required int valveId,
       required int periodId}) async {
     await dio
@@ -61,7 +60,7 @@ class FirtiliserSettingsCubit extends Cubit<FirtiliserSettingsStates> {
           containerIndex: containerIndex,
         );
         makeAList();
-        putFerListAfterDelete(stationId: stationId, periodsList: periodsList);
+        putFerListAfterDelete(periodsList: periodsList);
       }
     }).catchError((onError) {
       emit(FirtiliserSettingsDeleteFailState());
@@ -105,7 +104,6 @@ class FirtiliserSettingsCubit extends Cubit<FirtiliserSettingsStates> {
   }
 
   putFertilizationSettings({
-    required int stationId,
     required int ferMethod1,
     required int ferMethod2,
   }) async {
@@ -116,7 +114,7 @@ class FirtiliserSettingsCubit extends Cubit<FirtiliserSettingsStates> {
     }).then((value) {
       if (value.statusCode == 200) {
         print(value.data);
-        getPeriods(stationId: stationId);
+        getPeriods();
         emit(FirtiliserSettingsSendSuccessState());
       }
     }).catchError((onError) {
@@ -126,7 +124,6 @@ class FirtiliserSettingsCubit extends Cubit<FirtiliserSettingsStates> {
   }
 
   delete({
-    required int stationId,
     required int valveId,
     required int method1,
   }) async {
@@ -145,9 +142,7 @@ class FirtiliserSettingsCubit extends Cubit<FirtiliserSettingsStates> {
     emit(FirtiliserSettingsShowDeleteState());
   }
 
-  getPeriods({
-    required int stationId,
-  }) async {
+  getPeriods() async {
     firtiliserModel.controllersList = [];
     firtiliserModel.timeList = [];
     firtiliserModel.dateList = [];
@@ -180,7 +175,6 @@ class FirtiliserSettingsCubit extends Cubit<FirtiliserSettingsStates> {
   }
 
   putFertilizationPeriods({
-    required int stationId,
     required List<Map<String, dynamic>> periodsList,
   }) async {
     await dio.put('$base/$fertilizerPeriodsList/$stationId',
@@ -195,7 +189,6 @@ class FirtiliserSettingsCubit extends Cubit<FirtiliserSettingsStates> {
   }
 
   putFerListAfterDelete({
-    required int stationId,
     required List<Map<String, dynamic>> periodsList,
   }) async {
     await dio.put('$base/$fertilizerPeriodsList/$stationId',

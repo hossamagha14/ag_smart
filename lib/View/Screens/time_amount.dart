@@ -69,7 +69,6 @@ class TimeAmountScreen extends StatelessWidget {
                                       function: () {
                                         myCubit.removeContainerFromdb(
                                             containerIndex: index,
-                                            stationId: stationId,
                                             valveId: 0,
                                             weekday: myCubit.toDecimal(),
                                             periodId: myCubit.durationModel
@@ -136,7 +135,6 @@ class TimeAmountScreen extends StatelessWidget {
                         }
                         if (allFull == true) {
                           myCubit.putIrrigationHourList(
-                              stationId: 1,
                               periodsList: myCubit.makeAList(
                                   weekday: myCubit.toDecimal()));
                         } else {

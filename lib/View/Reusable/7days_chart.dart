@@ -5,7 +5,8 @@ import 'package:intl/intl.dart';
 class SevenDaysChart extends StatelessWidget {
   final List<FlSpot> spots;
   final double maxY;
-  const SevenDaysChart({Key? key,required this.spots,required this.maxY }) : super(key: key);
+  const SevenDaysChart({Key? key, required this.spots, required this.maxY})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,20 +16,14 @@ class SevenDaysChart extends StatelessWidget {
       child: LineChart(
         LineChartData(
           maxX: 6,
-          maxY: maxY*1.6,
+          maxY: maxY * 1.6,
           lineTouchData: LineTouchData(enabled: true),
           lineBarsData: [
             LineChartBarData(
               spots: spots,
               isCurved: false,
               barWidth: 4,
-              gradient: LinearGradient(stops: const [
-                0.5,
-                1
-              ], colors: [
-                Colors.purple.shade900.withOpacity(0.7),
-                Colors.purple.shade900.withOpacity(0.2)
-              ]),
+              color: Colors.purple.shade900.withOpacity(0.7),
               dotData: FlDotData(show: false),
               belowBarData: BarAreaData(
                   show: true,
@@ -51,7 +46,7 @@ class SevenDaysChart extends StatelessWidget {
             topTitles: AxisTitles(),
             leftTitles: AxisTitles(
                 sideTitles: SideTitles(
-              interval: maxY/5,
+              interval: maxY / 5,
               showTitles: true,
               getTitlesWidget: (value, meta) {
                 return Text(
@@ -107,7 +102,7 @@ class SevenDaysChart extends StatelessWidget {
           borderData: FlBorderData(show: false),
           gridData: FlGridData(
             show: true,
-            horizontalInterval: maxY/5,
+            horizontalInterval: maxY / 5,
             verticalInterval: 1,
             drawVerticalLine: true,
             getDrawingHorizontalLine: (value) {

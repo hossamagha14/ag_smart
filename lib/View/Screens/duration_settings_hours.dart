@@ -79,7 +79,6 @@ class DurationSettingsByHourScreen extends StatelessWidget {
                                           function: () {
                                             myCubit.removeContainerFromdb(
                                                 containerIndex: index,
-                                                stationId: stationId,
                                                 valveId: 0,
                                                 weekday: myCubit.toDecimal(),
                                                 periodId: myCubit.durationModel
@@ -177,7 +176,6 @@ class DurationSettingsByHourScreen extends StatelessWidget {
                                 errorToast('Please choose the days of work');
                               } else {
                                 myCubit.putIrrigationHourList(
-                                    stationId: 1,
                                     periodsList: myCubit.makeAList(
                                         weekday: myCubit.toDecimal()));
                               }

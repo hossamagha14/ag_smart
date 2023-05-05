@@ -82,7 +82,6 @@ class FirtiliserSettingsScreen extends StatelessWidget {
                               if (allFull == true && validInfo) {
                                 myCubit.issDone();
                                 myCubit.putFertilizationPeriods(
-                                    stationId: 1,
                                     periodsList: myCubit.makeAList());
                               } else if (allFull == false) {
                                 errorToast('Please fill all the data');
@@ -111,7 +110,6 @@ class FirtiliserSettingsScreen extends StatelessWidget {
                                             function: () {
                                               myCubit.removeContainerFromdb(
                                                   containerIndex: index,
-                                                  stationId: stationId,
                                                   valveId: 0,
                                                   periodId: myCubit
                                                       .firtiliserModel
