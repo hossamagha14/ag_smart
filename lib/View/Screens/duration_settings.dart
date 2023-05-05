@@ -84,7 +84,6 @@ class DurationSettingsScreen extends StatelessWidget {
                       errorToast("Please select both categories");
                     } else {
                       if (isEdit == false) {
-                        
                         myCubit.postIrrigationType(
                             activeValves: binaryValves,
                             irrigationType: myCubit.irrigationType,
