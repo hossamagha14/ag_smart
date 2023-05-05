@@ -1,4 +1,3 @@
-import 'dart:typed_data';
 
 import 'package:ag_smart/View%20Model/bloc/Report/report_cubit.dart';
 import 'package:ag_smart/View/Reusable/custom_container.dart';
@@ -304,7 +303,7 @@ class ReportScreen extends StatelessWidget {
                                       ),
                                       InkWell(
                                         onTap: () {
-                                          myCubit.downloadPdf();
+                                          myCubit.download('1','1');
                                         },
                                         child: SizedBox(
                                           height: MediaQuery.of(context)

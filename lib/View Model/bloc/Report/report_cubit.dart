@@ -8,14 +8,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_month_picker/flutter_month_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:permission_handler/permission_handler.dart';
 import '../../../Model/range_model.dart';
 import '../../../Model/report_station_model.dart';
 import '../../../Model/station_model.dart';
 import '../../../View/Reusable/text.dart';
 import '../../database/dio_helper.dart';
 import '../../database/end_points.dart';
-import 'package:path_provider/path_provider.dart';
 
 class ReportCubit extends Cubit<ReportStates> {
   ReportCubit() : super(ReportIntialState());
@@ -47,45 +45,77 @@ class ReportCubit extends Cubit<ReportStates> {
     'Custom Range',
   ];
 
-  Future<void> downloadPdf() async {
-    try {
-      // Create Dio instance
-      Dio dio = Dio();
+  // Future<void> downloadPdf() async {
+  //   try {
+  //     // Create Dio instance
+  //     Dio dio = Dio();
 
-      // Define the URL for the POST request
-      Response response = await dio.post(
-        '$base/daily_records/range/pdf/1/18-4-2023/30-4-2023',
-        options: Options(
-            responseType: ResponseType.bytes,
-            headers: {'Authorization': 'Bearer $token'}),
-      );
+  //     // Define the URL for the POST request
+  //     Response response = await dio.post(
+  //       '$base/daily_records/range/pdf/1/18-4-2023/30-4-2023',
+  //       options: Options(
+  //           responseType: ResponseType.bytes,
+  //           headers: {'Authorization': 'Bearer $token'}),
+  //     );
 
-      // Get the app's external storage directory path
-      Directory? storageDir = await getExternalStorageDirectory();
-      String storagePath = storageDir!.path;
+  //     // Get the app's external storage directory path
+  //     Directory? storageDir = await getExternalStorageDirectory();
+  //     String storagePath = storageDir!.path;
 
-      // Create the necessary directories
-      Directory downloadsDir =
-          await Directory('$storagePath/Download').create(recursive: true);
+  //     // Create the necessary directories
+  //     Directory downloadsDir =
+  //         await Directory('$storagePath/Download').create(recursive: true);
 
-      // Define the file path and name for the downloaded PDF
-      String pdfPath = '${downloadsDir.path}/example.pdf';
+  //     // Define the file path and name for the downloaded PDF
+  //     String pdfPath = '${downloadsDir.path}/example.pdf';
 
-      // Write the PDF file to disk
-      File pdfFile = File(pdfPath);
-      await pdfFile.writeAsBytes(response.data, flush: true);
+  //     // Write the PDF file to disk
+  //     File pdfFile = File(pdfPath);
+  //     await pdfFile.writeAsBytes(response.data, flush: true);
 
-      // Show a notification that the download is complete
-      print('PDF downloaded to: $pdfPath');
-    } catch (e) {
-      print('Error downloading PDF: $e');
+  //     // Show a notification that the download is complete
+  //     print('PDF downloaded to: $pdfPath');
+  //   } catch (e) {
+  //     print('Error downloading PDF: $e');
+  //   }
+  // }
+
+  // reguestPermission() async {
+  //   final permission = await Permission.manageExternalStorage.request();
+  //   if (permission.isGranted) {
+  //     downloadPdf();
+  //   }
+  // }
+
+  void showDownloadProgress(received, total) {
+    if (total != -1) {
+      debugPrint((received / total * 100).toStringAsFixed(0) + '%');
     }
   }
 
-  reguestPermission() async {
-    final permission = await Permission.manageExternalStorage.request();
-    if (permission.isGranted) {
-      downloadPdf();
+  Future download(String url, String filename) async {
+    var savePath = '/storage/emulated/0/Download/$filename.pdf';
+    var dio = Dio();
+    dio.interceptors.add(LogInterceptor());
+    try {
+      var response = await dio.post(
+        '$base/daily_records/range/pdf/1/27-4-2023/5-5-2023',
+        onReceiveProgress: showDownloadProgress,
+        //Received data with List<int>
+        options: Options(
+          responseType: ResponseType.bytes,
+          followRedirects: false,
+          receiveTimeout: 0,
+          headers:{'Authorization': 'Bearer $token'}
+        ),
+      );
+      var file = File(savePath);
+      var raf = file.openSync(mode: FileMode.write);
+      // response.data is List<int> type
+      raf.writeFromSync(response.data);
+      await raf.close();
+    } catch (e) {
+      debugPrint(e.toString());
     }
   }
 

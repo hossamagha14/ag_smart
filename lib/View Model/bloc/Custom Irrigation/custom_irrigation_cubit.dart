@@ -97,6 +97,7 @@ class CustomIrrigationCubit extends Cubit<CustomIrrigationStates> {
     customIrrigationModelList[lineIndex]
         .isBeingDeleted
         .removeAt(containerIndex);
+    emit(CustomIrrigationDeleteSuccessState());
   }
 
   removeContainerFromdb(
