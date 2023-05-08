@@ -38,3 +38,9 @@ class FirtiliserSettingsSendDelSuccessState extends FirtiliserSettingsStates {}
 class FirtiliserSettingsGetSuccessState extends FirtiliserSettingsStates {}
 
 class FirtiliserSettingsGetFailState extends FirtiliserSettingsStates {}
+
+class FirtiliserGetSuccessState extends FirtiliserSettingsStates {}
+
+class FirtiliserGetFailState extends FirtiliserSettingsStates {}
+
+class FirtiliserLoadingState extends FirtiliserSettingsStates {}

@@ -4,18 +4,27 @@ import 'package:ag_smart/View%20Model/bloc/Scarcrow/Scarcrow_cubit.dart';
 import 'package:ag_smart/View%20Model/bloc/Scarcrow/scarcrow_states.dart';
 import 'package:ag_smart/View%20Model/bloc/light/light_cubit.dart';
 import 'package:ag_smart/View%20Model/bloc/light/light_states.dart';
-import 'package:ag_smart/View/Reusable/colors.dart';
 import 'package:ag_smart/View/Reusable/text.dart';
-import 'package:ag_smart/View/Screens/firtilisation_type.dart';
-import 'package:ag_smart/View/Screens/light.dart';
-import 'package:ag_smart/View/Screens/scarecrow.dart';
+import 'package:ag_smart/View/Screens/fertiliser_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'text_style.dart';
-
 class FirScarLightWidget extends StatelessWidget {
-  const FirScarLightWidget({Key? key}) : super(key: key);
+  final Color ferColor;
+  final TextStyle fericon;
+  final Color scarColor;
+  final TextStyle scaricon;
+  final Color ligColor;
+  final TextStyle ligicon;
+  const FirScarLightWidget(
+      {Key? key,
+      required this.ferColor,
+      required this.fericon,
+      required this.scarColor,
+      required this.scaricon,
+      required this.ligColor,
+      required this.ligicon})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,25 +33,27 @@ class FirScarLightWidget extends StatelessWidget {
       child: Row(
         children: [
           BlocConsumer<FirtiliserSettingsCubit, FirtiliserSettingsStates>(
-            listener: (context, state) {},
+            listener: (context, state) {
+              if (state is FirtiliserLoadingState) {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const FirtiliserSettingsScreen(),
+                    ));
+              }
+            },
             builder: (context, state) {
               FirtiliserSettingsCubit myCubit =
                   FirtiliserSettingsCubit.get(context);
               return Expanded(
                 child: InkWell(
                   onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const FirtilisationTypeScreen(),
-                        ));
+                    myCubit.getFertilizationFeatures(context);
                   },
                   child: Container(
                     height: MediaQuery.of(context).size.height * 0.05,
                     decoration: BoxDecoration(
-                        color: myCubit.done == false
-                            ? Colors.white
-                            : lightSelectedColor,
+                        color: ferColor,
                         border: Border.all(color: Colors.blue, width: 1),
                         borderRadius: const BorderRadius.only(
                             topLeft: Radius.circular(10),
@@ -53,9 +64,7 @@ class FirScarLightWidget extends StatelessWidget {
                         Text(text[chosenLanguage]!['Fertilizer']!),
                         Text(
                           'y',
-                          style: myCubit.done == false
-                              ? smallIconOff
-                              : smallIconOn,
+                          style: fericon,
                         )
                       ],
                     ),
@@ -71,18 +80,12 @@ class FirScarLightWidget extends StatelessWidget {
               return Expanded(
                 child: InkWell(
                   onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ScarecrowScreen(),
-                        ));
+                    myCubit.getFeatures(context);
                   },
                   child: Container(
                     height: MediaQuery.of(context).size.height * 0.05,
                     decoration: BoxDecoration(
-                      color: myCubit.done == false
-                          ? Colors.white
-                          : lightSelectedColor,
+                      color: scarColor,
                       border: Border.all(color: Colors.blue, width: 1),
                     ),
                     child: Row(
@@ -91,9 +94,7 @@ class FirScarLightWidget extends StatelessWidget {
                         Text(text[chosenLanguage]!['Scarecrow']!),
                         Text(
                           'z',
-                          style: myCubit.done == false
-                              ? smallIconOff
-                              : smallIconOn,
+                          style: scaricon,
                         )
                       ],
                     ),
@@ -109,18 +110,12 @@ class FirScarLightWidget extends StatelessWidget {
               return Expanded(
                 child: InkWell(
                   onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => LightScreen(),
-                        ));
+                    myCubit.getFeatures(context);
                   },
                   child: Container(
                     height: MediaQuery.of(context).size.height * 0.05,
                     decoration: BoxDecoration(
-                        color: myCubit.done == false
-                            ? Colors.white
-                            : lightSelectedColor,
+                        color: ligColor,
                         border: Border.all(color: Colors.blue, width: 1),
                         borderRadius: const BorderRadius.only(
                             topRight: Radius.circular(10),
@@ -131,9 +126,7 @@ class FirScarLightWidget extends StatelessWidget {
                         Text(text[chosenLanguage]!['Light']!),
                         Text(
                           'k',
-                          style: myCubit.done == false
-                              ? smallIconOff
-                              : smallIconOn,
+                          style: ligicon,
                         )
                       ],
                     ),

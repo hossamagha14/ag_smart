@@ -1,6 +1,6 @@
-
 import 'package:ag_smart/View%20Model/bloc/Report/report_cubit.dart';
 import 'package:ag_smart/View/Reusable/custom_container.dart';
+import 'package:ag_smart/View/Reusable/toasts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:screenshot/screenshot.dart';
@@ -34,7 +34,13 @@ class ReportScreen extends StatelessWidget {
         title: const Text('Report'),
       ),
       body: BlocConsumer<ReportCubit, ReportStates>(
-        listener: (context, state) {},
+        listener: (context, state) {
+          if (state is ReportPDFSuccessState) {
+            successToast('PDF downloaded Successfully');
+          } else if (state is ReportPDFFailState) {
+            errorToast('an Error occured while downloading the PDF');
+          }
+        },
         builder: (context, state) {
           ReportCubit myCubit = ReportCubit.get(context);
           return myCubit.stationModel == null
@@ -303,7 +309,12 @@ class ReportScreen extends StatelessWidget {
                                       ),
                                       InkWell(
                                         onTap: () {
-                                          myCubit.download('1','1');
+                                          myCubit.dropDownValue == 'Monthly'
+                                              ? myCubit.downloadMonth()
+                                              : myCubit.dropDownValue ==
+                                                      'By Quarter'
+                                                  ? myCubit.downloadMonthRange()
+                                                  : myCubit.download();
                                         },
                                         child: SizedBox(
                                           height: MediaQuery.of(context)

@@ -14,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart' as intl;
 import '../Reusable/day_picker_pop_up.dart';
+import 'firtilisation_type.dart';
 
 // ignore: must_be_immutable
 class FirtiliserSettingsScreen extends StatelessWidget {
@@ -41,7 +42,7 @@ class FirtiliserSettingsScreen extends StatelessWidget {
         builder: (context, state) {
           FirtiliserSettingsCubit myCubit =
               FirtiliserSettingsCubit.get(context);
-          return myCubit.fertilizationModel == null
+          return state is FirtiliserLoadingState
               ? const Center(child: CircularProgressIndicator())
               : SingleChildScrollView(
                   physics: const BouncingScrollPhysics(),
@@ -50,6 +51,27 @@ class FirtiliserSettingsScreen extends StatelessWidget {
                     child: Column(
                       children: [
                         MainCard2(
+                            editButton: InkWell(
+                              onTap: () {
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const FirtilisationTypeScreen()));
+                              },
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                    right: MediaQuery.of(context).size.width *
+                                        0.03),
+                                child: Text(
+                                  'l',
+                                  style: TextStyle(
+                                      fontFamily: 'icons',
+                                      fontSize: 25,
+                                      color: iconColor),
+                                ),
+                              ),
+                            ),
                             function: () {
                               bool allFull = true;
                               bool validInfo = true;
@@ -67,11 +89,23 @@ class FirtiliserSettingsScreen extends StatelessWidget {
                                   allFull = false;
                                 }
                                 if (allFull == true) {
-                                  if (myCubit.method2 == 1) {
-                                    if (myCubit.method1 == 1) {
+                                  if (myCubit
+                                          .stationModel!
+                                          .fertilizationSettings![0]
+                                          .fertilizationMethod2 ==
+                                      1) {
+                                    if (myCubit
+                                            .stationModel!
+                                            .fertilizationSettings![0]
+                                            .fertilizationMethod1 ==
+                                        1) {
                                       validInfo = myCubit
                                           .checkOpenValveTimeSeriesByTime();
-                                    } else if (myCubit.method1 == 2) {
+                                    } else if (myCubit
+                                            .stationModel!
+                                            .fertilizationSettings![0]
+                                            .fertilizationMethod1 ==
+                                        2) {
                                       validInfo =
                                           myCubit.checkOpenValveTimeParallel();
                                     }
@@ -80,9 +114,10 @@ class FirtiliserSettingsScreen extends StatelessWidget {
                               }
 
                               if (allFull == true && validInfo) {
-                                myCubit.issDone();
                                 myCubit.putFertilizationPeriods(
-                                    periodsList: myCubit.makeAList());
+                                    periodsList: myCubit.makeAList(myCubit
+                                        .fertilizationModel!
+                                        .fertilizationMethod2!));
                               } else if (allFull == false) {
                                 errorToast('Please fill all the data');
                               } else if (validInfo == false) {
@@ -111,6 +146,9 @@ class FirtiliserSettingsScreen extends StatelessWidget {
                                               myCubit.removeContainerFromdb(
                                                   containerIndex: index,
                                                   valveId: 0,
+                                                  method2: myCubit
+                                                      .fertilizationModel!
+                                                      .fertilizationMethod2!,
                                                   periodId: myCubit
                                                       .firtiliserModel
                                                       .controllersList
@@ -189,11 +227,13 @@ class FirtiliserSettingsScreen extends StatelessWidget {
                                                             .minute)),
                                                 function: (value) => myCubit
                                                     .chooseTime(value, index)),
-                                            thirdRowTitle: myCubit.method2 == 1
-                                                ? text[chosenLanguage]![
-                                                    'Open valve time']!
+                                            thirdRowTitle: myCubit
+                                                        .fertilizationModel!
+                                                        .fertilizationMethod2 ==
+                                                    1
+                                                ? text[chosenLanguage]!['Open valve time']!
                                                 : text[chosenLanguage]!['Fertillization amount']!,
-                                            thirdRowWidget: OpenValvePeriodTextField(hintText: '00', unit: myCubit.method2 == 1 ? text[chosenLanguage]!['Minutes']! : text[chosenLanguage]!['ml']!, control: myCubit.firtiliserModel.controllersList[index]));
+                                            thirdRowWidget: OpenValvePeriodTextField(hintText: '00', unit: myCubit.fertilizationModel!.fertilizationMethod2 == 1 ? text[chosenLanguage]!['Minutes']! : text[chosenLanguage]!['ml']!, control: myCubit.firtiliserModel.controllersList[index]));
                                       },
                                       separatorBuilder: (context, index) {
                                         return SizedBox(
@@ -217,7 +257,11 @@ class FirtiliserSettingsScreen extends StatelessWidget {
                               ],
                             ),
                             rowWidget: Text(
-                              'g',
+                              myCubit.fertilizationModel!
+                                          .fertilizationMethod2 ==
+                                      1
+                                  ? 'g'
+                                  : 'h',
                               style: yellowIcon,
                             ),
                             cardtitle:

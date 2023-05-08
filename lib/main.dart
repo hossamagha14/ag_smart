@@ -41,8 +41,7 @@ class MyApp extends StatelessWidget {
           create: (context) => IrrigationTypeCubit(),
         ),
         BlocProvider(
-          create: (context) =>
-              DurationSettingsCubit()..getPeriods(),
+          create: (context) => DurationSettingsCubit()..getPeriods(),
         ),
         BlocProvider(
           create: (context) => FirtiliserSettingsCubit(),

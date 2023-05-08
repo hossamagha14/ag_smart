@@ -154,5 +154,7 @@ Map<String, Map<String, String>> text = {
     'Fertilization by quantity': 'تسميد حسب الكمية',
     'Series Fertilization': 'تسميد بالتوالي',
     'Parallel Fertilization': 'تسميد بالتوازي',
+    'Fertilizing by duration': 'التسميد بالمدة',
+    'Fertilizing by quantity': 'التسميد بالكمية',
   },
 };

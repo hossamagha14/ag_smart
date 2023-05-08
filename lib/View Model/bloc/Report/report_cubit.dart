@@ -21,6 +21,14 @@ class ReportCubit extends Cubit<ReportStates> {
 
   DioHelper dio = DioHelper();
   String dropDownValue = 'Last 7 days';
+  String pdfStartDate =
+      DateFormat('dd-MM-y').format(DateTime.now().subtract(const Duration(days: 6)));
+  String pdfendtDate = DateFormat('dd-MM-y').format(DateTime.now());
+  String pdfMonth = DateFormat('MM-y').format(DateTime.now());
+  String pdfMonthStart = DateFormat('MM-y')
+      .format(DateTime(int.parse(DateFormat('y').format(DateTime.now())), 1));
+  String pdfMonthEnd = DateFormat('MM-y')
+      .format(DateTime(int.parse(DateFormat('y').format(DateTime.now())), 3));
   DateTime chosenYear = DateTime.now();
   double maxX = 31;
   double maxY = 100;
@@ -29,7 +37,7 @@ class ReportCubit extends Cubit<ReportStates> {
   DateTime chosenMonth = DateTime.now();
   List<DateTime?>? chosenRange;
   int? quarter;
-  int quarterYear = 2023;
+  int quarterYear = int.parse(DateFormat('y').format(DateTime.now()));
   int reportStationId = stationId;
   StationModel? stationModel;
   List<StationModel> stations = [];
@@ -45,77 +53,92 @@ class ReportCubit extends Cubit<ReportStates> {
     'Custom Range',
   ];
 
-  // Future<void> downloadPdf() async {
-  //   try {
-  //     // Create Dio instance
-  //     Dio dio = Dio();
-
-  //     // Define the URL for the POST request
-  //     Response response = await dio.post(
-  //       '$base/daily_records/range/pdf/1/18-4-2023/30-4-2023',
-  //       options: Options(
-  //           responseType: ResponseType.bytes,
-  //           headers: {'Authorization': 'Bearer $token'}),
-  //     );
-
-  //     // Get the app's external storage directory path
-  //     Directory? storageDir = await getExternalStorageDirectory();
-  //     String storagePath = storageDir!.path;
-
-  //     // Create the necessary directories
-  //     Directory downloadsDir =
-  //         await Directory('$storagePath/Download').create(recursive: true);
-
-  //     // Define the file path and name for the downloaded PDF
-  //     String pdfPath = '${downloadsDir.path}/example.pdf';
-
-  //     // Write the PDF file to disk
-  //     File pdfFile = File(pdfPath);
-  //     await pdfFile.writeAsBytes(response.data, flush: true);
-
-  //     // Show a notification that the download is complete
-  //     print('PDF downloaded to: $pdfPath');
-  //   } catch (e) {
-  //     print('Error downloading PDF: $e');
-  //   }
-  // }
-
-  // reguestPermission() async {
-  //   final permission = await Permission.manageExternalStorage.request();
-  //   if (permission.isGranted) {
-  //     downloadPdf();
-  //   }
-  // }
-
   void showDownloadProgress(received, total) {
     if (total != -1) {
       debugPrint((received / total * 100).toStringAsFixed(0) + '%');
     }
   }
 
-  Future download(String url, String filename) async {
-    var savePath = '/storage/emulated/0/Download/$filename.pdf';
+  Future download() async {
+    var savePath =
+        '/storage/emulated/0/Download/$pdfStartDate to $pdfendtDate.pdf';
     var dio = Dio();
     dio.interceptors.add(LogInterceptor());
     try {
       var response = await dio.post(
-        '$base/daily_records/range/pdf/1/27-4-2023/5-5-2023',
+        '$base/daily_records/range/pdf/$stationId/$pdfStartDate/$pdfendtDate',
         onReceiveProgress: showDownloadProgress,
         //Received data with List<int>
         options: Options(
-          responseType: ResponseType.bytes,
-          followRedirects: false,
-          receiveTimeout: 0,
-          headers:{'Authorization': 'Bearer $token'}
-        ),
+            responseType: ResponseType.bytes,
+            followRedirects: false,
+            receiveTimeout: 0,
+            headers: {'Authorization': 'Bearer $token'}),
       );
       var file = File(savePath);
       var raf = file.openSync(mode: FileMode.write);
       // response.data is List<int> type
       raf.writeFromSync(response.data);
       await raf.close();
+      emit(ReportPDFSuccessState());
     } catch (e) {
       debugPrint(e.toString());
+      emit(ReportPDFFailState());
+    }
+  }
+
+  Future downloadMonth() async {
+    var savePath = '/storage/emulated/0/Download/$pdfMonth.pdf';
+    var dio = Dio();
+    dio.interceptors.add(LogInterceptor());
+    try {
+      var response = await dio.post(
+        '$base/daily_records/month/pdf/$stationId/$pdfMonth',
+        onReceiveProgress: showDownloadProgress,
+        //Received data with List<int>
+        options: Options(
+            responseType: ResponseType.bytes,
+            followRedirects: false,
+            receiveTimeout: 0,
+            headers: {'Authorization': 'Bearer $token'}),
+      );
+      var file = File(savePath);
+      var raf = file.openSync(mode: FileMode.write);
+      // response.data is List<int> type
+      raf.writeFromSync(response.data);
+      await raf.close();
+      emit(ReportPDFSuccessState());
+    } catch (e) {
+      debugPrint(e.toString());
+      emit(ReportPDFFailState());
+    }
+  }
+
+  Future downloadMonthRange() async {
+    var savePath =
+        '/storage/emulated/0/Download/$pdfMonthStart to $pdfMonthEnd.pdf';
+    var dio = Dio();
+    dio.interceptors.add(LogInterceptor());
+    try {
+      var response = await dio.post(
+        '$base/monthly_records/range/pdf/$stationId/$pdfMonthStart/$pdfMonthEnd',
+        onReceiveProgress: showDownloadProgress,
+        //Received data with List<int>
+        options: Options(
+            responseType: ResponseType.bytes,
+            followRedirects: false,
+            receiveTimeout: 0,
+            headers: {'Authorization': 'Bearer $token'}),
+      );
+      var file = File(savePath);
+      var raf = file.openSync(mode: FileMode.write);
+      // response.data is List<int> type
+      raf.writeFromSync(response.data);
+      await raf.close();
+      emit(ReportPDFSuccessState());
+    } catch (e) {
+      debugPrint(e.toString());
+      emit(ReportPDFFailState());
     }
   }
 
@@ -180,6 +203,8 @@ class ReportCubit extends Cubit<ReportStates> {
   get7days() {
     DateTime start = DateTime.now().subtract(const Duration(days: 6));
     DateTime end = DateTime.now();
+    pdfStartDate = DateFormat('dd-MM-y').format(start);
+    pdfendtDate = DateFormat('dd-MM-y').format(end);
     int duration = end.difference(start).inDays;
     bool check = false;
     maxY = 100;
@@ -190,8 +215,6 @@ class ReportCubit extends Cubit<ReportStates> {
       for (int i = 0; i < value.data.length; i++) {
         ranges.insert(0, RangeModel.fromJson(value.data[i]));
       }
-      print(ranges[0].date);
-      print(duration);
       for (int i = 0; i <= duration; i++) {
         check = false;
         for (int j = 0; j < ranges.length; j++) {
@@ -208,8 +231,6 @@ class ReportCubit extends Cubit<ReportStates> {
           spots.add(FlSpot(i.toDouble(), 0));
         }
       }
-      print(spots);
-      print(maxY);
       emit(ReportChooseRangeState());
     }).catchError((onError) {});
   }
@@ -217,6 +238,8 @@ class ReportCubit extends Cubit<ReportStates> {
   get15days() {
     DateTime start = DateTime.now().subtract(const Duration(days: 14));
     DateTime end = DateTime.now();
+    pdfStartDate = DateFormat('dd-MM-y').format(start);
+    pdfendtDate = DateFormat('dd-MM-y').format(end);
     int duration = end.difference(start).inDays;
     bool check = false;
     maxY = 100;
@@ -245,8 +268,6 @@ class ReportCubit extends Cubit<ReportStates> {
           spots.add(FlSpot(i.toDouble(), 0));
         }
       }
-      print(spots);
-      print(maxY);
       emit(ReportChooseRangeState());
     }).catchError((onError) {});
   }
@@ -254,6 +275,8 @@ class ReportCubit extends Cubit<ReportStates> {
   get30days() {
     DateTime start = DateTime.now().subtract(const Duration(days: 29));
     DateTime end = DateTime.now();
+    pdfStartDate = DateFormat('dd-MM-y').format(start);
+    pdfendtDate = DateFormat('dd-MM-y').format(end);
     int duration = end.difference(start).inDays;
     bool check = false;
     maxY = 100;
@@ -264,8 +287,6 @@ class ReportCubit extends Cubit<ReportStates> {
       for (int i = 0; i < value.data.length; i++) {
         ranges.insert(0, RangeModel.fromJson(value.data[i]));
       }
-      print(ranges[0].date);
-      print(duration);
       for (int i = 0; i <= duration; i++) {
         check = false;
         for (int j = 0; j < ranges.length; j++) {
@@ -318,8 +339,6 @@ class ReportCubit extends Cubit<ReportStates> {
           spots.add(FlSpot(i.toDouble(), 0));
         }
       }
-      print(spots);
-      print(maxY);
       emit(ReportChooseRangeState());
     }).catchError((onError) {});
   }
@@ -328,8 +347,8 @@ class ReportCubit extends Cubit<ReportStates> {
     bool check = false;
     int duration =
         DateTime(chosenMonth.year, chosenMonth.month + 1, 0).day.toInt();
+    pdfMonth = DateFormat('MM-y').format(chosenMonth);
     maxX = duration.toDouble();
-    print(duration);
     spots = [];
     ranges = [];
     maxY = 100;
@@ -368,6 +387,8 @@ class ReportCubit extends Cubit<ReportStates> {
   getRange() {
     DateTime start = chosenRange![0]!;
     DateTime end = chosenRange![1]!;
+    pdfStartDate = DateFormat('dd-MM-y').format(start);
+    pdfendtDate = DateFormat('dd-MM-y').format(end);
     int duration = end.difference(start).inDays;
     bool check = false;
     maxY = 100;
@@ -412,6 +433,8 @@ class ReportCubit extends Cubit<ReportStates> {
 
   firstQuarter() {
     quarter = 1;
+    pdfMonthStart = DateFormat('MM-y').format(DateTime(quarterYear, 1));
+    pdfMonthEnd = DateFormat('MM-y').format(DateTime(quarterYear, 3));
     spots = [];
     ranges = [];
     maxY = 100;
@@ -440,8 +463,6 @@ class ReportCubit extends Cubit<ReportStates> {
           spots.add(FlSpot(i.toDouble(), 0));
         }
       }
-      print(spots);
-      print(maxY);
       emit(ReportChooseRangeState());
     }).catchError((onError) {});
     emit(ReportChooseQuarterState());
@@ -449,6 +470,8 @@ class ReportCubit extends Cubit<ReportStates> {
 
   secondQuarter() {
     quarter = 2;
+    pdfMonthStart = DateFormat('MM-y').format(DateTime(quarterYear, 4));
+    pdfMonthEnd = DateFormat('MM-y').format(DateTime(quarterYear, 6));
     bool check = false;
     spots = [];
     ranges = [];
@@ -477,8 +500,6 @@ class ReportCubit extends Cubit<ReportStates> {
           spots.add(FlSpot(i.toDouble(), 0));
         }
       }
-      print(spots);
-      print(maxY);
       emit(ReportChooseRangeState());
     }).catchError((onError) {});
     emit(ReportChooseQuarterState());
@@ -487,6 +508,8 @@ class ReportCubit extends Cubit<ReportStates> {
   thirdQuarter() {
     quarter = 3;
     bool check = false;
+    pdfMonthStart = DateFormat('MM-y').format(DateTime(quarterYear, 7));
+    pdfMonthEnd = DateFormat('MM-y').format(DateTime(quarterYear, 9));
     maxY = 100;
     spots = [];
     ranges = [];
@@ -497,7 +520,6 @@ class ReportCubit extends Cubit<ReportStates> {
       for (int i = 0; i < value.data.length; i++) {
         ranges.insert(0, RangeModel.fromJson(value.data[i]));
       }
-      print(ranges[0].date);
       for (int i = 0; i <= 2; i++) {
         check = false;
         for (int j = 0; j < ranges.length; j++) {
@@ -514,8 +536,6 @@ class ReportCubit extends Cubit<ReportStates> {
           spots.add(FlSpot(i.toDouble(), 0));
         }
       }
-      print(spots);
-      print(maxY);
       emit(ReportChooseRangeState());
     }).catchError((onError) {});
     emit(ReportChooseQuarterState());
@@ -523,6 +543,8 @@ class ReportCubit extends Cubit<ReportStates> {
 
   fourthQuarter() {
     quarter = 4;
+    pdfMonthStart = DateFormat('MM-y').format(DateTime(quarterYear, 10));
+    pdfMonthEnd = DateFormat('MM-y').format(DateTime(quarterYear, 12));
     bool check = false;
     maxY = 100;
     spots = [];

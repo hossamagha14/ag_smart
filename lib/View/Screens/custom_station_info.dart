@@ -10,6 +10,7 @@ import 'package:ag_smart/View/Screens/sign_in.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../View Model/bloc/commom_states.dart';
+import '../Reusable/pop_screen2.dart';
 import '../Reusable/scare_light.dart';
 
 class CustomStationInfoScreen extends StatelessWidget {
@@ -31,7 +32,6 @@ class CustomStationInfoScreen extends StatelessWidget {
                 ),
                 (route) => false);
           }
-          
         },
         builder: (context, state) {
           BottomNavBarCubit myCubit = BottomNavBarCubit.get(context);
@@ -113,7 +113,6 @@ class CustomStationInfoScreen extends StatelessWidget {
                                       child: ListView.separated(
                                           scrollDirection: Axis.horizontal,
                                           itemBuilder: (context, index) {
-                                            print(myCubit.customActiveDays);
                                             return CircleAvatar(
                                               radius: 7,
                                               backgroundColor: myCubit
@@ -192,53 +191,104 @@ class CustomStationInfoScreen extends StatelessWidget {
                                           ),
                                     InkWell(
                                       onTap: () {
-                                        showDialog(
-                                          context: context,
-                                          builder: (context) => AlertDialog(
-                                              contentPadding:
-                                                  EdgeInsets.fromLTRB(
-                                                      0,
-                                                      MediaQuery.of(context)
-                                                              .size
-                                                              .height *
-                                                          0.05,
-                                                      0,
-                                                      0),
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          20)),
-                                              content: PopUpScreen(
-                                                fertiliationType: myCubit
-                                                    .stationModel!
-                                                    .fertilizationSettings![0]
-                                                    .customFertilizerSettings![
-                                                        lineIndex]
-                                                    .fertilizerMethod1!,
-                                                ferStatusType: myCubit
-                                                    .customIrrigationModelList[
-                                                        lineIndex]
-                                                    .fertilizationStatusType,
-                                                statusType: myCubit
-                                                    .customIrrigationModelList[
-                                                        lineIndex]
-                                                    .statusType,
-                                                stationId: stationId,
-                                                irrigationMethod2: myCubit
-                                                    .stationModel!
-                                                    .irrigationSettings![0]
-                                                    .customValvesSettings![
-                                                        lineIndex]
-                                                    .irrigationMethod2!,
-                                                lineIndex: lineIndex,
-                                                valveId: myCubit
-                                                    .stationModel!
-                                                    .irrigationSettings![0]
-                                                    .customValvesSettings![
-                                                        lineIndex]
-                                                    .valveId!,
-                                              )),
-                                        );
+                                        myCubit.stationModel!.features![0]
+                                                    .fertilizer ==
+                                                2
+                                            ? showDialog(
+                                                context: context,
+                                                builder: (context) =>
+                                                    AlertDialog(
+                                                        contentPadding:
+                                                            EdgeInsets.fromLTRB(
+                                                                0,
+                                                                MediaQuery.of(
+                                                                            context)
+                                                                        .size
+                                                                        .height *
+                                                                    0.05,
+                                                                0,
+                                                                0),
+                                                        shape: RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        20)),
+                                                        content: PopUpScreen(
+                                                          fertiliationType: myCubit
+                                                              .stationModel!
+                                                              .fertilizationSettings![
+                                                                  0]
+                                                              .customFertilizerSettings![
+                                                                  lineIndex]
+                                                              .fertilizerMethod1!,
+                                                          ferStatusType: myCubit
+                                                              .customIrrigationModelList[
+                                                                  lineIndex]
+                                                              .fertilizationStatusType,
+                                                          statusType: myCubit
+                                                              .customIrrigationModelList[
+                                                                  lineIndex]
+                                                              .statusType,
+                                                          stationId: stationId,
+                                                          irrigationMethod2: myCubit
+                                                              .stationModel!
+                                                              .irrigationSettings![
+                                                                  0]
+                                                              .customValvesSettings![
+                                                                  lineIndex]
+                                                              .irrigationMethod2!,
+                                                          lineIndex: lineIndex,
+                                                          valveId: myCubit
+                                                              .stationModel!
+                                                              .irrigationSettings![
+                                                                  0]
+                                                              .customValvesSettings![
+                                                                  lineIndex]
+                                                              .valveId!,
+                                                        )),
+                                              )
+                                            : showDialog(
+                                                context: context,
+                                                builder: (context) =>
+                                                    AlertDialog(
+                                                        contentPadding:
+                                                            EdgeInsets.fromLTRB(
+                                                                0,
+                                                                MediaQuery.of(
+                                                                            context)
+                                                                        .size
+                                                                        .height *
+                                                                    0.05,
+                                                                0,
+                                                                0),
+                                                        shape: RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        20)),
+                                                        content: PopUpScreen2(
+                                                          statusType: myCubit
+                                                              .customIrrigationModelList[
+                                                                  lineIndex]
+                                                              .statusType,
+                                                          stationId: stationId,
+                                                          irrigationMethod2: myCubit
+                                                              .stationModel!
+                                                              .irrigationSettings![
+                                                                  0]
+                                                              .customValvesSettings![
+                                                                  lineIndex]
+                                                              .irrigationMethod2!,
+                                                          lineIndex: lineIndex,
+                                                          valveId: myCubit
+                                                              .stationModel!
+                                                              .irrigationSettings![
+                                                                  0]
+                                                              .customValvesSettings![
+                                                                  lineIndex]
+                                                              .valveId!,
+                                                        )),
+                                              );
                                       },
                                       child: Container(
                                         height:
@@ -252,9 +302,9 @@ class CustomStationInfoScreen extends StatelessWidget {
                                             borderRadius:
                                                 const BorderRadius.only(
                                                     topRight:
-                                                        Radius.circular(10),
+                                                        Radius.circular(5),
                                                     bottomRight:
-                                                        Radius.circular(10))),
+                                                        Radius.circular(5))),
                                         child: Center(
                                           child: Text(
                                             'q',
@@ -280,7 +330,21 @@ class CustomStationInfoScreen extends StatelessWidget {
                                 .length),
                       ),
                       const Spacer(),
-                      const ScarLightWidget()
+                      ScarLightWidget(
+                        scarColor:
+                            myCubit.stationModel!.features![0].animal == 2
+                                ? lightSelectedColor
+                                : Colors.white,
+                        scaricon: myCubit.stationModel!.features![0].animal == 2
+                            ? smallIconOn
+                            : smallIconOff,
+                        ligColor: myCubit.stationModel!.features![0].light == 2
+                            ? lightSelectedColor
+                            : Colors.white,
+                        ligicon: myCubit.stationModel!.features![0].light == 2
+                            ? smallIconOn
+                            : smallIconOff,
+                      )
                     ],
                   ),
                 ),

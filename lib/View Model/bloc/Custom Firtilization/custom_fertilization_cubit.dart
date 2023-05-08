@@ -199,19 +199,13 @@ class CustomFertilizationCubit extends Cubit<CustomFertilizationStates> {
     customFertilizationModelList[lineIndex].time = [];
     customFertilizationModelList[lineIndex].controllers = [];
     customFertilizationModelList[lineIndex].daysList = [];
-
     await dio.get('$base/$fertilizerSettings/$stationId').then((value) {
       fertilizationModel = FertilizationModel.fromJson(value.data);
-      print(value.data);
       for (int i = 0;
           i < fertilizationModel!.customFertilizerSettings!.length;
           i++) {
-        print('$i i');
-        print('${fertilizationModel!.customFertilizerSettings!.length} custom');
         if (fertilizationModel!.customFertilizerSettings![i].valveId ==
             valveId) {
-          print(fertilizationModel!.customFertilizerSettings![i].valveId ==
-              valveId);
           for (int j = 0;
               j <
                   fertilizationModel!
@@ -224,8 +218,6 @@ class CustomFertilizationCubit extends Cubit<CustomFertilizationStates> {
             int minute = fertilizationModel!.customFertilizerSettings![i]
                     .fertilizerPeriods![j].startingTime! -
                 hour * 60;
-            print('$j j');
-
             addContainer(lineIndex, hour: hour, minute: minute);
             customFertilizationModelList[lineIndex].daysList.add(1);
             customFertilizationModelList[lineIndex].controllers[j].text =
@@ -241,19 +233,13 @@ class CustomFertilizationCubit extends Cubit<CustomFertilizationStates> {
             customFertilizationModelList[lineIndex].daysList[j] =
                 fertilizationModel!
                     .customFertilizerSettings![i].fertilizerPeriods![j].date!;
-            print(
-                '${fertilizationModel!.customFertilizerSettings![i].fertilizerPeriods!.length} periods');
-            print(
-                '${customFertilizationModelList[lineIndex].controllers.length} controllers');
           }
         }
       }
       if (value.statusCode == 200) {
-        print(value.data);
         emit(CustomFertilizationGetSuccessState());
       }
     }).catchError((onError) {
-      print(onError.toString());
       emit(CustomFertilizationGetFailState());
     });
   }
@@ -314,8 +300,8 @@ class CustomFertilizationCubit extends Cubit<CustomFertilizationStates> {
     required int lineIndex,
     required int valveId,
   }) {
+    emit(CustomFertilizationLoadingState());
     customFertilizationModelList = [];
-
     dio.get('$base/$features/$serialNumber').then((value) {
       featuresModel = FeaturesModel.fromJson(value.data);
       for (int i = 0; i < featuresModel!.linesNumber!; i++) {

@@ -2,9 +2,14 @@
 
 import 'package:ag_smart/View%20Model/bloc/Scarcrow/scarcrow_states.dart';
 import 'package:ag_smart/View%20Model/database/end_points.dart';
+import 'package:ag_smart/View/Reusable/toasts.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../Model/features_model.dart';
+import '../../../View/Reusable/text.dart';
+import '../../../View/Screens/scarecrow.dart';
 import '../../database/dio_helper.dart';
 
 class ScarecrowCubit extends Cubit<ScarecrowStates> {
@@ -12,6 +17,7 @@ class ScarecrowCubit extends Cubit<ScarecrowStates> {
 
   static ScarecrowCubit get(context) => BlocProvider.of(context);
   DioHelper dio = DioHelper();
+  FeaturesModel? featuresModel;
   TimeOfDay time1 = TimeOfDay.now();
   TimeOfDay time2 = TimeOfDay.now();
   bool done = false;
@@ -54,11 +60,33 @@ class ScarecrowCubit extends Cubit<ScarecrowStates> {
     });
   }
 
+  getFeatures(context) async {
+    try {
+      Response<dynamic> response =
+          await dio.get('$base/$features/$serialNumber');
+      if (response.statusCode == 200) {
+        featuresModel = FeaturesModel.fromJson(response.data);
+        if (featuresModel!.animal == 2) {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ScarecrowScreen(),
+              ));
+        } else {
+          errorToast('You are not subscribed for this feature');
+        }
+        emit(ScarecrowGetSuccessState());
+      }
+    } catch (e) {
+      emit(ScarecrowGetFailState());
+    }
+  }
+
   int checkTime() {
     int startTime = time1.hour * 60 + time1.minute;
     int endTime = time2.hour * 60 + time2.minute;
-    if(endTime<startTime){
-      endTime=endTime+1440;
+    if (endTime < startTime) {
+      endTime = endTime + 1440;
     }
     return endTime - startTime;
   }

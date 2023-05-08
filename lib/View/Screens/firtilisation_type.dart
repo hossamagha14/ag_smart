@@ -6,9 +6,10 @@ import 'package:ag_smart/View/Reusable/toasts.dart';
 import 'package:ag_smart/View/Reusable/main_card02.dart';
 import 'package:ag_smart/View/Reusable/text.dart';
 import 'package:ag_smart/View/Reusable/text_style.dart';
-import 'package:ag_smart/View/Screens/fertiliser_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'fertiliser_settings.dart';
 
 class FirtilisationTypeScreen extends StatelessWidget {
   const FirtilisationTypeScreen({Key? key}) : super(key: key);
@@ -24,14 +25,14 @@ class FirtilisationTypeScreen extends StatelessWidget {
           children: [
             BlocConsumer<FirtiliserSettingsCubit, FirtiliserSettingsStates>(
               listener: (context, state) {
-                if (state is FirtiliserSettingsGetSuccessState) {
+                if (state is FirtiliserSettingsSendFailState) {
+                  errorToast('An error has occurred');
+                } else if (state is FirtiliserSettingsGetSuccessState) {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => const FirtiliserSettingsScreen(),
                       ));
-                } else if (state is FirtiliserSettingsSendFailState) {
-                  errorToast('An error has occurred');
                 }
               },
               builder: (context, state) {
@@ -111,7 +112,7 @@ class FirtilisationTypeScreen extends StatelessWidget {
                           myCubit.seriesFertilization == null) {
                         errorToast('Please select firtilisation type');
                       } else {
-                        myCubit.putFertilizationSettings(
+                        myCubit.putFertilizationSettings(context,
                             ferMethod1: myCubit.method1!,
                             ferMethod2: myCubit.method2!);
                       }

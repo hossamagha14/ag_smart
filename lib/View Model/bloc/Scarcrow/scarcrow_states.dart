@@ -9,3 +9,7 @@ class ScarecrowChooseTtimeState extends ScarecrowStates {}
 class ScarecrowPostSuccessState extends ScarecrowStates {}
 
 class ScarecrowPostFailState extends ScarecrowStates {}
+
+class ScarecrowGetSuccessState extends ScarecrowStates {}
+
+class ScarecrowGetFailState extends ScarecrowStates {}

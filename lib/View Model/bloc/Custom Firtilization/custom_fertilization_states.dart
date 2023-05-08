@@ -10,6 +10,8 @@ class CustomFertilizationChooseQuantityState
 
 class CustomFertilizationPutSuccessState extends CustomFertilizationStates {}
 
+class CustomFertilizationLoadingState extends CustomFertilizationStates {}
+
 class CustomFertilizationPutDelSuccessState extends CustomFertilizationStates {}
 
 class CustomFertilizationPutFailState extends CustomFertilizationStates {}

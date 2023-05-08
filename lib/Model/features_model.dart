@@ -1,7 +1,10 @@
 class FeaturesModel {
+  String? version;
   int? light;
+  int? internetAccess;
   int? pump;
   int? linesNumber;
+  int? animal;
   int? fertilizer;
   int? pressure;
   int? waterLevel;
@@ -16,6 +19,9 @@ class FeaturesModel {
   FeaturesModel(
       {this.light,
       this.pump,
+      this.animal,
+      this.internetAccess,
+      this.version,
       this.linesNumber,
       this.fertilizer,
       this.pressure,
@@ -30,6 +36,9 @@ class FeaturesModel {
 
   FeaturesModel.fromJson(Map<String, dynamic> json) {
     light = json['light'];
+    version = json['version'];
+    animal = json['animal'];
+    internetAccess = json['internet_access'];
     pump = json['pump'];
     linesNumber = json['lines_number'];
     fertilizer = json['fertilizer'];
@@ -47,6 +56,8 @@ class FeaturesModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['light'] = light;
+    data['version'] = version;
+    data['internet_access'] = internetAccess;
     data['pump'] = pump;
     data['lines_number'] = linesNumber;
     data['fertilizer'] = fertilizer;
@@ -56,6 +67,7 @@ class FeaturesModel {
     data['flow_meter'] = flowMeter;
     data['leak_sensor'] = leakSensor;
     data['ph_sensor'] = phSensor;
+    data['animal'] = animal;
     data['tds_sensor'] = tdsSensor;
     data['temperature_sensor'] = temperatureSensor;
     data['humidity_sensor'] = humiditySensor;

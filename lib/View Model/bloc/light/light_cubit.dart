@@ -1,9 +1,14 @@
 import 'package:ag_smart/View%20Model/bloc/light/light_states.dart';
 import 'package:ag_smart/View%20Model/database/end_points.dart';
+import 'package:ag_smart/View/Reusable/text.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../Model/days_model.dart';
+import '../../../Model/features_model.dart';
+import '../../../View/Reusable/toasts.dart';
+import '../../../View/Screens/light.dart';
 import '../../database/dio_helper.dart';
 
 class LightCubit extends Cubit<LightStates> {
@@ -14,6 +19,7 @@ class LightCubit extends Cubit<LightStates> {
   int noDayIsChosen = 7;
   DioHelper dio = DioHelper();
   bool done = false;
+  FeaturesModel? featuresModel;
   List<DaysModel> days = [
     DaysModel(day: 'SAT', isOn: false),
     DaysModel(day: 'SUN', isOn: false),
@@ -43,6 +49,28 @@ class LightCubit extends Cubit<LightStates> {
       noDayIsChosen++;
     }
     emit(LightChooseDayState());
+  }
+
+  getFeatures(context) async {
+    try {
+      Response<dynamic> response =
+          await dio.get('$base/$features/$serialNumber');
+      if (response.statusCode == 200) {
+        featuresModel = FeaturesModel.fromJson(response.data);
+        if (featuresModel!.light == 2) {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => LightScreen(),
+              ));
+        } else {
+          errorToast('You are not subscribed for this feature');
+        }
+        emit(LightGetSuccessState());
+      }
+    } catch (e) {
+      emit(LightGetFailState());
+    }
   }
 
   putLight(

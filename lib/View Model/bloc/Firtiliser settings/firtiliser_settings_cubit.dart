@@ -1,10 +1,14 @@
 import 'package:ag_smart/Model/fertilization_model.dart';
 import 'package:ag_smart/Model/firtiliser_model.dart';
+import 'package:ag_smart/Model/station_model.dart';
 import 'package:ag_smart/View%20Model/database/end_points.dart';
 import 'package:ag_smart/View/Reusable/text.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../View/Reusable/toasts.dart';
+import '../../../View/Screens/firtilisation_type.dart';
 import '../../database/dio_helper.dart';
 import 'firtiliser_settings_states.dart';
 
@@ -20,6 +24,7 @@ class FirtiliserSettingsCubit extends Cubit<FirtiliserSettingsStates> {
   bool done = false;
   bool deleteVisibile = false;
   int dayValue = 0;
+  StationModel? stationModel;
   List<Map<String, dynamic>> periodsList = [];
   bool? accordingToTime;
   bool? seriesFertilization;
@@ -51,6 +56,7 @@ class FirtiliserSettingsCubit extends Cubit<FirtiliserSettingsStates> {
   removeContainerFromdb(
       {required int containerIndex,
       required int valveId,
+      required int method2,
       required int periodId}) async {
     await dio
         .delete('$base/$fertilizerPeriods/$stationId/$valveId/$periodId')
@@ -59,7 +65,7 @@ class FirtiliserSettingsCubit extends Cubit<FirtiliserSettingsStates> {
         removeContainer(
           containerIndex: containerIndex,
         );
-        makeAList();
+        makeAList(method2);
         putFerListAfterDelete(periodsList: periodsList);
       }
     }).catchError((onError) {
@@ -72,11 +78,6 @@ class FirtiliserSettingsCubit extends Cubit<FirtiliserSettingsStates> {
     firtiliserModel.controllersList.removeAt(containerIndex);
     firtiliserModel.dateList.removeAt(containerIndex);
     emit(FirtiliserSettingsAddContainerState());
-  }
-
-  issDone() {
-    done = true;
-    emit(FirtiliserSettingsIsDoneState());
   }
 
   firtiliseAccordingToTime() {
@@ -103,7 +104,8 @@ class FirtiliserSettingsCubit extends Cubit<FirtiliserSettingsStates> {
     emit(FirtiliserSettingssParallelState());
   }
 
-  putFertilizationSettings({
+  putFertilizationSettings(
+    context, {
     required int ferMethod1,
     required int ferMethod2,
   }) async {
@@ -113,12 +115,9 @@ class FirtiliserSettingsCubit extends Cubit<FirtiliserSettingsStates> {
       "fertilization_method_2": ferMethod2
     }).then((value) {
       if (value.statusCode == 200) {
-        print(value.data);
-        getPeriods();
-        emit(FirtiliserSettingsSendSuccessState());
+        getPeriods(context);
       }
     }).catchError((onError) {
-      print(onError);
       emit(FirtiliserSettingsSendFailState());
     });
   }
@@ -142,11 +141,10 @@ class FirtiliserSettingsCubit extends Cubit<FirtiliserSettingsStates> {
     emit(FirtiliserSettingsShowDeleteState());
   }
 
-  getPeriods() async {
+  getPeriods(context) async {
     firtiliserModel.controllersList = [];
     firtiliserModel.timeList = [];
     firtiliserModel.dateList = [];
-
     await dio.get('$base/$fertilizerSettings/$stationId').then((value) {
       fertilizationModel = FertilizationModel.fromJson(value.data);
       for (int i = 0; i < fertilizationModel!.fertilizerPeriods!.length; i++) {
@@ -169,7 +167,6 @@ class FirtiliserSettingsCubit extends Cubit<FirtiliserSettingsStates> {
         emit(FirtiliserSettingsGetSuccessState());
       }
     }).catchError((onError) {
-      print(onError.toString());
       emit(FirtiliserSettingsGetFailState());
     });
   }
@@ -202,7 +199,7 @@ class FirtiliserSettingsCubit extends Cubit<FirtiliserSettingsStates> {
     });
   }
 
-  List<Map<String, dynamic>> makeAList() {
+  List<Map<String, dynamic>> makeAList(int method2) {
     periodsList = [];
     for (int i = 0; i < firtiliserModel.controllersList.length; i++) {
       periodsList.add({
@@ -277,5 +274,32 @@ class FirtiliserSettingsCubit extends Cubit<FirtiliserSettingsStates> {
       }
     }
     return validInput;
+  }
+
+  getFertilizationFeatures(context) async {
+    emit(FirtiliserLoadingState());
+    try {
+      Response<dynamic> response =
+          await dio.get('$base/$stationBySerial/$serialNumber');
+      if (response.statusCode == 200) {
+        stationModel = StationModel.fromJson(response.data);
+        if (stationModel!.features![0].fertilizer == 2) {
+          if (stationModel!
+              .fertilizationSettings![0].fertilizerPeriods!.isEmpty) {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const FirtilisationTypeScreen(),
+                ));
+          } else {
+            getPeriods(context);
+          }
+        } else {
+          errorToast('You are not subscribed for this feature');
+        }
+      }
+    } catch (e) {
+      emit(FirtiliserGetFailState());
+    }
   }
 }

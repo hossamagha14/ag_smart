@@ -132,7 +132,7 @@ class DashsboardScreen extends StatelessWidget {
                                                 .stations[index].stationName!),
                                           ),
                                           myCubit.stations[index].configured ==
-                                                  null
+                                                  0
                                               ? const SizedBox()
                                               : Padding(
                                                   padding:

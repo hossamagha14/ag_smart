@@ -5,29 +5,23 @@ import 'package:ag_smart/View/Reusable/toasts.dart';
 import 'package:ag_smart/View/Screens/custom_duration_by_time.dart';
 import 'package:ag_smart/View/Screens/custom_duration_settings.dart';
 import 'package:ag_smart/View/Screens/custom_duration_settings_period.dart';
-import 'package:ag_smart/View/Screens/custom_ferilization_type.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../Screens/custom_fertlization_duration.dart';
 import 'colors.dart';
 
-class PopUpScreen extends StatelessWidget {
+class PopUpScreen2 extends StatelessWidget {
   final int lineIndex;
   final int valveId;
   final int stationId;
   final int statusType;
-  final int ferStatusType;
-  final int fertiliationType;
   final int irrigationMethod2;
-  const PopUpScreen(
+  const PopUpScreen2(
       {Key? key,
       required this.valveId,
       required this.lineIndex,
       required this.stationId,
       required this.statusType,
-      required this.ferStatusType,
-      required this.fertiliationType,
       required this.irrigationMethod2})
       : super(key: key);
 
@@ -100,37 +94,7 @@ class PopUpScreen extends StatelessWidget {
                     children: [
                       InkWell(
                         onTap: () {
-                          if (ferStatusType == 1) {
-                            myCubit.getNumberOfValvesandperiods(
-                                serialNumber: serialNumber,
-                                lineIndex: lineIndex,
-                                valveId: valveId);
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      CustomFirtiliserSettingsScreen(
-                                    valveId: valveId,
-                                    lineIndex: lineIndex,
-                                    fertiliationType: fertiliationType,
-                                  ),
-                                ));
-                          } else if (ferStatusType == 3) {
-                            errorToast(
-                                'You are not subscribed for this feature');
-                          } else {
-                            myCubit.getNumberOfValvesandperiods(
-                                serialNumber: serialNumber,
-                                lineIndex: lineIndex,
-                                valveId: valveId);
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        CustomFirtilizationTypesScreen(
-                                            lineIndex: lineIndex,
-                                            valveId: valveId)));
-                          }
+                          errorToast('You are not subscribed for this feature');
                         },
                         child: SizedBox(
                           child: Text(
@@ -138,7 +102,7 @@ class PopUpScreen extends StatelessWidget {
                             style: TextStyle(
                                 fontSize: 45,
                                 fontFamily: 'icons',
-                                color: yellowColor),
+                                color: yellowColor.withOpacity(0.3)),
                           ),
                         ),
                       ),
@@ -150,7 +114,9 @@ class PopUpScreen extends StatelessWidget {
                         child: Text(
                           text[chosenLanguage]!['Fertilization Settings']!,
                           textAlign: TextAlign.center,
-                          style: const TextStyle(fontSize: 12),
+                          style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.black.withOpacity(0.2)),
                         ),
                       )
                     ],

@@ -89,7 +89,12 @@ class MainCard2 extends StatelessWidget {
                                           bottomLeft: Radius.circular(20),
                                           bottomRight: Radius.circular(20))))),
                           onPressed: function,
-                          child: buttonTitle ?? const Text('Next')))
+                          child: buttonTitle ??
+                              const Text(
+                                'Next',
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.w500),
+                              )))
             ],
           ),
         ),

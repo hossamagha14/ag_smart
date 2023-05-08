@@ -132,7 +132,9 @@ class BottomNavBarCubit extends Cubit<CommonStates> {
                   stationModel!.fertilizationSettings![0]
                       .customFertilizerSettings!.length;
               valve++) {
-            if (stationModel!.fertilizationSettings![0]
+            if (stationModel!.features![0].fertilizer == 1) {
+              customIrrigationModelList[valve].fertilizationStatusType = 3;
+            } else if (stationModel!.fertilizationSettings![0]
                 .customFertilizerSettings![valve].fertilizerPeriods!.isEmpty) {
               customIrrigationModelList[valve].fertilizationStatusType = 2;
             } else {

@@ -23,3 +23,7 @@ class ReportGetSuccessState extends ReportStates {}
 class ReportGetFailState extends ReportStates {}
 
 class ReportChooseStationState extends ReportStates {}
+
+class ReportPDFSuccessState extends ReportStates {}
+
+class ReportPDFFailState extends ReportStates {}
