@@ -54,7 +54,7 @@ class SevenDaysChart extends StatelessWidget {
                   style: const TextStyle(
                       color: Colors.grey,
                       fontWeight: FontWeight.bold,
-                      fontSize: 12),
+                      fontSize: 9),
                 );
               },
             )),

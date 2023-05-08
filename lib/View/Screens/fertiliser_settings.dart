@@ -42,7 +42,8 @@ class FirtiliserSettingsScreen extends StatelessWidget {
         builder: (context, state) {
           FirtiliserSettingsCubit myCubit =
               FirtiliserSettingsCubit.get(context);
-          return state is FirtiliserLoadingState
+          return state is FirtiliserLoadingState ||
+                  myCubit.fertilizationModel == null
               ? const Center(child: CircularProgressIndicator())
               : SingleChildScrollView(
                   physics: const BouncingScrollPhysics(),

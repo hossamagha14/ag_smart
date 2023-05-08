@@ -11,6 +11,8 @@ import 'package:ag_smart/View/Screens/sign_in.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../Reusable/text.dart';
+
 class DashsboardScreen extends StatelessWidget {
   const DashsboardScreen({Key? key}) : super(key: key);
 
@@ -93,6 +95,10 @@ class DashsboardScreen extends StatelessWidget {
                                     CacheHelper.saveData(
                                         key: 'stationId',
                                         value: myCubit.stations[index].id!);
+                                    serialNumber = CacheHelper.getData(
+                                        key: 'serialNumber');
+                                    stationId =
+                                        CacheHelper.getData(key: 'stationId');
                                     if (myCubit.stations[index].configured ==
                                         1) {
                                       Navigator.pushAndRemoveUntil(
@@ -132,7 +138,10 @@ class DashsboardScreen extends StatelessWidget {
                                                 .stations[index].stationName!),
                                           ),
                                           myCubit.stations[index].configured ==
-                                                  0
+                                                      0 ||
+                                                  myCubit.stations[index]
+                                                          .configured ==
+                                                      null
                                               ? const SizedBox()
                                               : Padding(
                                                   padding:
