@@ -1,3 +1,4 @@
+import 'package:ag_smart/View/Reusable/colors.dart';
 import 'package:ag_smart/View/Reusable/text.dart';
 import 'package:flutter/material.dart';
 
@@ -27,7 +28,7 @@ class MainCard2 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: SizedBox(
-        height: MediaQuery.of(context).size.height * 0.7,
+        height: MediaQuery.of(context).size.height * 0.75,
         width: MediaQuery.of(context).size.width * 0.9,
         child: Card(
           elevation: 10,
@@ -42,7 +43,7 @@ class MainCard2 extends StatelessWidget {
                     padding: const EdgeInsets.fromLTRB(30, 25, 20, 10),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [Text(stationName), rowWidget],
+                      children: [Text(stationName,style: TextStyle(fontSize: 18,color: iconColor,fontWeight: FontWeight.w700),), rowWidget],
                     ),
                   ),
                   Stack(

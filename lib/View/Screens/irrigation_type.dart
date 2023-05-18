@@ -77,7 +77,7 @@ class IrrigationTypeScreen extends StatelessWidget {
                   },
                   buttonColor: greenButtonColor,
                   mainWidget: SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.45,
+                    height: MediaQuery.of(context).size.height * 0.49,
                     child: SingleChildScrollView(
                       physics: const BouncingScrollPhysics(),
                       child: Column(

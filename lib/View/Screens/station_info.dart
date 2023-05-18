@@ -6,11 +6,15 @@ import 'package:ag_smart/View/Reusable/main_card.dart';
 import 'package:ag_smart/View/Reusable/main_icons_row_widget.dart';
 import 'package:ag_smart/View/Reusable/text.dart';
 import 'package:ag_smart/View/Reusable/text_style.dart';
-import 'package:ag_smart/View/Screens/edit_settings.dart';
+import 'package:ag_smart/View/Screens/period_amount.dart';
+import 'package:ag_smart/View/Screens/time_amount.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../View Model/bloc/commom_states.dart';
+import 'duration_settings_by_period.dart';
+import 'duration_settings_hours.dart';
+import 'irrigation_type.dart';
 
 class StationInfoScreen extends StatelessWidget {
   const StationInfoScreen({Key? key}) : super(key: key);
@@ -18,10 +22,6 @@ class StationInfoScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(text[chosenLanguage]!['Station info']!),
-        automaticallyImplyLeading: false,
-      ),
       body: SafeArea(
         child: BlocConsumer<BottomNavBarCubit, CommonStates>(
             listener: (context, state) {},
@@ -34,12 +34,84 @@ class StationInfoScreen extends StatelessWidget {
                         children: [
                           MainCard(
                             function: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        const EditSettingsScreen(),
-                                  ));
+                              if (myCubit.stationModel!.irrigationSettings![0]
+                                      .irrigationCycles!.isEmpty &&
+                                  myCubit.stationModel!.irrigationSettings![0]
+                                      .irrigationPeriods!.isEmpty) {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const IrrigationTypeScreen(
+                                              isEdit: true),
+                                    ));
+                              } else if (myCubit
+                                          .stationModel!
+                                          .irrigationSettings![0]
+                                          .irrigationMethod1 ==
+                                      1 &&
+                                  myCubit.stationModel!.irrigationSettings![0]
+                                          .irrigationMethod2 ==
+                                      1) {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          DurationSettingsByPeriodScreen(
+                                              isEdit: true,
+                                              irrigationType: myCubit
+                                                  .stationModel!
+                                                  .irrigationSettings![0]
+                                                  .settingsType!),
+                                    ));
+                              } else if (myCubit
+                                          .stationModel!
+                                          .irrigationSettings![0]
+                                          .irrigationMethod1 ==
+                                      1 &&
+                                  myCubit.stationModel!.irrigationSettings![0]
+                                          .irrigationMethod2 ==
+                                      2) {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          PeriodAmountScreen(isEdit: true),
+                                    ));
+                              } else if (myCubit
+                                          .stationModel!
+                                          .irrigationSettings![0]
+                                          .irrigationMethod1 ==
+                                      2 &&
+                                  myCubit.stationModel!.irrigationSettings![0]
+                                          .irrigationMethod2 ==
+                                      2) {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const TimeAmountScreen(isEdit: true),
+                                    ));
+                              } else if (myCubit
+                                          .stationModel!
+                                          .irrigationSettings![0]
+                                          .irrigationMethod1 ==
+                                      2 &&
+                                  myCubit.stationModel!.irrigationSettings![0]
+                                          .irrigationMethod2 ==
+                                      1) {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          DurationSettingsByHourScreen(
+                                              isEdit: true,
+                                              irrigationType: myCubit
+                                                  .stationModel!
+                                                  .irrigationSettings![0]
+                                                  .settingsType!),
+                                    ));
+                              }
                             },
                             mainWidget: Column(
                               children: [
@@ -165,7 +237,8 @@ class StationInfoScreen extends StatelessWidget {
                                   : 'c',
                             ),
                             buttonColor: settingsColor,
-                            buttonTitle: text[chosenLanguage]!['Settings']!,
+                            buttonTitle:
+                                text[chosenLanguage]!['Line Settings']!,
                             buttonIcon: const Text(
                               'q',
                               style:

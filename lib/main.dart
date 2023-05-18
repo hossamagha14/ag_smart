@@ -15,11 +15,16 @@ import 'package:ag_smart/View/Reusable/text.dart';
 import 'package:ag_smart/View/Screens/choose_language.dart';
 import 'package:ag_smart/View/Screens/sign_in.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'View Model/bloc/Firtiliser settings/firtiliser_settings_cubit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
   await CacheHelper.init();
   runApp(const MyApp());
 }
@@ -41,7 +46,7 @@ class MyApp extends StatelessWidget {
           create: (context) => IrrigationTypeCubit(),
         ),
         BlocProvider(
-          create: (context) => DurationSettingsCubit()..getPeriods(),
+          create: (context) => DurationSettingsCubit(),
         ),
         BlocProvider(
           create: (context) => FirtiliserSettingsCubit(),
@@ -72,6 +77,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
             scaffoldBackgroundColor: backgroundColor,
             appBarTheme: AppBarTheme(
+                iconTheme: IconThemeData(color: iconColor),
                 titleTextStyle: const TextStyle(
                     color: Color(0xFF575757),
                     fontWeight: FontWeight.bold,

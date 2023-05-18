@@ -5,13 +5,14 @@ import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../Model/user_model.dart';
+import '../../../View/Reusable/text.dart';
 
 class SignInCubit extends Cubit<SignInStates> {
   SignInCubit() : super(SignInIntialState());
   static SignInCubit get(context) => BlocProvider.of(context);
 
   UserModel? userModel;
-  Dio dio=Dio();
+  Dio dio = Dio();
 
   bool secure = true;
 
@@ -21,14 +22,18 @@ class SignInCubit extends Cubit<SignInStates> {
   }
 
   signIn({required String username, required String password}) {
+    userModel = null;
     dio.post('$base/login',
         data: {'username': username, "password": password}).then((value) {
-      print(value.data);
       if (value.statusCode == 200) {
         userModel = UserModel.fromJson(value.data);
         CacheHelper.saveData(key: 'token', value: userModel!.accessToken!);
-        CacheHelper.saveData(key: 'refreshToken', value: userModel!.refreshToken!);
+        CacheHelper.saveData(
+            key: 'refreshToken', value: userModel!.refreshToken!);
         CacheHelper.saveData(key: 'user_id', value: userModel!.userId!);
+        token = CacheHelper.getData(key: 'token');
+        refreshToken = CacheHelper.getData(key: 'refreshToken');
+        userId = CacheHelper.getData(key: 'user_id');
         CacheHelper.saveData(
             key: 'stationInfo', value: userModel!.routes![0].stationInfo);
         CacheHelper.saveData(
@@ -75,7 +80,6 @@ class SignInCubit extends Cubit<SignInStates> {
         emit(SignInLoginSuccessState());
       }
     }).catchError((onError) {
-      print(onError);
       emit(SignInLoginFailState());
     });
   }

@@ -95,10 +95,15 @@ class DashsboardScreen extends StatelessWidget {
                                     CacheHelper.saveData(
                                         key: 'stationId',
                                         value: myCubit.stations[index].id!);
+                                    CacheHelper.saveData(
+                                        key: 'stationName',
+                                        value: myCubit.stations[index].stationName);
                                     serialNumber = CacheHelper.getData(
                                         key: 'serialNumber');
                                     stationId =
                                         CacheHelper.getData(key: 'stationId');
+                                    stationName =
+                                        CacheHelper.getData(key: 'stationName');
                                     if (myCubit.stations[index].configured ==
                                         1) {
                                       Navigator.pushAndRemoveUntil(

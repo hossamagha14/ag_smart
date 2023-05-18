@@ -26,165 +26,167 @@ class DurationSettingsScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(text[chosenLanguage]!['Device Setup']!),
       ),
-      body: Column(
-        children: [
-          BlocConsumer<IrrigationTypeCubit, IrrigationTypesStates>(
-            listener: (context, state) {
-              IrrigationTypeCubit myCubit = IrrigationTypeCubit.get(context);
-              if (state is IrrigationTypeSendSuccessState) {
-                if (myCubit.accordingToHour == true &&
-                    myCubit.accordingToQuantity == false) {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => DurationSettingsByHourScreen(
-                          isEdit: isEdit,
-                          irrigationType: myCubit.irrigationType,
-                        ),
-                      ));
-                } else if (myCubit.accordingToHour == true &&
-                    myCubit.accordingToQuantity == true) {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => TimeAmountScreen(
-                          isEdit: isEdit,
-                        ),
-                      ));
-                } else if (myCubit.accordingToHour == false &&
-                    myCubit.accordingToQuantity == false) {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => DurationSettingsByPeriodScreen(
-                          isEdit: isEdit,
-                          irrigationType: myCubit.irrigationType,
-                        ),
-                      ));
-                } else if (myCubit.accordingToHour == false &&
-                    myCubit.accordingToQuantity == true) {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => PeriodAmountScreen(
-                          isEdit: isEdit,
-                        ),
-                      ));
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            BlocConsumer<IrrigationTypeCubit, IrrigationTypesStates>(
+              listener: (context, state) {
+                IrrigationTypeCubit myCubit = IrrigationTypeCubit.get(context);
+                if (state is IrrigationTypeSendSuccessState) {
+                  if (myCubit.accordingToHour == true &&
+                      myCubit.accordingToQuantity == false) {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => DurationSettingsByHourScreen(
+                            isEdit: isEdit,
+                            irrigationType: myCubit.irrigationType,
+                          ),
+                        ));
+                  } else if (myCubit.accordingToHour == true &&
+                      myCubit.accordingToQuantity == true) {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => TimeAmountScreen(
+                            isEdit: isEdit,
+                          ),
+                        ));
+                  } else if (myCubit.accordingToHour == false &&
+                      myCubit.accordingToQuantity == false) {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => DurationSettingsByPeriodScreen(
+                            isEdit: isEdit,
+                            irrigationType: myCubit.irrigationType,
+                          ),
+                        ));
+                  } else if (myCubit.accordingToHour == false &&
+                      myCubit.accordingToQuantity == true) {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => PeriodAmountScreen(
+                            isEdit: isEdit,
+                          ),
+                        ));
+                  }
+                } else if (state is IrrigationTypeSendFailState) {
+                  errorToast('An error has occurred');
                 }
-              } else if (state is IrrigationTypeSendFailState) {
-                errorToast('An error has occurred');
-              }
-            },
-            builder: (context, state) {
-              IrrigationTypeCubit myCubit = IrrigationTypeCubit.get(context);
-              return MainCard2(
-                  function: () {
-                    if (myCubit.accordingToHour == null ||
-                        myCubit.accordingToQuantity == null) {
-                      errorToast("Please select both categories");
-                    } else {
-                      if (isEdit == false) {
-                        myCubit.postIrrigationType(
-                            activeValves: binaryValves,
-                            irrigationType: myCubit.irrigationType,
-                            irrigationMethod1: myCubit.irrigationMethod1!,
-                            irrigationMethod2: myCubit.irrigationMethod2!);
-                      } else if (isEdit == true) {
-                        
-                        myCubit.putIrrigationType(
-                            activeValves: binaryValves,
-                            irrigationType: myCubit.irrigationType,
-                            irrigationMethod1: myCubit.irrigationMethod1!,
-                            irrigationMethod2: myCubit.irrigationMethod2!);
+              },
+              builder: (context, state) {
+                IrrigationTypeCubit myCubit = IrrigationTypeCubit.get(context);
+                return MainCard2(
+                    function: () {
+                      if (myCubit.accordingToHour == null ||
+                          myCubit.accordingToQuantity == null) {
+                        errorToast("Please select both categories");
+                      } else {
+                        if (isEdit == false) {
+                          myCubit.postIrrigationType(
+                              activeValves: binaryValves,
+                              irrigationType: myCubit.irrigationType,
+                              irrigationMethod1: myCubit.irrigationMethod1!,
+                              irrigationMethod2: myCubit.irrigationMethod2!);
+                        } else if (isEdit == true) {
+                          
+                          myCubit.putIrrigationType(
+                              activeValves: binaryValves,
+                              irrigationType: myCubit.irrigationType,
+                              irrigationMethod1: myCubit.irrigationMethod1!,
+                              irrigationMethod2: myCubit.irrigationMethod2!);
+                        }
                       }
-                    }
-                  },
-                  buttonColor: greenButtonColor,
-                  mainWidget: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      DurationSettingsRow(
-                          firstButtonTitle:
-                              text[chosenLanguage]!['According to time']!,
-                          secondButtonTitle:
-                              text[chosenLanguage]!['According to cycle']!,
-                          firstButtonIcon: Center(
-                              child: Text(
-                            'u',
-                            style: mainIcon,
-                          )),
-                          secondButtonIcon: Center(
-                              child: Text(
-                            'w',
-                            style: mainIcon,
-                          )),
-                          firstButtonFunction: () {
-                            myCubit.chooseAccordingToHour();
+                    },
+                    buttonColor: greenButtonColor,
+                    mainWidget: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        DurationSettingsRow(
+                            firstButtonTitle:
+                                text[chosenLanguage]!['According to time']!,
+                            secondButtonTitle:
+                                text[chosenLanguage]!['According to cycle']!,
+                            firstButtonIcon: Center(
+                                child: Text(
+                              'u',
+                              style: mainIcon,
+                            )),
+                            secondButtonIcon: Center(
+                                child: Text(
+                              'w',
+                              style: mainIcon,
+                            )),
+                            firstButtonFunction: () {
+                              myCubit.chooseAccordingToHour();
+                            },
+                            secondButtonFunction: () {
+                              myCubit.chooseAccordingToPeriod();
+                            },
+                            firstButtonColor: myCubit.accordingToHour == true
+                                ? selectedColor
+                                : Colors.white,
+                            secondButtonColor: myCubit.accordingToHour == false
+                                ? selectedColor
+                                : Colors.white),
+                        DurationSettingsRow(
+                            firstButtonTitle:
+                                text[chosenLanguage]!['Watering duration']!,
+                            secondButtonTitle:
+                                text[chosenLanguage]!['According to quantity']!,
+                            firstButtonIcon: Center(
+                                child: Text(
+                              'v',
+                              style: mainIcon,
+                            )),
+                            secondButtonIcon: Center(
+                                child: Text(
+                              'c',
+                              style: mainIcon,
+                            )),
+                            firstButtonFunction: () {
+                              myCubit.chooseAccordingToTime();
+                            },
+                            secondButtonFunction: () {
+                              myCubit.chooseAccordingToQuantity();
+                            },
+                            firstButtonColor: myCubit.accordingToQuantity == false
+                                ? selectedColor
+                                : Colors.white,
+                            secondButtonColor: myCubit.accordingToQuantity == true
+                                ? selectedColor
+                                : Colors.white),
+                      ],
+                    ),
+                    rowWidget: Row(
+                      children: [
+                        BlocConsumer<IrrigationTypeCubit, IrrigationTypesStates>(
+                          listener: (context, state) {},
+                          builder: (context, state) {
+                            IrrigationTypeCubit irrigationCubit =
+                                IrrigationTypeCubit.get(context);
+                            return Text(
+                              irrigationCubit.isSeries == true ? 'r' : 't',
+                              style: mainIcon,
+                            );
                           },
-                          secondButtonFunction: () {
-                            myCubit.chooseAccordingToPeriod();
-                          },
-                          firstButtonColor: myCubit.accordingToHour == true
-                              ? selectedColor
-                              : Colors.white,
-                          secondButtonColor: myCubit.accordingToHour == false
-                              ? selectedColor
-                              : Colors.white),
-                      DurationSettingsRow(
-                          firstButtonTitle:
-                              text[chosenLanguage]!['Watering duration']!,
-                          secondButtonTitle:
-                              text[chosenLanguage]!['According to quantity']!,
-                          firstButtonIcon: Center(
-                              child: Text(
-                            'v',
-                            style: mainIcon,
-                          )),
-                          secondButtonIcon: Center(
-                              child: Text(
-                            'c',
-                            style: mainIcon,
-                          )),
-                          firstButtonFunction: () {
-                            myCubit.chooseAccordingToTime();
-                          },
-                          secondButtonFunction: () {
-                            myCubit.chooseAccordingToQuantity();
-                          },
-                          firstButtonColor: myCubit.accordingToQuantity == false
-                              ? selectedColor
-                              : Colors.white,
-                          secondButtonColor: myCubit.accordingToQuantity == true
-                              ? selectedColor
-                              : Colors.white),
-                    ],
-                  ),
-                  rowWidget: Row(
-                    children: [
-                      BlocConsumer<IrrigationTypeCubit, IrrigationTypesStates>(
-                        listener: (context, state) {},
-                        builder: (context, state) {
-                          IrrigationTypeCubit irrigationCubit =
-                              IrrigationTypeCubit.get(context);
-                          return Text(
-                            irrigationCubit.isSeries == true ? 'r' : 't',
-                            style: mainIcon,
-                          );
-                        },
-                      ),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.02,
-                      ),
-                      Text(
-                        'm',
-                        style: mainIcon,
-                      ),
-                    ],
-                  ),
-                  cardtitle: text[chosenLanguage]!['Duration settings']!);
-            },
-          ),
-        ],
+                        ),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.02,
+                        ),
+                        Text(
+                          'm',
+                          style: mainIcon,
+                        ),
+                      ],
+                    ),
+                    cardtitle: text[chosenLanguage]!['Duration settings']!);
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

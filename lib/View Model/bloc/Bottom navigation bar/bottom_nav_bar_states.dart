@@ -25,3 +25,7 @@ class BottomNavBarChooseYearState extends BottomNavBarStates {}
 class BottomNavBarChooseMonthState extends BottomNavBarStates {}
 
 class BottomNavBarChooseRangeState extends BottomNavBarStates {}
+
+class BottomNavBarLogOutSuccessState extends BottomNavBarStates {}
+
+class BottomNavBarLogoutFailState extends BottomNavBarStates {}

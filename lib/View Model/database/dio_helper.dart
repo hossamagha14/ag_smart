@@ -43,7 +43,7 @@ class DioHelper {
     return dio.get(url);
   }
 
-  Future<Response> post(String url, {required dynamic data}) async {
+  Future<Response> post(String url, {dynamic data}) async {
     return dio.post(url, data: data);
   }
 

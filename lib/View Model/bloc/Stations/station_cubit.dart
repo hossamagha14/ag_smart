@@ -39,6 +39,7 @@ class StationsCubit extends Cubit<StationsStates> {
   }
 
   getStations() {
+    stationModel = null;
     emit(StationsLoadinglState());
     dio.get('$base/$stationInfo/by_user/$userId').then((value) {
       for (var e in value.data) {
@@ -87,9 +88,10 @@ class StationsCubit extends Cubit<StationsStates> {
         'station_name': stationName
       });
       if (response.statusCode == 200) {
-        stationModel=StationModel.fromJson(response.data);
+        stationModel = StationModel.fromJson(response.data);
         CacheHelper.saveData(key: 'stationId', value: stationModel!.id);
-        CacheHelper.saveData(key: 'serialNumber', value: stationModel!.serialNumber);
+        CacheHelper.saveData(
+            key: 'serialNumber', value: stationModel!.serialNumber);
         Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(

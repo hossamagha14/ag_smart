@@ -1,3 +1,4 @@
+import 'package:ag_smart/View/Reusable/colors.dart';
 import 'package:ag_smart/View/Reusable/text.dart';
 import 'package:flutter/material.dart';
 
@@ -25,7 +26,7 @@ class MainCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: SizedBox(
-        height: MediaQuery.of(context).size.height * 0.7,
+        height: MediaQuery.of(context).size.height * 0.75,
         width: MediaQuery.of(context).size.width * 0.9,
         child: Card(
           elevation: 10,
@@ -37,11 +38,14 @@ class MainCard extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                   Padding(
+                  Padding(
                     padding: const EdgeInsets.fromLTRB(30, 25, 0, 0),
                     child: Text(
                       stationName,
-                      style: const TextStyle(fontSize: 18,fontWeight: FontWeight.w500),
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w700,
+                          color: iconColor),
                     ),
                   ),
                   Padding(
@@ -50,38 +54,42 @@ class MainCard extends StatelessWidget {
                 ],
               ),
               mainWidget,
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.08,
-                width: MediaQuery.of(context).size.width,
-                child: button ??ElevatedButton(
-                  style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all<Color>(buttonColor),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.only(
-                                  topLeft: Radius.zero,
-                                  topRight: Radius.zero,
-                                  bottomLeft: Radius.circular(20),
-                                  bottomRight: Radius.circular(20))))),
-                  onPressed: function,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    textDirection: chosenLanguage=='ar'? TextDirection.rtl:TextDirection.ltr,
-                    children: [
-                      buttonIcon ?? const SizedBox(),
-                      const SizedBox(
-                        width: 10,
+              button ??
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.08,
+                    width: MediaQuery.of(context).size.width,
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all<Color>(buttonColor),
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  const RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.only(
+                                          topLeft: Radius.zero,
+                                          topRight: Radius.zero,
+                                          bottomLeft: Radius.circular(20),
+                                          bottomRight: Radius.circular(20))))),
+                      onPressed: function,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        textDirection: chosenLanguage == 'ar'
+                            ? TextDirection.rtl
+                            : TextDirection.ltr,
+                        children: [
+                          buttonIcon ?? const SizedBox(),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            buttonTitle,
+                            style: const TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                        ],
                       ),
-                      Text(
-                        buttonTitle,
-                        style: const TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
-                ),
-              )
+                    ),
+                  )
             ],
           ),
         ),

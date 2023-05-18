@@ -33,3 +33,5 @@ class DurationSettingsGetSuccessState extends DurationSettingsStates {}
 class DurationSettingsGetFailState extends DurationSettingsStates {}
 
 class DurationSettingsDelFailState extends DurationSettingsStates {}
+
+class DurationSettingsLoadingState extends DurationSettingsStates {}

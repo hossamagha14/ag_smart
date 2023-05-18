@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'bottom_nav_bar.dart';
+import 'irrigation_type.dart';
 
 // ignore: must_be_immutable
 class PeriodAmountScreen extends StatelessWidget {
@@ -49,6 +50,28 @@ class PeriodAmountScreen extends StatelessWidget {
                     DurationSettingsCubit myCubit =
                         DurationSettingsCubit.get(context);
                     return MainCard2(
+                        editButton: InkWell(
+                          onTap: () {
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const IrrigationTypeScreen(isEdit: true),
+                                ));
+                          },
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                                right:
+                                    MediaQuery.of(context).size.width * 0.03),
+                            child: Text(
+                              'l',
+                              style: TextStyle(
+                                  fontFamily: 'icons',
+                                  fontSize: 25,
+                                  color: iconColor),
+                            ),
+                          ),
+                        ),
                         mainWidget: Column(
                           children: [
                             const ChooseDyasWidget(

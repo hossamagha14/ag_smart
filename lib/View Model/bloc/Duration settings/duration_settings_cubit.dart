@@ -252,6 +252,7 @@ class DurationSettingsCubit extends Cubit<DurationSettingsStates> {
   }
 
   getPeriods() async {
+    emit(DurationSettingsLoadingState());
     durationModel.controller = [];
     durationModel.time = [];
     await dio.get('$base/$irrigationSettings/$stationId').then((value) {

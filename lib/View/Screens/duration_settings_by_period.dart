@@ -14,6 +14,7 @@ import '../../View Model/bloc/Irrigation type/irrigation_type_cubit.dart';
 import '../../View Model/bloc/Irrigation type/irrigation_type_states.dart';
 import '../Reusable/toasts.dart';
 import 'bottom_nav_bar.dart';
+import 'irrigation_type.dart';
 
 // ignore: must_be_immutable
 class DurationSettingsByPeriodScreen extends StatelessWidget {
@@ -87,6 +88,27 @@ class DurationSettingsByPeriodScreen extends StatelessWidget {
                         }
                       },
                       buttonColor: greenButtonColor,
+                      editButton: InkWell(
+                        onTap: () {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    const IrrigationTypeScreen(isEdit: true),
+                              ));
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                              right: MediaQuery.of(context).size.width * 0.03),
+                          child: Text(
+                            'l',
+                            style: TextStyle(
+                                fontFamily: 'icons',
+                                fontSize: 25,
+                                color: iconColor),
+                          ),
+                        ),
+                      ),
                       mainWidget: Column(
                         children: [
                           const ChooseDyasWidget(

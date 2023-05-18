@@ -14,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart' as intl;
 import '../Reusable/toasts.dart';
+import 'irrigation_type.dart';
 
 // ignore: must_be_immutable
 class TimeAmountScreen extends StatelessWidget {
@@ -27,126 +28,170 @@ class TimeAmountScreen extends StatelessWidget {
         title: Text(text[chosenLanguage]!['Device Setup']!),
       ),
       body: SafeArea(
-          child: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        child: SizedBox(
-          height: MediaQuery.of(context).size.height * 0.8,
-          child: Column(
-            children: [
-              BlocConsumer<DurationSettingsCubit, DurationSettingsStates>(
-                listener: (context, state) {
-                  if (state is DurationSettingsSendSuccessState) {
-                    Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const BottomNavBarScreen(),
-                        ),
-                        (route) => false);
-                  } else if (state is DurationSettingsSendFailedState) {
-                    errorToast('An error has occured');
-                  }
-                },
-                builder: (context, state) {
-                  DurationSettingsCubit myCubit =
-                      DurationSettingsCubit.get(context);
-                  return MainCard2(
-                      mainWidget: Column(
+          child: BlocProvider(
+        create: (context) => DurationSettingsCubit()..getPeriods(),
+        child: BlocConsumer<DurationSettingsCubit, DurationSettingsStates>(
+          listener: (context, state) {
+            if (state is DurationSettingsSendSuccessState) {
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const BottomNavBarScreen(),
+                  ),
+                  (route) => false);
+            } else if (state is DurationSettingsSendFailedState) {
+              errorToast('An error has occured');
+            }
+          },
+          builder: (context, state) {
+            DurationSettingsCubit myCubit = DurationSettingsCubit.get(context);
+            return state is DurationSettingsLoadingState ||
+                    myCubit.irrigationSettingsModel == null
+                ? const Center(child: CircularProgressIndicator())
+                : SingleChildScrollView(
+                    physics: const BouncingScrollPhysics(),
+                    child: SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.8,
+                      child: Column(
                         children: [
-                          const ChooseDyasWidget(
-                            useFunction: true,
-                          ),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.02,
-                          ),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.3,
-                            width: MediaQuery.of(context).size.width * 0.8,
-                            child: ListView.separated(
-                                physics: const BouncingScrollPhysics(),
-                                itemBuilder: (context, index) =>
-                                    SetSettings2RowsContainer(
-                                      visible: myCubit.visible,
-                                      function: () {
-                                        myCubit.removeContainerFromdb(
-                                            containerIndex: index,
-                                            valveId: 0,
-                                            weekday: myCubit.toDecimal(),
-                                            periodId: myCubit.durationModel
-                                                .controller.length);
-                                      },
-                                      firstRowTitle:
-                                          text[chosenLanguage]!['Set time']!,
-                                      firstRowWidget: MyTimePicker(
-                                          time: intl.DateFormat('HH:mm').format(
-                                              DateTime(
-                                                  2023,
-                                                  1,
-                                                  1,
-                                                  myCubit.durationModel
-                                                      .time[index].hour,
-                                                  myCubit.durationModel
-                                                      .time[index].minute)),
-                                          function: (value) =>
-                                              myCubit.pickTime(value, index)),
-                                      secondRowTitle: text[chosenLanguage]![
-                                          'Amount of water']!,
-                                      secondRowWidget: OpenValvePeriodTextField(
-                                          control: myCubit
-                                              .durationModel.controller[index],
-                                          hintText: '00',
-                                          unit: text[chosenLanguage]!['ml']!),
-                                    ),
-                                separatorBuilder: (context, index) => SizedBox(
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              0.01,
-                                    ),
-                                itemCount:
-                                    myCubit.durationModel.controller.length),
-                          ),
-                          AddNewContainerButton(
-                            functionAdd: () {
-                              myCubit.addContainer(hour: 0, minute: 0);
-                            },
-                            functionRemove: () {
-                              myCubit.showDeleteButton();
-                            },
-                          )
+                          MainCard2(
+                              editButton: InkWell(
+                                onTap: () {
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const IrrigationTypeScreen(
+                                                isEdit: true),
+                                      ));
+                                },
+                                child: Padding(
+                                  padding: EdgeInsets.only(
+                                      right: MediaQuery.of(context).size.width *
+                                          0.03),
+                                  child: Text(
+                                    'l',
+                                    style: TextStyle(
+                                        fontFamily: 'icons',
+                                        fontSize: 25,
+                                        color: iconColor),
+                                  ),
+                                ),
+                              ),
+                              mainWidget: Column(
+                                children: [
+                                  const ChooseDyasWidget(
+                                    useFunction: true,
+                                  ),
+                                  SizedBox(
+                                    height: MediaQuery.of(context).size.height *
+                                        0.02,
+                                  ),
+                                  SizedBox(
+                                    height: MediaQuery.of(context).size.height *
+                                        0.33,
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.8,
+                                    child: ListView.separated(
+                                        physics: const BouncingScrollPhysics(),
+                                        itemBuilder: (context, index) =>
+                                            SetSettings2RowsContainer(
+                                              visible: myCubit.visible,
+                                              function: () {
+                                                myCubit.removeContainerFromdb(
+                                                    containerIndex: index,
+                                                    valveId: 0,
+                                                    weekday:
+                                                        myCubit.toDecimal(),
+                                                    periodId: myCubit
+                                                        .durationModel
+                                                        .controller
+                                                        .length);
+                                              },
+                                              firstRowTitle: text[
+                                                  chosenLanguage]!['Set time']!,
+                                              firstRowWidget: MyTimePicker(
+                                                  time: intl.DateFormat('HH:mm')
+                                                      .format(DateTime(
+                                                          2023,
+                                                          1,
+                                                          1,
+                                                          myCubit.durationModel
+                                                              .time[index].hour,
+                                                          myCubit
+                                                              .durationModel
+                                                              .time[index]
+                                                              .minute)),
+                                                  function: (value) => myCubit
+                                                      .pickTime(value, index)),
+                                              secondRowTitle:
+                                                  text[chosenLanguage]![
+                                                      'Amount of water']!,
+                                              secondRowWidget:
+                                                  OpenValvePeriodTextField(
+                                                      control: myCubit
+                                                          .durationModel
+                                                          .controller[index],
+                                                      hintText: '00',
+                                                      unit:
+                                                          text[chosenLanguage]![
+                                                              'ml']!),
+                                            ),
+                                        separatorBuilder: (context, index) =>
+                                            SizedBox(
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.01,
+                                            ),
+                                        itemCount: myCubit
+                                            .durationModel.controller.length),
+                                  ),
+                                  AddNewContainerButton(
+                                    functionAdd: () {
+                                      myCubit.addContainer(hour: 0, minute: 0);
+                                    },
+                                    functionRemove: () {
+                                      myCubit.showDeleteButton();
+                                    },
+                                  )
+                                ],
+                              ),
+                              rowWidget: const MainIconsRowWidget(
+                                icon1: 'm',
+                                icon2: 'r',
+                                icon3: 'u',
+                                icon4: 'c',
+                              ),
+                              function: () {
+                                bool allFull = true;
+                                for (int i = 0;
+                                    i < myCubit.durationModel.controller.length;
+                                    i++) {
+                                  if (myCubit.durationModel.controller[i].text
+                                      .isEmpty) {
+                                    allFull = false;
+                                  }
+                                }
+                                if (myCubit.noDayIsChosen == 7) {
+                                  errorToast('Please choose the days of work');
+                                }
+                                if (allFull == true) {
+                                  myCubit.putIrrigationHourList(
+                                      periodsList: myCubit.makeAList(
+                                          weekday: myCubit.toDecimal()));
+                                } else {
+                                  errorToast('Please add the open valve time');
+                                }
+                              },
+                              cardtitle:
+                                  text[chosenLanguage]!['Duration settings']!,
+                              buttonColor: greenButtonColor)
                         ],
                       ),
-                      rowWidget: const MainIconsRowWidget(
-                        icon1: 'm',
-                        icon2: 'r',
-                        icon3: 'u',
-                        icon4: 'c',
-                      ),
-                      function: () {
-                        bool allFull = true;
-                        for (int i = 0;
-                            i < myCubit.durationModel.controller.length;
-                            i++) {
-                          if (myCubit
-                              .durationModel.controller[i].text.isEmpty) {
-                            allFull = false;
-                          }
-                        }
-                        if (myCubit.noDayIsChosen == 7) {
-                          errorToast('Please choose the days of work');
-                        }
-                        if (allFull == true) {
-                          myCubit.putIrrigationHourList(
-                              periodsList: myCubit.makeAList(
-                                  weekday: myCubit.toDecimal()));
-                        } else {
-                          errorToast('Please add the open valve time');
-                        }
-                      },
-                      cardtitle: text[chosenLanguage]!['Duration settings']!,
-                      buttonColor: greenButtonColor);
-                },
-              )
-            ],
-          ),
+                    ),
+                  );
+          },
         ),
       )),
     );

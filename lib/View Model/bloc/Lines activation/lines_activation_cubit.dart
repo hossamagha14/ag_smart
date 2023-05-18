@@ -36,7 +36,6 @@ class LinesActivationCubit extends Cubit<LinesActivationStates> {
       }
     }
     CacheHelper.saveData(key: 'numOfActiveLines', value: numOfActiveLines);
-    print('$numOfActiveLines active valves');
   }
 
   getNumberOfValves() {
@@ -80,7 +79,6 @@ class LinesActivationCubit extends Cubit<LinesActivationStates> {
         emit(LinesActivationGetSuccessState());
       }
     }).catchError((onError) {
-      print(onError);
       emit(LinesActivationGetFailState());
     });
   }
@@ -90,17 +88,15 @@ class LinesActivationCubit extends Cubit<LinesActivationStates> {
     required double valveDiameter,
     required double valveNumber,
   }) async {
-  await dio.put('$base$valveInfo/$stationId/$valveId', data: {
+    await dio.put('$base$valveInfo/$stationId/$valveId', data: {
       "valve_id": valveId,
       "hole_diameter": valveDiameter,
       "hole_number": valveNumber
     }).then((value) {
       if (value.statusCode == 200) {
-        print(value.data);
         emit(LinesActivationSendSuccessState());
       }
     }).catchError((onError) {
-      print(onError);
       emit(LinesActivationSendFailState());
     });
   }
@@ -114,6 +110,5 @@ class LinesActivationCubit extends Cubit<LinesActivationStates> {
       }
     }
     binaryValves = activeValves;
-    print(binaryValves);
   }
 }

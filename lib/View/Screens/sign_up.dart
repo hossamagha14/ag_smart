@@ -33,7 +33,7 @@ class SignUpScreen extends StatelessWidget {
                     builder: (context) => SignInScreen(),
                   ),
                   (route) => false);
-                  successToast(state.accountCreatedMessage);
+              successToast(state.accountCreatedMessage);
             } else if (state is SignUpFailState) {
               errorToast(state.errorMessage);
             }
@@ -85,8 +85,14 @@ class SignUpScreen extends StatelessWidget {
                                     myCubit.showPassword();
                                   },
                                   child: myCubit.secure == true
-                                      ? const Icon(Icons.visibility)
-                                      : const Icon(Icons.visibility_off),
+                                      ? Icon(
+                                          Icons.visibility,
+                                          color: iconColor,
+                                        )
+                                      : Icon(
+                                          Icons.visibility_off,
+                                          color: iconColor,
+                                        ),
                                 ),
                                 controller: passwordControl,
                                 color: Colors.white),
@@ -100,8 +106,14 @@ class SignUpScreen extends StatelessWidget {
                                     myCubit.showRePassword();
                                   },
                                   child: myCubit.rePasswordSecure == true
-                                      ? const Icon(Icons.visibility)
-                                      : const Icon(Icons.visibility_off),
+                                      ? Icon(
+                                          Icons.visibility,
+                                          color: iconColor,
+                                        )
+                                      : Icon(
+                                          Icons.visibility_off,
+                                          color: iconColor,
+                                        ),
                                 ),
                                 color: Colors.white)
                           ],

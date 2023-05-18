@@ -86,8 +86,14 @@ class SignInScreen extends StatelessWidget {
                                     myCubit.showPassword();
                                   },
                                   child: myCubit.secure == true
-                                      ? const Icon(Icons.visibility)
-                                      : const Icon(Icons.visibility_off),
+                                      ? Icon(
+                                          Icons.visibility,
+                                          color: iconColor,
+                                        )
+                                      : Icon(
+                                          Icons.visibility_off,
+                                          color: iconColor,
+                                        ),
                                 ),
                                 color: Colors.white),
                           ],

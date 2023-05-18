@@ -33,7 +33,7 @@ class MyTextField extends StatelessWidget {
                 chosenLanguage == 'ar' ? TextDirection.rtl : TextDirection.ltr,
             children: [
               SizedBox(
-                width: MediaQuery.of(context).size.width * 0.635,
+                width: MediaQuery.of(context).size.width * 0.63,
                 child: TextFormField(
                   obscureText: secureText ?? false,
                   textDirection: chosenLanguage == 'ar'

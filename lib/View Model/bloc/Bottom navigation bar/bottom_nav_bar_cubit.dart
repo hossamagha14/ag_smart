@@ -217,4 +217,12 @@ class BottomNavBarCubit extends Cubit<CommonStates> {
       emit(BottomNavBarPutFailState());
     });
   }
+
+  logout() {
+    dio.post('$base/$logout').then((value) {
+      emit(BottomNavBarLogOutSuccessState());
+    }).catchError((onError) {
+      emit(BottomNavBarLogoutFailState());
+    });
+  }
 }

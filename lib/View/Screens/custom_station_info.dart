@@ -5,7 +5,6 @@ import 'package:ag_smart/View/Reusable/main_icons_row_widget.dart';
 import 'package:ag_smart/View/Reusable/pop_screen.dart';
 import 'package:ag_smart/View/Reusable/text.dart';
 import 'package:ag_smart/View/Reusable/text_style.dart';
-import 'package:ag_smart/View/Screens/edit_settings.dart';
 import 'package:ag_smart/View/Screens/sign_in.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,9 +18,6 @@ class CustomStationInfoScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(text[chosenLanguage]!['Station info']!),
-      ),
       body: BlocConsumer<BottomNavBarCubit, CommonStates>(
         listener: (context, state) {
           if (state is ExpiredTokenState) {
@@ -38,13 +34,7 @@ class CustomStationInfoScreen extends StatelessWidget {
           return Column(
             children: [
               MainCard(
-                function: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const EditSettingsScreen(),
-                      ));
-                },
+                function: () {},
                 mainWidget: SizedBox(
                   height: MediaQuery.of(context).size.height * 0.5,
                   child: Column(
@@ -354,9 +344,9 @@ class CustomStationInfoScreen extends StatelessWidget {
                 ),
                 buttonColor: settingsColor,
                 buttonTitle: text[chosenLanguage]!['Settings']!,
-                buttonIcon: const Text(
-                  'q',
-                  style: TextStyle(fontFamily: 'icons', fontSize: 25),
+                button: const SizedBox(
+                  width: 0,
+                  height: 0,
                 ),
               )
             ],

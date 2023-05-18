@@ -4,7 +4,6 @@ import 'package:ag_smart/View/Reusable/colors.dart';
 import 'package:ag_smart/View/Reusable/main_card02.dart';
 import 'package:ag_smart/View/Reusable/main_icons_row_widget.dart';
 import 'package:ag_smart/View/Reusable/text.dart';
-import 'package:ag_smart/View/Screens/edit_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -28,22 +27,25 @@ class AutoScreen extends StatelessWidget {
                         LinesActivationStates>(
                     listener: (context, state) {},
                     builder: (context, state) {
-                      LinesActivationCubit activationCubit = LinesActivationCubit.get(context);
+                      LinesActivationCubit activationCubit =
+                          LinesActivationCubit.get(context);
                       return ListView.separated(
-                        physics: const BouncingScrollPhysics(),
+                          physics: const BouncingScrollPhysics(),
                           itemBuilder: (context, index) {
                             return Visibility(
                               visible: activationCubit.valves[index].isActive,
                               child: Container(
-                                height: MediaQuery.of(context).size.height * 0.05,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.05,
                                 decoration: BoxDecoration(
                                     color: backgroundColor,
                                     borderRadius: BorderRadius.circular(10)),
                                 child: Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 20),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20),
                                   child: Row(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     children: [
                                       Text('Line ${index + 1}'),
                                       const Spacer()
@@ -57,7 +59,8 @@ class AutoScreen extends StatelessWidget {
                             return Visibility(
                               visible: activationCubit.valves[index].isActive,
                               child: SizedBox(
-                                height: MediaQuery.of(context).size.height * 0.01,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.01,
                               ),
                             );
                           },
@@ -68,13 +71,7 @@ class AutoScreen extends StatelessWidget {
                 icon1: 'm',
                 icon2: 'e',
               ),
-              function: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const EditSettingsScreen(),
-                    ));
-              },
+              function: () {},
               buttonTitle: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 textDirection: chosenLanguage == 'ar'
