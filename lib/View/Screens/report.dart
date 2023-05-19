@@ -293,7 +293,7 @@ class ReportScreen extends StatelessWidget {
                                           child: Row(
                                             children: [
                                               Text(
-                                                's',
+                                                'F',
                                                 style: TextStyle(
                                                     fontFamily: 'icons',
                                                     fontSize: 35,
@@ -336,13 +336,13 @@ class ReportScreen extends StatelessWidget {
                                                 MainAxisAlignment.end,
                                             children: [
                                               Text(
-                                                'Save Screen',
+                                                'Download',
                                                 style: TextStyle(
                                                     color: iconColor,
                                                     fontSize: 20),
                                               ),
                                               Text(
-                                                'd',
+                                                'E',
                                                 style: TextStyle(
                                                     fontFamily: 'icons',
                                                     fontSize: 35,

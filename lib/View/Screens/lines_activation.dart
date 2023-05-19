@@ -21,86 +21,93 @@ class LinesActivationScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(text[chosenLanguage]!['Device Setup']!),
       ),
-      body: BlocConsumer<LinesActivationCubit, LinesActivationStates>(
-        listener: (context, state) {},
-        builder: (context, state) {
-          LinesActivationCubit myCubit = LinesActivationCubit.get(context);
-          return state is LinesActivationLoadingState
-              ? const Center(child: CircularProgressIndicator())
-              : Column(
-                  children: [
-                    MainCard2(
-                        function: () {
-                          myCubit.toBinary(myCubit.valves.length);
-                          myCubit.numberOfActivelines();
-                          if (isEdit == false) {
-                            Navigator.push(
+      body: BlocProvider(
+        create: (context) => LinesActivationCubit()..getNumberOfValves(isEdit: isEdit),
+        child: BlocConsumer<LinesActivationCubit, LinesActivationStates>(
+          listener: (context, state) {},
+          builder: (context, state) {
+            LinesActivationCubit myCubit = LinesActivationCubit.get(context);
+            return state is LinesActivationLoadingState
+                ? const Center(child: CircularProgressIndicator())
+                : Column(
+                    children: [
+                      MainCard2(
+                          function: () {
+                            myCubit.toBinary(myCubit.valves.length);
+                            myCubit.numberOfActivelines();
+                            if (isEdit == false) {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => IrrigationTypeScreen(
+                                      isEdit: isEdit,
+                                    ),
+                                  ));
+                            } else {
+                              Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => IrrigationTypeScreen(
                                     isEdit: isEdit,
                                   ),
-                                ));
-                          } else {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => IrrigationTypeScreen(
-                                  isEdit: isEdit,
                                 ),
-                              ),
-                            );
-                          }
-                        },
-                        buttonColor: greenButtonColor,
-                        mainWidget: SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.8,
-                            height: MediaQuery.of(context).size.height * 0.445,
-                            child: ListView.separated(
-                                physics: const BouncingScrollPhysics(),
-                                itemBuilder: (context, index) {
-                                  return Container(
-                                    height: MediaQuery.of(context).size.height *
-                                        0.06,
-                                    decoration: BoxDecoration(
-                                        color: backgroundColor,
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
-                                    child: Row(
-                                      children: [
-                                        Transform.scale(
-                                          scale: 0.8,
-                                          child: CupertinoSwitch(
-                                            value:
-                                                myCubit.valves[index].isActive,
-                                            onChanged: (value) {
-                                              myCubit.activateLine(index);
-                                            },
+                              );
+                            }
+                          },
+                          buttonColor: greenButtonColor,
+                          mainWidget: SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.8,
+                              height:
+                                  MediaQuery.of(context).size.height * 0.445,
+                              child: ListView.separated(
+                                  physics: const BouncingScrollPhysics(),
+                                  itemBuilder: (context, index) {
+                                    return Container(
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.06,
+                                      decoration: BoxDecoration(
+                                          color: backgroundColor,
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
+                                      child: Row(
+                                        children: [
+                                          Transform.scale(
+                                            scale: 0.8,
+                                            child: CupertinoSwitch(
+                                              value: myCubit
+                                                  .valves[index].isActive,
+                                              onChanged: (value) {
+                                                myCubit.activateLine(index);
+                                              },
+                                            ),
                                           ),
-                                        ),
-                                        const SizedBox(
-                                          width: 15,
-                                        ),
-                                        Text('Line ${index + 1}')
-                                      ],
-                                    ),
-                                  );
-                                },
-                                separatorBuilder: (context, index) {
-                                  return SizedBox(
-                                    height: MediaQuery.of(context).size.height *
-                                        0.01,
-                                  );
-                                },
-                                itemCount: myCubit.valves.length)),
-                        rowWidget: Text(
-                          'm',
-                          style: mainIcon,
-                        ),
-                        cardtitle: text[chosenLanguage]!['Lines Activation']!),
-                  ],
-                );
-        },
+                                          const SizedBox(
+                                            width: 15,
+                                          ),
+                                          Text('Line ${index + 1}')
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                  separatorBuilder: (context, index) {
+                                    return SizedBox(
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.01,
+                                    );
+                                  },
+                                  itemCount: myCubit.valves.length)),
+                          rowWidget: Text(
+                            'm',
+                            style: mainIcon,
+                          ),
+                          cardtitle:
+                              text[chosenLanguage]!['Lines Activation']!),
+                    ],
+                  );
+          },
+        ),
       ),
     );
   }

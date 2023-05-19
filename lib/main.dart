@@ -3,7 +3,6 @@ import 'package:ag_smart/View%20Model/bloc/Custom%20Irrigation/custom_irrigation
 import 'package:ag_smart/View%20Model/bloc/Duration%20settings/duration_settings_cubit.dart';
 import 'package:ag_smart/View%20Model/bloc/Irrigation%20type/irrigation_type_cubit.dart';
 import 'package:ag_smart/View%20Model/bloc/Language/language_cubit.dart';
-import 'package:ag_smart/View%20Model/bloc/Lines%20activation/lines_activation_cubit.dart';
 import 'package:ag_smart/View%20Model/bloc/Pump%20settings/pump_settingd_cubit.dart';
 import 'package:ag_smart/View%20Model/bloc/Report/report_cubit.dart';
 import 'package:ag_smart/View%20Model/bloc/Scarcrow/Scarcrow_cubit.dart';
@@ -40,9 +39,6 @@ class MyApp extends StatelessWidget {
           create: (context) => PumpSettingsCubit(),
         ),
         BlocProvider(
-          create: (context) => LinesActivationCubit()..getNumberOfValves(),
-        ),
-        BlocProvider(
           create: (context) => IrrigationTypeCubit(),
         ),
         BlocProvider(
@@ -58,13 +54,13 @@ class MyApp extends StatelessWidget {
           create: (context) => ScarecrowCubit(),
         ),
         BlocProvider(
+          create: (context) => StationsCubit()..getStations(),
+        ),
+        BlocProvider(
           create: (context) => LightCubit(),
         ),
         BlocProvider(
           create: (context) => LanguageCubit(),
-        ),
-        BlocProvider(
-          create: (context) => StationsCubit()..getStations(),
         ),
         BlocProvider(
           create: (context) => CustomFertilizationCubit(),

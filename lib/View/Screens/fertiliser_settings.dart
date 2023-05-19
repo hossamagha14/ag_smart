@@ -90,21 +90,16 @@ class FirtiliserSettingsScreen extends StatelessWidget {
                                   allFull = false;
                                 }
                                 if (allFull == true) {
-                                  if (myCubit
-                                          .stationModel!
-                                          .fertilizationSettings![0]
+                                  if (myCubit.fertilizationModel!
                                           .fertilizationMethod2 ==
                                       1) {
-                                    if (myCubit
-                                            .stationModel!
-                                            .fertilizationSettings![0]
+                                    if (myCubit.fertilizationModel!
                                             .fertilizationMethod1 ==
                                         1) {
                                       validInfo = myCubit
                                           .checkOpenValveTimeSeriesByTime();
                                     } else if (myCubit
-                                            .stationModel!
-                                            .fertilizationSettings![0]
+                                            .fertilizationModel!
                                             .fertilizationMethod1 ==
                                         2) {
                                       validInfo =
@@ -136,7 +131,7 @@ class FirtiliserSettingsScreen extends StatelessWidget {
                                   width:
                                       MediaQuery.of(context).size.width * 0.8,
                                   height:
-                                      MediaQuery.of(context).size.height * 0.35,
+                                      MediaQuery.of(context).size.height * 0.4,
                                   child: ListView.separated(
                                       shrinkWrap: true,
                                       physics: const BouncingScrollPhysics(),

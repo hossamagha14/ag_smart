@@ -309,7 +309,6 @@ class CustomFertilizationCubit extends Cubit<CustomFertilizationStates> {
       }
       getPeriods(stationId: stationId, lineIndex: lineIndex, valveId: valveId);
     }).catchError((onError) {
-      print(onError);
       emit(CustomFertilizationGetValvesFailState());
     });
   }

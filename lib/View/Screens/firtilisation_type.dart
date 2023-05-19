@@ -112,7 +112,7 @@ class FirtilisationTypeScreen extends StatelessWidget {
                           myCubit.seriesFertilization == null) {
                         errorToast('Please select firtilisation type');
                       } else {
-                        myCubit.putFertilizationSettings(context,
+                        myCubit.putFertilizationSettings(
                             ferMethod1: myCubit.method1!,
                             ferMethod2: myCubit.method2!);
                       }

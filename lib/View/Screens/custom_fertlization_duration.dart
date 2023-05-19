@@ -122,7 +122,7 @@ class CustomFirtiliserSettingsScreen extends StatelessWidget {
                               }
                               if (allFull == true && validInfo == true) {
                                 myCubit.putFertilizationPeriods(
-                                    stationId: 1,
+                                    stationId: stationId,
                                     periodsList: myCubit.makeAList(
                                         ferMethod1: fertiliationType,
                                         lineIndex: lineIndex,
@@ -144,7 +144,7 @@ class CustomFirtiliserSettingsScreen extends StatelessWidget {
                                   width:
                                       MediaQuery.of(context).size.width * 0.8,
                                   height:
-                                      MediaQuery.of(context).size.height * 0.35,
+                                      MediaQuery.of(context).size.height * 0.4,
                                   child: ListView.separated(
                                       shrinkWrap: true,
                                       physics: const BouncingScrollPhysics(),

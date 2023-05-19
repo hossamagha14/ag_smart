@@ -64,8 +64,9 @@ class CustomDurationSettingsByPeriodScreen extends StatelessWidget {
                               MaterialPageRoute(
                                 builder: (context) =>
                                     CustomDurationSettingsScreen(
-                                      stationId: stationId,
-                                        lineIndex: lineIndex, valveId: valveId),
+                                        stationId: stationId,
+                                        lineIndex: lineIndex,
+                                        valveId: valveId),
                               ));
                         },
                         child: Padding(
@@ -136,13 +137,16 @@ class CustomDurationSettingsByPeriodScreen extends StatelessWidget {
                               ? 'Please add the open valve time'
                               : 'Please add the amount of water needed');
                         } else {
-                          validInfo = myCubit.checkOpenValveTimeSeriesByCycle(
-                              hours: double.parse(hourControl.text),
-                              openValveTime: double.parse(minutesControl.text));
+                          if (irrigationMethod2 == 1) {
+                            validInfo = myCubit.checkOpenValveTimeSeriesByCycle(
+                                hours: double.parse(hourControl.text),
+                                openValveTime:
+                                    double.parse(minutesControl.text));
+                          }
                           if (validInfo == true) {
                             myCubit.putIrrigationCycle(
                                 interval: int.parse(hourControl.text),
-                                stationId: 1,
+                                stationId: stationId,
                                 valveId: valveId,
                                 duration:
                                     myCubit.customIrrigationModelList[lineIndex]

@@ -137,7 +137,8 @@ class BottomNavBarCubit extends Cubit<CommonStates> {
             } else if (stationModel!.fertilizationSettings![0]
                 .customFertilizerSettings![valve].fertilizerPeriods!.isEmpty) {
               customIrrigationModelList[valve].fertilizationStatusType = 2;
-            } else {
+            } else if (stationModel!.fertilizationSettings![0]
+                .customFertilizerSettings![valve].fertilizerPeriods!.isNotEmpty) {
               customIrrigationModelList[valve].fertilizationStatusType = 1;
             }
           }
@@ -210,10 +211,8 @@ class BottomNavBarCubit extends Cubit<CommonStates> {
   putmanualDurationList({required int statioId}) {
     dio.put('$base/$manualIrrigationSettings/$stationId',
         data: {"list": makeList()}).then((value) {
-      print(value.data);
       emit(BottomNavBarPutSuccessState());
     }).catchError((onError) {
-      print(onError);
       emit(BottomNavBarPutFailState());
     });
   }

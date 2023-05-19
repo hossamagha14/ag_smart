@@ -100,7 +100,7 @@ class CustomFirtilizationTypesScreen extends StatelessWidget {
                             myCubit.putFertilizationType(
                                 lineIndex: lineIndex,
                                 valveId: valveId,
-                                stationId: 1,
+                                stationId: stationId,
                                 fertilizationMethod: myCubit.fertilizationType);
                           },
                           cardtitle: 'Fertilization Settings',

@@ -1,5 +1,6 @@
 import 'package:ag_smart/View%20Model/bloc/Stations/station_cubit.dart';
 import 'package:ag_smart/View%20Model/bloc/Stations/station_states.dart';
+import 'package:ag_smart/View%20Model/database/cache_helpher.dart';
 import 'package:ag_smart/View/Reusable/colors.dart';
 import 'package:ag_smart/View/Reusable/toasts.dart';
 import 'package:ag_smart/View/Reusable/main_card.dart';
@@ -61,6 +62,11 @@ class _DeviceSetupScreenState extends State<DeviceSetupScreen> {
                           if (changeNameController.text.isEmpty) {
                             errorToast('Please put the station name');
                           } else {
+                            CacheHelper.saveData(
+                                key: 'stationName',
+                                value: changeNameController.text);
+                            stationName =
+                                CacheHelper.getData(key: 'stationName');
                             myCubit.postStation(context,
                                 stationName: changeNameController.text);
                           }

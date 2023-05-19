@@ -22,6 +22,7 @@ class LinesActivationCubit extends Cubit<LinesActivationStates> {
   List<int> activeBinary = [];
   List<int> activeValves = [];
   FeaturesModel? featuresModel;
+  List<Map<String, dynamic>> valveDetails = [];
 
   activateLine(int index) {
     valves[index].isActive = !valves[index].isActive;
@@ -38,7 +39,7 @@ class LinesActivationCubit extends Cubit<LinesActivationStates> {
     CacheHelper.saveData(key: 'numOfActiveLines', value: numOfActiveLines);
   }
 
-  getNumberOfValves() {
+  getNumberOfValves({required bool isEdit}) {
     emit(LinesActivationLoadingState());
     valves = [];
     dio.get('$base/$stationBySerial/$serialNumber').then((value) {
@@ -75,6 +76,14 @@ class LinesActivationCubit extends Cubit<LinesActivationStates> {
             valves[i].isActive = true;
           }
         }
+        if (isEdit == true) {
+          for (int i = 0; i < valves.length; i++) {
+            valves[i].diameterController.text =
+                stationModel!.linesInfo![i].holeDiameter.toString();
+            valves[i].numberController.text =
+                stationModel!.linesInfo![i].holeNumber.toString();
+          }
+        }
 
         emit(LinesActivationGetSuccessState());
       }
@@ -83,16 +92,9 @@ class LinesActivationCubit extends Cubit<LinesActivationStates> {
     });
   }
 
-  sendValveInfo({
-    required int valveId,
-    required double valveDiameter,
-    required double valveNumber,
-  }) async {
-    await dio.put('$base$valveInfo/$stationId/$valveId', data: {
-      "valve_id": valveId,
-      "hole_diameter": valveDiameter,
-      "hole_number": valveNumber
-    }).then((value) {
+  sendValveInfo() async {
+    await dio.put('$base/station/valve_info/list/$stationId',
+        data: {"list": makeAList()}).then((value) {
       if (value.statusCode == 200) {
         emit(LinesActivationSendSuccessState());
       }
@@ -110,5 +112,17 @@ class LinesActivationCubit extends Cubit<LinesActivationStates> {
       }
     }
     binaryValves = activeValves;
+  }
+
+  List<Map<String, dynamic>> makeAList() {
+    valveDetails = [];
+    for (int i = 0; i < stationModel!.linesInfo!.length; i++) {
+      valveDetails.add({
+        "valve_id": i + 1,
+        "hole_diameter": double.parse(valves[i].diameterController.text),
+        "hole_number": double.parse(valves[i].numberController.text)
+      });
+    }
+    return valveDetails;
   }
 }

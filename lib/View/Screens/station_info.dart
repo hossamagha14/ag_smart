@@ -1,4 +1,5 @@
 import 'package:ag_smart/View%20Model/bloc/Bottom%20navigation%20bar/bottom_nav_bar_cubit.dart';
+import 'package:ag_smart/View%20Model/bloc/Firtiliser%20settings/firtiliser_settings_cubit.dart';
 import 'package:ag_smart/View/Reusable/colors.dart';
 import 'package:ag_smart/View/Reusable/firtilisers_scarcrow_light_widget.dart';
 import 'package:ag_smart/View/Reusable/get_choosen_days.dart';
@@ -11,9 +12,12 @@ import 'package:ag_smart/View/Screens/time_amount.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../View Model/bloc/Firtiliser settings/firtiliser_settings_states.dart';
 import '../../View Model/bloc/commom_states.dart';
 import 'duration_settings_by_period.dart';
 import 'duration_settings_hours.dart';
+import 'fertiliser_settings.dart';
+import 'firtilisation_type.dart';
 import 'irrigation_type.dart';
 
 class StationInfoScreen extends StatelessWidget {
@@ -178,37 +182,67 @@ class StationInfoScreen extends StatelessWidget {
                                         },
                                         itemCount:
                                             myCubit.activeValves.length)),
-                                FirScarLightWidget(
-                                  ferColor: myCubit.stationModel!.features![0]
-                                              .fertilizer ==
-                                          2
-                                      ? lightSelectedColor
-                                      : Colors.white,
-                                  scarColor: myCubit.stationModel!.features![0]
-                                              .animal ==
-                                          2
-                                      ? lightSelectedColor
-                                      : Colors.white,
-                                  ligColor: myCubit.stationModel!.features![0]
-                                              .light ==
-                                          2
-                                      ? lightSelectedColor
-                                      : Colors.white,
-                                  fericon: myCubit.stationModel!.features![0]
-                                              .fertilizer ==
-                                          2
-                                      ? smallIconOn
-                                      : smallIconOff,
-                                  scaricon: myCubit.stationModel!.features![0]
-                                              .animal ==
-                                          2
-                                      ? smallIconOn
-                                      : smallIconOff,
-                                  ligicon: myCubit.stationModel!.features![0]
-                                              .light ==
-                                          2
-                                      ? smallIconOn
-                                      : smallIconOff,
+                                BlocConsumer<FirtiliserSettingsCubit,
+                                    FirtiliserSettingsStates>(
+                                  listener: (context, state) {},
+                                  builder: (context, state) {
+                                    FirtiliserSettingsCubit ferCubit =
+                                        FirtiliserSettingsCubit.get(context);
+                                    return FirScarLightWidget(
+                                      ferFunction: () {
+                                        if (myCubit
+                                            .stationModel!
+                                            .fertilizationSettings![0]
+                                            .fertilizerPeriods!
+                                            .isEmpty) {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const FirtilisationTypeScreen(),
+                                              ));
+                                        } else {
+                                          ferCubit.getPeriods();
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const FirtiliserSettingsScreen(),
+                                              ));
+                                        }
+                                      },
+                                      ferColor: myCubit.stationModel!
+                                                  .features![0].fertilizer ==
+                                              2
+                                          ? lightSelectedColor
+                                          : Colors.white,
+                                      scarColor: myCubit.stationModel!
+                                                  .features![0].animal ==
+                                              2
+                                          ? lightSelectedColor
+                                          : Colors.white,
+                                      ligColor: myCubit.stationModel!
+                                                  .features![0].light ==
+                                              2
+                                          ? lightSelectedColor
+                                          : Colors.white,
+                                      fericon: myCubit.stationModel!
+                                                  .features![0].fertilizer ==
+                                              2
+                                          ? smallIconOn
+                                          : smallIconOff,
+                                      scaricon: myCubit.stationModel!
+                                                  .features![0].animal ==
+                                              2
+                                          ? smallIconOn
+                                          : smallIconOff,
+                                      ligicon: myCubit.stationModel!
+                                                  .features![0].light ==
+                                              2
+                                          ? smallIconOn
+                                          : smallIconOff,
+                                    );
+                                  },
                                 )
                               ],
                             ),

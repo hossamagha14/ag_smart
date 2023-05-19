@@ -109,7 +109,7 @@ class CustomDurationByTime extends StatelessWidget {
                                   ),
                                   SizedBox(
                                     height: MediaQuery.of(context).size.height *
-                                        0.3,
+                                        0.33,
                                     width:
                                         MediaQuery.of(context).size.width * 0.8,
                                     child: ListView.separated(

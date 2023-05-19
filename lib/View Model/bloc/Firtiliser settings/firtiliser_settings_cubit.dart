@@ -3,12 +3,9 @@ import 'package:ag_smart/Model/firtiliser_model.dart';
 import 'package:ag_smart/Model/station_model.dart';
 import 'package:ag_smart/View%20Model/database/end_points.dart';
 import 'package:ag_smart/View/Reusable/text.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../View/Reusable/toasts.dart';
-import '../../../View/Screens/firtilisation_type.dart';
 import '../../database/dio_helper.dart';
 import 'firtiliser_settings_states.dart';
 
@@ -104,8 +101,7 @@ class FirtiliserSettingsCubit extends Cubit<FirtiliserSettingsStates> {
     emit(FirtiliserSettingssParallelState());
   }
 
-  putFertilizationSettings(
-    context, {
+  putFertilizationSettings({
     required int ferMethod1,
     required int ferMethod2,
   }) async {
@@ -115,7 +111,7 @@ class FirtiliserSettingsCubit extends Cubit<FirtiliserSettingsStates> {
       "fertilization_method_2": ferMethod2
     }).then((value) {
       if (value.statusCode == 200) {
-        getPeriods(context);
+        getPeriods();
       }
     }).catchError((onError) {
       emit(FirtiliserSettingsSendFailState());
@@ -141,7 +137,8 @@ class FirtiliserSettingsCubit extends Cubit<FirtiliserSettingsStates> {
     emit(FirtiliserSettingsShowDeleteState());
   }
 
-  getPeriods(context) async {
+  getPeriods() async {
+    emit(FirtiliserLoadingState());
     firtiliserModel.controllersList = [];
     firtiliserModel.timeList = [];
     firtiliserModel.dateList = [];
@@ -216,7 +213,6 @@ class FirtiliserSettingsCubit extends Cubit<FirtiliserSettingsStates> {
         "date": firtiliserModel.dateList[i]
       });
     }
-    print(periodsList);
     return periodsList;
   }
 
@@ -274,32 +270,5 @@ class FirtiliserSettingsCubit extends Cubit<FirtiliserSettingsStates> {
       }
     }
     return validInput;
-  }
-
-  getFertilizationFeatures(context) async {
-    emit(FirtiliserLoadingState());
-    try {
-      Response<dynamic> response =
-          await dio.get('$base/$stationBySerial/$serialNumber');
-      if (response.statusCode == 200) {
-        stationModel = StationModel.fromJson(response.data);
-        if (stationModel!.features![0].fertilizer == 2) {
-          if (stationModel!
-              .fertilizationSettings![0].fertilizerPeriods!.isEmpty) {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const FirtilisationTypeScreen(),
-                ));
-          } else {
-            getPeriods(context);
-          }
-        } else {
-          errorToast('You are not subscribed for this feature');
-        }
-      }
-    } catch (e) {
-      emit(FirtiliserGetFailState());
-    }
   }
 }

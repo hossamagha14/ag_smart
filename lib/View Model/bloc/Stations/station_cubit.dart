@@ -39,8 +39,8 @@ class StationsCubit extends Cubit<StationsStates> {
   }
 
   getStations() {
-    stationModel = null;
     emit(StationsLoadinglState());
+    stations = [];
     dio.get('$base/$stationInfo/by_user/$userId').then((value) {
       for (var e in value.data) {
         stationModel = StationModel.fromJson(e);
@@ -48,7 +48,6 @@ class StationsCubit extends Cubit<StationsStates> {
       }
       emit(StationsGetSuccessState());
     }).catchError((onError) {
-      print(onError);
       emit(StationsGetFailState());
     });
   }
@@ -58,10 +57,16 @@ class StationsCubit extends Cubit<StationsStates> {
       barCode = await FlutterBarcodeScanner.scanBarcode(
           '#E2BFE8', 'Cancel', true, ScanMode.QR);
       barCode = barCode!.split('=')[1];
-      if (barCode != null) {
+      if (barCode != null && barCode != '-1') {
         try {
           Response<dynamic> response = await dio.get('$base/$serial/$barCode');
           if (response.statusCode == 200) {
+            CacheHelper.saveData(key: 'stationName', value: barCode);
+            stationName = CacheHelper.getData(key: 'stationName');
+            CacheHelper.saveData(key: 'serialNumber', value: barCode);
+            serialNumber = CacheHelper.getData(key: 'serialNumber');
+            CacheHelper.saveData(key: 'stationId', value: stations.length+1);
+            stationId = CacheHelper.getData(key: 'stationId');
             Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -73,6 +78,8 @@ class StationsCubit extends Cubit<StationsStates> {
         } catch (e) {
           emit(StationsFailQrState());
         }
+      } else {
+        Navigator.pop(context);
       }
     } on PlatformException {
       barCode = 'Failed';

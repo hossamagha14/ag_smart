@@ -90,9 +90,6 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    - family: Weekdays
-      fonts:
-        - asset: assets/fonts/weekdays.ttf
     - family: icons
       fonts:
         - asset: assets/fonts/icons.ttf

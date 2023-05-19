@@ -348,7 +348,6 @@ class CustomIrrigationCubit extends Cubit<CustomIrrigationStates> {
       }
       emit(CustomIrrigationGetSuccessState());
     }).catchError((onError) {
-      print(onError);
       emit(CustomIrrigationGetFailState());
     });
   }

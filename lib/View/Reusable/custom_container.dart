@@ -92,7 +92,7 @@ class CustomContainer extends StatelessWidget {
                         color: Colors.blue.withOpacity(0.2)),
                     child: const Center(
                       child: Text(
-                        'l',
+                        'G',
                         style: TextStyle(
                             fontSize: 30,
                             fontFamily: 'icons',
