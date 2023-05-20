@@ -96,31 +96,21 @@ class CustomDurationSettingsByPeriodScreen extends StatelessWidget {
                                 control: hourControl,
                                 hintText: '00',
                                 unit: text[chosenLanguage]!['Hours']!),
-                            secondRowTitle: myCubit
-                                        .customIrrigationModelList[lineIndex]
-                                        .accordingToQuantity ==
-                                    false
+                            secondRowTitle: irrigationMethod2 == 1
                                 ? text[chosenLanguage]!['Open valve time']!
                                 : text[chosenLanguage]!['Amount of water']!,
                             secondRowWidget: OpenValvePeriodTextField(
                                 control: minutesControl,
                                 hintText: '00',
-                                unit:
-                                    myCubit.customIrrigationModelList[lineIndex]
-                                                .accordingToQuantity ==
-                                            false
-                                        ? text[chosenLanguage]!['Minutes']!
-                                        : text[chosenLanguage]!['ml']!))
+                                unit: irrigationMethod2 == 1
+                                    ? text[chosenLanguage]!['Minutes']!
+                                    : text[chosenLanguage]!['ml']!))
                       ]),
                       rowWidget: MainIconsRowWidget(
                         icon1: 'm',
                         icon2: 'f',
                         icon3: 'w',
-                        icon4: myCubit.customIrrigationModelList[lineIndex]
-                                    .accordingToQuantity ==
-                                false
-                            ? 'x'
-                            : 'c',
+                        icon4: irrigationMethod2 == 1 ? 'x' : 'c',
                       ),
                       function: () {
                         bool validInfo = true;
@@ -130,10 +120,7 @@ class CustomDurationSettingsByPeriodScreen extends StatelessWidget {
                           errorToast('Please choose the days of work');
                         } else if (hourControl.text.isEmpty ||
                             minutesControl.text.isEmpty) {
-                          errorToast(myCubit
-                                      .customIrrigationModelList[lineIndex]
-                                      .accordingToQuantity ==
-                                  false
+                          errorToast(irrigationMethod2 == 1
                               ? 'Please add the open valve time'
                               : 'Please add the amount of water needed');
                         } else {
@@ -148,18 +135,12 @@ class CustomDurationSettingsByPeriodScreen extends StatelessWidget {
                                 interval: int.parse(hourControl.text),
                                 stationId: stationId,
                                 valveId: valveId,
-                                duration:
-                                    myCubit.customIrrigationModelList[lineIndex]
-                                                .accordingToQuantity ==
-                                            false
-                                        ? int.parse(minutesControl.text)
-                                        : 0,
-                                quantity:
-                                    myCubit.customIrrigationModelList[lineIndex]
-                                                .accordingToQuantity ==
-                                            true
-                                        ? int.parse(minutesControl.text)
-                                        : 0,
+                                duration: irrigationMethod2 == 1
+                                    ? int.parse(minutesControl.text)
+                                    : 0,
+                                quantity: irrigationMethod2 == 2
+                                    ? int.parse(minutesControl.text)
+                                    : 0,
                                 weekDays:
                                     myCubit.toDecimal(lineIndex: lineIndex));
                           } else if (validInfo == false) {

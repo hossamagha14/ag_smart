@@ -44,7 +44,7 @@ class ReportScreen extends StatelessWidget {
           },
           builder: (context, state) {
             ReportCubit myCubit = ReportCubit.get(context);
-            return myCubit.stationModel == null
+            return myCubit.stationModel == null || state is ReportLoadinglState
                 ? const Center(child: CircularProgressIndicator())
                 : SingleChildScrollView(
                     physics: const BouncingScrollPhysics(),
@@ -264,7 +264,7 @@ class ReportScreen extends StatelessWidget {
                                                               : const EmptyContainer(),
                                   Row(
                                     mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
+                                        MainAxisAlignment.center,
                                     children: [
                                       InkWell(
                                         splashColor: Colors.white,
@@ -278,7 +278,7 @@ class ReportScreen extends StatelessWidget {
                                               await ImageGallerySaver.saveImage(
                                                   image);
                                           successToast(
-                                              'Screenshot save to gallery');
+                                              'Screenshot saved to gallery');
                                           return result['filePath'];
                                         },
                                         child: SizedBox(
@@ -296,7 +296,7 @@ class ReportScreen extends StatelessWidget {
                                                 'F',
                                                 style: TextStyle(
                                                     fontFamily: 'icons',
-                                                    fontSize: 35,
+                                                    fontSize: 30,
                                                     color: iconColor),
                                               ),
                                               Text(
@@ -345,7 +345,7 @@ class ReportScreen extends StatelessWidget {
                                                 'E',
                                                 style: TextStyle(
                                                     fontFamily: 'icons',
-                                                    fontSize: 35,
+                                                    fontSize: 30,
                                                     color: iconColor),
                                               ),
                                             ],

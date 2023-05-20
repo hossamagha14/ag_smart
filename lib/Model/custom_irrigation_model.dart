@@ -17,7 +17,6 @@ class CustomIrrigationModel {
   List<bool> isBeingDeleted = [];
   bool? accordingToHour;
   bool? accordingToQuantity;
-  String? intial;
   int noDayIsChosen = 7;
   int statusType = 0;
   int fertilizationStatusType = 0;

@@ -5,7 +5,8 @@ import 'package:intl/intl.dart';
 class ThirtyDaysChart extends StatelessWidget {
   final List<FlSpot> spots;
   final double maxY;
-  const ThirtyDaysChart({Key? key, required this.spots, required this.maxY}) : super(key: key);
+  const ThirtyDaysChart({Key? key, required this.spots, required this.maxY})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +16,7 @@ class ThirtyDaysChart extends StatelessWidget {
       child: LineChart(
         LineChartData(
           maxX: 29,
-          maxY: maxY*1.6,
+          maxY: maxY * 1.6,
           minY: 0,
           lineTouchData: LineTouchData(enabled: true),
           lineBarsData: [
@@ -44,18 +45,9 @@ class ThirtyDaysChart extends StatelessWidget {
             rightTitles: AxisTitles(),
             topTitles: AxisTitles(),
             leftTitles: AxisTitles(
-                sideTitles: SideTitles(
-              interval: maxY/5,
-              showTitles: true,
-              getTitlesWidget: (value, meta) {
-                return Text(
-                  '${value.toInt()}',
-                  style: const TextStyle(
-                      color: Colors.grey,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 12),
-                );
-              },
+                axisNameWidget: const Text(
+              'Water consumption (Litre)',
+              style: TextStyle(color: Colors.grey, fontWeight: FontWeight.w500),
             )),
             bottomTitles: AxisTitles(
               sideTitles: SideTitles(
@@ -198,7 +190,7 @@ class ThirtyDaysChart extends StatelessWidget {
           borderData: FlBorderData(show: false),
           gridData: FlGridData(
             show: true,
-            horizontalInterval: maxY/5,
+            horizontalInterval: maxY / 5,
             verticalInterval: 1,
             drawVerticalLine: true,
             getDrawingHorizontalLine: (value) {

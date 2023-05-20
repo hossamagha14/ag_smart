@@ -29,3 +29,5 @@ class BottomNavBarChooseRangeState extends BottomNavBarStates {}
 class BottomNavBarLogOutSuccessState extends BottomNavBarStates {}
 
 class BottomNavBarLogoutFailState extends BottomNavBarStates {}
+
+class BottomNavBarGetActiveValvesState extends BottomNavBarStates {}

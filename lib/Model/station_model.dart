@@ -1,3 +1,5 @@
+import 'package:ag_smart/Model/pump_model.dart';
+
 class StationModel {
   int? id;
   int? internetAccess;
@@ -10,6 +12,7 @@ class StationModel {
   List<FertilizationSettings>? fertilizationSettings;
   List<AnimalRepellent>? animalRepellent;
   List<LightSettings>? lightSettings;
+  List<PumpModel>? pumpModel;
 
   StationModel(
       {this.id,
@@ -22,6 +25,7 @@ class StationModel {
       this.irrigationSettings,
       this.fertilizationSettings,
       this.animalRepellent,
+      this.pumpModel,
       this.lightSettings});
 
   StationModel.fromJson(Map<String, dynamic> json) {
@@ -66,6 +70,12 @@ class StationModel {
         lightSettings!.add(LightSettings.fromJson(v));
       });
     }
+    if (json['pump_settings'] != null) {
+      pumpModel = <PumpModel>[];
+      json['pump_settings'].forEach((v) {
+        pumpModel!.add(PumpModel.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -80,6 +90,9 @@ class StationModel {
     }
     if (linesInfo != null) {
       data['lines_info'] = linesInfo!.map((v) => v.toJson()).toList();
+    }
+    if (pumpModel != null) {
+      data['pump_settings'] = pumpModel!.map((v) => v.toJson()).toList();
     }
     if (irrigationSettings != null) {
       data['irrigation_settings'] =

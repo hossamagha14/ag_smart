@@ -84,20 +84,11 @@ class DurationSettingsScreen extends StatelessWidget {
                           myCubit.accordingToQuantity == null) {
                         errorToast("Please select both categories");
                       } else {
-                        if (isEdit == false) {
-                          myCubit.postIrrigationType(
-                              activeValves: binaryValves,
-                              irrigationType: myCubit.irrigationType,
-                              irrigationMethod1: myCubit.irrigationMethod1!,
-                              irrigationMethod2: myCubit.irrigationMethod2!);
-                        } else if (isEdit == true) {
-                          
-                          myCubit.putIrrigationType(
-                              activeValves: binaryValves,
-                              irrigationType: myCubit.irrigationType,
-                              irrigationMethod1: myCubit.irrigationMethod1!,
-                              irrigationMethod2: myCubit.irrigationMethod2!);
-                        }
+                        myCubit.putIrrigationType(
+                            activeValves: binaryValves,
+                            irrigationType: myCubit.irrigationType,
+                            irrigationMethod1: myCubit.irrigationMethod1!,
+                            irrigationMethod2: myCubit.irrigationMethod2!);
                       }
                     },
                     buttonColor: greenButtonColor,
@@ -152,17 +143,20 @@ class DurationSettingsScreen extends StatelessWidget {
                             secondButtonFunction: () {
                               myCubit.chooseAccordingToQuantity();
                             },
-                            firstButtonColor: myCubit.accordingToQuantity == false
-                                ? selectedColor
-                                : Colors.white,
-                            secondButtonColor: myCubit.accordingToQuantity == true
-                                ? selectedColor
-                                : Colors.white),
+                            firstButtonColor:
+                                myCubit.accordingToQuantity == false
+                                    ? selectedColor
+                                    : Colors.white,
+                            secondButtonColor:
+                                myCubit.accordingToQuantity == true
+                                    ? selectedColor
+                                    : Colors.white),
                       ],
                     ),
                     rowWidget: Row(
                       children: [
-                        BlocConsumer<IrrigationTypeCubit, IrrigationTypesStates>(
+                        BlocConsumer<IrrigationTypeCubit,
+                            IrrigationTypesStates>(
                           listener: (context, state) {},
                           builder: (context, state) {
                             IrrigationTypeCubit irrigationCubit =

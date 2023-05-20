@@ -43,7 +43,20 @@ class MainCard2 extends StatelessWidget {
                     padding: const EdgeInsets.fromLTRB(30, 25, 20, 10),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [Text(stationName,style: TextStyle(fontSize: 18,color: iconColor,fontWeight: FontWeight.w700),), rowWidget],
+                      children: [
+                        SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.34,
+                            child: Text(
+                              stationName,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  color: iconColor,
+                                  fontWeight: FontWeight.w700),
+                            )),
+                        rowWidget
+                      ],
                     ),
                   ),
                   Stack(

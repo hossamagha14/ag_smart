@@ -33,13 +33,6 @@ class IrrigationTypeCubit extends Cubit<IrrigationTypesStates> {
     emit(IrrigationTypeSeriesStates());
   }
 
-  chooseManualIrrigation() {
-    irrigationType = 5;
-    isSeries = false;
-    active = false;
-    emit(IrrigationTypeManualStates());
-  }
-
   chooseParallelIrrigation() {
     irrigationType = 2;
     isSeries = false;
@@ -97,34 +90,10 @@ class IrrigationTypeCubit extends Cubit<IrrigationTypesStates> {
       "irrigation_method_1": irrigationMethod1,
       "irrigation_method_2": irrigationMethod2
     }).then((value) {
-      print(value.data);
-      if (value.statusCode == 200) {
-        emit(IrrigationTypeSendSuccessState());
-      }
-    }).catchError((onError) {
-      print(onError.toString());
-      emit(IrrigationTypeSendFailState());
-    });
-  }
-
-  postIrrigationType({
-    required int activeValves,
-    required int irrigationType,
-    required int irrigationMethod1,
-    required int irrigationMethod2,
-  }) async {
-    await dio.post('$base/$irrigationSettings/$stationId', data: {
-      "station_id": stationId,
-      "active_valves": activeValves,
-      "settings_type": irrigationType,
-      "irrigation_method_1": irrigationMethod1,
-      "irrigation_method_2": irrigationMethod2
-    }).then((value) {
       if (value.statusCode == 200) {
         putStationConfig();
       }
     }).catchError((onError) {
-      print(onError.toString());
       emit(IrrigationTypeSendFailState());
     });
   }

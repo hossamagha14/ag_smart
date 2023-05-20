@@ -5,7 +5,6 @@ import 'package:ag_smart/View/Reusable/main_card02.dart';
 import 'package:ag_smart/View/Reusable/pump_settings_container.dart';
 import 'package:ag_smart/View/Reusable/text.dart';
 import 'package:ag_smart/View/Reusable/text_style.dart';
-import 'package:ag_smart/View/Screens/lines_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -39,24 +38,27 @@ class PumpSettingsScreen extends StatelessWidget {
                           function: () {
                             if (myCubit.groupValue == 0) {
                               errorToast('Please choose pump settings');
+                            } else if (myCubit.groupValue == 2 &&
+                                hoursePowerControl.text.isEmpty) {
+                              errorToast('Please put the pump horse power');
                             } else {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => LinesSettingsScreen(
-                                      isEdit: isEdit,
-                                    ),
-                                  ));
+                              myCubit.putPumpSettings(
+                                  pumpPower: hoursePowerControl.text.isNotEmpty
+                                      ? double.parse(hoursePowerControl.text)
+                                      : 0,
+                                  pumpEnabled: myCubit.groupValue,
+                                  pressureSwitch: 0);
                             }
                           },
                           buttonColor: greenButtonColor,
                           mainWidget: Column(
                             children: [
                               PumpSettingsContainer(
-                                  value: 1,
+                                  value: 2,
                                   groupValue: myCubit.groupValue,
                                   function: (value) {
-                                    myCubit.choosePumpSettings(value!,hoursePowerControl);
+                                    myCubit.choosePumpSettings(
+                                        value!, hoursePowerControl);
                                   },
                                   widget: Row(
                                     textDirection: chosenLanguage == 'ar'
@@ -110,7 +112,7 @@ class PumpSettingsScreen extends StatelessWidget {
                                 height: 10,
                               ),
                               PumpSettingsContainer(
-                                  value: 2,
+                                  value: 1,
                                   groupValue: myCubit.groupValue,
                                   widget: Text(
                                       text[chosenLanguage]!['Nothing']!,
@@ -118,7 +120,8 @@ class PumpSettingsScreen extends StatelessWidget {
                                           fontSize: 18,
                                           fontWeight: FontWeight.w400)),
                                   function: (value) {
-                                    myCubit.choosePumpSettings(value!,hoursePowerControl);
+                                    myCubit.choosePumpSettings(
+                                        value!, hoursePowerControl);
                                   })
                             ],
                           ),

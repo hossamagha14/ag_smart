@@ -4,7 +4,7 @@ import 'package:ag_smart/View/Reusable/colors.dart';
 import 'package:ag_smart/View/Reusable/main_button.dart';
 import 'package:ag_smart/View/Reusable/my_text_field.dart';
 import 'package:ag_smart/View/Reusable/text.dart';
-import 'package:ag_smart/View/Screens/dashboard.dart';
+import 'package:ag_smart/View/Screens/bottom_dash_bar_screen.dart';
 import 'package:ag_smart/View/Screens/sign_up.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -32,7 +32,7 @@ class SignInScreen extends StatelessWidget {
                 Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const DashsboardScreen(),
+                      builder: (context) => const BottomDashBarScreen(),
                     ),
                     (route) => false);
               } else if (state is SignInLoginFailState) {

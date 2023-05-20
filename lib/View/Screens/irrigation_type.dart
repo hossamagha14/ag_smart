@@ -30,7 +30,9 @@ class IrrigationTypeScreen extends StatelessWidget {
           BlocConsumer<IrrigationTypeCubit, IrrigationTypesStates>(
             listener: (context, state) {
               IrrigationTypeCubit myCubit = IrrigationTypeCubit.get(context);
-              if (myCubit.irrigationType == 3 || myCubit.irrigationType == 4 || myCubit.irrigationType == 5) {
+              if (myCubit.irrigationType == 3 ||
+                  myCubit.irrigationType == 4 ||
+                  myCubit.irrigationType == 5) {
                 if (state is IrrigationTypeSendSuccessState) {
                   Navigator.pushAndRemoveUntil(
                       context,
@@ -57,20 +59,12 @@ class IrrigationTypeScreen extends StatelessWidget {
                             ),
                           ));
                     } else if (myCubit.irrigationType == 3 ||
-                        myCubit.irrigationType == 4 || myCubit.irrigationType == 5) {
-                      if (isEdit == false) {
-                        myCubit.postIrrigationType(
-                            activeValves: binaryValves,
-                            irrigationType: myCubit.irrigationType,
-                            irrigationMethod1: 1,
-                            irrigationMethod2: 1);
-                      } else if (isEdit == true) {
-                        myCubit.putIrrigationType(
-                            activeValves: binaryValves,
-                            irrigationType: myCubit.irrigationType,
-                            irrigationMethod1: 1,
-                            irrigationMethod2: 1);
-                      }
+                        myCubit.irrigationType == 4) {
+                      myCubit.putIrrigationType(
+                          activeValves: binaryValves,
+                          irrigationType: myCubit.irrigationType,
+                          irrigationMethod1: 1,
+                          irrigationMethod2: 1);
                     } else {
                       errorToast('Please choose irrigation type');
                     }
@@ -155,17 +149,7 @@ class IrrigationTypeScreen extends StatelessWidget {
                                 style: bigIcon,
                               ),
                               irrigationType: text[chosenLanguage]![
-                                  'Automatic Irrigation']!),
-                          IrrigationTypeContainer(
-                              function: () {
-                                myCubit.chooseManualIrrigation();
-                              },
-                              color: myCubit.irrigationType == 5
-                                  ? selectedColor
-                                  : backgroundColor,
-                              icon: Text('f', style: bigIcon),
-                              irrigationType:
-                                  text[chosenLanguage]!['Manual Irrigation']!),
+                                  'Automatic Irrigation']!)
                         ],
                       ),
                     ),

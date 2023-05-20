@@ -125,4 +125,35 @@ class LinesActivationCubit extends Cubit<LinesActivationStates> {
     }
     return valveDetails;
   }
+
+  postIrrigationType({
+    required int activeValves,
+  }) async {
+    await dio.post('$base/$irrigationSettings/$stationId', data: {
+      "station_id": stationId,
+      "active_valves": activeValves,
+      "settings_type": 0,
+      "irrigation_method_1": 0,
+      "irrigation_method_2": 0
+    }).then((value) {
+      if (value.statusCode == 200) {
+        emit(LinesActivationSendSuccessState());
+      }
+    }).catchError((onError) {
+      emit(LinesActivationSendFailState());
+    });
+  }
+
+  putIrrigationType({required int activeValves}) async {
+    await dio.put('$base/$irrigationSettings/$stationId', data: {
+      "station_id": stationId,
+      "active_valves": activeValves
+    }).then((value) {
+      if (value.statusCode == 200) {
+        emit(LinesActivationSendSuccessState());
+      }
+    }).catchError((onError) {
+      emit(LinesActivationSendFailState());
+    });
+  }
 }

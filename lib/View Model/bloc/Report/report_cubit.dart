@@ -184,7 +184,7 @@ class ReportCubit extends Cubit<ReportStates> {
         calendarType: CalendarDatePicker2Type.range,
         lastDate: DateTime.now(),
       ),
-      dialogSize: Size(MediaQuery.of(context).size.width * 0.8,
+      dialogSize: Size(MediaQuery.of(context).size.width * 0.85,
           MediaQuery.of(context).size.width * 0.5),
       value: [DateTime.now(), DateTime.now()],
       borderRadius: BorderRadius.circular(15),

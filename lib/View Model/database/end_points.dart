@@ -28,3 +28,4 @@ const monthlyRange='/monthly_records/range';
 const serial='/serial_number';
 const station='/station';
 const logout='/logout';
+const pumpSettings='/station/pump_info';

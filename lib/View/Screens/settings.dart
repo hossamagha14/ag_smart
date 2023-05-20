@@ -1,6 +1,6 @@
-import 'package:ag_smart/View/Reusable/settings_button.dart';
+import 'package:ag_smart/View/Reusable/edit_settings_button.dart';
 import 'package:ag_smart/View/Reusable/text.dart';
-import 'package:ag_smart/View/Screens/dashboard.dart';
+import 'package:ag_smart/View/Screens/manual_irrigation.dart';
 import 'package:ag_smart/View/Screens/pump_settings.dart';
 import 'package:flutter/material.dart';
 
@@ -16,77 +16,79 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-          child: Column(
-        children: [
-          SettingsButton(
-              title: 'Dashboard',
-              function: () {
-                Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const DashsboardScreen(),
-                    ),
-                    (route) => false);
-              }),
-          SettingsButton(
-              title: text[chosenLanguage]!['Device Features']!,
-              function: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const DeviceFeaturesScreen(
-                        isEdit: true,
-                      ),
-                    ));
-              }),
-          SettingsButton(
-              title: text[chosenLanguage]!['Pump Settings']!,
-              function: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => PumpSettingsScreen(
-                        isEdit: true,
-                      ),
-                    ));
-              }),
-          SettingsButton(
-            title: text[chosenLanguage]!['Lines\' Settings']!,
-            function: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        const LinesSettingsScreen(isEdit: true),
-                  ));
-            },
-          ),
-          SettingsButton(
-            title: text[chosenLanguage]!['Lines Activation']!,
-            function: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const LinesActivationScreen(
-                      isEdit: true,
-                    ),
-                  ));
-            },
-          ),
-          SettingsButton(
-            title: text[chosenLanguage]!['Irrigation type']!,
-            function: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const IrrigationTypeScreen(
-                      isEdit: true,
-                    ),
-                  ));
-            },
-          ),
-        ],
-      )),
+          child: Center(
+            child: SizedBox(
+              height: MediaQuery.of(context).size.height*0.6,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+              EditSettingsButton(
+                  buttonTile: text[chosenLanguage]!['Manual Irrigation']!,
+                  function: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const ManualIrrigationScreen(),
+                        ));
+                  }),
+              EditSettingsButton(
+                  buttonTile: text[chosenLanguage]!['Device Features']!,
+                  function: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const DeviceFeaturesScreen(
+                            isEdit: true,
+                          ),
+                        ));
+                  }),
+              EditSettingsButton(
+                  buttonTile: text[chosenLanguage]!['Pump Settings']!,
+                  function: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => PumpSettingsScreen(
+                            isEdit: true,
+                          ),
+                        ));
+                  }),
+              EditSettingsButton(
+                  buttonTile: text[chosenLanguage]!['Lines Activation']!,
+                  function: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const LinesActivationScreen(
+                            isEdit: true,
+                          ),
+                        ));
+                  }),
+              EditSettingsButton(
+                  buttonTile: text[chosenLanguage]!['Lines\' Settings']!,
+                  function: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              const LinesSettingsScreen(isEdit: true),
+                        ));
+                  }),
+              EditSettingsButton(
+                  buttonTile: text[chosenLanguage]!['Irrigation type']!,
+                  function: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const IrrigationTypeScreen(
+                            isEdit: true,
+                          ),
+                        ));
+                  }),
+                    ],
+                  ),
+            ),
+          )),
     );
   }
 }

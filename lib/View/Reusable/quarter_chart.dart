@@ -5,7 +5,11 @@ class QuarterChart extends StatelessWidget {
   final List<FlSpot> spots;
   final int quarter;
   final double maxY;
-  const QuarterChart({Key? key, required this.spots, required this.quarter, required this.maxY})
+  const QuarterChart(
+      {Key? key,
+      required this.spots,
+      required this.quarter,
+      required this.maxY})
       : super(key: key);
 
   @override
@@ -17,7 +21,7 @@ class QuarterChart extends StatelessWidget {
         LineChartData(
           maxX: 2,
           minX: 0,
-          maxY: maxY*1.3,
+          maxY: maxY * 1.3,
           lineTouchData: LineTouchData(enabled: true),
           lineBarsData: [
             LineChartBarData(
@@ -46,18 +50,9 @@ class QuarterChart extends StatelessWidget {
             rightTitles: AxisTitles(),
             topTitles: AxisTitles(),
             leftTitles: AxisTitles(
-                sideTitles: SideTitles(
-              interval: maxY/5,
-              showTitles: true,
-              getTitlesWidget: (value, meta) {
-                return Text(
-                  '${value.toInt()}',
-                  style: const TextStyle(
-                      color: Colors.grey,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 12),
-                );
-              },
+                axisNameWidget: const Text(
+              'Water consumption (Litre)',
+              style: TextStyle(color: Colors.grey, fontWeight: FontWeight.w500),
             )),
             bottomTitles: AxisTitles(
               sideTitles: SideTitles(
@@ -144,7 +139,7 @@ class QuarterChart extends StatelessWidget {
           borderData: FlBorderData(show: false),
           gridData: FlGridData(
             show: true,
-            horizontalInterval: maxY/5,
+            horizontalInterval: maxY / 5,
             verticalInterval: 1,
             drawVerticalLine: true,
             getDrawingHorizontalLine: (value) {

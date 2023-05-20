@@ -1,14 +1,15 @@
 import 'package:ag_smart/View%20Model/bloc/Lines%20activation/lines_activation_cubit.dart';
 import 'package:ag_smart/View%20Model/bloc/Lines%20activation/lines_activation_states.dart';
 import 'package:ag_smart/View/Reusable/colors.dart';
+import 'package:ag_smart/View/Reusable/global.dart';
 import 'package:ag_smart/View/Reusable/text.dart';
 import 'package:ag_smart/View/Reusable/text_style.dart';
-import 'package:ag_smart/View/Screens/irrigation_type.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../Reusable/main_card02.dart';
+import 'lines_settings.dart';
 
 class LinesActivationScreen extends StatelessWidget {
   final bool isEdit;
@@ -22,9 +23,18 @@ class LinesActivationScreen extends StatelessWidget {
         title: Text(text[chosenLanguage]!['Device Setup']!),
       ),
       body: BlocProvider(
-        create: (context) => LinesActivationCubit()..getNumberOfValves(isEdit: isEdit),
+        create: (context) =>
+            LinesActivationCubit()..getNumberOfValves(isEdit: isEdit),
         child: BlocConsumer<LinesActivationCubit, LinesActivationStates>(
-          listener: (context, state) {},
+          listener: (context, state) {
+            if (state is LinesActivationSendSuccessState) {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => LinesSettingsScreen(isEdit: isEdit),
+                  ));
+            }
+          },
           builder: (context, state) {
             LinesActivationCubit myCubit = LinesActivationCubit.get(context);
             return state is LinesActivationLoadingState
@@ -36,29 +46,18 @@ class LinesActivationScreen extends StatelessWidget {
                             myCubit.toBinary(myCubit.valves.length);
                             myCubit.numberOfActivelines();
                             if (isEdit == false) {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => IrrigationTypeScreen(
-                                      isEdit: isEdit,
-                                    ),
-                                  ));
+                              myCubit.postIrrigationType(
+                                  activeValves: binaryValves);
                             } else {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => IrrigationTypeScreen(
-                                    isEdit: isEdit,
-                                  ),
-                                ),
-                              );
+                              myCubit.putIrrigationType(
+                                  activeValves: binaryValves);
                             }
                           },
                           buttonColor: greenButtonColor,
                           mainWidget: SizedBox(
                               width: MediaQuery.of(context).size.width * 0.8,
                               height:
-                                  MediaQuery.of(context).size.height * 0.445,
+                                  MediaQuery.of(context).size.height * 0.48,
                               child: ListView.separated(
                                   physics: const BouncingScrollPhysics(),
                                   itemBuilder: (context, index) {

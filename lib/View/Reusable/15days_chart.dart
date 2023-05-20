@@ -45,18 +45,9 @@ class FifteenDaysChart extends StatelessWidget {
             rightTitles: AxisTitles(),
             topTitles: AxisTitles(),
             leftTitles: AxisTitles(
-                sideTitles: SideTitles(
-              interval: maxY / 5,
-              showTitles: true,
-              getTitlesWidget: (value, meta) {
-                return Text(
-                  '${value.toInt()}',
-                  style: const TextStyle(
-                      color: Colors.grey,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 12),
-                );
-              },
+                axisNameWidget: const Text(
+              'Water consumption (Litre)',
+              style: TextStyle(color: Colors.grey, fontWeight: FontWeight.w500),
             )),
             bottomTitles: AxisTitles(
               sideTitles: SideTitles(

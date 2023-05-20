@@ -4,8 +4,6 @@ import 'package:ag_smart/View%20Model/bloc/Bottom%20navigation%20bar/bottom_nav_
 import 'package:ag_smart/View%20Model/database/cache_helpher.dart';
 import 'package:ag_smart/View/Screens/auto.dart';
 import 'package:ag_smart/View/Screens/custom_station_info.dart';
-import 'package:ag_smart/View/Screens/manual_irrigation.dart';
-import 'package:ag_smart/View/Screens/report.dart';
 import 'package:ag_smart/View/Screens/settings.dart';
 import 'package:ag_smart/View/Screens/station_info.dart';
 import 'package:flutter/material.dart';
@@ -57,27 +55,15 @@ class BottomNavBarCubit extends Cubit<CommonStates> {
       if (settingsType == 1 || settingsType == 2) {
         bottomNavBarScreens = [
           const StationInfoScreen(),
-          ReportScreen(),
           const SettingsScreen()
         ];
       } else if (settingsType == 3) {
         bottomNavBarScreens = [
           const CustomStationInfoScreen(),
-          ReportScreen(),
           const SettingsScreen()
         ];
       } else if (settingsType == 4) {
-        bottomNavBarScreens = [
-          const AutoScreen(),
-          ReportScreen(),
-          const SettingsScreen()
-        ];
-      } else if (settingsType == 5) {
-        bottomNavBarScreens = [
-          const ManualIrrigationScreen(),
-          ReportScreen(),
-          const SettingsScreen()
-        ];
+        bottomNavBarScreens = [const AutoScreen(), const SettingsScreen()];
       }
 
       if (value.statusCode == 200) {
@@ -137,15 +123,15 @@ class BottomNavBarCubit extends Cubit<CommonStates> {
             } else if (stationModel!.fertilizationSettings![0]
                 .customFertilizerSettings![valve].fertilizerPeriods!.isEmpty) {
               customIrrigationModelList[valve].fertilizationStatusType = 2;
-            } else if (stationModel!.fertilizationSettings![0]
-                .customFertilizerSettings![valve].fertilizerPeriods!.isNotEmpty) {
+            } else if (stationModel!
+                .fertilizationSettings![0]
+                .customFertilizerSettings![valve]
+                .fertilizerPeriods!
+                .isNotEmpty) {
               customIrrigationModelList[valve].fertilizationStatusType = 1;
             }
           }
-        } else if (settingsType == 5) {
-          getManualValves(stationId: stationId);
         }
-        print('$numOfActiveLines number of active lines');
         emit(BottomNavBarGetSuccessState());
       }
     }).catchError((onError) {
@@ -190,11 +176,9 @@ class BottomNavBarCubit extends Cubit<CommonStates> {
       for (var element in value.data) {
         manualModel = ManualModel.fromJson(element);
         manualList.add(manualModel!);
-        print(manualList);
       }
       emit(BottomNavBarGetSuccessState());
     }).catchError((onError) {
-      print(onError);
       emit(BottomNavBarGetFailState());
     });
   }

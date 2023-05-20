@@ -17,9 +17,14 @@ class EditSettingsButton extends StatelessWidget {
         height: MediaQuery.of(context).size.height * 0.05,
         width: MediaQuery.of(context).size.width * 0.8,
         decoration: BoxDecoration(
+            color: Colors.white,
             border: Border.all(color: settingsColor, width: 2),
             borderRadius: BorderRadius.circular(10)),
-        child: Center(child: Text(buttonTile)),
+        child: Center(
+            child: Text(
+          buttonTile,
+          style: TextStyle(color: iconColor, fontWeight: FontWeight.w500),
+        )),
       ),
     );
   }

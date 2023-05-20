@@ -40,12 +40,17 @@ class MainCard extends StatelessWidget {
                 children: [
                   Padding(
                     padding: const EdgeInsets.fromLTRB(30, 25, 0, 0),
-                    child: Text(
-                      stationName,
-                      style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w700,
-                          color: iconColor),
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width*0.3,
+                      child: Text(
+                        stationName,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700,
+                            color: iconColor),
+                      ),
                     ),
                   ),
                   Padding(

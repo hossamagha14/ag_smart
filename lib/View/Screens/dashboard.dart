@@ -19,9 +19,6 @@ class DashsboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Dashboard'),
-      ),
       body: SafeArea(
           child: BlocConsumer<StationsCubit, StationsStates>(
         listener: (context, state) {
@@ -44,10 +41,10 @@ class DashsboardScreen extends StatelessWidget {
                   child: CircularProgressIndicator(),
                 )
               : RefreshIndicator(
-                onRefresh: ()async{
-                  await myCubit.getStations();
-                },
-                child: SingleChildScrollView(
+                  onRefresh: () async {
+                    await myCubit.getStations();
+                  },
+                  child: SingleChildScrollView(
                     physics: const BouncingScrollPhysics(),
                     child: Center(
                       child: Column(
@@ -56,7 +53,8 @@ class DashsboardScreen extends StatelessWidget {
                             padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                             child: SizedBox(
                               width: MediaQuery.of(context).size.width * 0.95,
-                              height: MediaQuery.of(context).size.height * 0.075,
+                              height:
+                                  MediaQuery.of(context).size.height * 0.075,
                               child: Card(
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(30)),
@@ -107,8 +105,8 @@ class DashsboardScreen extends StatelessWidget {
                                           key: 'serialNumber');
                                       stationId =
                                           CacheHelper.getData(key: 'stationId');
-                                      stationName =
-                                          CacheHelper.getData(key: 'stationName');
+                                      stationName = CacheHelper.getData(
+                                          key: 'stationName');
                                       if (myCubit.stations[index].configured ==
                                           1) {
                                         Navigator.pushAndRemoveUntil(
@@ -129,8 +127,9 @@ class DashsboardScreen extends StatelessWidget {
                                       }
                                     },
                                     child: SizedBox(
-                                      height: MediaQuery.of(context).size.height *
-                                          0.1,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.1,
                                       child: Card(
                                         elevation: 8,
                                         color: Colors.white,
@@ -142,12 +141,14 @@ class DashsboardScreen extends StatelessWidget {
                                               MainAxisAlignment.spaceBetween,
                                           children: [
                                             Padding(
-                                              padding:
-                                                  const EdgeInsets.only(left: 30),
+                                              padding: const EdgeInsets.only(
+                                                  left: 30),
                                               child: Text(myCubit
-                                                  .stations[index].stationName!),
+                                                  .stations[index]
+                                                  .stationName!),
                                             ),
-                                            myCubit.stations[index].configured ==
+                                            myCubit.stations[index]
+                                                            .configured ==
                                                         0 ||
                                                     myCubit.stations[index]
                                                             .configured ==
@@ -178,7 +179,8 @@ class DashsboardScreen extends StatelessWidget {
                                                                   ? 't'
                                                                   : 'f',
                                                           style: TextStyle(
-                                                              fontFamily: 'icons',
+                                                              fontFamily:
+                                                                  'icons',
                                                               color: iconColor,
                                                               fontSize: 25),
                                                         ),
@@ -192,7 +194,8 @@ class DashsboardScreen extends StatelessWidget {
                                                         Text(
                                                           'm',
                                                           style: TextStyle(
-                                                              fontFamily: 'icons',
+                                                              fontFamily:
+                                                                  'icons',
                                                               color: iconColor,
                                                               fontSize: 25),
                                                         ),
@@ -217,7 +220,7 @@ class DashsboardScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-              );
+                );
         },
       )),
     );

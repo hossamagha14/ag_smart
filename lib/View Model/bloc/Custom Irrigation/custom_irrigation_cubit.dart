@@ -47,7 +47,6 @@ class CustomIrrigationCubit extends Cubit<CustomIrrigationStates> {
 
   chooseAccordingToQuantity(int index) {
     customIrrigationModelList[index].accordingToQuantity = true;
-    print(customIrrigationModelList[index].accordingToQuantity);
     irrigationMethod2 = 2;
     emit(CustomIrrigationQuantityState());
   }
@@ -124,7 +123,6 @@ class CustomIrrigationCubit extends Cubit<CustomIrrigationStates> {
     }).catchError((onError) {
       customIrrigationModelList[lineIndex].isBeingDeleted[containerIndex] =
           true;
-      print(onError.toString());
       emit(CustomIrrigationDeleteFailedState());
     });
   }
@@ -174,7 +172,6 @@ class CustomIrrigationCubit extends Cubit<CustomIrrigationStates> {
         emit(CustomIrrigationPutSuccessState());
       }
     }).catchError((onError) {
-      print(onError.toString());
       emit(CustomIrrigationPutFailState());
     });
   }
@@ -189,7 +186,6 @@ class CustomIrrigationCubit extends Cubit<CustomIrrigationStates> {
         emit(CustomIrrigationPutSuccessState());
       }
     }).catchError((onError) {
-      print(onError.toString());
       emit(CustomIrrigationPutFailState());
     });
   }
@@ -206,7 +202,6 @@ class CustomIrrigationCubit extends Cubit<CustomIrrigationStates> {
         emit(CustomIrrigationPutDeleteSuccessState());
       }
     }).catchError((onError) {
-      print(onError.toString());
       emit(CustomIrrigationPutDeleteFailState());
     });
   }
@@ -248,7 +243,6 @@ class CustomIrrigationCubit extends Cubit<CustomIrrigationStates> {
                 customIrrigationModelList[lineIndex].noDayIsChosen--;
               }
             }
-            print(activeDays);
           }
 
           for (int h = 0;
@@ -265,10 +259,6 @@ class CustomIrrigationCubit extends Cubit<CustomIrrigationStates> {
             int minute = irrigationSettingsModel!.customValvesSettings![i]
                     .irrigationPeriods![h].startingTime! -
                 hour * 60;
-            print(irrigationSettingsModel!
-                .customValvesSettings![i].irrigationPeriods![h].startingTime!);
-            print(hour);
-            print(minute);
             addContainer(lineIndex, hour: hour, minute: minute);
             irrigationSettingsModel!
                         .customValvesSettings![i].irrigationMethod2 ==
@@ -287,11 +277,9 @@ class CustomIrrigationCubit extends Cubit<CustomIrrigationStates> {
         }
       }
       if (value.statusCode == 200) {
-        print(value.data);
         emit(CustomIrrigationGetSuccessState());
       }
     }).catchError((onError) {
-      print(onError.toString());
       emit(CustomIrrigationGetFailState());
     });
   }
@@ -321,7 +309,6 @@ class CustomIrrigationCubit extends Cubit<CustomIrrigationStates> {
         "week_days": weekday
       });
     }
-    print('$periodsList periodslist');
     return periodsList;
   }
 

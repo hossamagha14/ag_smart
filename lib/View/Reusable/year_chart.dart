@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 class YearChart extends StatelessWidget {
   final List<FlSpot> spots;
   final double maxY;
-  const YearChart({Key? key, required this.spots, required this.maxY}) : super(key: key);
+  const YearChart({Key? key, required this.spots, required this.maxY})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +15,7 @@ class YearChart extends StatelessWidget {
       child: LineChart(
         LineChartData(
           maxX: 11,
-          maxY: maxY*1.3,
+          maxY: maxY * 1.3,
           lineTouchData: LineTouchData(enabled: true),
           lineBarsData: [
             LineChartBarData(
@@ -43,18 +44,9 @@ class YearChart extends StatelessWidget {
             rightTitles: AxisTitles(),
             topTitles: AxisTitles(),
             leftTitles: AxisTitles(
-                sideTitles: SideTitles(
-              interval: maxY/5,
-              showTitles: true,
-              getTitlesWidget: (value, meta) {
-                return Text(
-                  '${value.toInt()}',
-                  style: const TextStyle(
-                      color: Colors.grey,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 12),
-                );
-              },
+                axisNameWidget: const Text(
+              'Water consumption (Litre)',
+              style: TextStyle(color: Colors.grey, fontWeight: FontWeight.w500),
             )),
             bottomTitles: AxisTitles(
               sideTitles: SideTitles(
@@ -95,7 +87,7 @@ class YearChart extends StatelessWidget {
           borderData: FlBorderData(show: false),
           gridData: FlGridData(
             show: true,
-            horizontalInterval: maxY/5,
+            horizontalInterval: maxY / 5,
             verticalInterval: 1,
             drawVerticalLine: true,
             getDrawingHorizontalLine: (value) {

@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../View Model/bloc/Bottom navigation bar/bottom_nav_bar_states.dart';
 import '../../View Model/bloc/commom_states.dart';
+import 'bottom_dash_bar_screen.dart';
 import 'choose_language.dart';
 import 'dashboard.dart';
 
@@ -41,9 +42,7 @@ class BottomNavBarScreen extends StatelessWidget {
           appBar: AppBar(
             title: Text(myCubit.index == 0
                 ? text[chosenLanguage]!['Station info']!
-                : myCubit.index == 1
-                    ? 'Report'
-                    : text[chosenLanguage]!['Settings']!),
+                : text[chosenLanguage]!['Settings']!),
           ),
           drawer: Drawer(
             child: ListView(
@@ -76,7 +75,7 @@ class BottomNavBarScreen extends StatelessWidget {
                     Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const DashsboardScreen(),
+                          builder: (context) => const BottomDashBarScreen(),
                         ),
                         (route) => false);
                   },
@@ -190,6 +189,14 @@ class BottomNavBarScreen extends StatelessWidget {
               backgroundColor: backgroundColor,
               elevation: 0,
               onTap: (value) {
+                if (myCubit.index == value && myCubit.index == 0) {
+                  Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const BottomDashBarScreen(),
+                      ),
+                      (route) => false);
+                }
                 myCubit.chooseIndex(value);
               },
               currentIndex: myCubit.index,
@@ -206,24 +213,13 @@ class BottomNavBarScreen extends StatelessWidget {
                               : Colors.black54),
                     )),
                 BottomNavigationBarItem(
-                    label: 'Report',
-                    icon: Text(
-                      's',
-                      style: TextStyle(
-                          fontFamily: 'icons',
-                          fontSize: 25,
-                          color: myCubit.index == 1
-                              ? Colors.blue
-                              : Colors.black54),
-                    )),
-                BottomNavigationBarItem(
                     label: 'Settings',
                     icon: Text(
                       'q',
                       style: TextStyle(
                           fontFamily: 'icons',
                           fontSize: 25,
-                          color: myCubit.index == 2
+                          color: myCubit.index == 1
                               ? Colors.blue
                               : Colors.black54),
                     )),
