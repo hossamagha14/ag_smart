@@ -22,7 +22,6 @@ class SignInCubit extends Cubit<SignInStates> {
   }
 
   signIn({required String username, required String password}) {
-    userModel = null;
     dio.post('$base/login',
         data: {'username': username, "password": password}).then((value) {
       if (value.statusCode == 200) {

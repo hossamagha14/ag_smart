@@ -12,6 +12,7 @@ import 'package:sqflite/sqflite.dart';
 
 import '../../../Model/station_model.dart';
 import '../../../View/Reusable/text.dart';
+import '../../../View/Screens/bottom_dash_bar_screen.dart';
 import '../../../View/Screens/pump_settings.dart';
 import '../../database/dio_helper.dart';
 
@@ -56,8 +57,9 @@ class StationsCubit extends Cubit<StationsStates> {
     try {
       barCode = await FlutterBarcodeScanner.scanBarcode(
           '#E2BFE8', 'Cancel', true, ScanMode.QR);
-      barCode = barCode!.split('=')[1];
+
       if (barCode != null && barCode != '-1') {
+        barCode = barCode!.split('=')[1];
         try {
           Response<dynamic> response = await dio.get('$base/$serial/$barCode');
           if (response.statusCode == 200) {
@@ -65,7 +67,7 @@ class StationsCubit extends Cubit<StationsStates> {
             stationName = CacheHelper.getData(key: 'stationName');
             CacheHelper.saveData(key: 'serialNumber', value: barCode);
             serialNumber = CacheHelper.getData(key: 'serialNumber');
-            CacheHelper.saveData(key: 'stationId', value: stations.length+1);
+            CacheHelper.saveData(key: 'stationId', value: stations.length + 1);
             stationId = CacheHelper.getData(key: 'stationId');
             Navigator.push(
                 context,
@@ -79,7 +81,12 @@ class StationsCubit extends Cubit<StationsStates> {
           emit(StationsFailQrState());
         }
       } else {
-        Navigator.pop(context);
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const BottomDashBarScreen(),
+            ),
+            (route) => false);
       }
     } on PlatformException {
       barCode = 'Failed';

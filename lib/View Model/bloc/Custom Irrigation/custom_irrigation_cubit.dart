@@ -211,6 +211,7 @@ class CustomIrrigationCubit extends Cubit<CustomIrrigationStates> {
     required int lineIndex,
     required int valveId,
   }) async {
+    emit(CustomIrrigationLoadingState());
     customIrrigationModelList = [];
     int j = 0;
     await dio.get('$base/$irrigationSettings/$stationId').then((value) {
@@ -243,36 +244,50 @@ class CustomIrrigationCubit extends Cubit<CustomIrrigationStates> {
                 customIrrigationModelList[lineIndex].noDayIsChosen--;
               }
             }
-          }
-
-          for (int h = 0;
-              h <
-                  irrigationSettingsModel!
-                      .customValvesSettings![i].irrigationPeriods!.length;
-              h++) {
-            double doubleHour = irrigationSettingsModel!
-                    .customValvesSettings![i]
-                    .irrigationPeriods![h]
-                    .startingTime! /
-                60;
-            int hour = doubleHour.toInt();
-            int minute = irrigationSettingsModel!.customValvesSettings![i]
-                    .irrigationPeriods![h].startingTime! -
-                hour * 60;
-            addContainer(lineIndex, hour: hour, minute: minute);
-            irrigationSettingsModel!
-                        .customValvesSettings![i].irrigationMethod2 ==
-                    1
-                ? customIrrigationModelList[lineIndex].controllersList[j].text =
+            for (int h = 0;
+                h <
                     irrigationSettingsModel!
-                        .customValvesSettings![i].irrigationPeriods![h].duration
-                        .toString()
-                : customIrrigationModelList[lineIndex].controllersList[j].text =
-                    irrigationSettingsModel!
-                        .customValvesSettings![i].irrigationPeriods![h].quantity
-                        .toString();
+                        .customValvesSettings![i].irrigationPeriods!.length;
+                h++) {
+              double doubleHour = irrigationSettingsModel!
+                      .customValvesSettings![i]
+                      .irrigationPeriods![h]
+                      .startingTime! /
+                  60;
+              int hour = doubleHour.toInt();
+              int minute = irrigationSettingsModel!.customValvesSettings![i]
+                      .irrigationPeriods![h].startingTime! -
+                  hour * 60;
+              addContainer(lineIndex, hour: hour, minute: minute);
+              irrigationSettingsModel!
+                          .customValvesSettings![i].irrigationMethod2 ==
+                      1
+                  ? customIrrigationModelList[lineIndex]
+                          .controllersList[j]
+                          .text =
+                      irrigationSettingsModel!.customValvesSettings![i]
+                          .irrigationPeriods![h].duration
+                          .toString()
+                  : customIrrigationModelList[lineIndex]
+                          .controllersList[j]
+                          .text =
+                      irrigationSettingsModel!.customValvesSettings![i]
+                          .irrigationPeriods![h].quantity
+                          .toString();
 
-            j++;
+              j++;
+            }
+          } else if (irrigationSettingsModel!
+              .customValvesSettings![i].irrigationCycles!.isNotEmpty) {
+            getActiveDays(
+                decimalNumber: irrigationSettingsModel!
+                    .customValvesSettings![i].irrigationCycles![0].weekDays!);
+            for (int p = 0; p < activeDays.length; p++) {
+              if (activeDays[p] == 1) {
+                customIrrigationModelList[lineIndex].days[p].isOn = true;
+                customIrrigationModelList[lineIndex].noDayIsChosen--;
+              }
+            }
           }
         }
       }

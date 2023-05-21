@@ -34,8 +34,10 @@ class PumpSettingsCubit extends Cubit<PumpSettingsStates> {
       "pump_power": pumpPower,
       "pressure_switch": pressureSwitch
     }).then((value) {
+      print(value.data);
       emit(PumpSettingSendSuccessState());
     }).catchError((onError) {
+      print(onError);
       emit(PumpSettingSendFailState());
     });
   }

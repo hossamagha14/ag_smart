@@ -34,126 +34,145 @@ class CustomDurationSettingsByPeriodScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        child: SizedBox(
-          height: MediaQuery.of(context).size.height * 0.8,
-          child: Column(
-            children: [
-              BlocConsumer<CustomIrrigationCubit, CustomIrrigationStates>(
-                listener: (context, state) {
-                  if (state is CustomIrrigationPutSuccessState) {
-                    Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const BottomNavBarScreen(),
-                        ),
-                        (route) => false);
-                  } else if (state is CustomIrrigationPutFailState) {
-                    errorToast('An error has occured');
-                  }
-                },
-                builder: (context, state) {
-                  CustomIrrigationCubit myCubit =
-                      CustomIrrigationCubit.get(context);
-                  return MainCard2(
-                      editButton: InkWell(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    CustomDurationSettingsScreen(
+      body: BlocProvider(
+        create: (context) => CustomIrrigationCubit()
+          ..getPeriods(
+              stationId: stationId, lineIndex: lineIndex, valveId: valveId),
+        child: BlocConsumer<CustomIrrigationCubit, CustomIrrigationStates>(
+          listener: (context, state) {
+            if (state is CustomIrrigationPutSuccessState) {
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const BottomNavBarScreen(),
+                  ),
+                  (route) => false);
+            } else if (state is CustomIrrigationPutFailState) {
+              errorToast('An error has occured');
+            }
+          },
+          builder: (context, state) {
+            CustomIrrigationCubit myCubit = CustomIrrigationCubit.get(context);
+            return myCubit.irrigationSettingsModel == null ||
+                    state is CustomIrrigationLoadingState
+                ? const Center(
+                    child: CircularProgressIndicator(
+                      color: Colors.blue,
+                    ),
+                  )
+                : SingleChildScrollView(
+                    physics: const BouncingScrollPhysics(),
+                    child: SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.8,
+                      child: Column(
+                        children: [
+                          MainCard2(
+                              editButton: InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            CustomDurationSettingsScreen(
+                                                stationId: stationId,
+                                                lineIndex: lineIndex,
+                                                valveId: valveId),
+                                      ));
+                                },
+                                child: Padding(
+                                  padding: EdgeInsets.only(
+                                      right: MediaQuery.of(context).size.width *
+                                          0.03),
+                                  child: Text(
+                                    'l',
+                                    style: TextStyle(
+                                        fontFamily: 'icons',
+                                        fontSize: 25,
+                                        color: iconColor),
+                                  ),
+                                ),
+                              ),
+                              mainWidget: Column(children: [
+                                CustomIrrigationChooseDyasWidget(
+                                  lineIndex: lineIndex,
+                                ),
+                                SizedBox(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.02,
+                                ),
+                                SetSettings2RowsContainer(
+                                    visible: false,
+                                    function: () {},
+                                    firstRowTitle:
+                                        text[chosenLanguage]!['Each cycle']!,
+                                    firstRowWidget: OpenValvePeriodTextField(
+                                        control: hourControl,
+                                        hintText: '00',
+                                        unit: text[chosenLanguage]!['Hours']!),
+                                    secondRowTitle: irrigationMethod2 == 1
+                                        ? text[chosenLanguage]![
+                                            'Open valve time']!
+                                        : text[chosenLanguage]![
+                                            'Amount of water']!,
+                                    secondRowWidget: OpenValvePeriodTextField(
+                                        control: minutesControl,
+                                        hintText: '00',
+                                        unit: irrigationMethod2 == 1
+                                            ? text[chosenLanguage]!['Minutes']!
+                                            : text[chosenLanguage]!['ml']!))
+                              ]),
+                              rowWidget: MainIconsRowWidget(
+                                icon1: 'm',
+                                icon2: 'f',
+                                icon3: 'w',
+                                icon4: irrigationMethod2 == 1 ? 'x' : 'c',
+                              ),
+                              function: () {
+                                bool validInfo = true;
+                                if (myCubit.customIrrigationModelList[lineIndex]
+                                        .noDayIsChosen ==
+                                    7) {
+                                  errorToast('Please choose the days of work');
+                                } else if (hourControl.text.isEmpty ||
+                                    minutesControl.text.isEmpty) {
+                                  errorToast(irrigationMethod2 == 1
+                                      ? 'Please add the open valve time'
+                                      : 'Please add the amount of water needed');
+                                } else {
+                                  if (irrigationMethod2 == 1) {
+                                    validInfo =
+                                        myCubit.checkOpenValveTimeSeriesByCycle(
+                                            hours:
+                                                double.parse(hourControl.text),
+                                            openValveTime: double.parse(
+                                                minutesControl.text));
+                                  }
+                                  if (validInfo == true) {
+                                    myCubit.putIrrigationCycle(
+                                        interval: int.parse(hourControl.text),
                                         stationId: stationId,
-                                        lineIndex: lineIndex,
-                                        valveId: valveId),
-                              ));
-                        },
-                        child: Padding(
-                          padding: EdgeInsets.only(
-                              right: MediaQuery.of(context).size.width * 0.03),
-                          child: Text(
-                            'l',
-                            style: TextStyle(
-                                fontFamily: 'icons',
-                                fontSize: 25,
-                                color: iconColor),
-                          ),
-                        ),
+                                        valveId: valveId,
+                                        duration: irrigationMethod2 == 1
+                                            ? int.parse(minutesControl.text)
+                                            : 0,
+                                        quantity: irrigationMethod2 == 2
+                                            ? int.parse(minutesControl.text)
+                                            : 0,
+                                        weekDays: myCubit.toDecimal(
+                                            lineIndex: lineIndex));
+                                  } else if (validInfo == false) {
+                                    errorToast('Input error');
+                                  }
+                                }
+                              },
+                              cardtitle:
+                                  text[chosenLanguage]!['Duration settings']!,
+                              buttonColor: greenButtonColor),
+                        ],
                       ),
-                      mainWidget: Column(children: [
-                        CustomIrrigationChooseDyasWidget(
-                          lineIndex: lineIndex,
-                        ),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.02,
-                        ),
-                        SetSettings2RowsContainer(
-                            visible: false,
-                            function: () {},
-                            firstRowTitle: text[chosenLanguage]!['Each cycle']!,
-                            firstRowWidget: OpenValvePeriodTextField(
-                                control: hourControl,
-                                hintText: '00',
-                                unit: text[chosenLanguage]!['Hours']!),
-                            secondRowTitle: irrigationMethod2 == 1
-                                ? text[chosenLanguage]!['Open valve time']!
-                                : text[chosenLanguage]!['Amount of water']!,
-                            secondRowWidget: OpenValvePeriodTextField(
-                                control: minutesControl,
-                                hintText: '00',
-                                unit: irrigationMethod2 == 1
-                                    ? text[chosenLanguage]!['Minutes']!
-                                    : text[chosenLanguage]!['ml']!))
-                      ]),
-                      rowWidget: MainIconsRowWidget(
-                        icon1: 'm',
-                        icon2: 'f',
-                        icon3: 'w',
-                        icon4: irrigationMethod2 == 1 ? 'x' : 'c',
-                      ),
-                      function: () {
-                        bool validInfo = true;
-                        if (myCubit.customIrrigationModelList[lineIndex]
-                                .noDayIsChosen ==
-                            7) {
-                          errorToast('Please choose the days of work');
-                        } else if (hourControl.text.isEmpty ||
-                            minutesControl.text.isEmpty) {
-                          errorToast(irrigationMethod2 == 1
-                              ? 'Please add the open valve time'
-                              : 'Please add the amount of water needed');
-                        } else {
-                          if (irrigationMethod2 == 1) {
-                            validInfo = myCubit.checkOpenValveTimeSeriesByCycle(
-                                hours: double.parse(hourControl.text),
-                                openValveTime:
-                                    double.parse(minutesControl.text));
-                          }
-                          if (validInfo == true) {
-                            myCubit.putIrrigationCycle(
-                                interval: int.parse(hourControl.text),
-                                stationId: stationId,
-                                valveId: valveId,
-                                duration: irrigationMethod2 == 1
-                                    ? int.parse(minutesControl.text)
-                                    : 0,
-                                quantity: irrigationMethod2 == 2
-                                    ? int.parse(minutesControl.text)
-                                    : 0,
-                                weekDays:
-                                    myCubit.toDecimal(lineIndex: lineIndex));
-                          } else if (validInfo == false) {
-                            errorToast('Input error');
-                          }
-                        }
-                      },
-                      cardtitle: text[chosenLanguage]!['Duration settings']!,
-                      buttonColor: greenButtonColor);
-                },
-              )
-            ],
-          ),
+                    ),
+                  );
+          },
         ),
       ),
     );
