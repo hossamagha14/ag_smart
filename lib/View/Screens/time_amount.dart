@@ -14,7 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart' as intl;
 import '../Reusable/toasts.dart';
-import 'irrigation_type.dart';
+import 'duration_settings.dart';
 
 // ignore: must_be_immutable
 class TimeAmountScreen extends StatelessWidget {
@@ -61,7 +61,7 @@ class TimeAmountScreen extends StatelessWidget {
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) =>
-                                            const IrrigationTypeScreen(
+                                            const DurationSettingsScreen(
                                                 isEdit: true),
                                       ));
                                 },

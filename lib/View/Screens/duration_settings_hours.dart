@@ -17,7 +17,7 @@ import '../../View Model/bloc/Irrigation type/irrigation_type_states.dart';
 import 'bottom_nav_bar.dart';
 import 'package:intl/intl.dart' as intl;
 
-import 'irrigation_type.dart';
+import 'duration_settings.dart';
 
 // ignore: must_be_immutable
 class DurationSettingsByHourScreen extends StatelessWidget {
@@ -67,7 +67,7 @@ class DurationSettingsByHourScreen extends StatelessWidget {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) =>
-                                          const IrrigationTypeScreen(
+                                          const DurationSettingsScreen(
                                               isEdit: true),
                                     ));
                               },

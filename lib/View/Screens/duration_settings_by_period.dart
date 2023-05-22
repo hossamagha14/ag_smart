@@ -14,7 +14,7 @@ import '../../View Model/bloc/Irrigation type/irrigation_type_cubit.dart';
 import '../../View Model/bloc/Irrigation type/irrigation_type_states.dart';
 import '../Reusable/toasts.dart';
 import 'bottom_nav_bar.dart';
-import 'irrigation_type.dart';
+import 'duration_settings.dart';
 
 // ignore: must_be_immutable
 class DurationSettingsByPeriodScreen extends StatelessWidget {
@@ -94,7 +94,7 @@ class DurationSettingsByPeriodScreen extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                 builder: (context) =>
-                                    const IrrigationTypeScreen(isEdit: true),
+                                    const DurationSettingsScreen(isEdit: true),
                               ));
                         },
                         child: Padding(

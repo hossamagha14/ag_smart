@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'bottom_nav_bar.dart';
-import 'irrigation_type.dart';
+import 'duration_settings.dart';
 
 // ignore: must_be_immutable
 class PeriodAmountScreen extends StatelessWidget {
@@ -56,7 +56,8 @@ class PeriodAmountScreen extends StatelessWidget {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) =>
-                                      const IrrigationTypeScreen(isEdit: true),
+                                      const DurationSettingsScreen(
+                                          isEdit: true),
                                 ));
                           },
                           child: Padding(

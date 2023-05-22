@@ -94,7 +94,8 @@ class _DeviceSetupScreenState extends State<DeviceSetupScreen> {
                                                 chosenLanguage == 'ar'
                                                     ? TextDirection.rtl
                                                     : TextDirection.ltr,
-                                            label: const Text('Station name'),
+                                            label: Text(text[chosenLanguage]![
+                                                'Station name']!),
                                             border: InputBorder.none,
                                           ),
                                         ),
