@@ -331,10 +331,15 @@ class ReportScreen extends StatelessWidget {
                                                   ),
                                                 ),
                                                 SizedBox(
-                                                  width: MediaQuery.of(context)
-                                                          .size
-                                                          .width *
-                                                      0.3,
+                                                  width: chosenLanguage == 'ar'
+                                                      ? MediaQuery.of(context)
+                                                              .size
+                                                              .width *
+                                                          0.15
+                                                      : MediaQuery.of(context)
+                                                              .size
+                                                              .width *
+                                                          0.25,
                                                   child: FittedBox(
                                                     child: Text(
                                                       text[chosenLanguage]![
@@ -380,10 +385,15 @@ class ReportScreen extends StatelessWidget {
                                                   MainAxisAlignment.end,
                                               children: [
                                                 SizedBox(
-                                                  width: MediaQuery.of(context)
-                                                          .size
-                                                          .width *
-                                                      0.25,
+                                                  width: chosenLanguage == 'ar'
+                                                      ? MediaQuery.of(context)
+                                                              .size
+                                                              .width *
+                                                          0.13
+                                                      : MediaQuery.of(context)
+                                                              .size
+                                                              .width *
+                                                          0.25,
                                                   child: FittedBox(
                                                     child: Text(
                                                       text[chosenLanguage]![

@@ -185,7 +185,7 @@ Map<String, Map<String, String>> text = {
     'Dashboard': 'الصفحة الرئيسية',
     '[ + ] Add device': 'إضافة جهاز [ + ]',
     'Water consumption (Liter)': 'إستهلاك الماء (لتر)',
-    'Report': 'تقرير',
+    'Report': 'التقرير',
     'The cycle can\'t be more than 24 hours': 'الدورة لا يجب ان تتجاوز 24 ساعة',
     'Date': 'التاريخ',
     'Last 7 days': 'آخر 7 أيام',
@@ -195,7 +195,7 @@ Map<String, Map<String, String>> text = {
     'Yearly': 'سنوي',
     'By Quarter': 'ربعي',
     'Custom Range': 'فترة مخصصة',
-    'Download': 'تحميل',
-    'Save screen': 'حفظ الصورة',
+    'Download': ' تحميل',
+    'Save screen': 'حفظ ',
   },
 };
