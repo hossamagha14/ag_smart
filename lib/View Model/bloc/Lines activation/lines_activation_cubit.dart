@@ -221,6 +221,7 @@ class LinesActivationCubit extends Cubit<LinesActivationStates> {
         emit(LinesActivationSendSuccessState());
       }
     }).catchError((onError) {
+      print(onError);
       emit(LinesActivationSendFailState());
     });
   }

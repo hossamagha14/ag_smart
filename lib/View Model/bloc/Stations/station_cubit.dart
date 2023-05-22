@@ -49,7 +49,6 @@ class StationsCubit extends Cubit<StationsStates> {
       }
       emit(StationsGetSuccessState());
     }).catchError((onError) {
-      print('1111111111111111111111111111111111111111 $onError');
       emit(StationsGetFailState());
     });
   }
