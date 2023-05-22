@@ -226,11 +226,9 @@ class DurationSettingsCubit extends Cubit<DurationSettingsStates> {
     await dio.put('$base/$irrigationPeriodsList/$stationId',
         data: {'list': periodsList}).then((value) {
       if (value.statusCode == 200) {
-        print(value.data);
         emit(DurationSettingsSendDelSuccessState());
       }
     }).catchError((onError) {
-      print(onError.toString());
       emit(DurationSettingsSendFailedState());
     });
   }
@@ -241,13 +239,11 @@ class DurationSettingsCubit extends Cubit<DurationSettingsStates> {
     await dio.put('$base/$irrigationPeriodsList/$stationId',
         data: {'list': periodsList}).then((value) {
       if (value.statusCode == 200) {
-        print(value.data);
         emit(DurationSettingsSendSuccessState());
         durationModel.controller = [];
         durationModel.time = [];
       }
     }).catchError((onError) {
-      print(onError.toString());
       emit(DurationSettingsSendFailedState());
     });
   }
@@ -297,11 +293,32 @@ class DurationSettingsCubit extends Cubit<DurationSettingsStates> {
                 .toString();
       }
       if (value.statusCode == 200) {
-        print('${value.data} get');
         emit(DurationSettingsGetSuccessState());
       }
     }).catchError((onError) {
-      print(onError.toString());
+      emit(DurationSettingsGetFailState());
+    });
+  }
+
+  getCycle(
+      {required TextEditingController hours,
+      required TextEditingController amount}) {
+    emit(DurationSettingsLoadingState());
+    dio.get('$base/$irrigationSettings/$stationId').then((value) {
+      irrigationSettingsModel = IrrigationSettingsModel.fromJson(value.data);
+      if (value.statusCode == 200) {
+        hours.text =
+            irrigationSettingsModel!.irrigationCycles![0].interval.toString();
+        amount.text = irrigationSettingsModel!.irrigationCycles![0].duration ==
+                0
+            ? irrigationSettingsModel!.irrigationCycles![0].quantity.toString()
+            : irrigationSettingsModel!.irrigationCycles![0].quantity == 0
+                ? irrigationSettingsModel!.irrigationCycles![0].duration
+                    .toString()
+                : '0';
+      }
+      emit(DurationSettingsGetSuccessState());
+    }).catchError((onError) {
       emit(DurationSettingsGetFailState());
     });
   }

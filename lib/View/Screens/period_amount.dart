@@ -31,111 +31,138 @@ class PeriodAmountScreen extends StatelessWidget {
         title: Text(text[chosenLanguage]!['Line Settings']!),
       ),
       body: SafeArea(
-          child: SingleChildScrollView(
-        child: SizedBox(
-            width: MediaQuery.of(context).size.height * 0.8,
-            child: Column(
-              children: [
-                BlocConsumer<DurationSettingsCubit, DurationSettingsStates>(
-                  listener: (context, state) {
-                    if (state is DurationSettingsSendSuccessState) {
-                      Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const BottomNavBarScreen(),
-                          ),
-                          (route) => false);
-                    } else if (state is DurationSettingsSendFailedState) {
-                      errorToast('An error has occurred');
-                    }
-                  },
-                  builder: (context, state) {
-                    DurationSettingsCubit myCubit =
-                        DurationSettingsCubit.get(context);
-                    return MainCard2(
-                        editButton: InkWell(
-                          onTap: () {
-                            Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => DurationSettingsScreen(
-                                    isEdit: true,
-                                    stationIrrigationType: irrigationType,
+        child: BlocProvider(
+          create: (context) => DurationSettingsCubit()
+            ..getCycle(hours: hoursControl, amount: mlControl),
+          child: BlocConsumer<DurationSettingsCubit, DurationSettingsStates>(
+            listener: (context, state) {
+              if (state is DurationSettingsSendSuccessState) {
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const BottomNavBarScreen(),
+                    ),
+                    (route) => false);
+              } else if (state is DurationSettingsSendFailedState) {
+                errorToast('An error has occurred');
+              }
+            },
+            builder: (context, state) {
+              DurationSettingsCubit myCubit =
+                  DurationSettingsCubit.get(context);
+              return state is DurationSettingsLoadingState ||
+                      myCubit.irrigationSettingsModel == null
+                  ? const Center(
+                      child: CircularProgressIndicator(
+                        color: Colors.blue,
+                      ),
+                    )
+                  : SingleChildScrollView(
+                      child: SizedBox(
+                          width: MediaQuery.of(context).size.height * 0.8,
+                          child: Column(
+                            children: [
+                              MainCard2(
+                                  editButton: InkWell(
+                                    onTap: () {
+                                      Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                DurationSettingsScreen(
+                                              isEdit: true,
+                                              stationIrrigationType:
+                                                  irrigationType,
+                                            ),
+                                          ));
+                                    },
+                                    child: Padding(
+                                      padding: EdgeInsets.only(
+                                          right: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.03),
+                                      child: Text(
+                                        'l',
+                                        style: TextStyle(
+                                            fontFamily: 'icons',
+                                            fontSize: 25,
+                                            color: iconColor),
+                                      ),
+                                    ),
                                   ),
-                                ));
-                          },
-                          child: Padding(
-                            padding: EdgeInsets.only(
-                                right:
-                                    MediaQuery.of(context).size.width * 0.03),
-                            child: Text(
-                              'l',
-                              style: TextStyle(
-                                  fontFamily: 'icons',
-                                  fontSize: 25,
-                                  color: iconColor),
-                            ),
-                          ),
-                        ),
-                        mainWidget: Column(
-                          children: [
-                            const ChooseDyasWidget(
-                              useFunction: true,
-                            ),
-                            SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.02,
-                            ),
-                            SetSettings2RowsContainer(
-                              visible: false,
-                              function: () {},
-                              firstRowTitle:
-                                  text[chosenLanguage]!['Each cycle']!,
-                              firstRowWidget: OpenValvePeriodTextField(
-                                  control: hoursControl,
-                                  hintText: '00',
-                                  unit: text[chosenLanguage]!['Hours']!),
-                              secondRowTitle:
-                                  text[chosenLanguage]!['Amount of water']!,
-                              secondRowWidget: OpenValvePeriodTextField(
-                                  control: mlControl,
-                                  hintText: '00',
-                                  unit: text[chosenLanguage]!['ml']!),
-                            ),
-                          ],
-                        ),
-                        rowWidget: MainIconsRowWidget(
-                          icon1: 'm',
-                          icon2: irrigationType == 1 ? 'r' : 't',
-                          icon3: 'w',
-                          icon4: 'c',
-                        ),
-                        function: () {
-                          if (hoursControl.text.isEmpty ||
-                              mlControl.text.isEmpty) {
-                            errorToast('Please fill both categories');
-                          } else {
-                            if (myCubit.noDayIsChosen == 7) {
-                              errorToast('Please choose the days of work');
-                            } else if (double.parse(hoursControl.text) > 24) {
-                              errorToast(text[chosenLanguage]![
-                                  'The cycle can\'t be more than 24 hours']!);
-                            } else {
-                              myCubit.putIrrigationCycle(
-                                  valveId: 0,
-                                  interval: int.parse(hoursControl.text),
-                                  duration: 0,
-                                  quantity: int.parse(mlControl.text),
-                                  weekDays: myCubit.toDecimal());
-                            }
-                          }
-                        },
-                        cardtitle: text[chosenLanguage]!['Duration settings']!,
-                        buttonColor: greenButtonColor);
-                  },
-                )
-              ],
-            )),
-      )),
+                                  mainWidget: Column(
+                                    children: [
+                                      const ChooseDyasWidget(
+                                        useFunction: true,
+                                      ),
+                                      SizedBox(
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.02,
+                                      ),
+                                      SetSettings2RowsContainer(
+                                        visible: false,
+                                        function: () {},
+                                        firstRowTitle: text[chosenLanguage]![
+                                            'Each cycle']!,
+                                        firstRowWidget:
+                                            OpenValvePeriodTextField(
+                                                control: hoursControl,
+                                                hintText: '00',
+                                                unit: text[chosenLanguage]![
+                                                    'Hours']!),
+                                        secondRowTitle: text[chosenLanguage]![
+                                            'Amount of water']!,
+                                        secondRowWidget:
+                                            OpenValvePeriodTextField(
+                                                control: mlControl,
+                                                hintText: '00',
+                                                unit: text[chosenLanguage]![
+                                                    'ml']!),
+                                      ),
+                                    ],
+                                  ),
+                                  rowWidget: MainIconsRowWidget(
+                                    icon1: 'm',
+                                    icon2: irrigationType == 1 ? 'r' : 't',
+                                    icon3: 'w',
+                                    icon4: 'c',
+                                  ),
+                                  function: () {
+                                    if (hoursControl.text.isEmpty ||
+                                        mlControl.text.isEmpty) {
+                                      errorToast('Please fill both categories');
+                                    } else {
+                                      if (myCubit.noDayIsChosen == 7) {
+                                        errorToast(
+                                            'Please choose the days of work');
+                                      } else if (double.parse(
+                                              hoursControl.text) >
+                                          24) {
+                                        errorToast(text[chosenLanguage]![
+                                            'The cycle can\'t be more than 24 hours']!);
+                                      } else {
+                                        myCubit.putIrrigationCycle(
+                                            valveId: 0,
+                                            interval:
+                                                int.parse(hoursControl.text),
+                                            duration: 0,
+                                            quantity: int.parse(mlControl.text),
+                                            weekDays: myCubit.toDecimal());
+                                      }
+                                    }
+                                  },
+                                  cardtitle: text[chosenLanguage]![
+                                      'Duration settings']!,
+                                  buttonColor: greenButtonColor)
+                            ],
+                          )),
+                    );
+            },
+          ),
+        ),
+      ),
     );
   }
 }
