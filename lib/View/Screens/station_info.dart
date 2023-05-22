@@ -7,6 +7,7 @@ import 'package:ag_smart/View/Reusable/main_card.dart';
 import 'package:ag_smart/View/Reusable/main_icons_row_widget.dart';
 import 'package:ag_smart/View/Reusable/text.dart';
 import 'package:ag_smart/View/Reusable/text_style.dart';
+import 'package:ag_smart/View/Screens/duration_settings.dart';
 import 'package:ag_smart/View/Screens/period_amount.dart';
 import 'package:ag_smart/View/Screens/time_amount.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,6 @@ import 'duration_settings_by_period.dart';
 import 'duration_settings_hours.dart';
 import 'fertiliser_settings.dart';
 import 'firtilisation_type.dart';
-import 'irrigation_type.dart';
 
 class StationInfoScreen extends StatelessWidget {
   const StationInfoScreen({Key? key}) : super(key: key);
@@ -46,7 +46,7 @@ class StationInfoScreen extends StatelessWidget {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) =>
-                                          const IrrigationTypeScreen(
+                                          const DurationSettingsScreen(
                                               isEdit: true),
                                     ));
                               } else if (myCubit
