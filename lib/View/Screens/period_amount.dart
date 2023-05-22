@@ -17,7 +17,10 @@ import 'duration_settings.dart';
 // ignore: must_be_immutable
 class PeriodAmountScreen extends StatelessWidget {
   final bool isEdit;
-  PeriodAmountScreen({Key? key, required this.isEdit}) : super(key: key);
+  final int irrigationType;
+  PeriodAmountScreen(
+      {Key? key, required this.isEdit, required this.irrigationType})
+      : super(key: key);
   TextEditingController hoursControl = TextEditingController();
   TextEditingController mlControl = TextEditingController();
 
@@ -56,8 +59,10 @@ class PeriodAmountScreen extends StatelessWidget {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) =>
-                                       const DurationSettingsScreen(
-                                          isEdit: true,stationIrrigationType: 1,),
+                                      const DurationSettingsScreen(
+                                    isEdit: true,
+                                    stationIrrigationType: 1,
+                                  ),
                                 ));
                           },
                           child: Padding(
@@ -99,9 +104,9 @@ class PeriodAmountScreen extends StatelessWidget {
                             ),
                           ],
                         ),
-                        rowWidget: const MainIconsRowWidget(
+                        rowWidget: MainIconsRowWidget(
                           icon1: 'm',
-                          icon2: 'r',
+                          icon2: irrigationType == 1 ? 'r' : 't',
                           icon3: 'w',
                           icon4: 'c',
                         ),

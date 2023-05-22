@@ -84,8 +84,12 @@ class StationInfoScreen extends StatelessWidget {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) =>
-                                          PeriodAmountScreen(isEdit: true),
+                                      builder: (context) => PeriodAmountScreen(
+                                          isEdit: true,
+                                          irrigationType: myCubit
+                                              .stationModel!
+                                              .irrigationSettings![0]
+                                              .settingsType!),
                                     ));
                               } else if (myCubit
                                           .stationModel!
@@ -98,8 +102,12 @@ class StationInfoScreen extends StatelessWidget {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) =>
-                                          const TimeAmountScreen(isEdit: true),
+                                      builder: (context) => TimeAmountScreen(
+                                          isEdit: true,
+                                          irrigationType: myCubit
+                                              .stationModel!
+                                              .irrigationSettings![0]
+                                              .settingsType!),
                                     ));
                               } else if (myCubit
                                           .stationModel!

@@ -10,8 +10,6 @@ import 'package:ag_smart/View/Reusable/text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../View Model/bloc/Irrigation type/irrigation_type_cubit.dart';
-import '../../View Model/bloc/Irrigation type/irrigation_type_states.dart';
 import '../Reusable/toasts.dart';
 import 'bottom_nav_bar.dart';
 import 'duration_settings.dart';
@@ -96,8 +94,10 @@ class DurationSettingsByPeriodScreen extends StatelessWidget {
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                builder: (context) =>
-                                     DurationSettingsScreen(isEdit: true,stationIrrigationType: irrigationType,),
+                                builder: (context) => DurationSettingsScreen(
+                                  isEdit: true,
+                                  stationIrrigationType: irrigationType,
+                                ),
                               ));
                         },
                         child: Padding(
@@ -139,20 +139,11 @@ class DurationSettingsByPeriodScreen extends StatelessWidget {
                               )),
                         ],
                       ),
-                      rowWidget: BlocConsumer<IrrigationTypeCubit,
-                          IrrigationTypesStates>(
-                        listener: (context, state) {},
-                        builder: (context, state) {
-                          IrrigationTypeCubit irrigationCubit =
-                              IrrigationTypeCubit.get(context);
-                          return MainIconsRowWidget(
-                            icon1: 'm',
-                            icon2:
-                                irrigationCubit.irrigationType == 1 ? 'r' : 't',
-                            icon3: 'w',
-                            icon4: 'x',
-                          );
-                        },
+                      rowWidget: MainIconsRowWidget(
+                        icon1: 'm',
+                        icon2: irrigationType == 1 ? 'r' : 't',
+                        icon3: 'w',
+                        icon4: 'x',
                       ),
                       cardtitle: text[chosenLanguage]!['Duration settings']!);
                 },

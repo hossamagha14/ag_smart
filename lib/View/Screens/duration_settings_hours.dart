@@ -12,8 +12,6 @@ import 'package:ag_smart/View/Reusable/set_settings_2rows_container.dart';
 import 'package:ag_smart/View/Reusable/text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../View Model/bloc/Irrigation type/irrigation_type_cubit.dart';
-import '../../View Model/bloc/Irrigation type/irrigation_type_states.dart';
 import 'bottom_nav_bar.dart';
 import 'package:intl/intl.dart' as intl;
 
@@ -163,22 +161,14 @@ class DurationSettingsByHourScreen extends StatelessWidget {
                                 )
                               ],
                             ),
-                            rowWidget: BlocConsumer<IrrigationTypeCubit,
-                                IrrigationTypesStates>(
-                              listener: (context, state) {},
-                              builder: (context, state) {
-                                IrrigationTypeCubit irrigationCubit =
-                                    IrrigationTypeCubit.get(context);
-                                return MainIconsRowWidget(
+                            rowWidget:MainIconsRowWidget(
                                   icon1: 'm',
-                                  icon2: irrigationCubit.irrigationType == 1
+                                  icon2: irrigationType == 1
                                       ? 'r'
                                       : 't',
                                   icon3: 'u',
                                   icon4: 'x',
-                                );
-                              },
-                            ),
+                                ),
                             cardtitle:
                                 text[chosenLanguage]!['Duration settings']!,
                             function: () {
