@@ -37,7 +37,7 @@ class CustomDurationSettingsByPeriodScreen extends StatelessWidget {
       body: BlocProvider(
         create: (context) => CustomIrrigationCubit()
           ..getPeriods(
-              stationId: stationId, lineIndex: lineIndex, valveId: valveId),
+              stationId: stationId, lineIndex: lineIndex, valveId: valveId,hours: hourControl,amount: minutesControl),
         child: BlocConsumer<CustomIrrigationCubit, CustomIrrigationStates>(
           listener: (context, state) {
             if (state is CustomIrrigationPutSuccessState) {
