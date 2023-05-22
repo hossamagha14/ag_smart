@@ -64,9 +64,9 @@ class TimeAmountScreen extends StatelessWidget {
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) =>
-                                            const DurationSettingsScreen(
+                                            DurationSettingsScreen(
                                           isEdit: true,
-                                          stationIrrigationType: 2,
+                                          stationIrrigationType: irrigationType,
                                         ),
                                       ));
                                 },

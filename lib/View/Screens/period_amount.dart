@@ -58,10 +58,9 @@ class PeriodAmountScreen extends StatelessWidget {
                             Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) =>
-                                      const DurationSettingsScreen(
+                                  builder: (context) => DurationSettingsScreen(
                                     isEdit: true,
-                                    stationIrrigationType: 1,
+                                    stationIrrigationType: irrigationType,
                                   ),
                                 ));
                           },
