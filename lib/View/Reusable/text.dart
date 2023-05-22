@@ -83,6 +83,14 @@ Map<String, Map<String, String>> text = {
     'Fertilizing by quantity': 'Fertilizing by quantity',
     'Series Fertilization': 'Series Fertilization',
     'Parallel Fertilization': 'Parallel Fertilization',
+    'line': 'line',
+    'Next': 'Next',
+    'You are not subscribed for this feature':
+        'You are not subscribed for this feature',
+    'Dashboard': 'Dashboard',
+    '[ + ] Add device': '[ + ] Add device',
+    'Water consumption (Liter)': 'Water consumption (Liter)',
+    'Report': 'Report',
   },
   'ar': {
     'sign in name': 'اسم المستخدم',
@@ -158,5 +166,13 @@ Map<String, Map<String, String>> text = {
     'Fertilizing by duration': 'التسميد بالمدة',
     'Fertilizing by quantity': 'التسميد بالكمية',
     'Station name': 'اسم المحطة',
+    'line': 'خط',
+    'Next': 'التالي',
+    'You are not subscribed for this feature':
+        'لست مشترك في هذه الخدمة',
+    'Dashboard': 'الصفحة الرئيسية',
+    '[ + ] Add device': 'إضافة جهاز [ + ]',
+    'Water consumption (Liter)': 'إستهلاك الماء (لتر)',
+    'Report': 'تقرير',
   },
 };

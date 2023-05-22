@@ -96,7 +96,11 @@ class CustomStationInfoScreen extends StatelessWidget {
                                           0.02,
                                     ),
                                     Text(
-                                        'Line ${myCubit.stationModel!.irrigationSettings![0].customValvesSettings![lineIndex].valveId.toString()}'),
+                                      '${text[chosenLanguage]!['line']!} ${myCubit.stationModel!.irrigationSettings![0].customValvesSettings![lineIndex].valveId.toString()}',
+                                      textDirection: chosenLanguage == 'ar'
+                                          ? TextDirection.rtl
+                                          : TextDirection.ltr,
+                                    ),
                                     SizedBox(
                                       width: MediaQuery.of(context).size.width *
                                           0.4,
