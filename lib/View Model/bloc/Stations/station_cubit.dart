@@ -67,8 +67,6 @@ class StationsCubit extends Cubit<StationsStates> {
             stationName = CacheHelper.getData(key: 'stationName');
             CacheHelper.saveData(key: 'serialNumber', value: barCode);
             serialNumber = CacheHelper.getData(key: 'serialNumber');
-            CacheHelper.saveData(key: 'stationId', value: stations.length + 1);
-            stationId = CacheHelper.getData(key: 'stationId');
             Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -106,6 +104,8 @@ class StationsCubit extends Cubit<StationsStates> {
         CacheHelper.saveData(key: 'stationId', value: stationModel!.id);
         CacheHelper.saveData(
             key: 'serialNumber', value: stationModel!.serialNumber);
+        stationId = CacheHelper.getData(key: 'stationId');
+        serialNumber = CacheHelper.getData(key: 'serialNumber');
         Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(

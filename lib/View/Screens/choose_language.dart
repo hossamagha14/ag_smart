@@ -3,7 +3,6 @@ import 'package:ag_smart/View%20Model/bloc/Language/language_states.dart';
 import 'package:ag_smart/View%20Model/database/cache_helpher.dart';
 import 'package:ag_smart/View/Reusable/colors.dart';
 import 'package:ag_smart/View/Reusable/language_card.dart';
-import 'package:ag_smart/View/Screens/bottom_nav_bar.dart';
 import 'package:ag_smart/View/Screens/sign_in.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -92,13 +91,7 @@ class ChooseLanguageScreen extends StatelessWidget {
                                       builder: (context) => SignInScreen(),
                                     ));
                               } else {
-                                Navigator.of(context)
-                                  .pushAndRemoveUntil(
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            const BottomNavBarScreen(),
-                                      ),
-                                      (route) => false);
+                                Navigator.pop(context);
                               }
                             },
                             child: const Text('Next')),
