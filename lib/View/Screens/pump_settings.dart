@@ -33,6 +33,7 @@ class PumpSettingsScreen extends StatelessWidget {
                 BlocConsumer<PumpSettingsCubit, PumpSettingsStates>(
                     listener: (context, state) {
                   if (state is PumpSettingSendSuccessState) {
+                    FocusScope.of(context).unfocus();
                     Navigator.push(
                         context,
                         MaterialPageRoute(
