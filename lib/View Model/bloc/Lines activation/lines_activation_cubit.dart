@@ -43,10 +43,10 @@ class LinesActivationCubit extends Cubit<LinesActivationStates> {
     dio.get('$base/$stationBySerial/$serialNumber').then((value) {
       if (value.statusCode == 200) {
         stationModel = StationModel.fromJson(value.data);
-        if (stationModel!.pumpModel![0].pumpEnable == 1 &&
-            isLineSettings == true) {
-          emit(LinesActivationNoPumpState());
-        }
+        // if (stationModel!.pumpModel![0].pumpEnable == 1 &&
+        //     isLineSettings == true) {
+        //   emit(LinesActivationNoPumpState());
+        // }
         for (int i = 0; i < stationModel!.features![0].linesNumber!; i++) {
           valves.add(ValveModel());
         }
