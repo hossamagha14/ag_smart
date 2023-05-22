@@ -13,35 +13,38 @@ class MainIconsRowWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      textDirection: TextDirection.rtl,
-      children: [
-        Text(
-          icon1,
-          style: mainIcon,
-        ),
-        SizedBox(
-          width: MediaQuery.of(context).size.width * 0.02,
-        ),
-        Text(
-          icon2 ?? '',
-          style: mainIcon,
-        ),
-        SizedBox(
-          width: MediaQuery.of(context).size.width * 0.02,
-        ),
-        Text(
-          icon3 ?? '',
-          style: mainIcon,
-        ),
-        SizedBox(
-          width: MediaQuery.of(context).size.width * 0.02,
-        ),
-        Text(
-          icon4 ?? '',
-          style: mainIcon,
-        ),
-      ],
+    return SizedBox(
+      width: MediaQuery.of(context).size.width * 0.35,
+      child: Row(
+        textDirection: TextDirection.rtl,
+        children: [
+          Text(
+            icon1,
+            style: mainIcon,
+          ),
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.02,
+          ),
+          Text(
+            icon2 ?? '',
+            style: mainIcon,
+          ),
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.02,
+          ),
+          Text(
+            icon3 ?? '',
+            style: mainIcon,
+          ),
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.02,
+          ),
+          Text(
+            icon4 ?? '',
+            style: mainIcon,
+          ),
+        ],
+      ),
     );
   }
 }

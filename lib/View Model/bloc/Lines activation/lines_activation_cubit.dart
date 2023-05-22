@@ -102,7 +102,7 @@ class LinesActivationCubit extends Cubit<LinesActivationStates> {
     dio.get('$base/$stationBySerial/$serialNumber').then((value) {
       if (value.statusCode == 200) {
         stationModel = StationModel.fromJson(value.data);
-        if (stationModel!.pumpModel![0].pumpEnable == 1) {
+        if (stationModel!.pumpModel![0].pumpEnable != 2) {
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(

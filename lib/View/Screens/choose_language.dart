@@ -9,7 +9,6 @@ import 'package:ag_smart/View/Screens/sign_in.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../Reusable/text.dart';
 
 class ChooseLanguageScreen extends StatelessWidget {
   final bool isEdit;
@@ -78,43 +77,44 @@ class ChooseLanguageScreen extends StatelessWidget {
                         height: MediaQuery.of(context).size.height * 0.07,
                         width: MediaQuery.of(context).size.width * 0.8,
                         child: ElevatedButton(
-                            style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.all<Color>(
-                                        greenButtonColor),
-                                shape:
-                                    MaterialStateProperty.all<OutlinedBorder>(
-                                        RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10)))),
-                            onPressed: () {
-                              CacheHelper.saveData(
-                                  key: 'languageChoosen', value: true);
-                              if (isEdit == false && chosenLanguageType == 0) {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => SignInScreen(),
-                                    ));
-                              } else if (chosenLanguageType == 1) {
-                                Navigator.pushAndRemoveUntil(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          const BottomDashBarScreen(),
-                                    ),
-                                    (route) => false);
-                              } else if (chosenLanguageType == 2) {
-                                Navigator.pushAndRemoveUntil(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          const BottomNavBarScreen(),
-                                    ),
-                                    (route) => false);
-                              }
-                            },
-                            child:  Text(text[chosenLanguage]!['Next']!)),
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                  greenButtonColor),
+                              shape: MaterialStateProperty.all<OutlinedBorder>(
+                                  RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(10)))),
+                          onPressed: () {
+                            CacheHelper.saveData(
+                                key: 'languageChoosen', value: true);
+                            if (isEdit == false && chosenLanguageType == 0) {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => SignInScreen(),
+                                  ));
+                            } else if (chosenLanguageType == 1) {
+                              Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const BottomDashBarScreen(),
+                                  ),
+                                  (route) => false);
+                            } else if (chosenLanguageType == 2) {
+                              Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const BottomNavBarScreen(),
+                                  ),
+                                  (route) => false);
+                            }
+                          },
+                          child: const Text('Next',
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.w500)),
+                        ),
                       )),
                     ),
                   )
