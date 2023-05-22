@@ -27,7 +27,6 @@ class GetChooseDyasWidget extends StatelessWidget {
                     },
                     itemCount: 7,
                     itemBuilder: (context, index) {
-                      print(myCubit.activeDays);
                       return Container(
                         width: MediaQuery.of(context).size.width * 0.1,
                         height: MediaQuery.of(context).size.height * 0.05,
@@ -38,14 +37,16 @@ class GetChooseDyasWidget extends StatelessWidget {
                             border: Border.all(color: Colors.blue, width: 2),
                             borderRadius: BorderRadius.circular(10)),
                         child: Center(
-                            child: Text(
-                          myCubit.days[index].day!,
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: myCubit.activeDays[index] == 0
-                                  ? Colors.blue
-                                  : Colors.white),
-                        )),
+                            child: FittedBox(
+                              child: Text(
+                                                      myCubit.days[index].day!,
+                                                      style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: myCubit.activeDays[index] == 0
+                                    ? Colors.blue
+                                    : Colors.white),
+                                                    ),
+                            )),
                       );
                     }),
               );
