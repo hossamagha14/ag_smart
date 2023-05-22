@@ -181,7 +181,7 @@ class TimeAmountScreen extends StatelessWidget {
                                 if (myCubit.noDayIsChosen == 7) {
                                   errorToast('Please choose the days of work');
                                 }
-                                if (allFull == true) {
+                                else if (allFull == true) {
                                   myCubit.putIrrigationHourList(
                                       periodsList: myCubit.makeAList(
                                           weekday: myCubit.toDecimal()));

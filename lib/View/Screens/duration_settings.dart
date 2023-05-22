@@ -41,9 +41,7 @@ class DurationSettingsScreen extends StatelessWidget {
                         MaterialPageRoute(
                           builder: (context) => DurationSettingsByHourScreen(
                             isEdit: isEdit,
-                            irrigationType: myCubit.irrigationType == 0
-                                ? stationIrrigationType
-                                : myCubit.irrigationType,
+                            irrigationType: stationIrrigationType,
                           ),
                         ));
                   } else if (myCubit.accordingToHour == true &&
@@ -63,7 +61,7 @@ class DurationSettingsScreen extends StatelessWidget {
                         MaterialPageRoute(
                           builder: (context) => DurationSettingsByPeriodScreen(
                             isEdit: isEdit,
-                            irrigationType: myCubit.irrigationType,
+                            irrigationType: stationIrrigationType,
                           ),
                         ));
                   } else if (myCubit.accordingToHour == false &&
@@ -161,7 +159,7 @@ class DurationSettingsScreen extends StatelessWidget {
                     rowWidget: Row(
                       children: [
                         Text(
-                          myCubit.irrigationType == 1 || stationIrrigationType==1 ? 'r' : 't',
+                          stationIrrigationType == 1 ? 'r' : 't',
                           style: mainIcon,
                         ),
                         SizedBox(
