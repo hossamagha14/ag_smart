@@ -134,6 +134,7 @@ class LinesActivationCubit extends Cubit<LinesActivationStates> {
             }
             CacheHelper.saveData(
                 key: 'numOfActiveLines', value: numberOfOnValves);
+            numberOfOnValves=CacheHelper.getData(key: 'numOfActiveLines');
           }
           for (int i = 0; i < valves.length; i++) {
             if (activeValves[i] == 1) {

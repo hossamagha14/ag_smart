@@ -5,7 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ChooseDyasWidget extends StatelessWidget {
   final bool useFunction;
-  const ChooseDyasWidget({Key? key, required this.useFunction}) : super(key: key);
+  const ChooseDyasWidget({Key? key, required this.useFunction})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,9 +27,11 @@ class ChooseDyasWidget extends StatelessWidget {
               itemCount: 7,
               itemBuilder: (context, index) {
                 return InkWell(
-                  onTap: useFunction==true? () {
-                    myCubit.chooseThisDay(index);
-                  }:null,
+                  onTap: useFunction == true
+                      ? () {
+                          myCubit.chooseThisDay(index);
+                        }
+                      : null,
                   child: Container(
                     width: MediaQuery.of(context).size.width * 0.1,
                     height: MediaQuery.of(context).size.height * 0.05,
@@ -39,13 +42,15 @@ class ChooseDyasWidget extends StatelessWidget {
                         border: Border.all(color: Colors.blue, width: 2),
                         borderRadius: BorderRadius.circular(10)),
                     child: Center(
-                        child: Text(
-                      myCubit.days[index].day!,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: myCubit.days[index].isOn! == false
-                              ? Colors.blue
-                              : Colors.white),
+                        child: FittedBox(
+                      child: Text(
+                        myCubit.days[index].day!,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: myCubit.days[index].isOn! == false
+                                ? Colors.blue
+                                : Colors.white),
+                      ),
                     )),
                   ),
                 );
