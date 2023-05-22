@@ -17,7 +17,8 @@ import '../Reusable/colors.dart';
 class DurationSettingsScreen extends StatelessWidget {
   final bool isEdit;
   final int stationIrrigationType;
-  const DurationSettingsScreen({Key? key, required this.isEdit, required this.stationIrrigationType})
+  const DurationSettingsScreen(
+      {Key? key, required this.isEdit, required this.stationIrrigationType})
       : super(key: key);
 
   @override
@@ -40,7 +41,9 @@ class DurationSettingsScreen extends StatelessWidget {
                         MaterialPageRoute(
                           builder: (context) => DurationSettingsByHourScreen(
                             isEdit: isEdit,
-                            irrigationType: myCubit.irrigationType,
+                            irrigationType: myCubit.irrigationType == 0
+                                ? stationIrrigationType
+                                : myCubit.irrigationType,
                           ),
                         ));
                   } else if (myCubit.accordingToHour == true &&
