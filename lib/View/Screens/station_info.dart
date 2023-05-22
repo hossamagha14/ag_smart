@@ -51,7 +51,7 @@ class StationInfoScreen extends StatelessWidget {
                                         stationIrrigationType: myCubit
                                             .stationModel!
                                             .irrigationSettings![0]
-                                            .irrigationMethod1!,
+                                            .settingsType!,
                                       ),
                                     ));
                               } else if (myCubit
