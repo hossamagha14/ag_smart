@@ -1,31 +1,25 @@
 class PumpModel {
-  final int stationId;
-  final int pumpEnable;
-  final double pumpPower;
-  final int pressureSwitch;
+  int? stationId;
+  int? pumpEnable;
+  double? pumpPower;
+  int? pressureSwitch;
 
-  PumpModel({
-    required this.stationId,
-    required this.pumpEnable,
-    required this.pumpPower,
-    required this.pressureSwitch,
-  });
+  PumpModel(
+      {this.stationId, this.pumpEnable, this.pumpPower, this.pressureSwitch});
 
-  factory PumpModel.fromJson(Map<String, dynamic> json) {
-    return PumpModel(
-      stationId: json['station_id'],
-      pumpEnable: json['pump_enable'],
-      pumpPower: json['pump_power'].toDouble(),
-      pressureSwitch: json['pressure_switch'],
-    );
+  PumpModel.fromJson(Map<String, dynamic> json) {
+    stationId = json['station_id'];
+    pumpEnable = json['pump_enable'];
+    pumpPower = json['pump_power'];
+    pressureSwitch = json['pressure_switch'];
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'station_id': stationId,
-      'pump_enable': pumpEnable,
-      'pump_power': pumpPower,
-      'pressure_switch': pressureSwitch,
-    };
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['station_id'] = stationId;
+    data['pump_enable'] = pumpEnable;
+    data['pump_power'] = pumpPower;
+    data['pressure_switch'] = pressureSwitch;
+    return data;
   }
 }

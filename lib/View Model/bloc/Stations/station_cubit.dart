@@ -14,7 +14,6 @@ import '../../../Model/station_model.dart';
 import '../../../View/Reusable/text.dart';
 import '../../../View/Screens/bottom_dash_bar_screen.dart';
 import '../../../View/Screens/device_features.dart';
-import '../../../View/Screens/pump_settings.dart';
 import '../../database/dio_helper.dart';
 
 class StationsCubit extends Cubit<StationsStates> {
@@ -49,7 +48,7 @@ class StationsCubit extends Cubit<StationsStates> {
         stations.add(stationModel!);
       }
       emit(StationsGetSuccessState());
-    }).catchError((onError) {
+      print('1111111111111111111111111111111111111111 $onError');
       emit(StationsGetFailState());
     });
   }

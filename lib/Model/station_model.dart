@@ -191,7 +191,7 @@ class Routes {
 }
 
 class Features {
-  int? version;
+  String? version;
   int? internetAccess;
   int? light;
   int? animal;
