@@ -24,7 +24,7 @@ class BottomDashBarCubit extends Cubit<BottomDashBarStates> {
   }
 
   logout() {
-    dio.post('$base/$logout').then((value) {
+    dio.post('$base/$logoutCall').then((value) {
       emit(BottomDashBarLogOutSuccessState());
     }).catchError((onError) {
       emit(BottomDashBarLogoutFailState());
