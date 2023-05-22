@@ -191,6 +191,8 @@ class Routes {
 }
 
 class Features {
+  int? version;
+  int? internetAccess;
   int? light;
   int? animal;
   int? pump;
@@ -208,6 +210,8 @@ class Features {
 
   Features(
       {this.light,
+      this.internetAccess,
+      this.version,
       this.animal,
       this.pump,
       this.linesNumber,
@@ -225,6 +229,8 @@ class Features {
   Features.fromJson(Map<String, dynamic> json) {
     light = json['light'];
     animal = json['animal'];
+    version = json['version'];
+    internetAccess = json['internet_access'];
     pump = json['pump'];
     linesNumber = json['lines_number'];
     fertilizer = json['fertilizer'];
@@ -241,11 +247,11 @@ class Features {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['light'] = light;
-    data['animal'] = animal;
-    data['pump'] = pump;
+    data['internet_access'] = internetAccess;
     data['lines_number'] = linesNumber;
     data['fertilizer'] = fertilizer;
+    data['light'] = light;
+    data['animal'] = animal;
     data['pressure'] = pressure;
     data['water_level'] = waterLevel;
     data['automatic'] = automatic;
@@ -255,6 +261,8 @@ class Features {
     data['tds_sensor'] = tdsSensor;
     data['temperature_sensor'] = temperatureSensor;
     data['humidity_sensor'] = humiditySensor;
+    data['version'] = version;
+    data['pump'] = pump;
     return data;
   }
 }

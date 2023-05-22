@@ -73,14 +73,21 @@ class DeviceFeaturesScreen extends StatelessWidget {
                                                 children: [
                                                   Row(
                                                     textDirection:
-                                                        TextDirection.rtl,
+                                                        chosenLanguage == 'ar'
+                                                            ? TextDirection.rtl
+                                                            : TextDirection.ltr,
                                                     mainAxisAlignment:
                                                         MainAxisAlignment
                                                             .spaceBetween,
                                                     children: [
                                                       Row(
                                                         textDirection:
-                                                            TextDirection.rtl,
+                                                            chosenLanguage ==
+                                                                    'ar'
+                                                                ? TextDirection
+                                                                    .rtl
+                                                                : TextDirection
+                                                                    .ltr,
                                                         children: [
                                                           const CircleAvatar(
                                                             backgroundColor:
