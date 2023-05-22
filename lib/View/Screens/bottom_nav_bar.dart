@@ -364,7 +364,7 @@ class BottomNavBarScreen extends StatelessWidget {
               currentIndex: myCubit.index,
               items: [
                 BottomNavigationBarItem(
-                    label: 'Home',
+                    label: text[chosenLanguage]!['Home'],
                     icon: Text(
                       'i',
                       style: TextStyle(
@@ -375,7 +375,7 @@ class BottomNavBarScreen extends StatelessWidget {
                               : Colors.black54),
                     )),
                 BottomNavigationBarItem(
-                    label: 'Settings',
+                    label: text[chosenLanguage]!['Settings'],
                     icon: Text(
                       'q',
                       style: TextStyle(

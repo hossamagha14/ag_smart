@@ -315,7 +315,7 @@ class BottomDashBarScreen extends StatelessWidget {
                               : Colors.black54),
                     )),
                 BottomNavigationBarItem(
-                    label: 'Report',
+                    label: text[chosenLanguage]!['Report']!,
                     icon: Text(
                       's',
                       style: TextStyle(
