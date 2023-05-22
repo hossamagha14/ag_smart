@@ -13,100 +13,86 @@ class DeviceFeatureCubit extends Cubit<DeviceFeaturesStates> {
 
   List<DeviceFeatureModel> featureList = [
     DeviceFeatureModel(
-        description:
-            'تقوم بقياس ضغط الماء و تحديد مستوي الضغط المناسب للساقية, و تسلعد في ضبط نوع الساقية تبعًا لتغير ضغط الماء.',
-        title: 'وحدة قياس ضغط الماء',
+        description: text[chosenLanguage]!['dinternet'],
+        title: text[chosenLanguage]!['internet'],
         height: 0.06,
         isPressed: false,
         fontSize: 0),
     DeviceFeatureModel(
-        description:
-            'تقوم بقياس ضغط الماء و تحديد مستوي الضغط المناسب للساقية, و تسلعد في ضبط نوع الساقية تبعًا لتغير ضغط الماء.',
-        title: 'وحدة قياس ضغط الماء',
+        description: text[chosenLanguage]!['dlinesNumber'],
+        title: text[chosenLanguage]!['linesNumber'],
         height: 0.06,
         isPressed: false,
         fontSize: 0),
     DeviceFeatureModel(
-        description:
-            'تقوم بقياس ضغط الماء و تحديد مستوي الضغط المناسب للساقية, و تسلعد في ضبط نوع الساقية تبعًا لتغير ضغط الماء.',
-        title: 'وحدة قياس ضغط الماء',
+        description: text[chosenLanguage]!['dfertilizer'],
+        title: text[chosenLanguage]!['fertilizer'],
         height: 0.06,
         isPressed: false,
         fontSize: 0),
     DeviceFeatureModel(
-        description:
-            'تقوم بقياس ضغط الماء و تحديد مستوي الضغط المناسب للساقية, و تسلعد في ضبط نوع الساقية تبعًا لتغير ضغط الماء.',
-        title: 'وحدة قياس ضغط الماء',
+        description: text[chosenLanguage]!['dlight'],
+        title: text[chosenLanguage]!['light'],
         height: 0.06,
         isPressed: false,
         fontSize: 0),
     DeviceFeatureModel(
-        description:
-            'تقوم بقياس ضغط الماء و تحديد مستوي الضغط المناسب للساقية, و تسلعد في ضبط نوع الساقية تبعًا لتغير ضغط الماء.',
-        title: 'وحدة قياس ضغط الماء',
+        description: text[chosenLanguage]!['danimal'],
+        title: text[chosenLanguage]!['animal'],
         height: 0.06,
         isPressed: false,
         fontSize: 0),
     DeviceFeatureModel(
-        description:
-            'تقوم بقياس ضغط الماء و تحديد مستوي الضغط المناسب للساقية, و تسلعد في ضبط نوع الساقية تبعًا لتغير ضغط الماء.',
-        title: 'وحدة قياس ضغط الماء',
+        description: text[chosenLanguage]!['dpressure'],
+        title: text[chosenLanguage]!['pressure'],
         height: 0.06,
         isPressed: false,
         fontSize: 0),
     DeviceFeatureModel(
-        description:
-            'تقوم بقياس ضغط الماء و تحديد مستوي الضغط المناسب للساقية, و تسلعد في ضبط نوع الساقية تبعًا لتغير ضغط الماء.',
-        title: 'وحدة قياس ضغط الماء',
+        description: text[chosenLanguage]!['dlevel'],
+        title: text[chosenLanguage]!['level'],
         height: 0.06,
         isPressed: false,
         fontSize: 0),
     DeviceFeatureModel(
-        description:
-            'تقوم بقياس ضغط الماء و تحديد مستوي الضغط المناسب للساقية, و تسلعد في ضبط نوع الساقية تبعًا لتغير ضغط الماء.',
-        title: 'وحدة قياس ضغط الماء',
+        description: text[chosenLanguage]!['dauto'],
+        title: text[chosenLanguage]!['auto'],
         height: 0.06,
         isPressed: false,
         fontSize: 0),
     DeviceFeatureModel(
-        description:
-            'تقوم بقياس ضغط الماء و تحديد مستوي الضغط المناسب للساقية, و تسلعد في ضبط نوع الساقية تبعًا لتغير ضغط الماء.',
-        title: 'وحدة قياس ضغط الماء',
+        description: text[chosenLanguage]!['dflow'],
+        title: text[chosenLanguage]!['flow'],
         height: 0.06,
         isPressed: false,
         fontSize: 0),
     DeviceFeatureModel(
-        description:
-            'تقوم بقياس ضغط الماء و تحديد مستوي الضغط المناسب للساقية, و تسلعد في ضبط نوع الساقية تبعًا لتغير ضغط الماء.',
-        title: 'وحدة قياس ضغط الماء',
+        description: text[chosenLanguage]!['dleak'],
+        title: text[chosenLanguage]!['leak'],
         height: 0.06,
         isPressed: false,
         fontSize: 0),
     DeviceFeatureModel(
-        description:
-            'تقوم بقياس ضغط الماء و تحديد مستوي الضغط المناسب للساقية, و تسلعد في ضبط نوع الساقية تبعًا لتغير ضغط الماء.',
-        title: 'وحدة قياس ضغط الماء',
+        description: text[chosenLanguage]!['dph'],
+        title: text[chosenLanguage]!['ph'],
         height: 0.06,
         isPressed: false,
         fontSize: 0),
     DeviceFeatureModel(
-        description:
-            'تقوم بقياس ضغط الماء و تحديد مستوي الضغط المناسب للساقية, و تسلعد في ضبط نوع الساقية تبعًا لتغير ضغط الماء.',
-        title: 'وحدة قياس ضغط الماء',
+        description: text[chosenLanguage]!['dtds'],
+        title: text[chosenLanguage]!['tds'],
         height: 0.06,
         isPressed: false,
         fontSize: 0),
     DeviceFeatureModel(
-        description:
-            'تقوم بقياس ضغط الماء و تحديد مستوي الضغط المناسب للساقية, و تسلعد في ضبط نوع الساقية تبعًا لتغير ضغط الماء.',
-        title: 'وحدة قياس ضغط الماء',
+        description: text[chosenLanguage]!['dtemp'],
+        title: text[chosenLanguage]!['temp'],
         height: 0.06,
         isPressed: false,
         fontSize: 0),
     DeviceFeatureModel(
-        description:
-            'تقوم بقياس ضغط الماء و تحديد مستوي الضغط المناسب للساقية, و تسلعد في ضبط نوع الساقية تبعًا لتغير ضغط الماء.',
-        title: 'وحدة قياس ضغط الماء',
+        description: text[chosenLanguage]!['dhumidity'],
+        title: text[chosenLanguage]!['humidity'],
         height: 0.06,
         isPressed: false,
         fontSize: 0),
