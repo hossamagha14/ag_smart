@@ -13,6 +13,7 @@ import 'package:sqflite/sqflite.dart';
 import '../../../Model/station_model.dart';
 import '../../../View/Reusable/text.dart';
 import '../../../View/Screens/bottom_dash_bar_screen.dart';
+import '../../../View/Screens/device_features.dart';
 import '../../../View/Screens/pump_settings.dart';
 import '../../database/dio_helper.dart';
 
@@ -109,7 +110,7 @@ class StationsCubit extends Cubit<StationsStates> {
         Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
-              builder: (context) => PumpSettingsScreen(isEdit: false),
+              builder: (context) => const DeviceFeaturesScreen(isEdit: false),
             ),
             (route) => false);
       }
