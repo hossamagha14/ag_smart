@@ -112,6 +112,9 @@ class PeriodAmountScreen extends StatelessWidget {
                           } else {
                             if (myCubit.noDayIsChosen == 7) {
                               errorToast('Please choose the days of work');
+                            } else if (double.parse(hoursControl.text) > 24) {
+                              errorToast(text[chosenLanguage]![
+                                  'The cycle can\'t be more than 24 hours']!);
                             } else {
                               myCubit.putIrrigationCycle(
                                   valveId: 0,

@@ -92,6 +92,7 @@ Map<String, Map<String, String>> text = {
     '[ + ] Add device': '[ + ] Add device',
     'Water consumption (Liter)': 'Water consumption (Liter)',
     'Report': 'Report',
+    'The cycle can\'t be more than 24 hours': 'The cycle can\'t be more than 24 hours',
   },
   'ar': {
     'sign in name': 'اسم المستخدم',
@@ -174,5 +175,6 @@ Map<String, Map<String, String>> text = {
     '[ + ] Add device': 'إضافة جهاز [ + ]',
     'Water consumption (Liter)': 'إستهلاك الماء (لتر)',
     'Report': 'تقرير',
+    'The cycle can\'t be more than 24 hours': 'الدورة لا يجب ان تتجاوز 24 ساعة',
   },
 };

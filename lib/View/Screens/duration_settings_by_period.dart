@@ -43,14 +43,7 @@ class DurationSettingsByPeriodScreen extends StatelessWidget {
                 listener: (context, state) {
                   DurationSettingsCubit myCubit =
                       DurationSettingsCubit.get(context);
-                  if (state is DurationSettingsMoveToNextPageState) {
-                    myCubit.putIrrigationCycle(
-                        valveId: 0,
-                        interval: int.parse(numberOfHoursControl.text),
-                        duration: int.parse(numberOfMinutesControl.text),
-                        quantity: 0,
-                        weekDays: myCubit.toDecimal());
-                  } else if (state is DurationSettingsErrorState) {
+                  if (state is DurationSettingsErrorState) {
                     errorToast('Input error');
                   } else if (state is DurationSettingsSendSuccessState) {
                     Navigator.pushAndRemoveUntil(
@@ -77,13 +70,25 @@ class DurationSettingsByPeriodScreen extends StatelessWidget {
                           if (irrigationType == 1) {
                             myCubit.checkOpenValveTimeSeriesByCycle(
                                 hours: double.parse(numberOfHoursControl.text),
+                                interval: int.parse(numberOfHoursControl.text),
+                                duration:
+                                    int.parse(numberOfMinutesControl.text),
+                                weekday: myCubit.toDecimal(),
                                 openValveTime:
                                     double.parse(numberOfMinutesControl.text));
                           } else if (irrigationType == 2) {
                             myCubit.checkOpenValveTimeParallelByCycle(
                                 hours: double.parse(numberOfHoursControl.text),
+                                interval: int.parse(numberOfHoursControl.text),
+                                duration:
+                                    int.parse(numberOfMinutesControl.text),
+                                weekday: myCubit.toDecimal(),
                                 openValveTime:
                                     double.parse(numberOfMinutesControl.text));
+                          } else if (double.parse(numberOfHoursControl.text) >
+                              24) {
+                            errorToast(text[chosenLanguage]![
+                                'The cycle can\'t be more than 24 hours']!);
                           }
                         }
                       },

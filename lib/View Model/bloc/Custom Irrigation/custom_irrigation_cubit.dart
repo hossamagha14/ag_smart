@@ -360,7 +360,7 @@ class CustomIrrigationCubit extends Cubit<CustomIrrigationStates> {
   }) {
     bool validInput = true;
     double availableOpenValveTime = hours * 60;
-    if (openValveTime > availableOpenValveTime || openValveTime == 0) {
+    if (openValveTime > availableOpenValveTime || openValveTime == 0  || hours>24) {
       validInput = false;
     }
     return validInput;
