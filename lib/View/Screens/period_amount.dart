@@ -56,8 +56,8 @@ class PeriodAmountScreen extends StatelessWidget {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) =>
-                                      const DurationSettingsScreen(
-                                          isEdit: true),
+                                       const DurationSettingsScreen(
+                                          isEdit: true,stationIrrigationType: 1,),
                                 ));
                           },
                           child: Padding(

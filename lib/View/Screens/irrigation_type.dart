@@ -55,6 +55,7 @@ class IrrigationTypeScreen extends StatelessWidget {
                           MaterialPageRoute(
                             builder: (context) => DurationSettingsScreen(
                               isEdit: isEdit,
+                              stationIrrigationType: myCubit.irrigationType,
                             ),
                           ));
                     } else if (myCubit.irrigationType == 3 ||

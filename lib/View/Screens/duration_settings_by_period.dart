@@ -41,8 +41,6 @@ class DurationSettingsByPeriodScreen extends StatelessWidget {
             children: [
               BlocConsumer<DurationSettingsCubit, DurationSettingsStates>(
                 listener: (context, state) {
-                  DurationSettingsCubit myCubit =
-                      DurationSettingsCubit.get(context);
                   if (state is DurationSettingsErrorState) {
                     errorToast('Input error');
                   } else if (state is DurationSettingsSendSuccessState) {
@@ -99,7 +97,7 @@ class DurationSettingsByPeriodScreen extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                 builder: (context) =>
-                                    const DurationSettingsScreen(isEdit: true),
+                                     DurationSettingsScreen(isEdit: true,stationIrrigationType: irrigationType,),
                               ));
                         },
                         child: Padding(

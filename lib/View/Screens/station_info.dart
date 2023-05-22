@@ -46,8 +46,13 @@ class StationInfoScreen extends StatelessWidget {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) =>
-                                          const DurationSettingsScreen(
-                                              isEdit: true),
+                                          DurationSettingsScreen(
+                                        isEdit: true,
+                                        stationIrrigationType: myCubit
+                                            .stationModel!
+                                            .irrigationSettings![0]
+                                            .irrigationMethod1!,
+                                      ),
                                     ));
                               } else if (myCubit
                                           .stationModel!

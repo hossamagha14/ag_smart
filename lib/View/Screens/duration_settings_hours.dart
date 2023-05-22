@@ -67,8 +67,8 @@ class DurationSettingsByHourScreen extends StatelessWidget {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) =>
-                                          const DurationSettingsScreen(
-                                              isEdit: true),
+                                           DurationSettingsScreen(
+                                              isEdit: true,stationIrrigationType: irrigationType,),
                                     ));
                               },
                               child: Padding(

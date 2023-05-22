@@ -62,7 +62,7 @@ class TimeAmountScreen extends StatelessWidget {
                                       MaterialPageRoute(
                                         builder: (context) =>
                                             const DurationSettingsScreen(
-                                                isEdit: true),
+                                                isEdit: true,stationIrrigationType: 2,),
                                       ));
                                 },
                                 child: Padding(
