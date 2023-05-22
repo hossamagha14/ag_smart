@@ -46,10 +46,13 @@ class SevenDaysChart extends StatelessWidget {
             rightTitles: AxisTitles(),
             topTitles: AxisTitles(),
             leftTitles: AxisTitles(
-                axisNameWidget: Text(
-              text[chosenLanguage]!['Water consumption (Liter)']!,
-              style: const TextStyle(color: Colors.grey,fontWeight: FontWeight.w500),
-            )),
+                axisNameWidget: FittedBox(
+                  child: Text(
+                              text[chosenLanguage]!['Water consumption (Liter)']!,
+                              style: const TextStyle(
+                    color: Colors.grey, fontWeight: FontWeight.w500),
+                            ),
+                )),
             bottomTitles: AxisTitles(
               sideTitles: SideTitles(
                 showTitles: true,
