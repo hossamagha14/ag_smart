@@ -277,7 +277,10 @@ class BottomDashBarScreen extends StatelessWidget {
                                   Padding(
                                     padding: const EdgeInsets.only(left: 20),
                                     child: InkWell(
-                                      onTap: () {},
+                                      onTap: () {
+                                        CacheHelper.remove(key: 'token');
+                                        myCubit.logout();
+                                      },
                                       child:
                                           Text(text[chosenLanguage]!['Yes']!),
                                     ),
