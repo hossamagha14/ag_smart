@@ -27,5 +27,5 @@ const monthlyRecords='/daily_records/month';
 const monthlyRange='/monthly_records/range';
 const serial='/serial_number';
 const station='/station';
-const logout='/logout';
+const logoutCall='/logout';
 const pumpSettings='/station/pump_info';
