@@ -96,6 +96,20 @@ class DeviceFeatureCubit extends Cubit<DeviceFeaturesStates> {
         height: 0.06,
         isPressed: false,
         fontSize: 0),
+    DeviceFeatureModel(
+        description:
+            'تقوم بقياس ضغط الماء و تحديد مستوي الضغط المناسب للساقية, و تسلعد في ضبط نوع الساقية تبعًا لتغير ضغط الماء.',
+        title: 'وحدة قياس ضغط الماء',
+        height: 0.06,
+        isPressed: false,
+        fontSize: 0),
+    DeviceFeatureModel(
+        description:
+            'تقوم بقياس ضغط الماء و تحديد مستوي الضغط المناسب للساقية, و تسلعد في ضبط نوع الساقية تبعًا لتغير ضغط الماء.',
+        title: 'وحدة قياس ضغط الماء',
+        height: 0.06,
+        isPressed: false,
+        fontSize: 0),
   ];
   DioHelper dio = DioHelper();
   StationModel? stationModel;
