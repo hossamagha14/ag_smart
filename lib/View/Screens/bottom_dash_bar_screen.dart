@@ -73,7 +73,7 @@ class BottomDashBarScreen extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
-                                  const ChooseLanguageScreen(isEdit: true),
+                                  const ChooseLanguageScreen(isEdit: true,chosenLanguageType: 1),
                             ));
                       },
                     ),

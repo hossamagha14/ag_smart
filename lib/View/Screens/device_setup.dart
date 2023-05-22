@@ -5,7 +5,6 @@ import 'package:ag_smart/View/Reusable/colors.dart';
 import 'package:ag_smart/View/Reusable/toasts.dart';
 import 'package:ag_smart/View/Reusable/main_card.dart';
 import 'package:ag_smart/View/Reusable/text.dart';
-import 'package:ag_smart/View/Screens/device_features.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -42,19 +41,7 @@ class _DeviceSetupScreenState extends State<DeviceSetupScreen> {
               child: Column(
                 children: [
                   BlocConsumer<StationsCubit, StationsStates>(
-                    listener: (context, state) {
-                      if (state is StationsAddToDBSuccessState) {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const DeviceFeaturesScreen(
-                                isEdit: false,
-                              ),
-                            ));
-                      } else if (state is StationsAddToDBSuccessState) {
-                        errorToast('An error has occurred');
-                      }
-                    },
+                    listener: (context, state) {},
                     builder: (context, state) {
                       StationsCubit myCubit = StationsCubit.get(context);
                       return MainCard(

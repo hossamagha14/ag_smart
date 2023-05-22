@@ -83,7 +83,7 @@ class MyApp extends StatelessWidget {
                 centerTitle: true)),
         home: isLanguageChosen == true
             ? SignInScreen()
-            : const ChooseLanguageScreen(isEdit: false),
+            : const ChooseLanguageScreen(isEdit: false,chosenLanguageType: 0),
       ),
     );
   }

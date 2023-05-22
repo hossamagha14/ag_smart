@@ -10,7 +10,6 @@ import '../../View Model/bloc/Bottom navigation bar/bottom_nav_bar_states.dart';
 import '../../View Model/bloc/commom_states.dart';
 import 'bottom_dash_bar_screen.dart';
 import 'choose_language.dart';
-import 'dashboard.dart';
 
 class BottomNavBarScreen extends StatelessWidget {
   const BottomNavBarScreen({Key? key}) : super(key: key);
@@ -116,7 +115,7 @@ class BottomNavBarScreen extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                           builder: (context) =>
-                              const ChooseLanguageScreen(isEdit: true),
+                              const ChooseLanguageScreen(isEdit: true,chosenLanguageType: 2),
                         ));
                   },
                 ),
