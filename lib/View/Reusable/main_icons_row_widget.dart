@@ -15,6 +15,7 @@ class MainIconsRowWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: MediaQuery.of(context).size.width * 0.35,
+      height: MediaQuery.of(context).size.height * 0.05,
       child: FittedBox(
         child: Row(
           textDirection: TextDirection.rtl,

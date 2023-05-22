@@ -212,7 +212,8 @@ class CustomFirtiliserSettingsScreen extends StatelessWidget {
                                                                     .length -
                                                                 1 <
                                                             index
-                                                        ? 'Date'
+                                                        ? text[chosenLanguage]![
+                                                            'Date']!
                                                         : myCubit
                                                             .customFertilizationModelList[
                                                                 lineIndex]

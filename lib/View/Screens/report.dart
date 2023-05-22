@@ -22,6 +22,7 @@ import '../Reusable/monthContainer.dart';
 import '../Reusable/month_chart.dart';
 import '../Reusable/quarter_chart.dart';
 import '../Reusable/quarter_container.dart';
+import '../Reusable/text.dart';
 import '../Reusable/year_chart.dart';
 import '../Reusable/year_container.dart';
 
@@ -125,35 +126,41 @@ class ReportScreen extends StatelessWidget {
                                       height:
                                           MediaQuery.of(context).size.height *
                                               0.025),
-                                  myCubit.dropDownValue == 'Yearly'
+                                  myCubit.dropDownValue ==
+                                          text[chosenLanguage]!['Yearly']!
                                       ? YearChart(
                                           spots: myCubit.spots,
                                           maxY: myCubit.maxY,
                                         )
-                                      : myCubit.dropDownValue == 'Monthly'
+                                      : myCubit.dropDownValue ==
+                                              text[chosenLanguage]!['Monthly']!
                                           ? MonthChart(
                                               numberOfDays: myCubit.maxX,
                                               spots: myCubit.spots,
                                               maxY: myCubit.maxY,
                                             )
                                           : myCubit.dropDownValue ==
-                                                  'Last 7 days'
+                                                  text[chosenLanguage]![
+                                                      'Last 7 days']!
                                               ? SevenDaysChart(
                                                   spots: myCubit.spots,
                                                   maxY: myCubit.maxY,
                                                 )
                                               : myCubit.dropDownValue ==
-                                                      'Last 15 days'
+                                                      text[chosenLanguage]![
+                                                          'Last 15 days']!
                                                   ? FifteenDaysChart(
                                                       maxY: myCubit.maxY,
                                                       spots: myCubit.spots)
                                                   : myCubit.dropDownValue ==
-                                                          'Last 30 days'
+                                                          text[chosenLanguage]![
+                                                              'Last 30 days']!
                                                       ? ThirtyDaysChart(
                                                           maxY: myCubit.maxY,
                                                           spots: myCubit.spots)
                                                       : myCubit.dropDownValue ==
-                                                              'Custom Range'
+                                                              text[chosenLanguage]![
+                                                                  'Custom Range']!
                                                           ? CustomChart(
                                                               maxY:
                                                                   myCubit.maxY,
@@ -162,21 +169,16 @@ class ReportScreen extends StatelessWidget {
                                                               start: myCubit.chosenRange ==
                                                                       null
                                                                   ? 1
-                                                                  : myCubit
-                                                                      .chosenRange![
-                                                                          0]!
-                                                                      .day
+                                                                  : myCubit.chosenRange![0]!.day
                                                                       .toDouble(),
                                                               end: myCubit.chosenRange ==
                                                                       null
                                                                   ? 31
-                                                                  : myCubit
-                                                                      .chosenRange![
-                                                                          1]!
-                                                                      .day
+                                                                  : myCubit.chosenRange![1]!.day
                                                                       .toDouble())
                                                           : myCubit.dropDownValue ==
-                                                                  'By Quarter'
+                                                                  text[chosenLanguage]![
+                                                                      'By Quarter']!
                                                               ? QuarterChart(
                                                                   maxY: myCubit
                                                                       .maxY,
@@ -242,24 +244,32 @@ class ReportScreen extends StatelessWidget {
                                       height:
                                           MediaQuery.of(context).size.height *
                                               0.01),
-                                  myCubit.dropDownValue == 'Last 7 days'
+                                  myCubit.dropDownValue ==
+                                          text[chosenLanguage]!['Last 7 days']!
                                       ? const SevenDaysContainer()
-                                      : myCubit.dropDownValue == 'Last 15 days'
+                                      : myCubit.dropDownValue ==
+                                              text[chosenLanguage]![
+                                                  'Last 15 days']!
                                           ? const FifteenDaysContainer()
                                           : myCubit.dropDownValue ==
-                                                  'Last 30 days'
+                                                  text[chosenLanguage]![
+                                                      'Last 30 days']!
                                               ? const ThirtyDaysContainer()
                                               : myCubit.dropDownValue ==
-                                                      'Yearly'
+                                                      text[chosenLanguage]![
+                                                          'Yearly']!
                                                   ? const YearContainer()
                                                   : myCubit.dropDownValue ==
-                                                          'Monthly'
+                                                          text[chosenLanguage]![
+                                                              'Monthly']!
                                                       ? const MonthContainer()
                                                       : myCubit.dropDownValue ==
-                                                              'Custom Range'
+                                                              text[chosenLanguage]![
+                                                                  'Custom Range']!
                                                           ? const CustomContainer()
                                                           : myCubit.dropDownValue ==
-                                                                  'By Quarter'
+                                                                  text[chosenLanguage]![
+                                                                      'By Quarter']!
                                                               ? const QuarterContainer()
                                                               : const EmptyContainer(),
                                   Row(
@@ -312,7 +322,8 @@ class ReportScreen extends StatelessWidget {
                                                     0.3,
                                                 child: FittedBox(
                                                   child: Text(
-                                                    'Save Screen',
+                                                    text[chosenLanguage]![
+                                                        'Save screen']!,
                                                     style: TextStyle(
                                                         color: iconColor,
                                                         fontSize: 20),
@@ -325,13 +336,17 @@ class ReportScreen extends StatelessWidget {
                                       ),
                                       InkWell(
                                         onTap: () {
-                                          myCubit.dropDownValue == 'Monthly'
+                                          myCubit.dropDownValue ==
+                                                  text[chosenLanguage]![
+                                                      'Monthly']!
                                               ? myCubit.downloadMonth()
                                               : myCubit.dropDownValue ==
-                                                      'Yearly'
+                                                      text[chosenLanguage]![
+                                                          'Yearly']!
                                                   ? myCubit.downloadYear()
                                                   : myCubit.dropDownValue ==
-                                                          'By Quarter'
+                                                          text[chosenLanguage]![
+                                                              'By Quarter']!
                                                       ? myCubit
                                                           .downloadMonthRange()
                                                       : myCubit.download();
@@ -356,7 +371,8 @@ class ReportScreen extends StatelessWidget {
                                                     0.25,
                                                 child: FittedBox(
                                                   child: Text(
-                                                    'Download',
+                                                    text[chosenLanguage]![
+                                                        'Download']!,
                                                     style: TextStyle(
                                                       color: iconColor,
                                                     ),
