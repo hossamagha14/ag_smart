@@ -9,6 +9,8 @@ import 'package:ag_smart/View/Screens/sign_in.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../Reusable/text.dart';
+
 class ChooseLanguageScreen extends StatelessWidget {
   final bool isEdit;
   final int chosenLanguageType;
@@ -112,7 +114,7 @@ class ChooseLanguageScreen extends StatelessWidget {
                                     (route) => false);
                               }
                             },
-                            child: const Text('Next')),
+                            child:  Text(text[chosenLanguage]!['Next']!)),
                       )),
                     ),
                   )

@@ -4,10 +4,8 @@ import 'package:ag_smart/Model/valve_model.dart';
 import 'package:ag_smart/View%20Model/bloc/Lines%20activation/lines_activation_states.dart';
 import 'package:ag_smart/View%20Model/database/cache_helpher.dart';
 import 'package:ag_smart/View%20Model/database/end_points.dart';
-import 'package:ag_smart/View/Reusable/global.dart';
 import 'package:ag_smart/View/Reusable/text.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../../Model/station_model.dart';
 import '../../database/dio_helper.dart';
 
@@ -115,6 +113,8 @@ class LinesActivationCubit extends Cubit<LinesActivationStates> {
       }
     }
     binaryValves = activeValves;
+    CacheHelper.saveData(key: 'binaryValves', value: binaryValves);
+    binaryValves=CacheHelper.getData(key: 'binaryValves');
   }
 
   List<Map<String, dynamic>> makeAList() {

@@ -2,7 +2,6 @@ import 'package:ag_smart/View%20Model/bloc/Irrigation%20type/irrigation_type_cub
 import 'package:ag_smart/View%20Model/bloc/Irrigation%20type/irrigation_type_states.dart';
 import 'package:ag_smart/View/Reusable/duration_settings_row.dart';
 import 'package:ag_smart/View/Reusable/toasts.dart';
-import 'package:ag_smart/View/Reusable/global.dart';
 import 'package:ag_smart/View/Reusable/main_card02.dart';
 import 'package:ag_smart/View/Reusable/text.dart';
 import 'package:ag_smart/View/Reusable/text_style.dart';

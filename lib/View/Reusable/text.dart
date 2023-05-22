@@ -9,6 +9,7 @@ String refreshToken = CacheHelper.getData(key: 'refreshToken') ?? "";
 int userId = CacheHelper.getData(key: 'user_id') ?? 0;
 String serialNumber = CacheHelper.getData(key: 'serialNumber') ?? "";
 bool isLanguageChosen = CacheHelper.getData(key: 'languageChoosen') ?? false;
+int binaryValves = CacheHelper.getData(key: 'binaryValves') ?? 0;
 
 Map<String, Map<String, String>> text = {
   'en': {
@@ -168,8 +169,7 @@ Map<String, Map<String, String>> text = {
     'Station name': 'اسم المحطة',
     'line': 'خط',
     'Next': 'التالي',
-    'You are not subscribed for this feature':
-        'لست مشترك في هذه الخدمة',
+    'You are not subscribed for this feature': 'لست مشترك في هذه الخدمة',
     'Dashboard': 'الصفحة الرئيسية',
     '[ + ] Add device': 'إضافة جهاز [ + ]',
     'Water consumption (Liter)': 'إستهلاك الماء (لتر)',

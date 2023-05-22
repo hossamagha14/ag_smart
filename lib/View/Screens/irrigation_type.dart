@@ -1,7 +1,6 @@
 import 'package:ag_smart/View%20Model/bloc/Irrigation%20type/irrigation_type_cubit.dart';
 import 'package:ag_smart/View%20Model/bloc/Irrigation%20type/irrigation_type_states.dart';
 import 'package:ag_smart/View/Reusable/toasts.dart';
-import 'package:ag_smart/View/Reusable/global.dart';
 import 'package:ag_smart/View/Reusable/irrigation_type_container.dart';
 import 'package:ag_smart/View/Reusable/main_card02.dart';
 import 'package:ag_smart/View/Reusable/text_style.dart';

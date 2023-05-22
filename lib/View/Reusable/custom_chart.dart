@@ -1,3 +1,4 @@
+import 'package:ag_smart/View/Reusable/text.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
@@ -52,9 +53,9 @@ class CustomChart extends StatelessWidget {
             rightTitles: AxisTitles(),
             topTitles: AxisTitles(),
             leftTitles: AxisTitles(
-                axisNameWidget: const Text(
-              'Water consumption (Litre)',
-              style: TextStyle(color: Colors.grey, fontWeight: FontWeight.w500),
+                axisNameWidget: Text(
+              text[chosenLanguage]!['Water consumption (Liter)']!,
+              style: const TextStyle(color: Colors.grey, fontWeight: FontWeight.w500),
             )),
             bottomTitles: AxisTitles(
               sideTitles: SideTitles(

@@ -52,6 +52,10 @@ class BottomNavBarCubit extends Cubit<CommonStates> {
     await dio.get('$base/$stationBySerial/$serialNumber').then((value) {
       stationModel = StationModel.fromJson(value.data);
       settingsType = stationModel!.irrigationSettings![0].settingsType!;
+      CacheHelper.saveData(
+          key: 'binaryValves',
+          value: stationModel!.irrigationSettings![0].activeValves!);
+      binaryValves = CacheHelper.getData(key: 'binaryValves');
       if (settingsType == 1 || settingsType == 2) {
         bottomNavBarScreens = [
           const StationInfoScreen(),

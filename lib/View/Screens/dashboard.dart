@@ -72,9 +72,10 @@ class DashsboardScreen extends StatelessWidget {
                                     onPressed: () {
                                       myCubit.scan(context);
                                     },
-                                    child: const Text(
-                                      '[ + ]  Add Device',
-                                      style: TextStyle(
+                                    child: Text(
+                                      text[chosenLanguage]![
+                                          '[ + ] Add device']!,
+                                      style: const TextStyle(
                                           fontSize: 18,
                                           fontWeight: FontWeight.w700),
                                     )),
