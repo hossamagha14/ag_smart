@@ -42,16 +42,18 @@ class CustomIrrigationChooseDyasWidget extends StatelessWidget {
                         border: Border.all(color: Colors.blue, width: 2),
                         borderRadius: BorderRadius.circular(10)),
                     child: Center(
-                      child: Text(
-                        myCubit.customIrrigationModelList[lineIndex]
-                                    .days[index].day!,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: myCubit.customIrrigationModelList[lineIndex]
-                                    .days[index].isOn ==
-                                    false
-                                ? Colors.blue
-                                : Colors.white),
+                      child: FittedBox(
+                        child: Text(
+                          myCubit.customIrrigationModelList[lineIndex]
+                                      .days[index].day!,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: myCubit.customIrrigationModelList[lineIndex]
+                                      .days[index].isOn ==
+                                      false
+                                  ? Colors.blue
+                                  : Colors.white),
+                        ),
                       ),
                     ),
                   ),

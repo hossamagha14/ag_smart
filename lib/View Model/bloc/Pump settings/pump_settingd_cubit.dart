@@ -30,14 +30,13 @@ class PumpSettingsCubit extends Cubit<PumpSettingsStates> {
       required int pumpEnabled,
       required int pressureSwitch}) {
     dio.put('$base/$pumpSettings/$stationId', data: {
+      "station_id":stationId,
       "pump_enable": pumpEnabled,
       "pump_power": pumpPower,
       "pressure_switch": pressureSwitch
     }).then((value) {
-      print(value.data);
       emit(PumpSettingSendSuccessState());
     }).catchError((onError) {
-      print(onError);
       emit(PumpSettingSendFailState());
     });
   }
