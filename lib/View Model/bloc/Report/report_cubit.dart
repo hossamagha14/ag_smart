@@ -20,7 +20,7 @@ class ReportCubit extends Cubit<ReportStates> {
   static ReportCubit get(context) => BlocProvider.of(context);
 
   DioHelper dio = DioHelper();
-  String dropDownValue = 'Last 7 days';
+  String dropDownValue = text[chosenLanguage]!['Last 7 days']!;
   String pdfStartDate = DateFormat('dd-MM-y')
       .format(DateTime.now().subtract(const Duration(days: 6)));
   String pdfendtDate = DateFormat('dd-MM-y').format(DateTime.now());
