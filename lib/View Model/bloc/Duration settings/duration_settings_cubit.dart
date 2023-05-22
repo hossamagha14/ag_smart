@@ -307,6 +307,15 @@ class DurationSettingsCubit extends Cubit<DurationSettingsStates> {
     dio.get('$base/$irrigationSettings/$stationId').then((value) {
       irrigationSettingsModel = IrrigationSettingsModel.fromJson(value.data);
       if (value.statusCode == 200) {
+        getActiveDays(
+            decimalNumber:
+                irrigationSettingsModel!.irrigationCycles![0].weekDays!);
+        for (int i = 0; i < activeDays.length; i++) {
+          if (activeDays[i] == 1) {
+            days[i].isOn = true;
+            noDayIsChosen--;
+          }
+        }
         hours.text =
             irrigationSettingsModel!.irrigationCycles![0].interval.toString();
         amount.text = irrigationSettingsModel!.irrigationCycles![0].duration ==
