@@ -45,19 +45,13 @@ class LinesActivationScreen extends StatelessWidget {
                           function: () {
                             myCubit.toBinary(myCubit.valves.length);
                             myCubit.numberOfActivelines();
-                            if (isEdit == false) {
-                              myCubit.postIrrigationType(
-                                  activeValves: binaryValves);
-                            } else {
-                              myCubit.putIrrigationType(
-                                  activeValves: binaryValves);
-                            }
+                            myCubit.putIrrigationType(
+                                activeValves: binaryValves);
                           },
                           buttonColor: greenButtonColor,
                           mainWidget: SizedBox(
                               width: MediaQuery.of(context).size.width * 0.8,
-                              height:
-                                  MediaQuery.of(context).size.height * 0.48,
+                              height: MediaQuery.of(context).size.height * 0.48,
                               child: ListView.separated(
                                   physics: const BouncingScrollPhysics(),
                                   itemBuilder: (context, index) {
