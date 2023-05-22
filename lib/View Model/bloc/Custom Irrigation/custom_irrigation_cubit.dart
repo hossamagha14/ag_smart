@@ -210,6 +210,8 @@ class CustomIrrigationCubit extends Cubit<CustomIrrigationStates> {
     required int stationId,
     required int lineIndex,
     required int valveId,
+    TextEditingController? hours,
+    TextEditingController? amount,
   }) async {
     emit(CustomIrrigationLoadingState());
     customIrrigationModelList = [];
@@ -288,6 +290,24 @@ class CustomIrrigationCubit extends Cubit<CustomIrrigationStates> {
                 customIrrigationModelList[lineIndex].noDayIsChosen--;
               }
             }
+            hours!.text = irrigationSettingsModel!
+                    .customValvesSettings![0].irrigationCycles!.isEmpty
+                ? ''
+                : irrigationSettingsModel!
+                    .customValvesSettings![0].irrigationCycles![0].interval
+                    .toString();
+            amount!.text = irrigationSettingsModel!
+                    .customValvesSettings![0].irrigationCycles!.isEmpty
+                ? ''
+                : irrigationSettingsModel!.customValvesSettings![0]
+                            .irrigationCycles![0].interval ==
+                        0
+                    ? irrigationSettingsModel!
+                        .customValvesSettings![0].irrigationCycles![0].quantity
+                        .toString()
+                    : irrigationSettingsModel!
+                        .customValvesSettings![0].irrigationCycles![0].interval
+                        .toString();
           }
         }
       }
@@ -360,7 +380,9 @@ class CustomIrrigationCubit extends Cubit<CustomIrrigationStates> {
   }) {
     bool validInput = true;
     double availableOpenValveTime = hours * 60;
-    if (openValveTime > availableOpenValveTime || openValveTime == 0  || hours>24) {
+    if (openValveTime > availableOpenValveTime ||
+        openValveTime == 0 ||
+        hours > 24) {
       validInput = false;
     }
     return validInput;
