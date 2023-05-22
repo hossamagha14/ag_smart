@@ -291,22 +291,22 @@ class CustomIrrigationCubit extends Cubit<CustomIrrigationStates> {
               }
             }
             hours!.text = irrigationSettingsModel!
-                    .customValvesSettings![0].irrigationCycles!.isEmpty
+                    .customValvesSettings![lineIndex].irrigationCycles!.isEmpty
                 ? ''
-                : irrigationSettingsModel!
-                    .customValvesSettings![0].irrigationCycles![0].interval
+                : irrigationSettingsModel!.customValvesSettings![lineIndex]
+                    .irrigationCycles![0].interval
                     .toString();
             amount!.text = irrigationSettingsModel!
-                    .customValvesSettings![0].irrigationCycles!.isEmpty
+                    .customValvesSettings![lineIndex].irrigationCycles!.isEmpty
                 ? ''
-                : irrigationSettingsModel!.customValvesSettings![0]
+                : irrigationSettingsModel!.customValvesSettings![lineIndex]
                             .irrigationCycles![0].interval ==
                         0
-                    ? irrigationSettingsModel!
-                        .customValvesSettings![0].irrigationCycles![0].quantity
+                    ? irrigationSettingsModel!.customValvesSettings![lineIndex]
+                        .irrigationCycles![0].quantity
                         .toString()
-                    : irrigationSettingsModel!
-                        .customValvesSettings![0].irrigationCycles![0].interval
+                    : irrigationSettingsModel!.customValvesSettings![lineIndex]
+                        .irrigationCycles![0].interval
                         .toString();
           }
         }
