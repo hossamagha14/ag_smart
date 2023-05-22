@@ -86,28 +86,42 @@ class DurationSettingsCubit extends Cubit<DurationSettingsStates> {
     emit(DurationSettingsChooseDayState());
   }
 
-  checkOpenValveTimeSeriesByCycle({
-    required hours,
-    required openValveTime,
-  }) {
+  checkOpenValveTimeSeriesByCycle(
+      {required hours,
+      required openValveTime,
+      required int interval,
+      required int duration,
+      required int weekday}) {
     double minutes = hours * 60;
     double availableOpenValveTime = minutes / numOfActiveLines;
     if (openValveTime > availableOpenValveTime || openValveTime == 0) {
       emit(DurationSettingsErrorState());
     } else {
-      emit(DurationSettingsMoveToNextPageState());
+      putIrrigationCycle(
+          valveId: 0,
+          interval: interval,
+          duration: duration,
+          quantity: 0,
+          weekDays: weekday);
     }
   }
 
-  checkOpenValveTimeParallelByCycle({
-    required hours,
-    required openValveTime,
-  }) {
+  checkOpenValveTimeParallelByCycle(
+      {required hours,
+      required openValveTime,
+      required int interval,
+      required int duration,
+      required int weekday}) {
     double availableOpenValveTime = hours * 60;
     if (availableOpenValveTime < openValveTime || openValveTime == 0) {
       emit(DurationSettingsErrorState());
     } else {
-      emit(DurationSettingsMoveToNextPageState());
+      putIrrigationCycle(
+          valveId: 0,
+          interval: interval,
+          duration: duration,
+          quantity: 0,
+          weekDays: weekday);
     }
   }
 
@@ -178,12 +192,10 @@ class DurationSettingsCubit extends Cubit<DurationSettingsStates> {
       "quantity": quantity,
       "week_days": weekDays
     }).then((value) {
-      print(value.data);
       if (value.statusCode == 200) {
         emit(DurationSettingsSendSuccessState());
       }
     }).catchError((onError) {
-      print(onError);
       emit(DurationSettingsSendFailedState());
     });
   }
