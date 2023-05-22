@@ -4,6 +4,9 @@ import 'package:ag_smart/View/Screens/report.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../database/dio_helper.dart';
+import '../../database/end_points.dart';
+
 class BottomDashBarCubit extends Cubit<BottomDashBarStates> {
   BottomDashBarCubit() : super(BottomDashBarIntialState());
 
@@ -13,9 +16,18 @@ class BottomDashBarCubit extends Cubit<BottomDashBarStates> {
     ReportScreen()
   ];
   int index = 0;
+  DioHelper dio = DioHelper();
 
   chooseIndex(int value) {
     index = value;
     emit(BottomDashBarChooseScreenState());
+  }
+
+  logout() {
+    dio.post('$base/$logout').then((value) {
+      emit(BottomDashBarLogOutSuccessState());
+    }).catchError((onError) {
+      emit(BottomDashBarLogoutFailState());
+    });
   }
 }
