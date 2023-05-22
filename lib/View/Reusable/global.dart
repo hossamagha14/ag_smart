@@ -1,2 +1,0 @@
-
-int  binaryValves=0;

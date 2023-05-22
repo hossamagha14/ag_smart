@@ -104,9 +104,9 @@ class MainCard2 extends StatelessWidget {
                                           bottomRight: Radius.circular(20))))),
                           onPressed: function,
                           child: buttonTitle ??
-                              const Text(
-                                'Next',
-                                style: TextStyle(
+                               Text(
+                                text[chosenLanguage]!['Next']!,
+                                style: const TextStyle(
                                     fontSize: 18, fontWeight: FontWeight.w500),
                               )))
             ],

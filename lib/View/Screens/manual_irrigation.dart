@@ -16,9 +16,12 @@ class ManualIrrigationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Station Settings'),),
+      appBar: AppBar(
+        title: const Text('Station Settings'),
+      ),
       body: BlocProvider(
-        create: (context) => BottomNavBarCubit()..getManualValves(stationId: stationId),
+        create: (context) =>
+            BottomNavBarCubit()..getManualValves(stationId: stationId),
         child: BlocConsumer<BottomNavBarCubit, CommonStates>(
           listener: (context, state) {
             if (state is BottomNavBarPutSuccessState) {
@@ -51,21 +54,27 @@ class ManualIrrigationScreen extends StatelessWidget {
                                 physics: const BouncingScrollPhysics(),
                                 itemBuilder: (context, index) {
                                   return Container(
-                                    width: MediaQuery.of(context).size.width * 0.8,
-                                    height:
-                                        MediaQuery.of(context).size.height * 0.05,
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.8,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.05,
                                     decoration: BoxDecoration(
                                         color: backgroundColor,
                                         borderRadius: BorderRadius.circular(5)),
                                     child: Padding(
                                       padding: EdgeInsets.symmetric(
-                                          horizontal:
-                                              MediaQuery.of(context).size.width *
-                                                  0.04),
+                                          horizontal: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.04),
                                       child: Row(
                                         children: [
                                           Text(
-                                            'Line ${index + 1}',
+                                            '${text[chosenLanguage]!['line']!} ${index + 1}',
+                                            textDirection:
+                                                chosenLanguage == 'ar'
+                                                    ? TextDirection.rtl
+                                                    : TextDirection.ltr,
                                           ),
                                           const Spacer(),
                                           Center(
@@ -84,16 +93,20 @@ class ManualIrrigationScreen extends StatelessWidget {
                                                       BorderRadius.circular(5)),
                                               child: TextFormField(
                                                 textAlign: TextAlign.center,
-                                                textAlignVertical: TextAlignVertical.bottom,
-                                                keyboardType: TextInputType.number,
+                                                textAlignVertical:
+                                                    TextAlignVertical.bottom,
+                                                keyboardType:
+                                                    TextInputType.number,
                                                 textInputAction:
                                                     TextInputAction.next,
                                                 controller: myCubit
-                                                    .manualList[index].controller,
+                                                    .manualList[index]
+                                                    .controller,
                                                 decoration: InputDecoration(
                                                   border: InputBorder.none,
-                                                  hintText: text[chosenLanguage]![
-                                                      'Duration'],
+                                                  hintText:
+                                                      text[chosenLanguage]![
+                                                          'Duration'],
                                                 ),
                                               ),
                                             ),
@@ -105,7 +118,8 @@ class ManualIrrigationScreen extends StatelessWidget {
                                 },
                                 separatorBuilder: (context, index) => SizedBox(
                                       height:
-                                          MediaQuery.of(context).size.height * 0.01,
+                                          MediaQuery.of(context).size.height *
+                                              0.01,
                                     ),
                                 itemCount: myCubit.manualList.length),
                           ),
@@ -131,8 +145,8 @@ class ManualIrrigationScreen extends StatelessWidget {
                                   for (int i = 0;
                                       i < myCubit.manualList.length;
                                       i++) {
-                                    if (myCubit
-                                        .manualList[i].controller.text.isEmpty) {
+                                    if (myCubit.manualList[i].controller.text
+                                        .isEmpty) {
                                       allFull = false;
                                     }
                                   }

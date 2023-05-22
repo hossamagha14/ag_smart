@@ -73,7 +73,7 @@ class ScarecrowCubit extends Cubit<ScarecrowStates> {
                 builder: (context) => ScarecrowScreen(),
               ));
         } else {
-          errorToast('You are not subscribed for this feature');
+          errorToast(text[chosenLanguage]!['You are not subscribed for this feature']!);
         }
         emit(ScarecrowGetSuccessState());
       }

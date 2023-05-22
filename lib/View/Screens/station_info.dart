@@ -158,7 +158,15 @@ class StationInfoScreen extends StatelessWidget {
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.center,
                                                   children: [
-                                                    Text('Line ${index + 1}'),
+                                                    Text(
+                                                      '${text[chosenLanguage]!['line']!} ${index + 1}',
+                                                      textDirection:
+                                                          chosenLanguage == 'ar'
+                                                              ? TextDirection
+                                                                  .rtl
+                                                              : TextDirection
+                                                                  .ltr,
+                                                    ),
                                                     const Spacer()
                                                   ],
                                                 ),

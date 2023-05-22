@@ -61,7 +61,8 @@ class BottomNavBarScreen extends StatelessWidget {
                 ),
                 ListTile(
                   title: Text(
-                    'Dashboard',
+                    text[chosenLanguage]![
+                                          'Dashboard']!,
                     textDirection: chosenLanguage == 'ar'
                         ? TextDirection.rtl
                         : TextDirection.ltr,

@@ -19,7 +19,9 @@ class BottomDashBarScreen extends StatelessWidget {
             BottomDashBarCubit myCubit = BottomDashBarCubit.get(context);
             return Scaffold(
               appBar: AppBar(
-                title: Text(myCubit.index == 0 ? 'Dashboard' : 'Report'),
+                title: Text(myCubit.index == 0
+                    ? text[chosenLanguage]!['Dashboard']!
+                    : text[chosenLanguage]!['Report']!),
               ),
               drawer: Drawer(
                 child: ListView(
@@ -72,8 +74,8 @@ class BottomDashBarScreen extends StatelessWidget {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) =>
-                                  const ChooseLanguageScreen(isEdit: true,chosenLanguageType: 1),
+                              builder: (context) => const ChooseLanguageScreen(
+                                  isEdit: true, chosenLanguageType: 1),
                             ));
                       },
                     ),
@@ -151,7 +153,7 @@ class BottomDashBarScreen extends StatelessWidget {
                   currentIndex: myCubit.index,
                   items: [
                     BottomNavigationBarItem(
-                        label: 'Dashboard',
+                        label: text[chosenLanguage]!['Dashboard']!,
                         icon: Text(
                           'a',
                           style: TextStyle(

@@ -111,7 +111,7 @@ class _DeviceSetupScreenState extends State<DeviceSetupScreen> {
                           icon1: 'm',
                         ),
                         buttonColor: greenButtonColor,
-                        buttonTitle: 'Next',
+                        buttonTitle: text[chosenLanguage]!['Next']!,
                       );
                     },
                   ),
