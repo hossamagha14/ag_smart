@@ -102,6 +102,7 @@ Map<String, Map<String, String>> text = {
     'Yearly': 'Yearly',
     'By Quarter': 'By Quarter',
     'Custom Range': 'Custom Range',
+    'Home': 'Home',
     'The cycle can\'t be more than 24 hours':
         'The cycle can\'t be more than 24 hours',
   },
@@ -197,5 +198,6 @@ Map<String, Map<String, String>> text = {
     'Custom Range': 'فترة مخصصة',
     'Download': ' تحميل',
     'Save screen': 'حفظ ',
+    'Home': 'Home',
   },
 };
