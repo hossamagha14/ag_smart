@@ -81,10 +81,12 @@ class PopUpScreen2 extends StatelessWidget {
                       ),
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.2,
-                        child: Text(
-                          text[chosenLanguage]!['Irrigation Settings']!,
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(fontSize: 12),
+                        child: FittedBox(
+                          child: Text(
+                            text[chosenLanguage]!['Irrigation Settings']!,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(fontSize: 12),
+                          ),
                         ),
                       )
                     ],
@@ -111,12 +113,14 @@ class PopUpScreen2 extends StatelessWidget {
                       ),
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.2,
-                        child: Text(
-                          text[chosenLanguage]!['Fertilization Settings']!,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontSize: 12,
-                              color: Colors.black.withOpacity(0.2)),
+                        child: FittedBox(
+                          child: Text(
+                            text[chosenLanguage]!['Fertilization Settings']!,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.black.withOpacity(0.2)),
+                          ),
                         ),
                       )
                     ],

@@ -263,8 +263,7 @@ class ReportScreen extends StatelessWidget {
                                                               ? const QuarterContainer()
                                                               : const EmptyContainer(),
                                   Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       InkWell(
                                         splashColor: Colors.white,
@@ -292,18 +291,33 @@ class ReportScreen extends StatelessWidget {
                                               0.4,
                                           child: Row(
                                             children: [
-                                              Text(
-                                                'F',
-                                                style: TextStyle(
-                                                    fontFamily: 'icons',
-                                                    fontSize: 30,
-                                                    color: iconColor),
+                                              SizedBox(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.1,
+                                                child: FittedBox(
+                                                  child: Text(
+                                                    'F',
+                                                    style: TextStyle(
+                                                        fontFamily: 'icons',
+                                                        color: iconColor),
+                                                  ),
+                                                ),
                                               ),
-                                              Text(
-                                                'Save Screen',
-                                                style: TextStyle(
-                                                    color: iconColor,
-                                                    fontSize: 20),
+                                              SizedBox(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.3,
+                                                child: FittedBox(
+                                                  child: Text(
+                                                    'Save Screen',
+                                                    style: TextStyle(
+                                                        color: iconColor,
+                                                        fontSize: 20),
+                                                  ),
+                                                ),
                                               )
                                             ],
                                           ),
@@ -335,18 +349,33 @@ class ReportScreen extends StatelessWidget {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.end,
                                             children: [
-                                              Text(
-                                                'Download',
-                                                style: TextStyle(
-                                                    color: iconColor,
-                                                    fontSize: 20),
+                                              SizedBox(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.25,
+                                                child: FittedBox(
+                                                  child: Text(
+                                                    'Download',
+                                                    style: TextStyle(
+                                                      color: iconColor,
+                                                    ),
+                                                  ),
+                                                ),
                                               ),
-                                              Text(
-                                                'E',
-                                                style: TextStyle(
-                                                    fontFamily: 'icons',
-                                                    fontSize: 30,
-                                                    color: iconColor),
+                                              SizedBox(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.1,
+                                                child: FittedBox(
+                                                  child: Text(
+                                                    'E',
+                                                    style: TextStyle(
+                                                        fontFamily: 'icons',
+                                                        color: iconColor),
+                                                  ),
+                                                ),
                                               ),
                                             ],
                                           ),
