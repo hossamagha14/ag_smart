@@ -158,17 +158,9 @@ class DurationSettingsScreen extends StatelessWidget {
                     ),
                     rowWidget: Row(
                       children: [
-                        BlocConsumer<IrrigationTypeCubit,
-                            IrrigationTypesStates>(
-                          listener: (context, state) {},
-                          builder: (context, state) {
-                            IrrigationTypeCubit irrigationCubit =
-                                IrrigationTypeCubit.get(context);
-                            return Text(
-                              irrigationCubit.isSeries == true ? 'r' : 't',
-                              style: mainIcon,
-                            );
-                          },
+                        Text(
+                          myCubit.irrigationType == 1 || stationIrrigationType==1 ? 'r' : 't',
+                          style: mainIcon,
                         ),
                         SizedBox(
                           width: MediaQuery.of(context).size.width * 0.02,
