@@ -45,13 +45,13 @@ class ReportCubit extends Cubit<ReportStates> {
   ReportStationModel reportStationModel = ReportStationModel();
   String? currentStationName;
   List<String> dropDownValues = [
-    'Last 7 days',
-    'Last 15 days',
-    'Last 30 days',
-    'Monthly',
-    'Yearly',
-    'By Quarter',
-    'Custom Range',
+    text[chosenLanguage]!['Last 7 days']!,
+    text[chosenLanguage]!['Last 15 days']!,
+    text[chosenLanguage]!['Last 30 days']!,
+    text[chosenLanguage]!['Monthly']!,
+    text[chosenLanguage]!['Yearly']!,
+    text[chosenLanguage]!['By Quarter']!,
+    text[chosenLanguage]!['Custom Range']!
   ];
 
   void showDownloadProgress(received, total) {
@@ -172,7 +172,7 @@ class ReportCubit extends Cubit<ReportStates> {
 
   chooseYear(DateTime value) {
     chosenYear = value;
-    pdfYear=DateFormat('y').format(value);
+    pdfYear = DateFormat('y').format(value);
     getYear();
     emit(ReportChooseYearState());
   }
