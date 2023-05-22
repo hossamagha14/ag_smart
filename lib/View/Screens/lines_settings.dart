@@ -38,6 +38,13 @@ class LinesSettingsScreen extends StatelessWidget {
                       ));
                 } else if (state is LinesActivationSendFailState) {
                   errorToast('An error has occurred');
+                } else if (state is LinesActivationNoPumpState) {
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            IrrigationTypeScreen(isEdit: isEdit),
+                      ));
                 }
               },
               builder: (context, state) {
