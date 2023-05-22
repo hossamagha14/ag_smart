@@ -13,3 +13,5 @@ class LinesActivationGetFailState extends LinesActivationStates {}
 class LinesActivationSendSuccessState extends LinesActivationStates {}
 
 class LinesActivationSendFailState extends LinesActivationStates {}
+
+class LinesActivationNoPumpState extends LinesActivationStates {}
