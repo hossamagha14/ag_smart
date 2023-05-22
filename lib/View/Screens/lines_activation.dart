@@ -22,8 +22,8 @@ class LinesActivationScreen extends StatelessWidget {
         title: Text(text[chosenLanguage]!['Device Setup']!),
       ),
       body: BlocProvider(
-        create: (context) =>
-            LinesActivationCubit()..getNumberOfValves(isEdit: isEdit),
+        create: (context) => LinesActivationCubit()
+          ..getNumberOfValves(isEdit: isEdit, isLineSettings: false),
         child: BlocConsumer<LinesActivationCubit, LinesActivationStates>(
           listener: (context, state) {
             if (state is LinesActivationSendSuccessState) {

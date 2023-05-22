@@ -25,8 +25,8 @@ class LinesSettingsScreen extends StatelessWidget {
         child: SizedBox(
           height: MediaQuery.of(context).size.height * 0.85,
           child: BlocProvider(
-            create: (context) =>
-                LinesActivationCubit()..getNumberOfValves(isEdit: isEdit),
+            create: (context) => LinesActivationCubit()
+              ..getNumberOfValves(isEdit: isEdit, isLineSettings: true),
             child: BlocConsumer<LinesActivationCubit, LinesActivationStates>(
               listener: (context, state) {
                 if (state is LinesActivationSendSuccessState) {

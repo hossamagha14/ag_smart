@@ -37,13 +37,14 @@ class LinesActivationCubit extends Cubit<LinesActivationStates> {
     CacheHelper.saveData(key: 'numOfActiveLines', value: numOfActiveLines);
   }
 
-  getNumberOfValves({required bool isEdit}) {
+  getNumberOfValves({required bool isEdit, required bool isLineSettings}) {
     emit(LinesActivationLoadingState());
     valves = [];
     dio.get('$base/$stationBySerial/$serialNumber').then((value) {
       if (value.statusCode == 200) {
         stationModel = StationModel.fromJson(value.data);
-        if (stationModel!.pumpModel![0].pumpEnable == 1) {
+        if (stationModel!.pumpModel![0].pumpEnable == 1 &&
+            isLineSettings == true) {
           emit(LinesActivationNoPumpState());
         }
         for (int i = 0; i < stationModel!.features![0].linesNumber!; i++) {
@@ -114,7 +115,7 @@ class LinesActivationCubit extends Cubit<LinesActivationStates> {
     }
     binaryValves = activeValves;
     CacheHelper.saveData(key: 'binaryValves', value: binaryValves);
-    binaryValves=CacheHelper.getData(key: 'binaryValves');
+    binaryValves = CacheHelper.getData(key: 'binaryValves');
   }
 
   List<Map<String, dynamic>> makeAList() {
