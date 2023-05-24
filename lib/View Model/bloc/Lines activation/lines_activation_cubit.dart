@@ -5,10 +5,8 @@ import 'package:ag_smart/View%20Model/bloc/Lines%20activation/lines_activation_s
 import 'package:ag_smart/View%20Model/database/cache_helpher.dart';
 import 'package:ag_smart/View%20Model/database/end_points.dart';
 import 'package:ag_smart/View/Reusable/text.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../Model/station_model.dart';
-import '../../../View/Screens/irrigation_type.dart';
 import '../../database/dio_helper.dart';
 
 class LinesActivationCubit extends Cubit<LinesActivationStates> {
@@ -45,10 +43,6 @@ class LinesActivationCubit extends Cubit<LinesActivationStates> {
     dio.get('$base/$stationBySerial/$serialNumber').then((value) {
       if (value.statusCode == 200) {
         stationModel = StationModel.fromJson(value.data);
-        // if (stationModel!.pumpModel![0].pumpEnable == 1 &&
-        //     isLineSettings == true) {
-        //   emit(LinesActivationNoPumpState());
-        // }
         for (int i = 0; i < stationModel!.features![0].linesNumber!; i++) {
           valves.add(ValveModel());
         }
@@ -90,68 +84,6 @@ class LinesActivationCubit extends Cubit<LinesActivationStates> {
         }
 
         emit(LinesActivationGetSuccessState());
-      }
-    }).catchError((onError) {
-      emit(LinesActivationGetFailState());
-    });
-  }
-
-  getNumberOfValvesSettings(context, {required bool isEdit}) {
-    emit(LinesActivationLoadingState());
-    valves = [];
-    dio.get('$base/$stationBySerial/$serialNumber').then((value) {
-      if (value.statusCode == 200) {
-        stationModel = StationModel.fromJson(value.data);
-        if (stationModel!.pumpModel![0].pumpEnable != 2) {
-          Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => IrrigationTypeScreen(isEdit: isEdit),
-              ));
-        } else {
-          for (int i = 0; i < stationModel!.features![0].linesNumber!; i++) {
-            valves.add(ValveModel());
-          }
-          if (stationModel!.irrigationSettings!.isNotEmpty) {
-            activeValves = [];
-            int numberOfOnValves = 0;
-            int decimalNumber =
-                stationModel!.irrigationSettings![0].activeValves!;
-            while (decimalNumber > 0) {
-              int n = (decimalNumber % 2);
-              activeValves.add(n);
-              double x = decimalNumber / 2;
-              decimalNumber = x.toInt();
-            }
-            while (
-                activeValves.length < stationModel!.features![0].linesNumber!) {
-              activeValves.add(0);
-            }
-            for (int i = 0; i < activeValves.length; i++) {
-              if (activeValves[i] == 1) {
-                numberOfOnValves++;
-              }
-            }
-            CacheHelper.saveData(
-                key: 'numOfActiveLines', value: numberOfOnValves);
-            numberOfOnValves=CacheHelper.getData(key: 'numOfActiveLines');
-          }
-          for (int i = 0; i < valves.length; i++) {
-            if (activeValves[i] == 1) {
-              valves[i].isActive = true;
-            }
-          }
-          if (isEdit == true) {
-            for (int i = 0; i < valves.length; i++) {
-              valves[i].diameterController.text =
-                  stationModel!.linesInfo![i].holeDiameter.toString();
-              valves[i].numberController.text =
-                  stationModel!.linesInfo![i].holeNumber.toString();
-            }
-          }
-
-          emit(LinesActivationGetSuccessState());
-        }
       }
     }).catchError((onError) {
       emit(LinesActivationGetFailState());
@@ -221,7 +153,6 @@ class LinesActivationCubit extends Cubit<LinesActivationStates> {
         emit(LinesActivationSendSuccessState());
       }
     }).catchError((onError) {
-      print(onError);
       emit(LinesActivationSendFailState());
     });
   }
