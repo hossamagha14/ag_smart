@@ -7,8 +7,11 @@ import 'package:ag_smart/View/Reusable/main_card.dart';
 import 'package:ag_smart/View/Reusable/main_icons_row_widget.dart';
 import 'package:ag_smart/View/Reusable/text.dart';
 import 'package:ag_smart/View/Reusable/text_style.dart';
+import 'package:ag_smart/View/Reusable/toasts.dart';
 import 'package:ag_smart/View/Screens/duration_settings.dart';
+import 'package:ag_smart/View/Screens/light.dart';
 import 'package:ag_smart/View/Screens/period_amount.dart';
+import 'package:ag_smart/View/Screens/scarecrow.dart';
 import 'package:ag_smart/View/Screens/time_amount.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -211,7 +214,12 @@ class StationInfoScreen extends StatelessWidget {
                                         FirtiliserSettingsCubit.get(context);
                                     return FirScarLightWidget(
                                       ferFunction: () {
-                                        if (myCubit
+                                        if (myCubit.stationModel!.features![0]
+                                                .fertilizer ==
+                                            1) {
+                                          errorToast(text[chosenLanguage]![
+                                              'You are not subscribed for this feature']!);
+                                        } else if (myCubit
                                             .stationModel!
                                             .fertilizationSettings![0]
                                             .fertilizerPeriods!
@@ -229,6 +237,36 @@ class StationInfoScreen extends StatelessWidget {
                                               MaterialPageRoute(
                                                 builder: (context) =>
                                                     const FirtiliserSettingsScreen(),
+                                              ));
+                                        }
+                                      },
+                                      lightFunction: () {
+                                        if (myCubit.stationModel!.features![0]
+                                                .light ==
+                                            1) {
+                                          errorToast(text[chosenLanguage]![
+                                              'You are not subscribed for this feature']!);
+                                        } else {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    LightScreen(),
+                                              ));
+                                        }
+                                      },
+                                      scarFunction: () {
+                                        if (myCubit.stationModel!.features![0]
+                                                .animal ==
+                                            1) {
+                                          errorToast(text[chosenLanguage]![
+                                              'You are not subscribed for this feature']!);
+                                        } else {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ScarecrowScreen(),
                                               ));
                                         }
                                       },

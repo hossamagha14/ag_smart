@@ -5,12 +5,15 @@ import 'package:ag_smart/View/Reusable/main_icons_row_widget.dart';
 import 'package:ag_smart/View/Reusable/pop_screen.dart';
 import 'package:ag_smart/View/Reusable/text.dart';
 import 'package:ag_smart/View/Reusable/text_style.dart';
+import 'package:ag_smart/View/Screens/scarecrow.dart';
 import 'package:ag_smart/View/Screens/sign_in.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../View Model/bloc/commom_states.dart';
 import '../Reusable/pop_screen2.dart';
 import '../Reusable/scare_light.dart';
+import '../Reusable/toasts.dart';
+import 'light.dart';
 
 class CustomStationInfoScreen extends StatelessWidget {
   const CustomStationInfoScreen({Key? key}) : super(key: key);
@@ -82,7 +85,8 @@ class CustomStationInfoScreen extends StatelessWidget {
                               physics: const BouncingScrollPhysics(),
                               itemBuilder: (context, lineIndex) {
                                 return Container(
-                                  width: MediaQuery.of(context).size.width * 0.8,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.8,
                                   height:
                                       MediaQuery.of(context).size.height * 0.05,
                                   decoration: BoxDecoration(
@@ -93,8 +97,9 @@ class CustomStationInfoScreen extends StatelessWidget {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       SizedBox(
-                                        width: MediaQuery.of(context).size.width *
-                                            0.02,
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.02,
                                       ),
                                       Text(
                                         '${text[chosenLanguage]!['line']!} ${myCubit.stationModel!.irrigationSettings![0].customValvesSettings![lineIndex].valveId.toString()}',
@@ -103,8 +108,9 @@ class CustomStationInfoScreen extends StatelessWidget {
                                             : TextDirection.ltr,
                                       ),
                                       SizedBox(
-                                        width: MediaQuery.of(context).size.width *
-                                            0.4,
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.4,
                                         child: ListView.separated(
                                             scrollDirection: Axis.horizontal,
                                             itemBuilder: (context, index) {
@@ -175,7 +181,8 @@ class CustomStationInfoScreen extends StatelessWidget {
                                           : Text(
                                               myCubit
                                                           .stationModel!
-                                                          .irrigationSettings![0]
+                                                          .irrigationSettings![
+                                                              0]
                                                           .customValvesSettings![
                                                               lineIndex]
                                                           .irrigationMethod1 ==
@@ -224,7 +231,8 @@ class CustomStationInfoScreen extends StatelessWidget {
                                                                 .customIrrigationModelList[
                                                                     lineIndex]
                                                                 .statusType,
-                                                            stationId: stationId,
+                                                            stationId:
+                                                                stationId,
                                                             irrigationMethod2: myCubit
                                                                 .stationModel!
                                                                 .irrigationSettings![
@@ -232,7 +240,8 @@ class CustomStationInfoScreen extends StatelessWidget {
                                                                 .customValvesSettings![
                                                                     lineIndex]
                                                                 .irrigationMethod2!,
-                                                            lineIndex: lineIndex,
+                                                            lineIndex:
+                                                                lineIndex,
                                                             valveId: myCubit
                                                                 .stationModel!
                                                                 .irrigationSettings![
@@ -266,7 +275,8 @@ class CustomStationInfoScreen extends StatelessWidget {
                                                                 .customIrrigationModelList[
                                                                     lineIndex]
                                                                 .statusType,
-                                                            stationId: stationId,
+                                                            stationId:
+                                                                stationId,
                                                             irrigationMethod2: myCubit
                                                                 .stationModel!
                                                                 .irrigationSettings![
@@ -274,7 +284,8 @@ class CustomStationInfoScreen extends StatelessWidget {
                                                                 .customValvesSettings![
                                                                     lineIndex]
                                                                 .irrigationMethod2!,
-                                                            lineIndex: lineIndex,
+                                                            lineIndex:
+                                                                lineIndex,
                                                             valveId: myCubit
                                                                 .stationModel!
                                                                 .irrigationSettings![
@@ -286,14 +297,17 @@ class CustomStationInfoScreen extends StatelessWidget {
                                                 );
                                         },
                                         child: Container(
-                                          height:
-                                              MediaQuery.of(context).size.height *
-                                                  0.05,
-                                          width:
-                                              MediaQuery.of(context).size.width *
-                                                  0.1,
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.05,
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.1,
                                           decoration: BoxDecoration(
-                                              color: Colors.blue.withOpacity(0.6),
+                                              color:
+                                                  Colors.blue.withOpacity(0.6),
                                               borderRadius:
                                                   const BorderRadius.only(
                                                       topRight:
@@ -326,16 +340,43 @@ class CustomStationInfoScreen extends StatelessWidget {
                         ),
                         const Spacer(),
                         ScarLightWidget(
+                          lightFunction: () {
+                            if (myCubit.stationModel!.features![0].light == 1) {
+                              errorToast(text[chosenLanguage]![
+                                  'You are not subscribed for this feature']!);
+                            } else {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => LightScreen(),
+                                  ));
+                            }
+                          },
+                          scarFunction: () {
+                            if (myCubit.stationModel!.features![0].animal ==
+                                1) {
+                              errorToast(text[chosenLanguage]![
+                                  'You are not subscribed for this feature']!);
+                            } else {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ScarecrowScreen(),
+                                  ));
+                            }
+                          },
                           scarColor:
                               myCubit.stationModel!.features![0].animal == 2
                                   ? lightSelectedColor
                                   : Colors.white,
-                          scaricon: myCubit.stationModel!.features![0].animal == 2
-                              ? smallIconOn
-                              : smallIconOff,
-                          ligColor: myCubit.stationModel!.features![0].light == 2
-                              ? lightSelectedColor
-                              : Colors.white,
+                          scaricon:
+                              myCubit.stationModel!.features![0].animal == 2
+                                  ? smallIconOn
+                                  : smallIconOff,
+                          ligColor:
+                              myCubit.stationModel!.features![0].light == 2
+                                  ? lightSelectedColor
+                                  : Colors.white,
                           ligicon: myCubit.stationModel!.features![0].light == 2
                               ? smallIconOn
                               : smallIconOff,

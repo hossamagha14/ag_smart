@@ -17,3 +17,5 @@ class LightPutFailState extends LightStates {}
 class LightGetSuccessState extends LightStates {}
 
 class LightGetFailState extends LightStates {}
+
+class LightLoadingState extends LightStates {}

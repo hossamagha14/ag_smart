@@ -1,10 +1,5 @@
-import 'package:ag_smart/View%20Model/bloc/Scarcrow/Scarcrow_cubit.dart';
-import 'package:ag_smart/View%20Model/bloc/Scarcrow/scarcrow_states.dart';
-import 'package:ag_smart/View%20Model/bloc/light/light_cubit.dart';
-import 'package:ag_smart/View%20Model/bloc/light/light_states.dart';
 import 'package:ag_smart/View/Reusable/text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class FirScarLightWidget extends StatelessWidget {
   final Color ferColor;
@@ -14,6 +9,8 @@ class FirScarLightWidget extends StatelessWidget {
   final Color ligColor;
   final TextStyle ligicon;
   final ferFunction;
+  final scarFunction;
+  final lightFunction;
   const FirScarLightWidget(
       {Key? key,
       required this.ferColor,
@@ -21,6 +18,8 @@ class FirScarLightWidget extends StatelessWidget {
       required this.scarColor,
       required this.scaricon,
       required this.ferFunction,
+      required this.scarFunction,
+      required this.lightFunction,
       required this.ligColor,
       required this.ligicon})
       : super(key: key);
@@ -55,67 +54,51 @@ class FirScarLightWidget extends StatelessWidget {
               ),
             ),
           ),
-          BlocConsumer<ScarecrowCubit, ScarecrowStates>(
-            listener: (context, state) {},
-            builder: (context, state) {
-              ScarecrowCubit myCubit = ScarecrowCubit.get(context);
-              return Expanded(
-                child: InkWell(
-                  onTap: () {
-                    myCubit.getFeatures(context);
-                  },
-                  child: Container(
-                    height: MediaQuery.of(context).size.height * 0.05,
-                    decoration: BoxDecoration(
-                      color: scarColor,
-                      border: Border.all(color: Colors.blue, width: 1),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Text(text[chosenLanguage]!['Scarecrow']!),
-                        Text(
-                          'z',
-                          style: scaricon,
-                        )
-                      ],
-                    ),
-                  ),
+          Expanded(
+            child: InkWell(
+              onTap: scarFunction,
+              child: Container(
+                height: MediaQuery.of(context).size.height * 0.05,
+                decoration: BoxDecoration(
+                  color: scarColor,
+                  border: Border.all(color: Colors.blue, width: 1),
                 ),
-              );
-            },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Text(text[chosenLanguage]!['Scarecrow']!),
+                    Text(
+                      'z',
+                      style: scaricon,
+                    )
+                  ],
+                ),
+              ),
+            ),
           ),
-          BlocConsumer<LightCubit, LightStates>(
-            listener: (context, state) {},
-            builder: (context, state) {
-              LightCubit myCubit = LightCubit.get(context);
-              return Expanded(
-                child: InkWell(
-                  onTap: () {
-                    myCubit.getFeatures(context);
-                  },
-                  child: Container(
-                    height: MediaQuery.of(context).size.height * 0.05,
-                    decoration: BoxDecoration(
-                        color: ligColor,
-                        border: Border.all(color: Colors.blue, width: 1),
-                        borderRadius: const BorderRadius.only(
-                            topRight: Radius.circular(10),
-                            bottomRight: Radius.circular(10))),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Text(text[chosenLanguage]!['Light']!),
-                        Text(
-                          'k',
-                          style: ligicon,
-                        )
-                      ],
-                    ),
-                  ),
+          Expanded(
+            child: InkWell(
+              onTap: lightFunction,
+              child: Container(
+                height: MediaQuery.of(context).size.height * 0.05,
+                decoration: BoxDecoration(
+                    color: ligColor,
+                    border: Border.all(color: Colors.blue, width: 1),
+                    borderRadius: const BorderRadius.only(
+                        topRight: Radius.circular(10),
+                        bottomRight: Radius.circular(10))),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Text(text[chosenLanguage]!['Light']!),
+                    Text(
+                      'k',
+                      style: ligicon,
+                    )
+                  ],
                 ),
-              );
-            },
+              ),
+            ),
           ),
         ],
       ),

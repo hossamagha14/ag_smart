@@ -13,3 +13,5 @@ class ScarecrowPostFailState extends ScarecrowStates {}
 class ScarecrowGetSuccessState extends ScarecrowStates {}
 
 class ScarecrowGetFailState extends ScarecrowStates {}
+
+class ScarecrowLoadingState extends ScarecrowStates {}

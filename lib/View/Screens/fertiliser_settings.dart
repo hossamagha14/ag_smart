@@ -193,7 +193,7 @@ class FirtiliserSettingsScreen extends StatelessWidget {
                                                                     .length -
                                                                 1 <
                                                             index
-                                                        ? 'Date'
+                                                        ? text[chosenLanguage]!['Date']!
                                                         : myCubit
                                                             .firtiliserModel
                                                             .dateList[index]

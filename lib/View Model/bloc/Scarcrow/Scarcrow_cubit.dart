@@ -2,14 +2,12 @@
 
 import 'package:ag_smart/View%20Model/bloc/Scarcrow/scarcrow_states.dart';
 import 'package:ag_smart/View%20Model/database/end_points.dart';
-import 'package:ag_smart/View/Reusable/toasts.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../Model/features_model.dart';
+import '../../../Model/station_model.dart';
 import '../../../View/Reusable/text.dart';
-import '../../../View/Screens/scarecrow.dart';
 import '../../database/dio_helper.dart';
 
 class ScarecrowCubit extends Cubit<ScarecrowStates> {
@@ -18,6 +16,7 @@ class ScarecrowCubit extends Cubit<ScarecrowStates> {
   static ScarecrowCubit get(context) => BlocProvider.of(context);
   DioHelper dio = DioHelper();
   FeaturesModel? featuresModel;
+  StationModel? stationModel;
   TimeOfDay time1 = TimeOfDay.now();
   TimeOfDay time2 = TimeOfDay.now();
   bool done = false;
@@ -32,11 +31,6 @@ class ScarecrowCubit extends Cubit<ScarecrowStates> {
     emit(ScarecrowChooseTtimeState());
   }
 
-  issDone() {
-    done = true;
-    emit(ScarecrowIsDoneState());
-  }
-
   put({
     required TimeOfDay startingTime,
     required TimeOfDay finishTime,
@@ -45,9 +39,9 @@ class ScarecrowCubit extends Cubit<ScarecrowStates> {
   }) async {
     int firstTime = startingTime.hour * 60 + startingTime.minute;
     int secondTime = finishTime.hour * 60 + finishTime.minute;
-    await dio.put('$base/$animalRepellent/1', data: {
-      "station_id": 1,
-      "starting_time": firstTime,
+    await dio.put('$base/$animalRepellent/$stationId', data: {
+      "station_id": stationId,
+      "start_time": firstTime,
       "finish_time": secondTime,
       "on_time": onTime,
       "off_time": offTime
@@ -60,28 +54,6 @@ class ScarecrowCubit extends Cubit<ScarecrowStates> {
     });
   }
 
-  getFeatures(context) async {
-    try {
-      Response<dynamic> response =
-          await dio.get('$base/$features/$serialNumber');
-      if (response.statusCode == 200) {
-        featuresModel = FeaturesModel.fromJson(response.data);
-        if (featuresModel!.animal == 2) {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ScarecrowScreen(),
-              ));
-        } else {
-          errorToast(text[chosenLanguage]!['You are not subscribed for this feature']!);
-        }
-        emit(ScarecrowGetSuccessState());
-      }
-    } catch (e) {
-      emit(ScarecrowGetFailState());
-    }
-  }
-
   int checkTime() {
     int startTime = time1.hour * 60 + time1.minute;
     int endTime = time2.hour * 60 + time2.minute;
@@ -89,5 +61,36 @@ class ScarecrowCubit extends Cubit<ScarecrowStates> {
       endTime = endTime + 1440;
     }
     return endTime - startTime;
+  }
+
+  getData(
+      {required TextEditingController onTime,
+      required TextEditingController offTime}) {
+    emit(ScarecrowLoadingState());
+    double startingHour = 0;
+    double startingMinute = 0;
+    double endingHour = 0;
+    double endingMinute = 0;
+    dio.get('$base/$stationBySerial/$serialNumber').then((value) {
+      stationModel = StationModel.fromJson(value.data);
+      if (stationModel!.animalRepellent!.isNotEmpty) {
+        startingHour = stationModel!.animalRepellent![0].startTime! / 60;
+        startingMinute = stationModel!.animalRepellent![0].startTime! -
+            startingHour.toInt() * 60;
+        endingHour = stationModel!.animalRepellent![0].finishTime! / 60;
+        endingMinute = stationModel!.animalRepellent![0].finishTime! -
+            endingHour.toInt() * 60;
+
+        time1 = TimeOfDay(
+            hour: startingHour.toInt(), minute: startingMinute.toInt());
+        time2 = TimeOfDay(
+            hour: endingHour.toInt(), minute: endingMinute.toInt());
+        onTime.text = stationModel!.animalRepellent![0].onTime.toString();
+        offTime.text = stationModel!.animalRepellent![0].offTime.toString();
+      }
+      emit(ScarecrowGetSuccessState());
+    }).catchError((onError) {
+      emit(ScarecrowGetFailState());
+    });
   }
 }
