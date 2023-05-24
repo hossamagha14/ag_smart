@@ -27,3 +27,5 @@ class ReportChooseStationState extends ReportStates {}
 class ReportPDFSuccessState extends ReportStates {}
 
 class ReportPDFFailState extends ReportStates {}
+
+class ReportEmptyState extends ReportStates {}

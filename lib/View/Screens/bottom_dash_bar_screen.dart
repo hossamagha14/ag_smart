@@ -42,13 +42,7 @@ class BottomDashBarScreen extends StatelessWidget {
                         decoration: BoxDecoration(
                           color: settingsColor,
                         ),
-                        child: Text(
-                          stationName,
-                          style: const TextStyle(
-                              fontSize: 21,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w500),
-                        ),
+                        child:const SizedBox(),
                       ),
                       ListTile(
                         title: Text(text[chosenLanguage]!['Contact us']!,
@@ -173,13 +167,7 @@ class BottomDashBarScreen extends StatelessWidget {
                         decoration: BoxDecoration(
                           color: settingsColor,
                         ),
-                        child: Text(
-                          stationName,
-                          style: const TextStyle(
-                              fontSize: 21,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w500),
-                        ),
+                        child:const SizedBox(),
                       ),
                       ListTile(
                         title: Text(text[chosenLanguage]!['Contact us']!,
