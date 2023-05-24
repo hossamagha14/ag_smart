@@ -168,6 +168,8 @@ class CustomFirtiliserSettingsScreen extends StatelessWidget {
                                                 chosenLanguage]!['Set day']!,
                                             firstRowWidget: InkWell(
                                               onTap: () {
+                                                FocusScope.of(context)
+                                                    .unfocus();
                                                 showDialog(
                                                   context: context,
                                                   builder: (context) => BlocBuilder<

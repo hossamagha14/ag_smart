@@ -104,7 +104,7 @@ class DeviceFeatureCubit extends Cubit<DeviceFeaturesStates> {
 
   getInfo(int index) {
     if (featureList[index].isPressed == false) {
-      featureList[index].height = 0.18;
+      featureList[index].height = 0.22;
       featureList[index].fontSize = 15;
       featureList[index].isPressed = true;
     } else {
@@ -123,7 +123,6 @@ class DeviceFeatureCubit extends Cubit<DeviceFeaturesStates> {
       stationModel = StationModel.fromJson(value.data);
       map = stationModel!.features![0].toJson();
       featuresIntList = map.values.toList();
-      print(featuresIntList);
       emit(DeviceFeatureGetSuccessStateState());
     }).catchError((onError) {
       emit(DeviceFeatureGetFailStateState());
