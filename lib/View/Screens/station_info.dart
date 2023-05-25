@@ -221,9 +221,7 @@ class StationInfoScreen extends StatelessWidget {
                                               'You are not subscribed for this feature']!);
                                         } else if (myCubit
                                             .stationModel!
-                                            .fertilizationSettings![0]
-                                            .fertilizerPeriods!
-                                            .isEmpty) {
+                                            .fertilizationSettings!.isEmpty) {
                                           Navigator.push(
                                               context,
                                               MaterialPageRoute(

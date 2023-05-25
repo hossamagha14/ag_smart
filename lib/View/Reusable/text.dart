@@ -119,20 +119,22 @@ Map<String, Map<String, String>> text = {
     'tds': 'tds',
     'temp': 'temp',
     'humidity': 'humidity',
-    'dinternet': 'internet',
-    'dlinesNumber': 'linesNumber',
-    'dfertilizer': 'fertilizer',
-    'dlight': 'light',
-    'danimal': 'animal',
-    'dpressure': 'pressure',
+    'dinternet':
+        'Settings and irrigation control are adjusted manually via the Internet',
+    'dlinesNumber':
+        'The system has $numOfActiveLines outlets for irrigation and an outlet for the pump. Irrigation line settings are set in sequence, parallel, or each line is separated from the other by duration or quantity',
+    'dfertilizer':
+        'The system has an outlet for fertilization. Fertilization settings are set sequentially, parallel, or each line is separated from the other by duration or quantity',
+    'dlight':
+        'The device contains an outlet for controlling lighting according to the duration',
+    'danimal':
+        'The device contains an outlet to control an animal repellent device that helps protect crops from animal trespassing',
+    'dpressure':
+        'The device contains a system for measuring water pressure, which determines the appropriate water pressure level for irrigation and helps adjust the type of irrigator according to the change in water pressure in case of choosing parallel irrigation',
     'dlevel': 'level',
     'dauto': 'auto',
-    'dflow': 'flow',
-    'dleak': 'leak',
-    'dph': 'ph',
-    'dtds': 'tds',
-    'dtemp': 'temp',
-    'dhumidity': 'humidity'
+    'dflow':
+        'The device contains a system for measuring water consumption, through which reports are created',
   },
   'ar': {
     'sign in name': 'اسم المستخدم',
@@ -242,7 +244,7 @@ Map<String, Map<String, String>> text = {
     'temp': 'قياس الحرارة',
     'humidity': 'قياس الرطوبة',
     'dinternet': 'يتم ضبط الاعدادات و التحكم بالري يدوياً عبر الإنترنت',
-    'dlinesNumber': 'يحتوي النظام على  مخارج للري و مخرج للمضخة.'
+    'dlinesNumber': 'يحتوي النظام على $numOfActiveLines مخارج للري و مخرج للمضخة.'
         ' يتم ضبط إعدادات خطوط الري متتالية, متوازية او كل خط منفصل عن الآخر حسب المدة او الكمية',
     'dfertilizer': 'يحتوي النظام على مخرج للتسميد.'
         'يتم ضبط إعدادات التسميد متتالية, متوازية او كل خط منفصل عن الآخر حسب المدة او الكمية',

@@ -49,6 +49,7 @@ class StationsCubit extends Cubit<StationsStates> {
       }
       emit(StationsGetSuccessState());
     }).catchError((onError) {
+      print(onError);
       emit(StationsGetFailState());
     });
   }
@@ -95,7 +96,7 @@ class StationsCubit extends Cubit<StationsStates> {
   postStation(context, {required String stationName}) async {
     try {
       Response<dynamic> response = await dio.post('$base/$stationInfo', data: {
-        "serial_number": barCode,
+        "serial_number": serialNumber,
         "user_id": userId,
         'station_name': stationName
       });

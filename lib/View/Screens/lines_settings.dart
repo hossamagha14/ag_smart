@@ -49,6 +49,7 @@ class LinesSettingsScreen extends StatelessWidget {
                         children: [
                           MainCard2(
                               function: () {
+                                FocusScope.of(context).unfocus();
                                 for (int i = 0;
                                     i < myCubit.valves.length;
                                     i++) {

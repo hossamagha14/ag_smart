@@ -138,6 +138,8 @@ class DeviceFeaturesScreen extends StatelessWidget {
                                                         myCubit
                                                             .featureList[index]
                                                             .description!,
+                                                            textDirection: chosenLanguage=='ar'?TextDirection.rtl:TextDirection.ltr,
+                                                            textAlign: TextAlign.start,
                                                       ),
                                                     ),
                                                   )
