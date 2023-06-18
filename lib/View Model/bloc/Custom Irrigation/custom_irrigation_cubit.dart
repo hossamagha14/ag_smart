@@ -300,13 +300,13 @@ class CustomIrrigationCubit extends Cubit<CustomIrrigationStates> {
                     .customValvesSettings![lineIndex].irrigationCycles!.isEmpty
                 ? ''
                 : irrigationSettingsModel!.customValvesSettings![lineIndex]
-                            .irrigationCycles![0].interval ==
+                            .irrigationCycles![0].duration ==
                         0
                     ? irrigationSettingsModel!.customValvesSettings![lineIndex]
                         .irrigationCycles![0].quantity
                         .toString()
                     : irrigationSettingsModel!.customValvesSettings![lineIndex]
-                        .irrigationCycles![0].interval
+                        .irrigationCycles![0].duration
                         .toString();
           }
         }
