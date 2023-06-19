@@ -7,7 +7,6 @@ class DioHelper {
   final Dio dio = Dio();
   final Dio refreshDio = Dio();
   int errorStatusCode = 0;
-  String? accessToken;
 
   DioHelper() {
     dio.interceptors.add(InterceptorsWrapper(
@@ -20,8 +19,8 @@ class DioHelper {
         if (error.response?.statusCode == 401) {
           await refreshAccessToken();
           return handler.resolve(await _retry(error.requestOptions));
-        }else if(error.response?.statusCode == null){
-          errorStatusCode=-1;
+        } else if (error.response?.statusCode == null) {
+          errorStatusCode = -1;
         }
         return handler.next(error);
       },
@@ -61,8 +60,9 @@ class DioHelper {
       Response response = await refreshDio.post('$base/$refresh',
           options: Options(headers: {'Authorization': 'Bearer $refreshToken'}));
       if (response.statusCode == 200) {
-        token = response.data['access_token'];
-        CacheHelper.saveData(key: 'token', value: accessToken);
+        CacheHelper.saveData(
+            key: 'token', value: response.data['access_token']);
+        token = CacheHelper.getData(key: 'token');
       }
     } catch (e) {
       if (e is DioError) {
@@ -74,8 +74,8 @@ class DioHelper {
         } else if (e.response!.statusCode == 401 &&
             e.response!.data['error'] == 'token_revoked') {
           errorStatusCode = 402;
-        }else{
-          errorStatusCode=400;
+        } else {
+          errorStatusCode = 400;
         }
       }
     }
