@@ -4,12 +4,14 @@ import 'package:ag_smart/View%20Model/bloc/commom_states.dart';
 import 'package:ag_smart/View/Reusable/colors.dart';
 import 'package:ag_smart/View/Reusable/text.dart';
 import 'package:ag_smart/View/Reusable/text_style.dart';
+import 'package:ag_smart/View/Screens/sign_in.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../View Model/Repo/auth_bloc.dart';
 import '../Reusable/main_card02.dart';
+import '../Reusable/toasts.dart';
 import 'lines_settings.dart';
 
 class LinesActivationScreen extends StatefulWidget {
@@ -37,8 +39,8 @@ class _LinesActivationScreenState extends State<LinesActivationScreen> {
         title: Text(text[chosenLanguage]!['Device Setup']!),
       ),
       body: BlocProvider(
-        create: (context) =>
-            LinesActivationCubit(authBloc)..getNumberOfValves(isEdit: widget.isEdit),
+        create: (context) => LinesActivationCubit(authBloc)
+          ..getNumberOfValves(isEdit: widget.isEdit),
         child: BlocConsumer<LinesActivationCubit, CommonStates>(
           listener: (context, state) {
             if (state is LinesActivationSendSuccessState) {
@@ -54,71 +56,94 @@ class _LinesActivationScreenState extends State<LinesActivationScreen> {
             LinesActivationCubit myCubit = LinesActivationCubit.get(context);
             return state is LinesActivationLoadingState
                 ? const Center(child: CircularProgressIndicator())
-                : Column(
-                    children: [
-                      MainCard2(
-                          function: () {
-                            myCubit.toBinary(myCubit.valves.length);
-                            myCubit.numberOfActivelines();
-                            myCubit.putIrrigationType(
-                                activeValves: binaryValves);
-                          },
-                          buttonColor: greenButtonColor,
-                          mainWidget: SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.8,
-                              height: MediaQuery.of(context).size.height * 0.48,
-                              child: ListView.separated(
-                                  physics: const BouncingScrollPhysics(),
-                                  itemBuilder: (context, index) {
-                                    return Container(
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              0.06,
-                                      decoration: BoxDecoration(
-                                          color: backgroundColor,
-                                          borderRadius:
-                                              BorderRadius.circular(10)),
-                                      child: Row(
-                                        children: [
-                                          Transform.scale(
-                                            scale: 0.8,
-                                            child: CupertinoSwitch(
-                                              value: myCubit
-                                                  .valves[index].isActive,
-                                              onChanged: (value) {
-                                                myCubit.activateLine(index);
-                                              },
+                : BlocListener<AuthBloc, CommonStates>(
+                    listener: (context, state) {
+                      if (state is ExpiredTokenState) {
+                        Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SignInScreen(),
+                            ),
+                            (route) => false);
+                        expiredTokenToast();
+                      }
+                      if (state is ServerDownState) {
+                        Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SignInScreen(),
+                            ),
+                            (route) => false);
+                        serverDownToast();
+                      }
+                    },
+                    child: Column(
+                      children: [
+                        MainCard2(
+                            function: () {
+                              myCubit.toBinary(myCubit.valves.length);
+                              myCubit.numberOfActivelines();
+                              myCubit.putIrrigationType(
+                                  activeValves: binaryValves);
+                            },
+                            buttonColor: greenButtonColor,
+                            mainWidget: SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.8,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.48,
+                                child: ListView.separated(
+                                    physics: const BouncingScrollPhysics(),
+                                    itemBuilder: (context, index) {
+                                      return Container(
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.06,
+                                        decoration: BoxDecoration(
+                                            color: backgroundColor,
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
+                                        child: Row(
+                                          children: [
+                                            Transform.scale(
+                                              scale: 0.8,
+                                              child: CupertinoSwitch(
+                                                value: myCubit
+                                                    .valves[index].isActive,
+                                                onChanged: (value) {
+                                                  myCubit.activateLine(index);
+                                                },
+                                              ),
                                             ),
-                                          ),
-                                          const SizedBox(
-                                            width: 15,
-                                          ),
-                                          Text(
-                                            '${text[chosenLanguage]!['line']!} ${index + 1}',
-                                            textDirection:
-                                                chosenLanguage == 'ar'
-                                                    ? TextDirection.rtl
-                                                    : TextDirection.ltr,
-                                          )
-                                        ],
-                                      ),
-                                    );
-                                  },
-                                  separatorBuilder: (context, index) {
-                                    return SizedBox(
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              0.01,
-                                    );
-                                  },
-                                  itemCount: myCubit.valves.length)),
-                          rowWidget: Text(
-                            'm',
-                            style: mainIcon,
-                          ),
-                          cardtitle:
-                              text[chosenLanguage]!['Lines Activation']!),
-                    ],
+                                            const SizedBox(
+                                              width: 15,
+                                            ),
+                                            Text(
+                                              '${text[chosenLanguage]!['line']!} ${index + 1}',
+                                              textDirection:
+                                                  chosenLanguage == 'ar'
+                                                      ? TextDirection.rtl
+                                                      : TextDirection.ltr,
+                                            )
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                    separatorBuilder: (context, index) {
+                                      return SizedBox(
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.01,
+                                      );
+                                    },
+                                    itemCount: myCubit.valves.length)),
+                            rowWidget: Text(
+                              'm',
+                              style: mainIcon,
+                            ),
+                            cardtitle:
+                                text[chosenLanguage]!['Lines Activation']!),
+                      ],
+                    ),
                   );
           },
         ),

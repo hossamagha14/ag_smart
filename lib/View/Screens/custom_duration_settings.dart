@@ -7,6 +7,7 @@ import 'package:ag_smart/View/Reusable/main_card02.dart';
 import 'package:ag_smart/View/Reusable/text.dart';
 import 'package:ag_smart/View/Reusable/text_style.dart';
 import 'package:ag_smart/View/Screens/custom_duration_settings_period.dart';
+import 'package:ag_smart/View/Screens/sign_in.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../View Model/Repo/auth_bloc.dart';
@@ -85,116 +86,138 @@ class _CustomDurationSettingsScreenState
           CustomIrrigationCubit myCubit = CustomIrrigationCubit.get(context);
           return myCubit.featuresModel == null
               ? const Center(child: CircularProgressIndicator())
-              : Column(
-                  children: [
-                    MainCard2(
-                        function: () {
-                          if (myCubit
-                                      .customIrrigationModelList[
-                                          widget.lineIndex]
-                                      .accordingToHour ==
-                                  null ||
-                              myCubit
-                                      .customIrrigationModelList[
-                                          widget.lineIndex]
-                                      .accordingToQuantity ==
-                                  null) {
-                            errorToast('Please select both categories');
-                          } else {
-                            myCubit.putIrrigationSettings(
-                                irrigationMethod1: myCubit.irrigationMethod1!,
-                                irrigationMethod2: myCubit.irrigationMethod2!,
-                                valveId: widget.valveId,
-                                lineIndex: widget.lineIndex,
-                                stationId: widget.stationId);
-                          }
-                        },
-                        buttonColor: greenButtonColor,
-                        mainWidget: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            DurationSettingsRow(
-                                firstButtonTitle:
-                                    text[chosenLanguage]!['According to time']!,
-                                secondButtonTitle: text[chosenLanguage]![
-                                    'According to cycle']!,
-                                firstButtonIcon: Center(
-                                    child: Text(
-                                  'u',
-                                  style: mainIcon,
-                                )),
-                                secondButtonIcon: Center(
-                                    child: Text(
-                                  'w',
-                                  style: mainIcon,
-                                )),
-                                firstButtonFunction: () {
-                                  myCubit
-                                      .chooseAccordingToHour(widget.lineIndex);
-                                },
-                                secondButtonFunction: () {
-                                  myCubit.chooseAccordingToPeriod(
-                                      widget.lineIndex);
-                                },
-                                firstButtonColor: myCubit
-                                            .customIrrigationModelList[
-                                                widget.lineIndex]
-                                            .accordingToHour ==
-                                        true
-                                    ? selectedColor
-                                    : Colors.white,
-                                secondButtonColor: myCubit
-                                            .customIrrigationModelList[
-                                                widget.lineIndex]
-                                            .accordingToHour ==
-                                        false
-                                    ? selectedColor
-                                    : Colors.white),
-                            DurationSettingsRow(
-                                firstButtonTitle:
-                                    text[chosenLanguage]!['Watering duration']!,
-                                secondButtonTitle: text[chosenLanguage]![
-                                    'According to quantity']!,
-                                firstButtonIcon: Center(
-                                    child: Text(
-                                  'v',
-                                  style: mainIcon,
-                                )),
-                                secondButtonIcon: Center(
-                                    child: Text(
-                                  'c',
-                                  style: mainIcon,
-                                )),
-                                firstButtonFunction: () {
-                                  myCubit
-                                      .chooseAccordingToTime(widget.lineIndex);
-                                },
-                                secondButtonFunction: () {
-                                  myCubit.chooseAccordingToQuantity(
-                                      widget.lineIndex);
-                                },
-                                firstButtonColor: myCubit
-                                            .customIrrigationModelList[
-                                                widget.lineIndex]
-                                            .accordingToQuantity ==
-                                        false
-                                    ? selectedColor
-                                    : Colors.white,
-                                secondButtonColor: myCubit
-                                            .customIrrigationModelList[
-                                                widget.lineIndex]
-                                            .accordingToQuantity ==
-                                        true
-                                    ? selectedColor
-                                    : Colors.white),
-                          ],
-                        ),
-                        rowWidget: const MainIconsRowWidget(
-                          icon1: 'm',
-                          icon2: 'f',
-                        ),
-                        cardtitle: 'Line ${widget.valveId}'),
-                  ],
+              : BlocListener<AuthBloc, CommonStates>(
+                  listener: (context, state) {
+                    if (state is ExpiredTokenState) {
+                      Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SignInScreen(),
+                          ),
+                          (route) => false);
+                      expiredTokenToast();
+                    }
+                    if (state is ServerDownState) {
+                      Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SignInScreen(),
+                          ),
+                          (route) => false);
+                      serverDownToast();
+                    }
+                  },
+                  child: Column(
+                    children: [
+                      MainCard2(
+                          function: () {
+                            if (myCubit
+                                        .customIrrigationModelList[
+                                            widget.lineIndex]
+                                        .accordingToHour ==
+                                    null ||
+                                myCubit
+                                        .customIrrigationModelList[
+                                            widget.lineIndex]
+                                        .accordingToQuantity ==
+                                    null) {
+                              errorToast('Please select both categories');
+                            } else {
+                              myCubit.putIrrigationSettings(
+                                  irrigationMethod1: myCubit.irrigationMethod1!,
+                                  irrigationMethod2: myCubit.irrigationMethod2!,
+                                  valveId: widget.valveId,
+                                  lineIndex: widget.lineIndex,
+                                  stationId: widget.stationId);
+                            }
+                          },
+                          buttonColor: greenButtonColor,
+                          mainWidget: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              DurationSettingsRow(
+                                  firstButtonTitle: text[chosenLanguage]![
+                                      'According to time']!,
+                                  secondButtonTitle: text[chosenLanguage]![
+                                      'According to cycle']!,
+                                  firstButtonIcon: Center(
+                                      child: Text(
+                                    'u',
+                                    style: mainIcon,
+                                  )),
+                                  secondButtonIcon: Center(
+                                      child: Text(
+                                    'w',
+                                    style: mainIcon,
+                                  )),
+                                  firstButtonFunction: () {
+                                    myCubit.chooseAccordingToHour(
+                                        widget.lineIndex);
+                                  },
+                                  secondButtonFunction: () {
+                                    myCubit.chooseAccordingToPeriod(
+                                        widget.lineIndex);
+                                  },
+                                  firstButtonColor: myCubit
+                                              .customIrrigationModelList[
+                                                  widget.lineIndex]
+                                              .accordingToHour ==
+                                          true
+                                      ? selectedColor
+                                      : Colors.white,
+                                  secondButtonColor: myCubit
+                                              .customIrrigationModelList[
+                                                  widget.lineIndex]
+                                              .accordingToHour ==
+                                          false
+                                      ? selectedColor
+                                      : Colors.white),
+                              DurationSettingsRow(
+                                  firstButtonTitle: text[chosenLanguage]![
+                                      'Watering duration']!,
+                                  secondButtonTitle: text[chosenLanguage]![
+                                      'According to quantity']!,
+                                  firstButtonIcon: Center(
+                                      child: Text(
+                                    'v',
+                                    style: mainIcon,
+                                  )),
+                                  secondButtonIcon: Center(
+                                      child: Text(
+                                    'c',
+                                    style: mainIcon,
+                                  )),
+                                  firstButtonFunction: () {
+                                    myCubit.chooseAccordingToTime(
+                                        widget.lineIndex);
+                                  },
+                                  secondButtonFunction: () {
+                                    myCubit.chooseAccordingToQuantity(
+                                        widget.lineIndex);
+                                  },
+                                  firstButtonColor: myCubit
+                                              .customIrrigationModelList[
+                                                  widget.lineIndex]
+                                              .accordingToQuantity ==
+                                          false
+                                      ? selectedColor
+                                      : Colors.white,
+                                  secondButtonColor: myCubit
+                                              .customIrrigationModelList[
+                                                  widget.lineIndex]
+                                              .accordingToQuantity ==
+                                          true
+                                      ? selectedColor
+                                      : Colors.white),
+                            ],
+                          ),
+                          rowWidget: const MainIconsRowWidget(
+                            icon1: 'm',
+                            icon2: 'f',
+                          ),
+                          cardtitle: 'Line ${widget.valveId}'),
+                    ],
+                  ),
                 );
         },
       ),

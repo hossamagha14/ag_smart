@@ -17,12 +17,15 @@ class DioHelper {
       options.headers['Authorization'] = 'Bearer $token';
       handler.next(options);
     }, onError: (error, handler) async {
-      // If the response status code is 401, refresh the access token and retry the request
+      print(error);
       if (isRefreshed == false) {
         if (error.response?.statusCode == 401) {
           await refreshAccessToken();
           return handler.resolve(await _retry(error.requestOptions));
-        } else if (error.response?.statusCode == null) {
+        } else if (error.response?.statusCode == null ||
+            error.response?.statusCode == 503) {
+          authBloc.add(ServerDownEvent());
+        } else {
           authBloc.add(ServerDownEvent());
         }
         return handler.next(error);
@@ -68,8 +71,10 @@ class DioHelper {
         token = CacheHelper.getData(key: 'token');
       }
     } catch (e) {
+      print(e);
       if (e is DioError) {
-        if (e.response!.statusCode == null) {
+        print(e.response!.statusCode);
+        if (e.response!.statusCode == null || e.response!.statusCode == 503) {
           authBloc.add(ServerDownEvent());
         } else if (e.response!.statusCode == 401 &&
             e.response!.data['error'] == 'token_expired') {
@@ -81,6 +86,8 @@ class DioHelper {
         } else {
           authBloc.add(ServerDownEvent());
         }
+      } else {
+        authBloc.add(ServerDownEvent());
       }
     }
   }

@@ -10,6 +10,7 @@ import 'package:ag_smart/View/Reusable/set_settings_2rows_container.dart';
 import 'package:ag_smart/View/Reusable/text.dart';
 import 'package:ag_smart/View/Reusable/text_style.dart';
 import 'package:ag_smart/View/Screens/bottom_nav_bar.dart';
+import 'package:ag_smart/View/Screens/sign_in.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart' as intl;
@@ -18,7 +19,7 @@ import '../../View Model/Repo/auth_bloc.dart';
 
 // ignore: must_be_immutable
 class LightScreen extends StatefulWidget {
-  LightScreen({Key? key}) : super(key: key);
+  const LightScreen({Key? key}) : super(key: key);
 
   @override
   State<LightScreen> createState() => _LightScreenState();
@@ -42,7 +43,8 @@ class _LightScreenState extends State<LightScreen> {
       ),
       body: SafeArea(
           child: BlocProvider(
-        create: (context) => LightCubit(authBloc)..getData(duration: lightcontrol),
+        create: (context) =>
+            LightCubit(authBloc)..getData(duration: lightcontrol),
         child: BlocConsumer<LightCubit, CommonStates>(
           listener: (context, state) {
             if (state is LightPutSuccessState) {
@@ -60,58 +62,81 @@ class _LightScreenState extends State<LightScreen> {
                 ? const Center(
                     child: CircularProgressIndicator(),
                   )
-                : SingleChildScrollView(
-                    physics: const BouncingScrollPhysics(),
-                    child: SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.8,
-                      child: Column(
-                        children: [
-                          MainCard2(
-                              mainWidget: Column(
-                                children: [
-                                  SizedBox(
-                                      height: MediaQuery.of(context).size.height *
-                                          0.15,
-                                      width: MediaQuery.of(context).size.width *
-                                          0.8,
-                                      child: SetSettings2RowsContainer(
-                                          visible: false,
-                                          function: () {},
-                                          firstRowTitle: text[chosenLanguage]![
-                                              'Set time']!,
-                                          firstRowWidget: MyTimePicker(
-                                              time: intl.DateFormat('HH:mm').format(DateTime(
-                                                  2023,
-                                                  1,
-                                                  1,
-                                                  myCubit.lightTime.hour,
-                                                  myCubit.lightTime.minute)),
-                                              function: (value) =>
-                                                  myCubit.chooseTime(value)),
-                                          secondRowTitle: text[chosenLanguage]![
-                                              'Lighting time']!,
-                                          secondRowWidget:
-                                              OpenValvePeriodTextField(control: lightcontrol, hintText: '00', unit: text[chosenLanguage]!['Hours']!))),
-                                ],
-                              ),
-                              rowWidget: Text(
-                                'k',
-                                style: yellowIcon,
-                              ),
-                              function: () {
-                                if (lightcontrol.text.isEmpty) {
-                                  errorToast('Please add the lighting time');
-                                } else {
-                                  myCubit.putLight(
-                                      stationId: stationId,
-                                      startTime: myCubit.lightTime,
-                                      duration: int.parse(lightcontrol.text));
-                                }
-                              },
-                              cardtitle:
-                                  text[chosenLanguage]!['Light Settings']!,
-                              buttonColor: yellowColor),
-                        ],
+                : BlocListener<AuthBloc, CommonStates>(
+                    listener: (context, state) {
+                      if (state is ExpiredTokenState) {
+                        Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SignInScreen(),
+                            ),
+                            (route) => false);
+                        expiredTokenToast();
+                      }
+                      if (state is ServerDownState) {
+                        Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SignInScreen(),
+                            ),
+                            (route) => false);
+                        serverDownToast();
+                      }
+                    },
+                    child: SingleChildScrollView(
+                      physics: const BouncingScrollPhysics(),
+                      child: SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.8,
+                        child: Column(
+                          children: [
+                            MainCard2(
+                                mainWidget: Column(
+                                  children: [
+                                    SizedBox(
+                                        height: MediaQuery.of(context).size.height *
+                                            0.15,
+                                        width: MediaQuery.of(context).size.width *
+                                            0.8,
+                                        child: SetSettings2RowsContainer(
+                                            visible: false,
+                                            function: () {},
+                                            firstRowTitle: text[
+                                                chosenLanguage]!['Set time']!,
+                                            firstRowWidget: MyTimePicker(
+                                                time: intl.DateFormat('HH:mm')
+                                                    .format(DateTime(
+                                                        2023,
+                                                        1,
+                                                        1,
+                                                        myCubit.lightTime.hour,
+                                                        myCubit
+                                                            .lightTime.minute)),
+                                                function: (value) =>
+                                                    myCubit.chooseTime(value)),
+                                            secondRowTitle:
+                                                text[chosenLanguage]!['Lighting time']!,
+                                            secondRowWidget: OpenValvePeriodTextField(control: lightcontrol, hintText: '00', unit: text[chosenLanguage]!['Hours']!))),
+                                  ],
+                                ),
+                                rowWidget: Text(
+                                  'k',
+                                  style: yellowIcon,
+                                ),
+                                function: () {
+                                  if (lightcontrol.text.isEmpty) {
+                                    errorToast('Please add the lighting time');
+                                  } else {
+                                    myCubit.putLight(
+                                        stationId: stationId,
+                                        startTime: myCubit.lightTime,
+                                        duration: int.parse(lightcontrol.text));
+                                  }
+                                },
+                                cardtitle:
+                                    text[chosenLanguage]!['Light Settings']!,
+                                buttonColor: yellowColor),
+                          ],
+                        ),
                       ),
                     ),
                   );

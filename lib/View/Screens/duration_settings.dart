@@ -9,6 +9,7 @@ import 'package:ag_smart/View/Reusable/text_style.dart';
 import 'package:ag_smart/View/Screens/duration_settings_by_period.dart';
 import 'package:ag_smart/View/Screens/duration_settings_hours.dart';
 import 'package:ag_smart/View/Screens/period_amount.dart';
+import 'package:ag_smart/View/Screens/sign_in.dart';
 import 'package:ag_smart/View/Screens/time_amount.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -96,97 +97,120 @@ class _DurationSettingsScreenState extends State<DurationSettingsScreen> {
               },
               builder: (context, state) {
                 IrrigationTypeCubit myCubit = IrrigationTypeCubit.get(context);
-                return MainCard2(
-                    function: () {
-                      if (myCubit.accordingToHour == null ||
-                          myCubit.accordingToQuantity == null) {
-                        errorToast("Please select both categories");
-                      } else {
-                        myCubit.putIrrigationType(
-                            activeValves: binaryValves,
-                            irrigationType: myCubit.irrigationType,
-                            irrigationMethod1: myCubit.irrigationMethod1!,
-                            irrigationMethod2: myCubit.irrigationMethod2!);
-                      }
-                    },
-                    buttonColor: greenButtonColor,
-                    mainWidget: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        DurationSettingsRow(
-                            firstButtonTitle:
-                                text[chosenLanguage]!['According to time']!,
-                            secondButtonTitle:
-                                text[chosenLanguage]!['According to cycle']!,
-                            firstButtonIcon: Center(
-                                child: Text(
-                              'u',
-                              style: mainIcon,
-                            )),
-                            secondButtonIcon: Center(
-                                child: Text(
-                              'w',
-                              style: mainIcon,
-                            )),
-                            firstButtonFunction: () {
-                              myCubit.chooseAccordingToHour();
-                            },
-                            secondButtonFunction: () {
-                              myCubit.chooseAccordingToPeriod();
-                            },
-                            firstButtonColor: myCubit.accordingToHour == true
-                                ? selectedColor
-                                : Colors.white,
-                            secondButtonColor: myCubit.accordingToHour == false
-                                ? selectedColor
-                                : Colors.white),
-                        DurationSettingsRow(
-                            firstButtonTitle:
-                                text[chosenLanguage]!['Watering duration']!,
-                            secondButtonTitle:
-                                text[chosenLanguage]!['According to quantity']!,
-                            firstButtonIcon: Center(
-                                child: Text(
-                              'v',
-                              style: mainIcon,
-                            )),
-                            secondButtonIcon: Center(
-                                child: Text(
-                              'c',
-                              style: mainIcon,
-                            )),
-                            firstButtonFunction: () {
-                              myCubit.chooseAccordingToTime();
-                            },
-                            secondButtonFunction: () {
-                              myCubit.chooseAccordingToQuantity();
-                            },
-                            firstButtonColor:
-                                myCubit.accordingToQuantity == false
-                                    ? selectedColor
-                                    : Colors.white,
-                            secondButtonColor:
-                                myCubit.accordingToQuantity == true
-                                    ? selectedColor
-                                    : Colors.white),
-                      ],
-                    ),
-                    rowWidget: Row(
-                      children: [
-                        Text(
-                          widget.stationIrrigationType == 1 ? 'r' : 't',
-                          style: mainIcon,
-                        ),
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.02,
-                        ),
-                        Text(
-                          'm',
-                          style: mainIcon,
-                        ),
-                      ],
-                    ),
-                    cardtitle: text[chosenLanguage]!['Duration settings']!);
+                return BlocListener<AuthBloc, CommonStates>(
+                  listener: (context, state) {
+                    if (state is ExpiredTokenState) {
+                      Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SignInScreen(),
+                          ),
+                          (route) => false);
+                      expiredTokenToast();
+                    }
+                    if (state is ServerDownState) {
+                      Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SignInScreen(),
+                          ),
+                          (route) => false);
+                      serverDownToast();
+                    }
+                  },
+                  child: MainCard2(
+                      function: () {
+                        if (myCubit.accordingToHour == null ||
+                            myCubit.accordingToQuantity == null) {
+                          errorToast("Please select both categories");
+                        } else {
+                          myCubit.putIrrigationType(
+                              activeValves: binaryValves,
+                              irrigationType: myCubit.irrigationType,
+                              irrigationMethod1: myCubit.irrigationMethod1!,
+                              irrigationMethod2: myCubit.irrigationMethod2!);
+                        }
+                      },
+                      buttonColor: greenButtonColor,
+                      mainWidget: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          DurationSettingsRow(
+                              firstButtonTitle:
+                                  text[chosenLanguage]!['According to time']!,
+                              secondButtonTitle:
+                                  text[chosenLanguage]!['According to cycle']!,
+                              firstButtonIcon: Center(
+                                  child: Text(
+                                'u',
+                                style: mainIcon,
+                              )),
+                              secondButtonIcon: Center(
+                                  child: Text(
+                                'w',
+                                style: mainIcon,
+                              )),
+                              firstButtonFunction: () {
+                                myCubit.chooseAccordingToHour();
+                              },
+                              secondButtonFunction: () {
+                                myCubit.chooseAccordingToPeriod();
+                              },
+                              firstButtonColor: myCubit.accordingToHour == true
+                                  ? selectedColor
+                                  : Colors.white,
+                              secondButtonColor:
+                                  myCubit.accordingToHour == false
+                                      ? selectedColor
+                                      : Colors.white),
+                          DurationSettingsRow(
+                              firstButtonTitle:
+                                  text[chosenLanguage]!['Watering duration']!,
+                              secondButtonTitle: text[chosenLanguage]![
+                                  'According to quantity']!,
+                              firstButtonIcon: Center(
+                                  child: Text(
+                                'v',
+                                style: mainIcon,
+                              )),
+                              secondButtonIcon: Center(
+                                  child: Text(
+                                'c',
+                                style: mainIcon,
+                              )),
+                              firstButtonFunction: () {
+                                myCubit.chooseAccordingToTime();
+                              },
+                              secondButtonFunction: () {
+                                myCubit.chooseAccordingToQuantity();
+                              },
+                              firstButtonColor:
+                                  myCubit.accordingToQuantity == false
+                                      ? selectedColor
+                                      : Colors.white,
+                              secondButtonColor:
+                                  myCubit.accordingToQuantity == true
+                                      ? selectedColor
+                                      : Colors.white),
+                        ],
+                      ),
+                      rowWidget: Row(
+                        children: [
+                          Text(
+                            widget.stationIrrigationType == 1 ? 'r' : 't',
+                            style: mainIcon,
+                          ),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.02,
+                          ),
+                          Text(
+                            'm',
+                            style: mainIcon,
+                          ),
+                        ],
+                      ),
+                      cardtitle: text[chosenLanguage]!['Duration settings']!),
+                );
               },
             ),
           ],

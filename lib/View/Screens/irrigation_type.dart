@@ -7,6 +7,7 @@ import 'package:ag_smart/View/Reusable/main_card02.dart';
 import 'package:ag_smart/View/Reusable/text_style.dart';
 import 'package:ag_smart/View/Screens/bottom_nav_bar.dart';
 import 'package:ag_smart/View/Screens/duration_settings.dart';
+import 'package:ag_smart/View/Screens/sign_in.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -61,119 +62,141 @@ class _IrrigationTypeScreenState extends State<IrrigationTypeScreen> {
             },
             builder: (context, state) {
               IrrigationTypeCubit myCubit = IrrigationTypeCubit.get(context);
-              return MainCard2(
-                  function: () {
-                    if (myCubit.irrigationType == 1 ||
-                        myCubit.irrigationType == 2) {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => DurationSettingsScreen(
-                              isEdit: widget.isEdit,
-                              stationIrrigationType: myCubit.irrigationType,
-                            ),
-                          ));
-                    } else if (myCubit.irrigationType == 3 ||
-                        myCubit.irrigationType == 4) {
-                      myCubit.putIrrigationType(
-                          activeValves: binaryValves,
-                          irrigationType: myCubit.irrigationType,
-                          irrigationMethod1: 1,
-                          irrigationMethod2: 1);
-                    } else {
-                      errorToast('Please choose irrigation type');
-                    }
-                  },
-                  buttonColor: greenButtonColor,
-                  mainWidget: SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.49,
-                    child: SingleChildScrollView(
-                      physics: const BouncingScrollPhysics(),
-                      child: Column(
-                        children: [
-                          IrrigationTypeContainer(
+              return BlocListener<AuthBloc, CommonStates>(
+                listener: (context, state) {
+                  if (state is ExpiredTokenState) {
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SignInScreen(),
+                        ),
+                        (route) => false);
+                    expiredTokenToast();
+                  }
+                  if (state is ServerDownState) {
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SignInScreen(),
+                        ),
+                        (route) => false);
+                    serverDownToast();
+                  }
+                },
+                child: MainCard2(
+                    function: () {
+                      if (myCubit.irrigationType == 1 ||
+                          myCubit.irrigationType == 2) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => DurationSettingsScreen(
+                                isEdit: widget.isEdit,
+                                stationIrrigationType: myCubit.irrigationType,
+                              ),
+                            ));
+                      } else if (myCubit.irrigationType == 3 ||
+                          myCubit.irrigationType == 4) {
+                        myCubit.putIrrigationType(
+                            activeValves: binaryValves,
+                            irrigationType: myCubit.irrigationType,
+                            irrigationMethod1: 1,
+                            irrigationMethod2: 1);
+                      } else {
+                        errorToast('Please choose irrigation type');
+                      }
+                    },
+                    buttonColor: greenButtonColor,
+                    mainWidget: SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.49,
+                      child: SingleChildScrollView(
+                        physics: const BouncingScrollPhysics(),
+                        child: Column(
+                          children: [
+                            IrrigationTypeContainer(
+                                function: () {
+                                  myCubit.chooseSeriesIrrigation();
+                                },
+                                color: myCubit.irrigationType == 1
+                                    ? selectedColor
+                                    : backgroundColor,
+                                icon: Text('r', style: bigIcon),
+                                irrigationType: text[chosenLanguage]![
+                                    'Series Irrigation']!),
+                            IrrigationTypeContainer(
                               function: () {
-                                myCubit.chooseSeriesIrrigation();
+                                myCubit.chooseParallelIrrigation();
                               },
-                              color: myCubit.irrigationType == 1
+                              color: myCubit.irrigationType == 2
                                   ? selectedColor
                                   : backgroundColor,
-                              icon: Text('r', style: bigIcon),
+                              icon: Text('t', style: bigIcon),
                               irrigationType:
-                                  text[chosenLanguage]!['Series Irrigation']!),
-                          IrrigationTypeContainer(
-                            function: () {
-                              myCubit.chooseParallelIrrigation();
-                            },
-                            color: myCubit.irrigationType == 2
-                                ? selectedColor
-                                : backgroundColor,
-                            icon: Text('t', style: bigIcon),
-                            irrigationType:
-                                text[chosenLanguage]!['Parallel Irrigation']!,
-                            widget: Padding(
-                              padding: EdgeInsets.only(
-                                  left:
-                                      MediaQuery.of(context).size.width * 0.05),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  CupertinoSwitch(
-                                      value: myCubit.irrigationType == 2
-                                          ? myCubit.active
-                                          : false,
-                                      onChanged: (value) {
-                                        myCubit.activate();
-                                      }),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 10),
-                                    child: Text(
-                                      text[chosenLanguage]![
-                                          'Irregular water pressure']!,
-                                      textAlign: TextAlign.center,
-                                      style: const TextStyle(fontSize: 11),
-                                    ),
-                                  )
-                                ],
+                                  text[chosenLanguage]!['Parallel Irrigation']!,
+                              widget: Padding(
+                                padding: EdgeInsets.only(
+                                    left: MediaQuery.of(context).size.width *
+                                        0.05),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    CupertinoSwitch(
+                                        value: myCubit.irrigationType == 2
+                                            ? myCubit.active
+                                            : false,
+                                        onChanged: (value) {
+                                          myCubit.activate();
+                                        }),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10),
+                                      child: Text(
+                                        text[chosenLanguage]![
+                                            'Irregular water pressure']!,
+                                        textAlign: TextAlign.center,
+                                        style: const TextStyle(fontSize: 11),
+                                      ),
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                          IrrigationTypeContainer(
-                              function: () {
-                                myCubit.chooseCustomIrrigation();
-                              },
-                              color: myCubit.irrigationType == 3
-                                  ? selectedColor
-                                  : backgroundColor,
-                              icon: Text(
-                                'f',
-                                style: bigIcon,
-                              ),
-                              irrigationType:
-                                  text[chosenLanguage]!['Custom Irrigation']!),
-                          IrrigationTypeContainer(
-                              function: () {
-                                myCubit.chooseAutoIrrigation();
-                              },
-                              color: myCubit.irrigationType == 4
-                                  ? selectedColor
-                                  : backgroundColor,
-                              icon: Text(
-                                'e',
-                                style: bigIcon,
-                              ),
-                              irrigationType: text[chosenLanguage]![
-                                  'Automatic Irrigation']!)
-                        ],
+                            IrrigationTypeContainer(
+                                function: () {
+                                  myCubit.chooseCustomIrrigation();
+                                },
+                                color: myCubit.irrigationType == 3
+                                    ? selectedColor
+                                    : backgroundColor,
+                                icon: Text(
+                                  'f',
+                                  style: bigIcon,
+                                ),
+                                irrigationType: text[chosenLanguage]![
+                                    'Custom Irrigation']!),
+                            IrrigationTypeContainer(
+                                function: () {
+                                  myCubit.chooseAutoIrrigation();
+                                },
+                                color: myCubit.irrigationType == 4
+                                    ? selectedColor
+                                    : backgroundColor,
+                                icon: Text(
+                                  'e',
+                                  style: bigIcon,
+                                ),
+                                irrigationType: text[chosenLanguage]![
+                                    'Automatic Irrigation']!)
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  rowWidget: Text(
-                    'm',
-                    style: mainIcon,
-                  ),
-                  cardtitle: text[chosenLanguage]!['Irrigation type']!);
+                    rowWidget: Text(
+                      'm',
+                      style: mainIcon,
+                    ),
+                    cardtitle: text[chosenLanguage]!['Irrigation type']!),
+              );
             },
           ),
           const Spacer()
