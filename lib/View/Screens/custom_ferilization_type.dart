@@ -60,10 +60,6 @@ class _CustomFirtilizationTypesScreenState
                       fertiliationType: myCubit.fertilizationType,
                     ),
                   ));
-              if (state is CustomFertilizationPutFailState) {
-                Navigator.pop(context);
-                errorToast('An error has occurred');
-              }
             } else if (state is CustomFertilizationPutFailState) {
               errorToast('An error has occurred');
             }

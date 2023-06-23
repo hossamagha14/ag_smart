@@ -17,7 +17,6 @@ class DioHelper {
       options.headers['Authorization'] = 'Bearer $token';
       handler.next(options);
     }, onError: (error, handler) async {
-      print(error);
       if (isRefreshed == false) {
         if (error.response?.statusCode == 401) {
           await refreshAccessToken();
@@ -71,9 +70,7 @@ class DioHelper {
         token = CacheHelper.getData(key: 'token');
       }
     } catch (e) {
-      print(e);
       if (e is DioError) {
-        print(e.response!.statusCode);
         if (e.response!.statusCode == null || e.response!.statusCode == 503) {
           authBloc.add(ServerDownEvent());
         } else if (e.response!.statusCode == 401 &&

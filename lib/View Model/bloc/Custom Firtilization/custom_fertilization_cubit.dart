@@ -128,11 +128,6 @@ class CustomFertilizationCubit extends Cubit<CommonStates> {
       "fertilizer_method1": fertilizationMethod,
     }).then((value) {
       if (value.statusCode == 200) {
-        delete(
-            stationId: stationId,
-            lineIndex: lineIndex,
-            valveId: valveId,
-            method1: fertilizationMethod);
         emit(CustomFertilizationPutSuccessState());
       }
     }).catchError((onError) {
@@ -251,7 +246,6 @@ class CustomFertilizationCubit extends Cubit<CommonStates> {
   }
 
   delete({
-    required int stationId,
     required int valveId,
     required int lineIndex,
     required int method1,
