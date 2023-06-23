@@ -1,4 +1,6 @@
-abstract class LinesActivationStates {}
+import '../commom_states.dart';
+
+abstract class LinesActivationStates extends CommonStates{}
 
 class LinesActivationIntialState extends LinesActivationStates {}
 

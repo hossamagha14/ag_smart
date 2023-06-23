@@ -1,5 +1,6 @@
 import 'package:ag_smart/View%20Model/bloc/Scarcrow/Scarcrow_cubit.dart';
 import 'package:ag_smart/View%20Model/bloc/Scarcrow/scarcrow_states.dart';
+import 'package:ag_smart/View%20Model/bloc/commom_states.dart';
 import 'package:ag_smart/View/Reusable/colors.dart';
 import 'package:ag_smart/View/Reusable/toasts.dart';
 import 'package:ag_smart/View/Reusable/main_card02.dart';
@@ -12,11 +13,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart' as intl;
 
+import '../../View Model/Repo/auth_bloc.dart';
+
 // ignore: must_be_immutable
-class ScarecrowScreen extends StatelessWidget {
+class ScarecrowScreen extends StatefulWidget {
   ScarecrowScreen({Key? key}) : super(key: key);
+
+  @override
+  State<ScarecrowScreen> createState() => _ScarecrowScreenState();
+}
+
+class _ScarecrowScreenState extends State<ScarecrowScreen> {
   TextEditingController onControl = TextEditingController();
   TextEditingController offControl = TextEditingController();
+  late AuthBloc authBloc;
+
+  @override
+  void initState() {
+    authBloc = BlocProvider.of<AuthBloc>(context);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,8 +43,8 @@ class ScarecrowScreen extends StatelessWidget {
       body: SafeArea(
         child: BlocProvider(
           create: (context) =>
-              ScarecrowCubit()..getData(onTime: onControl, offTime: offControl),
-          child: BlocConsumer<ScarecrowCubit, ScarecrowStates>(
+              ScarecrowCubit(authBloc)..getData(onTime: onControl, offTime: offControl),
+          child: BlocConsumer<ScarecrowCubit, CommonStates>(
             listener: (context, state) {
               if (state is ScarecrowPostSuccessState) {
                 Navigator.pushAndRemoveUntil(
@@ -168,7 +184,6 @@ class ScarecrowScreen extends StatelessWidget {
                                     int onTime = int.parse(onControl.text);
                                     int offTime = int.parse(offControl.text);
                                     if (availableTime >= onTime + offTime) {
-                                      print(myCubit.time1);
                                       myCubit.put(
                                           startingTime: myCubit.time1,
                                           finishTime: myCubit.time2,

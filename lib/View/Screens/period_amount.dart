@@ -1,5 +1,6 @@
 import 'package:ag_smart/View%20Model/bloc/Duration%20settings/duration_settings_cubit.dart';
 import 'package:ag_smart/View%20Model/bloc/Duration%20settings/duration_settings_states.dart';
+import 'package:ag_smart/View%20Model/bloc/commom_states.dart';
 import 'package:ag_smart/View/Reusable/choose_days_widget.dart';
 import 'package:ag_smart/View/Reusable/colors.dart';
 import 'package:ag_smart/View/Reusable/toasts.dart';
@@ -11,18 +12,32 @@ import 'package:ag_smart/View/Reusable/text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../View Model/Repo/auth_bloc.dart';
 import 'bottom_nav_bar.dart';
 import 'duration_settings.dart';
 
 // ignore: must_be_immutable
-class PeriodAmountScreen extends StatelessWidget {
+class PeriodAmountScreen extends StatefulWidget {
   final bool isEdit;
   final int irrigationType;
   PeriodAmountScreen(
       {Key? key, required this.isEdit, required this.irrigationType})
       : super(key: key);
+
+  @override
+  State<PeriodAmountScreen> createState() => _PeriodAmountScreenState();
+}
+
+class _PeriodAmountScreenState extends State<PeriodAmountScreen> {
   TextEditingController hoursControl = TextEditingController();
   TextEditingController mlControl = TextEditingController();
+  late AuthBloc authBloc;
+
+  @override
+  void initState() {
+    authBloc = BlocProvider.of<AuthBloc>(context);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,9 +47,9 @@ class PeriodAmountScreen extends StatelessWidget {
       ),
       body: SafeArea(
         child: BlocProvider(
-          create: (context) => DurationSettingsCubit()
+          create: (context) => DurationSettingsCubit(authBloc)
             ..getCycle(hours: hoursControl, amount: mlControl),
-          child: BlocConsumer<DurationSettingsCubit, DurationSettingsStates>(
+          child: BlocConsumer<DurationSettingsCubit, CommonStates>(
             listener: (context, state) {
               if (state is DurationSettingsSendSuccessState) {
                 Navigator.pushAndRemoveUntil(
@@ -72,7 +87,7 @@ class PeriodAmountScreen extends StatelessWidget {
                                                 DurationSettingsScreen(
                                               isEdit: true,
                                               stationIrrigationType:
-                                                  irrigationType,
+                                                  widget.irrigationType,
                                             ),
                                           ));
                                     },
@@ -125,7 +140,8 @@ class PeriodAmountScreen extends StatelessWidget {
                                   ),
                                   rowWidget: MainIconsRowWidget(
                                     icon1: 'm',
-                                    icon2: irrigationType == 1 ? 'r' : 't',
+                                    icon2:
+                                        widget.irrigationType == 1 ? 'r' : 't',
                                     icon3: 'w',
                                     icon4: 'c',
                                   ),

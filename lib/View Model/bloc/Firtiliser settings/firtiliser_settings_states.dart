@@ -1,4 +1,6 @@
-abstract class FirtiliserSettingsStates {}
+import '../commom_states.dart';
+
+abstract class FirtiliserSettingsStates extends CommonStates{}
 
 class FirtiliserSettingsIntialState extends FirtiliserSettingsStates {}
 

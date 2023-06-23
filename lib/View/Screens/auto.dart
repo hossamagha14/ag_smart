@@ -1,5 +1,5 @@
 import 'package:ag_smart/View%20Model/bloc/Lines%20activation/lines_activation_cubit.dart';
-import 'package:ag_smart/View%20Model/bloc/Lines%20activation/lines_activation_states.dart';
+import 'package:ag_smart/View%20Model/bloc/commom_states.dart';
 import 'package:ag_smart/View/Reusable/colors.dart';
 import 'package:ag_smart/View/Reusable/main_card02.dart';
 import 'package:ag_smart/View/Reusable/main_icons_row_widget.dart';
@@ -7,8 +7,23 @@ import 'package:ag_smart/View/Reusable/text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class AutoScreen extends StatelessWidget {
+import '../../View Model/Repo/auth_bloc.dart';
+
+class AutoScreen extends StatefulWidget {
   const AutoScreen({Key? key}) : super(key: key);
+
+  @override
+  State<AutoScreen> createState() => _AutoScreenState();
+}
+
+class _AutoScreenState extends State<AutoScreen> {
+  late AuthBloc authBloc;
+
+  @override
+  void initState() {
+    authBloc = BlocProvider.of<AuthBloc>(context);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +39,7 @@ class AutoScreen extends StatelessWidget {
                 height: MediaQuery.of(context).size.height * 0.4,
                 width: MediaQuery.of(context).size.width * 0.8,
                 child: BlocConsumer<LinesActivationCubit,
-                        LinesActivationStates>(
+                        CommonStates>(
                     listener: (context, state) {},
                     builder: (context, state) {
                       LinesActivationCubit activationCubit =

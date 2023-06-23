@@ -1,21 +1,36 @@
 import 'package:ag_smart/View%20Model/bloc/Bottom%20Dash%20bar/bottom_dash_bar_states.dart';
+import 'package:ag_smart/View%20Model/bloc/commom_states.dart';
 import 'package:ag_smart/View/Reusable/colors.dart';
 import 'package:ag_smart/View/Reusable/text.dart';
 import 'package:ag_smart/View/Screens/sign_in.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../View Model/Repo/auth_bloc.dart';
 import '../../View Model/bloc/Bottom Dash bar/bottom_dash_bar_cubit.dart';
 import '../../View Model/database/cache_helpher.dart';
 import 'choose_language.dart';
 
-class BottomDashBarScreen extends StatelessWidget {
+class BottomDashBarScreen extends StatefulWidget {
   const BottomDashBarScreen({Key? key}) : super(key: key);
+
+  @override
+  State<BottomDashBarScreen> createState() => _BottomDashBarScreenState();
+}
+
+class _BottomDashBarScreenState extends State<BottomDashBarScreen> {
+  late AuthBloc authBloc;
+
+  @override
+  void initState() {
+    authBloc = BlocProvider.of<AuthBloc>(context);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => BottomDashBarCubit(),
-      child: BlocConsumer<BottomDashBarCubit, BottomDashBarStates>(
+      create: (context) => BottomDashBarCubit(authBloc),
+      child: BlocConsumer<BottomDashBarCubit, CommonStates>(
           listener: (context, state) {
         if (state is BottomDashBarLogOutSuccessState) {
           Navigator.pushAndRemoveUntil(
@@ -42,7 +57,7 @@ class BottomDashBarScreen extends StatelessWidget {
                         decoration: BoxDecoration(
                           color: settingsColor,
                         ),
-                        child:const SizedBox(),
+                        child: const SizedBox(),
                       ),
                       ListTile(
                         title: Text(text[chosenLanguage]!['Contact us']!,
@@ -167,7 +182,7 @@ class BottomDashBarScreen extends StatelessWidget {
                         decoration: BoxDecoration(
                           color: settingsColor,
                         ),
-                        child:const SizedBox(),
+                        child: const SizedBox(),
                       ),
                       ListTile(
                         title: Text(text[chosenLanguage]!['Contact us']!,

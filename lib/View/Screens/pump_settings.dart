@@ -1,5 +1,6 @@
 import 'package:ag_smart/View%20Model/bloc/Pump%20settings/pump_settingd_cubit.dart';
 import 'package:ag_smart/View%20Model/bloc/Pump%20settings/pump_settings_states.dart';
+import 'package:ag_smart/View%20Model/bloc/commom_states.dart';
 import 'package:ag_smart/View/Reusable/toasts.dart';
 import 'package:ag_smart/View/Reusable/main_card02.dart';
 import 'package:ag_smart/View/Reusable/pump_settings_container.dart';
@@ -9,13 +10,27 @@ import 'package:ag_smart/View/Screens/lines_activation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../View Model/Repo/auth_bloc.dart';
 import '../Reusable/colors.dart';
 
 // ignore: must_be_immutable
-class PumpSettingsScreen extends StatelessWidget {
+class PumpSettingsScreen extends StatefulWidget {
   final bool isEdit;
   PumpSettingsScreen({Key? key, required this.isEdit}) : super(key: key);
+
+  @override
+  State<PumpSettingsScreen> createState() => _PumpSettingsScreenState();
+}
+
+class _PumpSettingsScreenState extends State<PumpSettingsScreen> {
   TextEditingController hoursePowerControl = TextEditingController();
+  late AuthBloc authBloc;
+
+  @override
+  void initState() {
+    authBloc = BlocProvider.of<AuthBloc>(context);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +40,8 @@ class PumpSettingsScreen extends StatelessWidget {
         ),
         body: BlocProvider(
           create: (context) =>
-              PumpSettingsCubit()..getPumpSettings(power: hoursePowerControl),
-          child: BlocConsumer<PumpSettingsCubit, PumpSettingsStates>(
+              PumpSettingsCubit(authBloc)..getPumpSettings(power: hoursePowerControl),
+          child: BlocConsumer<PumpSettingsCubit, CommonStates>(
             listener: (context, state) {
               if (state is PumpSettingSendSuccessState) {
                 FocusScope.of(context).unfocus();
@@ -34,7 +49,7 @@ class PumpSettingsScreen extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) =>
-                          LinesActivationScreen(isEdit: isEdit),
+                          LinesActivationScreen(isEdit: widget.isEdit),
                     ));
               }
             },

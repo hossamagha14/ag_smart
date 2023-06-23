@@ -1,5 +1,6 @@
 import 'package:ag_smart/View%20Model/bloc/Irrigation%20type/irrigation_type_cubit.dart';
 import 'package:ag_smart/View%20Model/bloc/Irrigation%20type/irrigation_type_states.dart';
+import 'package:ag_smart/View%20Model/bloc/commom_states.dart';
 import 'package:ag_smart/View/Reusable/toasts.dart';
 import 'package:ag_smart/View/Reusable/irrigation_type_container.dart';
 import 'package:ag_smart/View/Reusable/main_card02.dart';
@@ -10,13 +11,27 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../View Model/Repo/auth_bloc.dart';
 import '../Reusable/colors.dart';
 import '../Reusable/text.dart';
 
-class IrrigationTypeScreen extends StatelessWidget {
+class IrrigationTypeScreen extends StatefulWidget {
   final bool isEdit;
   const IrrigationTypeScreen({Key? key, required this.isEdit})
       : super(key: key);
+
+  @override
+  State<IrrigationTypeScreen> createState() => _IrrigationTypeScreenState();
+}
+
+class _IrrigationTypeScreenState extends State<IrrigationTypeScreen> {
+  late AuthBloc authBloc;
+
+  @override
+  void initState() {
+    authBloc = BlocProvider.of<AuthBloc>(context);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +41,7 @@ class IrrigationTypeScreen extends StatelessWidget {
       ),
       body: Column(
         children: [
-          BlocConsumer<IrrigationTypeCubit, IrrigationTypesStates>(
+          BlocConsumer<IrrigationTypeCubit, CommonStates>(
             listener: (context, state) {
               IrrigationTypeCubit myCubit = IrrigationTypeCubit.get(context);
               if (myCubit.irrigationType == 3 ||
@@ -54,7 +69,7 @@ class IrrigationTypeScreen extends StatelessWidget {
                           context,
                           MaterialPageRoute(
                             builder: (context) => DurationSettingsScreen(
-                              isEdit: isEdit,
+                              isEdit: widget.isEdit,
                               stationIrrigationType: myCubit.irrigationType,
                             ),
                           ));

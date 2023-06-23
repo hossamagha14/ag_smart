@@ -16,6 +16,7 @@ import 'package:ag_smart/View/Screens/time_amount.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../View Model/Repo/auth_bloc.dart';
 import '../../View Model/bloc/Firtiliser settings/firtiliser_settings_states.dart';
 import '../../View Model/bloc/commom_states.dart';
 import 'duration_settings_by_period.dart';
@@ -23,8 +24,21 @@ import 'duration_settings_hours.dart';
 import 'fertiliser_settings.dart';
 import 'firtilisation_type.dart';
 
-class StationInfoScreen extends StatelessWidget {
+class StationInfoScreen extends StatefulWidget {
   const StationInfoScreen({Key? key}) : super(key: key);
+
+  @override
+  State<StationInfoScreen> createState() => _StationInfoScreenState();
+}
+
+class _StationInfoScreenState extends State<StationInfoScreen> {
+  late AuthBloc authBloc;
+
+  @override
+  void initState() {
+    authBloc = BlocProvider.of<AuthBloc>(context);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -207,7 +221,7 @@ class StationInfoScreen extends StatelessWidget {
                                         itemCount:
                                             myCubit.activeValves.length)),
                                 BlocConsumer<FirtiliserSettingsCubit,
-                                    FirtiliserSettingsStates>(
+                                    CommonStates>(
                                   listener: (context, state) {},
                                   builder: (context, state) {
                                     FirtiliserSettingsCubit ferCubit =
@@ -219,8 +233,7 @@ class StationInfoScreen extends StatelessWidget {
                                             1) {
                                           errorToast(text[chosenLanguage]![
                                               'You are not subscribed for this feature']!);
-                                        } else if (myCubit
-                                            .stationModel!
+                                        } else if (myCubit.stationModel!
                                             .fertilizationSettings!.isEmpty) {
                                           Navigator.push(
                                               context,

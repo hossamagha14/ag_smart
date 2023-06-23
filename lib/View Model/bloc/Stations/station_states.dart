@@ -1,4 +1,6 @@
-abstract class StationsStates {}
+import '../commom_states.dart';
+
+abstract class StationsStates extends CommonStates {}
 
 class StationsIntialState extends StationsStates {}
 

@@ -6,14 +6,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../Model/features_model.dart';
 import '../../../Model/station_model.dart';
+import '../../Repo/auth_bloc.dart';
 import '../../database/dio_helper.dart';
+import '../commom_states.dart';
 
-class LightCubit extends Cubit<LightStates> {
-  LightCubit() : super(LightIntialState());
+class LightCubit extends Cubit<CommonStates> {
+  AuthBloc authBloc;
+  late DioHelper dio;
+  LightCubit(this.authBloc) : super(LightIntialState()) {
+    dio = DioHelper(authBloc);
+  }
 
   static LightCubit get(context) => BlocProvider.of(context);
 
-  DioHelper dio = DioHelper();
   FeaturesModel? featuresModel;
   StationModel? stationModel;
   List<int> activeDays = [];

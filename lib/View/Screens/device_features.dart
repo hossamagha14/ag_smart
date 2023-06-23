@@ -1,17 +1,32 @@
 import 'package:ag_smart/View%20Model/bloc/Device%20feature/device_feature_cubit.dart';
 import 'package:ag_smart/View%20Model/bloc/Device%20feature/device_feature_states.dart';
+import 'package:ag_smart/View%20Model/bloc/commom_states.dart';
 import 'package:ag_smart/View/Reusable/colors.dart';
 import 'package:ag_smart/View/Reusable/main_card02.dart';
 import 'package:ag_smart/View/Reusable/text.dart';
 import 'package:ag_smart/View/Screens/pump_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../View Model/Repo/auth_bloc.dart';
 import '../Reusable/main_icons_row_widget.dart';
 
-class DeviceFeaturesScreen extends StatelessWidget {
+class DeviceFeaturesScreen extends StatefulWidget {
   final bool isEdit;
   const DeviceFeaturesScreen({Key? key, required this.isEdit})
       : super(key: key);
+
+  @override
+  State<DeviceFeaturesScreen> createState() => _DeviceFeaturesScreenState();
+}
+
+class _DeviceFeaturesScreenState extends State<DeviceFeaturesScreen> {
+  late AuthBloc authBloc;
+
+  @override
+  void initState() {
+    authBloc = BlocProvider.of<AuthBloc>(context);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,8 +35,8 @@ class DeviceFeaturesScreen extends StatelessWidget {
         title: Text(text[chosenLanguage]!['Device Setup']!),
       ),
       body: BlocProvider(
-        create: (context) => DeviceFeatureCubit()..getFeatures(),
-        child: BlocConsumer<DeviceFeatureCubit, DeviceFeaturesStates>(
+        create: (context) => DeviceFeatureCubit(authBloc)..getFeatures(),
+        child: BlocConsumer<DeviceFeatureCubit, CommonStates>(
           listener: (context, state) {},
           builder: (context, state) {
             DeviceFeatureCubit myCubit = DeviceFeatureCubit.get(context);
@@ -138,8 +153,15 @@ class DeviceFeaturesScreen extends StatelessWidget {
                                                         myCubit
                                                             .featureList[index]
                                                             .description!,
-                                                            textDirection: chosenLanguage=='ar'?TextDirection.rtl:TextDirection.ltr,
-                                                            textAlign: TextAlign.start,
+                                                        textDirection:
+                                                            chosenLanguage ==
+                                                                    'ar'
+                                                                ? TextDirection
+                                                                    .rtl
+                                                                : TextDirection
+                                                                    .ltr,
+                                                        textAlign:
+                                                            TextAlign.start,
                                                       ),
                                                     ),
                                                   )
@@ -164,7 +186,7 @@ class DeviceFeaturesScreen extends StatelessWidget {
                           icon1: 'm',
                         ),
                         function: () {
-                          if (isEdit == false) {
+                          if (widget.isEdit == false) {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(

@@ -5,6 +5,7 @@ import 'package:ag_smart/View/Reusable/toasts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../View Model/Repo/auth_bloc.dart';
 import '../../View Model/bloc/commom_states.dart';
 import '../Reusable/main_card02.dart';
 import '../Reusable/main_icons_row_widget.dart';
@@ -21,7 +22,7 @@ class ManualIrrigationScreen extends StatelessWidget {
       ),
       body: BlocProvider(
         create: (context) =>
-            BottomNavBarCubit()..getManualValves(stationId: stationId),
+            BottomNavBarCubit(AuthBloc(IntialState()))..getManualValves(stationId: stationId),
         child: BlocConsumer<BottomNavBarCubit, CommonStates>(
           listener: (context, state) {
             if (state is BottomNavBarPutSuccessState) {

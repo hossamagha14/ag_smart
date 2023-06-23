@@ -1,5 +1,5 @@
 import 'package:ag_smart/View%20Model/bloc/Custom%20Irrigation/custom_irrigation_cubit.dart';
-import 'package:ag_smart/View%20Model/bloc/Custom%20Irrigation/custom_irrigation_states.dart';
+import 'package:ag_smart/View%20Model/bloc/commom_states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -10,7 +10,7 @@ class CustomIrrigationChooseDyasWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<CustomIrrigationCubit, CustomIrrigationStates>(
+    return BlocConsumer<CustomIrrigationCubit, CommonStates>(
       listener: (context, state) {},
       builder: (context, state) {
         CustomIrrigationCubit myCubit = CustomIrrigationCubit.get(context);

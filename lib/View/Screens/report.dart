@@ -1,4 +1,5 @@
 import 'package:ag_smart/View%20Model/bloc/Report/report_cubit.dart';
+import 'package:ag_smart/View%20Model/bloc/commom_states.dart';
 import 'package:ag_smart/View/Reusable/custom_container.dart';
 import 'package:ag_smart/View/Reusable/toasts.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,7 @@ import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:screenshot/screenshot.dart';
 
+import '../../View Model/Repo/auth_bloc.dart';
 import '../../View Model/bloc/Report/report_states.dart';
 import '../Reusable/15days_chart.dart';
 import '../Reusable/15days_container.dart';
@@ -26,9 +28,22 @@ import '../Reusable/text.dart';
 import '../Reusable/year_chart.dart';
 import '../Reusable/year_container.dart';
 
-class ReportScreen extends StatelessWidget {
+class ReportScreen extends StatefulWidget {
   ReportScreen({Key? key}) : super(key: key);
+
+  @override
+  State<ReportScreen> createState() => _ReportScreenState();
+}
+
+class _ReportScreenState extends State<ReportScreen> {
   ScreenshotController screenshotController = ScreenshotController();
+  late AuthBloc authBloc;
+
+  @override
+  void initState() {
+    authBloc = BlocProvider.of<AuthBloc>(context);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,8 +51,8 @@ class ReportScreen extends StatelessWidget {
       controller: screenshotController,
       child: Scaffold(
         body: BlocProvider(
-          create: (context) => ReportCubit()..getStations(),
-          child: BlocConsumer<ReportCubit, ReportStates>(
+          create: (context) => ReportCubit(authBloc)..getStations(),
+          child: BlocConsumer<ReportCubit, CommonStates>(
             listener: (context, state) {
               if (state is ReportPDFSuccessState) {
                 successToast('PDF downloaded Successfully');

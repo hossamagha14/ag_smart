@@ -1,5 +1,6 @@
 import 'package:ag_smart/View%20Model/bloc/Lines%20activation/lines_activation_cubit.dart';
 import 'package:ag_smart/View%20Model/bloc/Lines%20activation/lines_activation_states.dart';
+import 'package:ag_smart/View%20Model/bloc/commom_states.dart';
 import 'package:ag_smart/View/Reusable/colors.dart';
 import 'package:ag_smart/View/Reusable/toasts.dart';
 import 'package:ag_smart/View/Reusable/main_card02.dart';
@@ -9,10 +10,25 @@ import 'package:ag_smart/View/Screens/irrigation_type.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../View Model/Repo/auth_bloc.dart';
+
 // ignore: must_be_immutable
-class LinesSettingsScreen extends StatelessWidget {
+class LinesSettingsScreen extends StatefulWidget {
   final bool isEdit;
   const LinesSettingsScreen({Key? key, required this.isEdit}) : super(key: key);
+
+  @override
+  State<LinesSettingsScreen> createState() => _LinesSettingsScreenState();
+}
+
+class _LinesSettingsScreenState extends State<LinesSettingsScreen> {
+  late AuthBloc authBloc;
+
+  @override
+  void initState() {
+    authBloc = BlocProvider.of<AuthBloc>(context);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,16 +41,16 @@ class LinesSettingsScreen extends StatelessWidget {
         child: SizedBox(
           height: MediaQuery.of(context).size.height * 0.85,
           child: BlocProvider(
-            create: (context) =>
-                LinesActivationCubit()..getNumberOfValves(isEdit: isEdit),
-            child: BlocConsumer<LinesActivationCubit, LinesActivationStates>(
+            create: (context) => LinesActivationCubit(authBloc)
+              ..getNumberOfValves(isEdit: widget.isEdit),
+            child: BlocConsumer<LinesActivationCubit, CommonStates>(
               listener: (context, state) {
                 if (state is LinesActivationSendSuccessState) {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) =>
-                            IrrigationTypeScreen(isEdit: isEdit),
+                            IrrigationTypeScreen(isEdit: widget.isEdit),
                       ));
                 } else if (state is LinesActivationSendFailState) {
                   errorToast('An error has occurred');

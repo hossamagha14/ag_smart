@@ -7,14 +7,19 @@ import 'package:ag_smart/View%20Model/database/end_points.dart';
 import 'package:ag_smart/View/Reusable/text.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../Model/station_model.dart';
+import '../../Repo/auth_bloc.dart';
 import '../../database/dio_helper.dart';
+import '../commom_states.dart';
 
-class LinesActivationCubit extends Cubit<LinesActivationStates> {
-  LinesActivationCubit() : super(LinesActivationIntialState());
+class LinesActivationCubit extends Cubit<CommonStates> {
+  AuthBloc authBloc;
+  late DioHelper dio;
+  LinesActivationCubit(this.authBloc) : super(LinesActivationIntialState()) {
+    dio = DioHelper(authBloc);
+  }
 
   static LinesActivationCubit get(context) => BlocProvider.of(context);
   List<ValveModel> valves = [];
-  DioHelper dio = DioHelper();
   int? statusCode;
   StationModel? stationModel;
   List<int> activeBinary = [];

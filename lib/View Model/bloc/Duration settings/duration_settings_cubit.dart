@@ -8,15 +8,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../Model/irrigation_settings_model.dart';
+import '../../Repo/auth_bloc.dart';
 import '../../database/dio_helper.dart';
+import '../commom_states.dart';
 import 'duration_settings_states.dart';
 
-class DurationSettingsCubit extends Cubit<DurationSettingsStates> {
-  DurationSettingsCubit() : super(DurationSettingsIntialState());
+class DurationSettingsCubit extends Cubit<CommonStates> {
+  AuthBloc authBloc;
+  late DioHelper dio;
+  DurationSettingsCubit(this.authBloc) : super(DurationSettingsIntialState()) {
+    dio = DioHelper(authBloc);
+  }
 
   static DurationSettingsCubit get(context) => BlocProvider.of(context);
 
-  DioHelper dio = DioHelper();
   DurationModel durationModel = DurationModel();
   List<Map<String, dynamic>> periodsList = [];
   bool visible = false;

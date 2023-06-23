@@ -1,5 +1,6 @@
 import 'package:ag_smart/View%20Model/bloc/Duration%20settings/duration_settings_cubit.dart';
 import 'package:ag_smart/View%20Model/bloc/Duration%20settings/duration_settings_states.dart';
+import 'package:ag_smart/View%20Model/bloc/commom_states.dart';
 import 'package:ag_smart/View/Reusable/add_new_container_button.dart';
 import 'package:ag_smart/View/Reusable/choose_days_widget.dart';
 import 'package:ag_smart/View/Reusable/colors.dart';
@@ -13,16 +14,30 @@ import 'package:ag_smart/View/Screens/bottom_nav_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart' as intl;
+import '../../View Model/Repo/auth_bloc.dart';
 import '../Reusable/toasts.dart';
 import 'duration_settings.dart';
 
 // ignore: must_be_immutable
-class TimeAmountScreen extends StatelessWidget {
+class TimeAmountScreen extends StatefulWidget {
   final bool isEdit;
   final int irrigationType;
   const TimeAmountScreen(
       {Key? key, required this.isEdit, required this.irrigationType})
       : super(key: key);
+
+  @override
+  State<TimeAmountScreen> createState() => _TimeAmountScreenState();
+}
+
+class _TimeAmountScreenState extends State<TimeAmountScreen> {
+  late AuthBloc authBloc;
+
+  @override
+  void initState() {
+    authBloc = BlocProvider.of<AuthBloc>(context);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,8 +47,8 @@ class TimeAmountScreen extends StatelessWidget {
       ),
       body: SafeArea(
           child: BlocProvider(
-        create: (context) => DurationSettingsCubit()..getPeriods(),
-        child: BlocConsumer<DurationSettingsCubit, DurationSettingsStates>(
+        create: (context) => DurationSettingsCubit(authBloc)..getPeriods(),
+        child: BlocConsumer<DurationSettingsCubit, CommonStates>(
           listener: (context, state) {
             if (state is DurationSettingsSendSuccessState) {
               Navigator.pushAndRemoveUntil(
@@ -66,7 +81,8 @@ class TimeAmountScreen extends StatelessWidget {
                                         builder: (context) =>
                                             DurationSettingsScreen(
                                           isEdit: true,
-                                          stationIrrigationType: irrigationType,
+                                          stationIrrigationType:
+                                              widget.irrigationType,
                                         ),
                                       ));
                                 },
@@ -164,7 +180,7 @@ class TimeAmountScreen extends StatelessWidget {
                               ),
                               rowWidget: MainIconsRowWidget(
                                 icon1: 'm',
-                                icon2: irrigationType == 1 ? 'r' : 't',
+                                icon2: widget.irrigationType == 1 ? 'r' : 't',
                                 icon3: 'u',
                                 icon4: 'c',
                               ),
@@ -180,8 +196,7 @@ class TimeAmountScreen extends StatelessWidget {
                                 }
                                 if (myCubit.noDayIsChosen == 7) {
                                   errorToast('Please choose the days of work');
-                                }
-                                else if (allFull == true) {
+                                } else if (allFull == true) {
                                   myCubit.putIrrigationHourList(
                                       periodsList: myCubit.makeAList(
                                           weekday: myCubit.toDecimal()));

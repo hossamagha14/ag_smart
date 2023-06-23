@@ -1,5 +1,6 @@
 import 'package:ag_smart/View%20Model/bloc/Report/report_cubit.dart';
 import 'package:ag_smart/View%20Model/bloc/Report/report_states.dart';
+import 'package:ag_smart/View%20Model/bloc/commom_states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -11,7 +12,7 @@ class CustomContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<ReportCubit, ReportStates>(
+    return BlocConsumer<ReportCubit, CommonStates>(
       listener: (context, state) {},
       builder: (context, state) {
         ReportCubit myCubit = ReportCubit.get(context);

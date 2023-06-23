@@ -4,17 +4,23 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../Model/pump_model.dart';
+import '../../Repo/auth_bloc.dart';
 import '../../database/dio_helper.dart';
+import '../commom_states.dart';
 import 'pump_settings_states.dart';
 
-class PumpSettingsCubit extends Cubit<PumpSettingsStates> {
-  PumpSettingsCubit() : super(PumpSettingIntialState());
+class PumpSettingsCubit extends Cubit<CommonStates> {
+  AuthBloc authBloc;
+  late DioHelper dio;
+  PumpSettingsCubit(this.authBloc) : super(PumpSettingIntialState()) {
+    dio = DioHelper(authBloc);
+  }
+
   static PumpSettingsCubit get(context) => BlocProvider.of(context);
 
   int groupValue = 0;
   bool isPressed = false;
   PumpModel? pumpModel;
-  DioHelper dio = DioHelper();
 
   choosePumpSettings(int value, TextEditingController controller) {
     groupValue = value;

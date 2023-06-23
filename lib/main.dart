@@ -1,3 +1,4 @@
+import 'package:ag_smart/View%20Model/Repo/auth_bloc.dart';
 import 'package:ag_smart/View%20Model/bloc/Custom%20Firtilization/custom_fertilization_cubit.dart';
 import 'package:ag_smart/View%20Model/bloc/Custom%20Irrigation/custom_irrigation_cubit.dart';
 import 'package:ag_smart/View%20Model/bloc/Duration%20settings/duration_settings_cubit.dart';
@@ -17,6 +18,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'View Model/bloc/Firtiliser settings/firtiliser_settings_cubit.dart';
+import 'View Model/bloc/commom_states.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,48 +27,56 @@ void main() async {
     DeviceOrientation.portraitDown,
   ]);
   await CacheHelper.init();
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
+// ignore: must_be_immutable
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  late AuthBloc authBloc;
+  MyApp({super.key}) {
+    authBloc = AuthBloc(IntialState());
+  }
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => PumpSettingsCubit(),
+          create: (context) => PumpSettingsCubit(authBloc),
         ),
         BlocProvider(
-          create: (context) => IrrigationTypeCubit(),
+          create: (context) => IrrigationTypeCubit(authBloc),
         ),
         BlocProvider(
-          create: (context) => DurationSettingsCubit(),
+          create: (context) => DurationSettingsCubit(authBloc),
         ),
         BlocProvider(
-          create: (context) => FirtiliserSettingsCubit(),
+          create: (context) => FirtiliserSettingsCubit(authBloc),
         ),
         BlocProvider(
-          create: (context) => CustomIrrigationCubit()..getNumberOfValves(),
+          create: (context) =>
+              CustomIrrigationCubit(authBloc)..getNumberOfValves(),
         ),
         BlocProvider(
-          create: (context) => ScarecrowCubit(),
+          create: (context) => ScarecrowCubit(authBloc),
         ),
         BlocProvider(
-          create: (context) => StationsCubit()..getStations(),
+          create: (context) => StationsCubit(authBloc)..getStations(),
         ),
         BlocProvider(
-          create: (context) => LightCubit(),
+          create: (context) => LightCubit(authBloc),
         ),
         BlocProvider(
           create: (context) => LanguageCubit(),
         ),
         BlocProvider(
-          create: (context) => CustomFertilizationCubit(),
+          create: (context) => CustomFertilizationCubit(authBloc),
         ),
         BlocProvider(
-          create: (context) => ReportCubit()..getStations(),
+          create: (context) => ReportCubit(authBloc)..getStations(),
+        ),
+        BlocProvider(
+          create: (context) => authBloc,
         ),
       ],
       child: MaterialApp(
@@ -83,7 +93,7 @@ class MyApp extends StatelessWidget {
                 centerTitle: true)),
         home: isLanguageChosen == true
             ? SignInScreen()
-            : const ChooseLanguageScreen(isEdit: false,chosenLanguageType: 0),
+            : const ChooseLanguageScreen(isEdit: false, chosenLanguageType: 0),
       ),
     );
   }

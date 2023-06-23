@@ -8,13 +8,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../Model/features_model.dart';
 import '../../../Model/station_model.dart';
 import '../../../View/Reusable/text.dart';
+import '../../Repo/auth_bloc.dart';
 import '../../database/dio_helper.dart';
+import '../commom_states.dart';
 
-class ScarecrowCubit extends Cubit<ScarecrowStates> {
-  ScarecrowCubit() : super(ScarecrowIntialState());
+class ScarecrowCubit extends Cubit<CommonStates> {
+  AuthBloc authBloc;
+  late DioHelper dio;
+  ScarecrowCubit(this.authBloc) : super(ScarecrowIntialState()) {
+    dio = DioHelper(authBloc);
+  }
 
   static ScarecrowCubit get(context) => BlocProvider.of(context);
-  DioHelper dio = DioHelper();
+
   FeaturesModel? featuresModel;
   StationModel? stationModel;
   TimeOfDay time1 = TimeOfDay.now();
@@ -83,8 +89,8 @@ class ScarecrowCubit extends Cubit<ScarecrowStates> {
 
         time1 = TimeOfDay(
             hour: startingHour.toInt(), minute: startingMinute.toInt());
-        time2 = TimeOfDay(
-            hour: endingHour.toInt(), minute: endingMinute.toInt());
+        time2 =
+            TimeOfDay(hour: endingHour.toInt(), minute: endingMinute.toInt());
         onTime.text = stationModel!.animalRepellent![0].onTime.toString();
         offTime.text = stationModel!.animalRepellent![0].offTime.toString();
       }

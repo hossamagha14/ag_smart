@@ -1,4 +1,6 @@
-abstract class CustomFertilizationStates {}
+import '../commom_states.dart';
+
+abstract class CustomFertilizationStates extends CommonStates {}
 
 class CustomFertilizationIntialState extends CustomFertilizationStates {}
 

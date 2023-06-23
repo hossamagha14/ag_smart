@@ -1,5 +1,6 @@
 import 'package:ag_smart/View%20Model/bloc/Firtiliser%20settings/firtiliser_settings_states.dart';
 import 'package:ag_smart/View%20Model/bloc/Firtiliser%20settings/firtiliser_settings_cubit.dart';
+import 'package:ag_smart/View%20Model/bloc/commom_states.dart';
 import 'package:ag_smart/View/Reusable/add_new_container_button.dart';
 import 'package:ag_smart/View/Reusable/colors.dart';
 import 'package:ag_smart/View/Reusable/toasts.dart';
@@ -13,12 +14,27 @@ import 'package:ag_smart/View/Screens/bottom_nav_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart' as intl;
+import '../../View Model/Repo/auth_bloc.dart';
 import '../Reusable/day_picker_pop_up.dart';
 import 'firtilisation_type.dart';
 
 // ignore: must_be_immutable
-class FirtiliserSettingsScreen extends StatelessWidget {
+class FirtiliserSettingsScreen extends StatefulWidget {
   const FirtiliserSettingsScreen({Key? key}) : super(key: key);
+
+  @override
+  State<FirtiliserSettingsScreen> createState() =>
+      _FirtiliserSettingsScreenState();
+}
+
+class _FirtiliserSettingsScreenState extends State<FirtiliserSettingsScreen> {
+  late AuthBloc authBloc;
+
+  @override
+  void initState() {
+    authBloc = BlocProvider.of<AuthBloc>(context);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +42,7 @@ class FirtiliserSettingsScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(text[chosenLanguage]!['Device Setup']!),
       ),
-      body: BlocConsumer<FirtiliserSettingsCubit, FirtiliserSettingsStates>(
+      body: BlocConsumer<FirtiliserSettingsCubit, CommonStates>(
         listener: (context, state) {
           if (state is FirtiliserSettingsSendSuccessState) {
             Navigator.pushAndRemoveUntil(
@@ -98,8 +114,7 @@ class FirtiliserSettingsScreen extends StatelessWidget {
                                         1) {
                                       validInfo = myCubit
                                           .checkOpenValveTimeSeriesByTime();
-                                    } else if (myCubit
-                                            .fertilizationModel!
+                                    } else if (myCubit.fertilizationModel!
                                             .fertilizationMethod1 ==
                                         2) {
                                       validInfo =
@@ -154,12 +169,14 @@ class FirtiliserSettingsScreen extends StatelessWidget {
                                                 chosenLanguage]!['Set day']!,
                                             firstRowWidget: InkWell(
                                               onTap: () {
-                                                FocusScope.of(context).unfocus();
+                                                FocusScope.of(context)
+                                                    .unfocus();
                                                 showDialog(
                                                   context: context,
-                                                  builder: (context) => BlocBuilder<
-                                                      FirtiliserSettingsCubit,
-                                                      FirtiliserSettingsStates>(
+                                                  builder: (context) =>
+                                                      BlocBuilder<
+                                                          FirtiliserSettingsCubit,
+                                                          CommonStates>(
                                                     builder: (context, state) {
                                                       return DayPickerPopUp(
                                                           function: (value) {
@@ -194,7 +211,8 @@ class FirtiliserSettingsScreen extends StatelessWidget {
                                                                     .length -
                                                                 1 <
                                                             index
-                                                        ? text[chosenLanguage]!['Date']!
+                                                        ? text[chosenLanguage]![
+                                                            'Date']!
                                                         : myCubit
                                                             .firtiliserModel
                                                             .dateList[index]

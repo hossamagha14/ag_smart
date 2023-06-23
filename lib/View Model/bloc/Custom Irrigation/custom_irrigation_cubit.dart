@@ -10,10 +10,16 @@ import '../../../Model/custom_period_model.dart';
 import '../../../Model/features_model.dart';
 import '../../../Model/irrigation_settings_model.dart';
 import '../../../View/Reusable/text.dart';
+import '../../Repo/auth_bloc.dart';
 import '../../database/dio_helper.dart';
+import '../commom_states.dart';
 
-class CustomIrrigationCubit extends Cubit<CustomIrrigationStates> {
-  CustomIrrigationCubit() : super(CustomIrrigationIntialState());
+class CustomIrrigationCubit extends Cubit<CommonStates> {
+  AuthBloc authBloc;
+  late DioHelper dio;
+  CustomIrrigationCubit(this.authBloc) : super(CustomIrrigationIntialState()) {
+    dio = DioHelper(authBloc);
+  }
 
   static CustomIrrigationCubit get(context) => BlocProvider.of(context);
   CustomIrrigationModel? customIrrigationModel;
@@ -28,7 +34,6 @@ class CustomIrrigationCubit extends Cubit<CustomIrrigationStates> {
   int? irrigationMethod2;
   FeaturesModel? featuresModel;
   List<int> activeDays = [];
-  DioHelper dio = DioHelper();
   List<String> controllersText = [];
   List<String> timeStringList = [];
   List<CustomIrrigationModel> customIrrigationModelList = [];

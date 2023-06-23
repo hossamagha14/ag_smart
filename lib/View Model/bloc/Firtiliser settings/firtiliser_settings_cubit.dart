@@ -5,12 +5,18 @@ import 'package:ag_smart/View%20Model/database/end_points.dart';
 import 'package:ag_smart/View/Reusable/text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import '../../Repo/auth_bloc.dart';
 import '../../database/dio_helper.dart';
+import '../commom_states.dart';
 import 'firtiliser_settings_states.dart';
 
-class FirtiliserSettingsCubit extends Cubit<FirtiliserSettingsStates> {
-  FirtiliserSettingsCubit() : super(FirtiliserSettingsIntialState());
+class FirtiliserSettingsCubit extends Cubit<CommonStates> {
+  AuthBloc authBloc;
+  late DioHelper dio;
+  FirtiliserSettingsCubit(this.authBloc)
+      : super(FirtiliserSettingsIntialState()) {
+    dio = DioHelper(authBloc);
+  }
 
   static FirtiliserSettingsCubit get(context) => BlocProvider.of(context);
 
@@ -27,7 +33,6 @@ class FirtiliserSettingsCubit extends Cubit<FirtiliserSettingsStates> {
   bool? seriesFertilization;
   int? method1;
   int? method2;
-  DioHelper dio = DioHelper();
 
   chooseTime(value, int containerIndex) {
     firtiliserModel.timeList[containerIndex] = value ?? TimeOfDay.now();

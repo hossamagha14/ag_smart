@@ -1,4 +1,6 @@
-abstract class BottomDashBarStates {}
+import '../commom_states.dart';
+
+class BottomDashBarStates extends CommonStates {}
 
 class BottomDashBarIntialState extends BottomDashBarStates {}
 

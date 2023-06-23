@@ -1,5 +1,6 @@
 import 'package:ag_smart/View%20Model/bloc/Duration%20settings/duration_settings_cubit.dart';
 import 'package:ag_smart/View%20Model/bloc/Duration%20settings/duration_settings_states.dart';
+import 'package:ag_smart/View%20Model/bloc/commom_states.dart';
 import 'package:ag_smart/View/Reusable/choose_days_widget.dart';
 import 'package:ag_smart/View/Reusable/colors.dart';
 import 'package:ag_smart/View/Reusable/main_card02.dart';
@@ -10,19 +11,35 @@ import 'package:ag_smart/View/Reusable/text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../View Model/Repo/auth_bloc.dart';
 import '../Reusable/toasts.dart';
 import 'bottom_nav_bar.dart';
 import 'duration_settings.dart';
 
 // ignore: must_be_immutable
-class DurationSettingsByPeriodScreen extends StatelessWidget {
+class DurationSettingsByPeriodScreen extends StatefulWidget {
   final bool isEdit;
   final int irrigationType;
   DurationSettingsByPeriodScreen(
       {Key? key, required this.isEdit, required this.irrigationType})
       : super(key: key);
+
+  @override
+  State<DurationSettingsByPeriodScreen> createState() =>
+      _DurationSettingsByPeriodScreenState();
+}
+
+class _DurationSettingsByPeriodScreenState
+    extends State<DurationSettingsByPeriodScreen> {
   TextEditingController numberOfHoursControl = TextEditingController();
   TextEditingController numberOfMinutesControl = TextEditingController();
+  late AuthBloc authBloc;
+
+  @override
+  void initState() {
+    authBloc = BlocProvider.of<AuthBloc>(context);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,10 +48,10 @@ class DurationSettingsByPeriodScreen extends StatelessWidget {
         title: Text(text[chosenLanguage]!['Line Settings']!),
       ),
       body: BlocProvider(
-        create: (context) => DurationSettingsCubit()
+        create: (context) => DurationSettingsCubit(authBloc)
           ..getCycle(
               hours: numberOfHoursControl, amount: numberOfMinutesControl),
-        child: BlocConsumer<DurationSettingsCubit, DurationSettingsStates>(
+        child: BlocConsumer<DurationSettingsCubit, CommonStates>(
           listener: (context, state) {
             if (state is DurationSettingsErrorState) {
               errorToast('Input error');
@@ -73,7 +90,7 @@ class DurationSettingsByPeriodScreen extends StatelessWidget {
                                     numberOfMinutesControl.text.isEmpty) {
                                   errorToast('Please fill both categories');
                                 } else {
-                                  if (irrigationType == 1) {
+                                  if (widget.irrigationType == 1) {
                                     myCubit.checkOpenValveTimeSeriesByCycle(
                                         hours: double.parse(
                                             numberOfHoursControl.text),
@@ -84,7 +101,7 @@ class DurationSettingsByPeriodScreen extends StatelessWidget {
                                         weekday: myCubit.toDecimal(),
                                         openValveTime: double.parse(
                                             numberOfMinutesControl.text));
-                                  } else if (irrigationType == 2) {
+                                  } else if (widget.irrigationType == 2) {
                                     myCubit.checkOpenValveTimeParallelByCycle(
                                         hours: double.parse(
                                             numberOfHoursControl.text),
@@ -112,7 +129,8 @@ class DurationSettingsByPeriodScreen extends StatelessWidget {
                                         builder: (context) =>
                                             DurationSettingsScreen(
                                           isEdit: true,
-                                          stationIrrigationType: irrigationType,
+                                          stationIrrigationType:
+                                              widget.irrigationType,
                                         ),
                                       ));
                                 },
@@ -159,7 +177,7 @@ class DurationSettingsByPeriodScreen extends StatelessWidget {
                               ),
                               rowWidget: MainIconsRowWidget(
                                 icon1: 'm',
-                                icon2: irrigationType == 1 ? 'r' : 't',
+                                icon2: widget.irrigationType == 1 ? 'r' : 't',
                                 icon3: 'w',
                                 icon4: 'x',
                               ),

@@ -12,15 +12,22 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../Model/custom_irrigation_model.dart';
 import '../../../Model/days_model.dart';
 import '../../../View/Reusable/text.dart';
+import '../../Repo/auth_bloc.dart';
+import '../../database/bottom_dio_helper.dart';
 import '../../database/dio_helper.dart';
 import '../../database/end_points.dart';
 import '../commom_states.dart';
 
 class BottomNavBarCubit extends Cubit<CommonStates> {
-  BottomNavBarCubit() : super(BottomNavBarIntialState());
+  AuthBloc authBloc;
+  late DioHelper dio;
+  BottomNavBarCubit(this.authBloc) : super(BottomNavBarIntialState()) {
+    dio = DioHelper(authBloc);
+  }
+  
 
   static BottomNavBarCubit get(context) => BlocProvider.of(context);
-  DioHelper dio = DioHelper();
+
   static int settingsType = 0;
   StationModel? stationModel;
   List<Widget>? bottomNavBarScreens;
@@ -136,8 +143,8 @@ class BottomNavBarCubit extends Cubit<CommonStates> {
             }
           }
         }
-        emit(BottomNavBarGetSuccessState());
       }
+      emit(BottomNavBarGetSuccessState());
     }).catchError((onError) {
       emit(BottomNavBarGetFailState());
     });

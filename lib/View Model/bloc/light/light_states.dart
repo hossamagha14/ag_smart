@@ -1,4 +1,6 @@
-abstract class LightStates {}
+import '../commom_states.dart';
+
+abstract class LightStates extends CommonStates{}
 
 class LightIntialState extends LightStates {}
 

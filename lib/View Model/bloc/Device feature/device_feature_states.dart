@@ -1,4 +1,6 @@
-abstract class DeviceFeaturesStates {}
+import '../commom_states.dart';
+
+abstract class DeviceFeaturesStates extends CommonStates{}
 
 class DeviceFeatureIntialState extends DeviceFeaturesStates {}
 

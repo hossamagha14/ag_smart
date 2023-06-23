@@ -12,14 +12,20 @@ import '../../../Model/range_model.dart';
 import '../../../Model/report_station_model.dart';
 import '../../../Model/station_model.dart';
 import '../../../View/Reusable/text.dart';
+import '../../Repo/auth_bloc.dart';
 import '../../database/dio_helper.dart';
 import '../../database/end_points.dart';
+import '../commom_states.dart';
 
-class ReportCubit extends Cubit<ReportStates> {
-  ReportCubit() : super(ReportIntialState());
+class ReportCubit extends Cubit<CommonStates> {
+  AuthBloc authBloc;
+  late DioHelper dio;
+  ReportCubit(this.authBloc) : super(ReportIntialState()) {
+    dio = DioHelper(authBloc);
+  }
+
   static ReportCubit get(context) => BlocProvider.of(context);
 
-  DioHelper dio = DioHelper();
   String dropDownValue = text[chosenLanguage]!['Last 7 days']!;
   String pdfStartDate = DateFormat('dd-MM-y')
       .format(DateTime.now().subtract(const Duration(days: 6)));

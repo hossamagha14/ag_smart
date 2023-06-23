@@ -1,3 +1,4 @@
+import 'package:ag_smart/View%20Model/bloc/commom_states.dart';
 import 'package:ag_smart/View%20Model/bloc/light/light_cubit.dart';
 import 'package:ag_smart/View%20Model/bloc/light/light_states.dart';
 import 'package:ag_smart/View/Reusable/colors.dart';
@@ -13,10 +14,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart' as intl;
 
+import '../../View Model/Repo/auth_bloc.dart';
+
 // ignore: must_be_immutable
-class LightScreen extends StatelessWidget {
+class LightScreen extends StatefulWidget {
   LightScreen({Key? key}) : super(key: key);
+
+  @override
+  State<LightScreen> createState() => _LightScreenState();
+}
+
+class _LightScreenState extends State<LightScreen> {
   TextEditingController lightcontrol = TextEditingController();
+  late AuthBloc authBloc;
+
+  @override
+  void initState() {
+    authBloc = BlocProvider.of<AuthBloc>(context);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,8 +42,8 @@ class LightScreen extends StatelessWidget {
       ),
       body: SafeArea(
           child: BlocProvider(
-        create: (context) => LightCubit()..getData(duration: lightcontrol),
-        child: BlocConsumer<LightCubit, LightStates>(
+        create: (context) => LightCubit(authBloc)..getData(duration: lightcontrol),
+        child: BlocConsumer<LightCubit, CommonStates>(
           listener: (context, state) {
             if (state is LightPutSuccessState) {
               Navigator.pushAndRemoveUntil(

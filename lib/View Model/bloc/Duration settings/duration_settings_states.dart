@@ -1,4 +1,6 @@
-abstract class DurationSettingsStates {}
+import '../commom_states.dart';
+
+abstract class DurationSettingsStates extends CommonStates{}
 
 class DurationSettingsIntialState extends DurationSettingsStates {}
 

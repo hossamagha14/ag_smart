@@ -1,5 +1,6 @@
 import 'package:ag_smart/View%20Model/bloc/Stations/station_cubit.dart';
 import 'package:ag_smart/View%20Model/bloc/Stations/station_states.dart';
+import 'package:ag_smart/View%20Model/bloc/commom_states.dart';
 import 'package:ag_smart/View%20Model/database/cache_helpher.dart';
 import 'package:ag_smart/View/Reusable/colors.dart';
 import 'package:ag_smart/View/Reusable/toasts.dart';
@@ -8,6 +9,7 @@ import 'package:ag_smart/View/Reusable/text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../View Model/Repo/auth_bloc.dart';
 import '../Reusable/main_icons_row_widget.dart';
 
 // ignore: must_be_immutable
@@ -21,8 +23,11 @@ class DeviceSetupScreen extends StatefulWidget {
 
 class _DeviceSetupScreenState extends State<DeviceSetupScreen> {
   TextEditingController changeNameController = TextEditingController();
+  late AuthBloc authBloc;
+
   @override
   void initState() {
+    authBloc = BlocProvider.of<AuthBloc>(context);
     super.initState();
     changeNameController.text = widget.serial;
   }
@@ -40,7 +45,7 @@ class _DeviceSetupScreenState extends State<DeviceSetupScreen> {
               height: MediaQuery.of(context).size.height * 0.8,
               child: Column(
                 children: [
-                  BlocConsumer<StationsCubit, StationsStates>(
+                  BlocConsumer<StationsCubit, CommonStates>(
                     listener: (context, state) {},
                     builder: (context, state) {
                       StationsCubit myCubit = StationsCubit.get(context);

@@ -1,4 +1,6 @@
-abstract class ReportStates {}
+import '../commom_states.dart';
+
+abstract class ReportStates extends CommonStates{}
 
 class ReportIntialState extends ReportStates {}
 

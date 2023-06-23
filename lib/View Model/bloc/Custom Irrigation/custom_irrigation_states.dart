@@ -1,4 +1,6 @@
-abstract class CustomIrrigationStates {}
+import '../commom_states.dart';
+
+abstract class CustomIrrigationStates extends CommonStates {}
 
 class CustomIrrigationIntialState extends CustomIrrigationStates {}
 

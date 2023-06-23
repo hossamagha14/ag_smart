@@ -4,11 +4,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../Model/station_model.dart';
 import '../../../View/Reusable/text.dart';
+import '../../Repo/auth_bloc.dart';
 import '../../database/dio_helper.dart';
 import '../../database/end_points.dart';
+import '../commom_states.dart';
 
-class DeviceFeatureCubit extends Cubit<DeviceFeaturesStates> {
-  DeviceFeatureCubit() : super(DeviceFeatureIntialState());
+class DeviceFeatureCubit extends Cubit<CommonStates> {
+  AuthBloc authBloc;
+  late DioHelper dio;
+  DeviceFeatureCubit(this.authBloc) : super(DeviceFeatureIntialState()) {
+    dio = DioHelper(authBloc);
+  }
+
   static DeviceFeatureCubit get(context) => BlocProvider.of(context);
 
   List<DeviceFeatureModel> featureList = [
@@ -97,7 +104,6 @@ class DeviceFeatureCubit extends Cubit<DeviceFeaturesStates> {
         isPressed: false,
         fontSize: 0),
   ];
-  DioHelper dio = DioHelper();
   StationModel? stationModel;
   List<dynamic> featuresIntList = [];
   Map<String, dynamic> map = {};

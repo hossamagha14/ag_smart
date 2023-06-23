@@ -4,13 +4,18 @@ import 'package:ag_smart/View/Reusable/text.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../Repo/auth_bloc.dart';
 import '../../database/dio_helper.dart';
+import '../commom_states.dart';
 
-class IrrigationTypeCubit extends Cubit<IrrigationTypesStates> {
-  IrrigationTypeCubit() : super(IrrigationTypeIntialState());
+class IrrigationTypeCubit extends Cubit<CommonStates> {
+  AuthBloc authBloc;
+  late DioHelper dio;
+  IrrigationTypeCubit(this.authBloc) : super(IrrigationTypeIntialState()) {
+    dio = DioHelper(authBloc);
+  }
 
   static IrrigationTypeCubit get(context) => BlocProvider.of(context);
-  DioHelper dio = DioHelper();
   bool active = false;
   int irrigationType = 0;
   bool? isSeries;

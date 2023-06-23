@@ -1,5 +1,6 @@
 import 'package:ag_smart/View%20Model/bloc/Custom%20Irrigation/custom_irrigation_cubit.dart';
 import 'package:ag_smart/View%20Model/bloc/Custom%20Irrigation/custom_irrigation_states.dart';
+import 'package:ag_smart/View%20Model/bloc/commom_states.dart';
 import 'package:ag_smart/View/Reusable/duration_settings_row.dart';
 import 'package:ag_smart/View/Reusable/toasts.dart';
 import 'package:ag_smart/View/Reusable/main_card02.dart';
@@ -8,11 +9,12 @@ import 'package:ag_smart/View/Reusable/text_style.dart';
 import 'package:ag_smart/View/Screens/custom_duration_settings_period.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../View Model/Repo/auth_bloc.dart';
 import '../Reusable/colors.dart';
 import '../Reusable/main_icons_row_widget.dart';
 import 'custom_duration_by_time.dart';
 
-class CustomDurationSettingsScreen extends StatelessWidget {
+class CustomDurationSettingsScreen extends StatefulWidget {
   final int lineIndex;
   final int valveId;
   final int stationId;
@@ -24,39 +26,53 @@ class CustomDurationSettingsScreen extends StatelessWidget {
       : super(key: key);
 
   @override
+  State<CustomDurationSettingsScreen> createState() =>
+      _CustomDurationSettingsScreenState();
+}
+
+class _CustomDurationSettingsScreenState
+    extends State<CustomDurationSettingsScreen> {
+  late AuthBloc authBloc;
+
+  @override
+  void initState() {
+    authBloc = BlocProvider.of<AuthBloc>(context);
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(text[chosenLanguage]!['Device Setup']!),
       ),
-      body: BlocConsumer<CustomIrrigationCubit, CustomIrrigationStates>(
+      body: BlocConsumer<CustomIrrigationCubit, CommonStates>(
         listener: (context, state) {
           CustomIrrigationCubit myCubit = CustomIrrigationCubit.get(context);
           if (state is CustomIrrigationPutSuccessState) {
-            if (myCubit
-                    .customIrrigationModelList[lineIndex].accordingToHour ==
+            if (myCubit.customIrrigationModelList[widget.lineIndex]
+                    .accordingToHour ==
                 true) {
               Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => CustomDurationByTime(
-                      stationId: stationId,
-                      valveId: valveId,
-                      lineIndex: lineIndex,
+                      stationId: widget.stationId,
+                      valveId: widget.valveId,
+                      lineIndex: widget.lineIndex,
                       irrigationMethod2: myCubit.irrigationMethod2!,
                     ),
                   ));
-            } else if (myCubit
-                    .customIrrigationModelList[lineIndex].accordingToHour ==
+            } else if (myCubit.customIrrigationModelList[widget.lineIndex]
+                    .accordingToHour ==
                 false) {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) =>
-                        CustomDurationSettingsByPeriodScreen(
-                      stationId: stationId,
-                      valveId: valveId,
-                      lineIndex: lineIndex,
+                    builder: (context) => CustomDurationSettingsByPeriodScreen(
+                      stationId: widget.stationId,
+                      valveId: widget.valveId,
+                      lineIndex: widget.lineIndex,
                       irrigationMethod2: myCubit.irrigationMethod2!,
                     ),
                   ));
@@ -73,10 +89,14 @@ class CustomDurationSettingsScreen extends StatelessWidget {
                   children: [
                     MainCard2(
                         function: () {
-                          if (myCubit.customIrrigationModelList[lineIndex]
+                          if (myCubit
+                                      .customIrrigationModelList[
+                                          widget.lineIndex]
                                       .accordingToHour ==
                                   null ||
-                              myCubit.customIrrigationModelList[lineIndex]
+                              myCubit
+                                      .customIrrigationModelList[
+                                          widget.lineIndex]
                                       .accordingToQuantity ==
                                   null) {
                             errorToast('Please select both categories');
@@ -84,9 +104,9 @@ class CustomDurationSettingsScreen extends StatelessWidget {
                             myCubit.putIrrigationSettings(
                                 irrigationMethod1: myCubit.irrigationMethod1!,
                                 irrigationMethod2: myCubit.irrigationMethod2!,
-                                valveId: valveId,
-                                lineIndex: lineIndex,
-                                stationId: stationId);
+                                valveId: widget.valveId,
+                                lineIndex: widget.lineIndex,
+                                stationId: widget.stationId);
                           }
                         },
                         buttonColor: greenButtonColor,
@@ -94,8 +114,8 @@ class CustomDurationSettingsScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             DurationSettingsRow(
-                                firstButtonTitle: text[chosenLanguage]![
-                                    'According to time']!,
+                                firstButtonTitle:
+                                    text[chosenLanguage]!['According to time']!,
                                 secondButtonTitle: text[chosenLanguage]![
                                     'According to cycle']!,
                                 firstButtonIcon: Center(
@@ -109,28 +129,30 @@ class CustomDurationSettingsScreen extends StatelessWidget {
                                   style: mainIcon,
                                 )),
                                 firstButtonFunction: () {
-                                  myCubit.chooseAccordingToHour(lineIndex);
+                                  myCubit
+                                      .chooseAccordingToHour(widget.lineIndex);
                                 },
                                 secondButtonFunction: () {
-                                  myCubit.chooseAccordingToPeriod(lineIndex);
+                                  myCubit.chooseAccordingToPeriod(
+                                      widget.lineIndex);
                                 },
                                 firstButtonColor: myCubit
                                             .customIrrigationModelList[
-                                                lineIndex]
+                                                widget.lineIndex]
                                             .accordingToHour ==
                                         true
                                     ? selectedColor
                                     : Colors.white,
                                 secondButtonColor: myCubit
                                             .customIrrigationModelList[
-                                                lineIndex]
+                                                widget.lineIndex]
                                             .accordingToHour ==
                                         false
                                     ? selectedColor
                                     : Colors.white),
                             DurationSettingsRow(
-                                firstButtonTitle: text[chosenLanguage]![
-                                    'Watering duration']!,
+                                firstButtonTitle:
+                                    text[chosenLanguage]!['Watering duration']!,
                                 secondButtonTitle: text[chosenLanguage]![
                                     'According to quantity']!,
                                 firstButtonIcon: Center(
@@ -144,22 +166,23 @@ class CustomDurationSettingsScreen extends StatelessWidget {
                                   style: mainIcon,
                                 )),
                                 firstButtonFunction: () {
-                                  myCubit.chooseAccordingToTime(lineIndex);
+                                  myCubit
+                                      .chooseAccordingToTime(widget.lineIndex);
                                 },
                                 secondButtonFunction: () {
-                                  myCubit
-                                      .chooseAccordingToQuantity(lineIndex);
+                                  myCubit.chooseAccordingToQuantity(
+                                      widget.lineIndex);
                                 },
                                 firstButtonColor: myCubit
                                             .customIrrigationModelList[
-                                                lineIndex]
+                                                widget.lineIndex]
                                             .accordingToQuantity ==
                                         false
                                     ? selectedColor
                                     : Colors.white,
                                 secondButtonColor: myCubit
                                             .customIrrigationModelList[
-                                                lineIndex]
+                                                widget.lineIndex]
                                             .accordingToQuantity ==
                                         true
                                     ? selectedColor
@@ -170,7 +193,7 @@ class CustomDurationSettingsScreen extends StatelessWidget {
                           icon1: 'm',
                           icon2: 'f',
                         ),
-                        cardtitle: 'Line $valveId'),
+                        cardtitle: 'Line ${widget.valveId}'),
                   ],
                 );
         },

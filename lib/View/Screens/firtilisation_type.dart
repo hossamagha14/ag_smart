@@ -1,5 +1,6 @@
 import 'package:ag_smart/View%20Model/bloc/Firtiliser%20settings/firtiliser_settings_states.dart';
 import 'package:ag_smart/View%20Model/bloc/Firtiliser%20settings/firtiliser_settings_cubit.dart';
+import 'package:ag_smart/View%20Model/bloc/commom_states.dart';
 import 'package:ag_smart/View/Reusable/colors.dart';
 import 'package:ag_smart/View/Reusable/duration_settings_row.dart';
 import 'package:ag_smart/View/Reusable/toasts.dart';
@@ -9,10 +10,25 @@ import 'package:ag_smart/View/Reusable/text_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../View Model/Repo/auth_bloc.dart';
 import 'fertiliser_settings.dart';
 
-class FirtilisationTypeScreen extends StatelessWidget {
+class FirtilisationTypeScreen extends StatefulWidget {
   const FirtilisationTypeScreen({Key? key}) : super(key: key);
+
+  @override
+  State<FirtilisationTypeScreen> createState() =>
+      _FirtilisationTypeScreenState();
+}
+
+class _FirtilisationTypeScreenState extends State<FirtilisationTypeScreen> {
+  late AuthBloc authBloc;
+
+  @override
+  void initState() {
+    authBloc = BlocProvider.of<AuthBloc>(context);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +39,7 @@ class FirtilisationTypeScreen extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            BlocConsumer<FirtiliserSettingsCubit, FirtiliserSettingsStates>(
+            BlocConsumer<FirtiliserSettingsCubit, CommonStates>(
               listener: (context, state) {
                 if (state is FirtiliserSettingsSendFailState) {
                   errorToast('An error has occurred');

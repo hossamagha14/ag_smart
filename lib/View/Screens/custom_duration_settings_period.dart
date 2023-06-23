@@ -1,5 +1,6 @@
 import 'package:ag_smart/View%20Model/bloc/Custom%20Irrigation/custom_irrigation_cubit.dart';
 import 'package:ag_smart/View%20Model/bloc/Custom%20Irrigation/custom_irrigation_states.dart';
+import 'package:ag_smart/View%20Model/bloc/commom_states.dart';
 import 'package:ag_smart/View/Reusable/colors.dart';
 import 'package:ag_smart/View/Reusable/custom_irrigation_choose_day.dart';
 import 'package:ag_smart/View/Reusable/toasts.dart';
@@ -11,11 +12,12 @@ import 'package:ag_smart/View/Reusable/text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../View Model/Repo/auth_bloc.dart';
 import 'bottom_nav_bar.dart';
 import 'custom_duration_settings.dart';
 
 // ignore: must_be_immutable
-class CustomDurationSettingsByPeriodScreen extends StatelessWidget {
+class CustomDurationSettingsByPeriodScreen extends StatefulWidget {
   final int lineIndex;
   final int valveId;
   final int irrigationMethod2;
@@ -27,18 +29,37 @@ class CustomDurationSettingsByPeriodScreen extends StatelessWidget {
       required this.stationId,
       required this.irrigationMethod2})
       : super(key: key);
+
+  @override
+  State<CustomDurationSettingsByPeriodScreen> createState() =>
+      _CustomDurationSettingsByPeriodScreenState();
+}
+
+class _CustomDurationSettingsByPeriodScreenState
+    extends State<CustomDurationSettingsByPeriodScreen> {
   TextEditingController hourControl = TextEditingController();
   TextEditingController minutesControl = TextEditingController();
+  late AuthBloc authBloc;
+
+  @override
+  void initState() {
+    authBloc = BlocProvider.of<AuthBloc>(context);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
       body: BlocProvider(
-        create: (context) => CustomIrrigationCubit()
+        create: (context) => CustomIrrigationCubit(authBloc)
           ..getPeriods(
-              stationId: stationId, lineIndex: lineIndex, valveId: valveId,hours: hourControl,amount: minutesControl),
-        child: BlocConsumer<CustomIrrigationCubit, CustomIrrigationStates>(
+              stationId: widget.stationId,
+              lineIndex: widget.lineIndex,
+              valveId: widget.valveId,
+              hours: hourControl,
+              amount: minutesControl),
+        child: BlocConsumer<CustomIrrigationCubit, CommonStates>(
           listener: (context, state) {
             if (state is CustomIrrigationPutSuccessState) {
               Navigator.pushAndRemoveUntil(
@@ -74,9 +95,9 @@ class CustomDurationSettingsByPeriodScreen extends StatelessWidget {
                                       MaterialPageRoute(
                                         builder: (context) =>
                                             CustomDurationSettingsScreen(
-                                                stationId: stationId,
-                                                lineIndex: lineIndex,
-                                                valveId: valveId),
+                                                stationId: widget.stationId,
+                                                lineIndex: widget.lineIndex,
+                                                valveId: widget.valveId),
                                       ));
                                 },
                                 child: Padding(
@@ -94,7 +115,7 @@ class CustomDurationSettingsByPeriodScreen extends StatelessWidget {
                               ),
                               mainWidget: Column(children: [
                                 CustomIrrigationChooseDyasWidget(
-                                  lineIndex: lineIndex,
+                                  lineIndex: widget.lineIndex,
                                 ),
                                 SizedBox(
                                   height:
@@ -109,15 +130,16 @@ class CustomDurationSettingsByPeriodScreen extends StatelessWidget {
                                         control: hourControl,
                                         hintText: '00',
                                         unit: text[chosenLanguage]!['Hours']!),
-                                    secondRowTitle: irrigationMethod2 == 1
-                                        ? text[chosenLanguage]![
-                                            'Open valve time']!
-                                        : text[chosenLanguage]![
-                                            'Amount of water']!,
+                                    secondRowTitle:
+                                        widget.irrigationMethod2 == 1
+                                            ? text[chosenLanguage]![
+                                                'Open valve time']!
+                                            : text[chosenLanguage]![
+                                                'Amount of water']!,
                                     secondRowWidget: OpenValvePeriodTextField(
                                         control: minutesControl,
                                         hintText: '00',
-                                        unit: irrigationMethod2 == 1
+                                        unit: widget.irrigationMethod2 == 1
                                             ? text[chosenLanguage]!['Minutes']!
                                             : text[chosenLanguage]!['ml']!))
                               ]),
@@ -125,21 +147,24 @@ class CustomDurationSettingsByPeriodScreen extends StatelessWidget {
                                 icon1: 'm',
                                 icon2: 'f',
                                 icon3: 'w',
-                                icon4: irrigationMethod2 == 1 ? 'x' : 'c',
+                                icon4:
+                                    widget.irrigationMethod2 == 1 ? 'x' : 'c',
                               ),
                               function: () {
                                 bool validInfo = true;
-                                if (myCubit.customIrrigationModelList[lineIndex]
+                                if (myCubit
+                                        .customIrrigationModelList[
+                                            widget.lineIndex]
                                         .noDayIsChosen ==
                                     7) {
                                   errorToast('Please choose the days of work');
                                 } else if (hourControl.text.isEmpty ||
                                     minutesControl.text.isEmpty) {
-                                  errorToast(irrigationMethod2 == 1
+                                  errorToast(widget.irrigationMethod2 == 1
                                       ? 'Please add the open valve time'
                                       : 'Please add the amount of water needed');
                                 } else {
-                                  if (irrigationMethod2 == 1) {
+                                  if (widget.irrigationMethod2 == 1) {
                                     validInfo =
                                         myCubit.checkOpenValveTimeSeriesByCycle(
                                             hours:
@@ -150,16 +175,16 @@ class CustomDurationSettingsByPeriodScreen extends StatelessWidget {
                                   if (validInfo == true) {
                                     myCubit.putIrrigationCycle(
                                         interval: int.parse(hourControl.text),
-                                        stationId: stationId,
-                                        valveId: valveId,
-                                        duration: irrigationMethod2 == 1
+                                        stationId: widget.stationId,
+                                        valveId: widget.valveId,
+                                        duration: widget.irrigationMethod2 == 1
                                             ? int.parse(minutesControl.text)
                                             : 0,
-                                        quantity: irrigationMethod2 == 2
+                                        quantity: widget.irrigationMethod2 == 2
                                             ? int.parse(minutesControl.text)
                                             : 0,
                                         weekDays: myCubit.toDecimal(
-                                            lineIndex: lineIndex));
+                                            lineIndex: widget.lineIndex));
                                   } else if (validInfo == false) {
                                     errorToast('Input error');
                                   }

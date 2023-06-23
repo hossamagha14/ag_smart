@@ -14,14 +14,19 @@ import '../../../Model/station_model.dart';
 import '../../../View/Reusable/text.dart';
 import '../../../View/Screens/bottom_dash_bar_screen.dart';
 import '../../../View/Screens/device_features.dart';
+import '../../Repo/auth_bloc.dart';
 import '../../database/dio_helper.dart';
+import '../commom_states.dart';
 
-class StationsCubit extends Cubit<StationsStates> {
-  StationsCubit() : super(StationsIntialState());
+class StationsCubit extends Cubit<CommonStates> {
+  AuthBloc authBloc;
+  late DioHelper dio;
+  StationsCubit(this.authBloc) : super(StationsIntialState()) {
+    dio = DioHelper(authBloc);
+  }
 
   static StationsCubit get(context) => BlocProvider.of(context);
   Database? dataBase;
-  DioHelper dio = DioHelper();
   bool securePassword = true;
   bool secureConfirmPassword = true;
   StationModel? stationModel;

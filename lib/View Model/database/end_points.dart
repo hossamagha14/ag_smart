@@ -1,6 +1,6 @@
 import 'package:ag_smart/View%20Model/database/cache_helpher.dart';
 
-const base = 'http://16.16.203.125';
+const base = 'http://192.168.1.108:5000';
 String stationInfo = CacheHelper.getData(key: 'stationInfo');
 String features = CacheHelper.getData(key: 'features');
 String valveInfo = CacheHelper.getData(key: 'valveInfo');

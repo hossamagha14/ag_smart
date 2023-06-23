@@ -1,5 +1,6 @@
 import 'package:ag_smart/View%20Model/bloc/Custom%20Firtilization/custom_fertilization_cubit.dart';
 import 'package:ag_smart/View%20Model/bloc/Custom%20Firtilization/custom_fertilization_states.dart';
+import 'package:ag_smart/View%20Model/bloc/commom_states.dart';
 import 'package:ag_smart/View/Reusable/text.dart';
 import 'package:ag_smart/View/Reusable/toasts.dart';
 import 'package:ag_smart/View/Screens/custom_duration_by_time.dart';
@@ -33,7 +34,7 @@ class PopUpScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<CustomFertilizationCubit, CustomFertilizationStates>(
+    return BlocConsumer<CustomFertilizationCubit, CommonStates>(
       listener: (context, state) {},
       builder: (context, state) {
         CustomFertilizationCubit myCubit =

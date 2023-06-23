@@ -5,13 +5,13 @@ import '../Repo/auth_bloc.dart';
 import '../Repo/auth_event.dart';
 import 'end_points.dart';
 
-class DioHelper {
+class BottomDioHelper {
   final Dio dio = Dio();
   final Dio refreshDio = Dio();
   AuthBloc authBloc;
   bool isRefreshed = false;
 
-  DioHelper(this.authBloc) {
+  BottomDioHelper(this.authBloc) {
     dio.interceptors
         .add(InterceptorsWrapper(onRequest: (options, handler) async {
       options.headers['Authorization'] = 'Bearer $token';

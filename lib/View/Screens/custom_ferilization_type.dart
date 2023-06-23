@@ -1,5 +1,6 @@
 import 'package:ag_smart/View%20Model/bloc/Custom%20Firtilization/custom_fertilization_cubit.dart';
 import 'package:ag_smart/View%20Model/bloc/Custom%20Firtilization/custom_fertilization_states.dart';
+import 'package:ag_smart/View%20Model/bloc/commom_states.dart';
 import 'package:ag_smart/View/Reusable/colors.dart';
 import 'package:ag_smart/View/Reusable/duration_settings_row.dart';
 import 'package:ag_smart/View/Reusable/toasts.dart';
@@ -9,14 +10,30 @@ import 'package:ag_smart/View/Reusable/text_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../View Model/Repo/auth_bloc.dart';
 import 'custom_fertlization_duration.dart';
 
-class CustomFirtilizationTypesScreen extends StatelessWidget {
+class CustomFirtilizationTypesScreen extends StatefulWidget {
   final int lineIndex;
   final int valveId;
   const CustomFirtilizationTypesScreen(
       {Key? key, required this.lineIndex, required this.valveId})
       : super(key: key);
+
+  @override
+  State<CustomFirtilizationTypesScreen> createState() =>
+      _CustomFirtilizationTypesScreenState();
+}
+
+class _CustomFirtilizationTypesScreenState
+    extends State<CustomFirtilizationTypesScreen> {
+  late AuthBloc authBloc;
+
+  @override
+  void initState() {
+    authBloc = BlocProvider.of<AuthBloc>(context);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,11 +42,11 @@ class CustomFirtilizationTypesScreen extends StatelessWidget {
         title: const Text('Station info.'),
       ),
       body: BlocProvider(
-        create: (context) => CustomFertilizationCubit()
+        create: (context) => CustomFertilizationCubit(authBloc)
           ..getNumberOfValvesOnly(serialNumber: serialNumber),
         child: SafeArea(
             child: BlocConsumer<CustomFertilizationCubit,
-                CustomFertilizationStates>(
+                CommonStates>(
           listener: (context, state) {
             CustomFertilizationCubit myCubit =
                 CustomFertilizationCubit.get(context);
@@ -38,8 +55,8 @@ class CustomFirtilizationTypesScreen extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) => CustomFirtiliserSettingsScreen(
-                      lineIndex: lineIndex,
-                      valveId: valveId,
+                      lineIndex: widget.lineIndex,
+                      valveId: widget.valveId,
                       fertiliationType: myCubit.fertilizationType,
                     ),
                   ));
@@ -98,8 +115,8 @@ class CustomFirtilizationTypesScreen extends StatelessWidget {
                           ),
                           function: () {
                             myCubit.putFertilizationType(
-                                lineIndex: lineIndex,
-                                valveId: valveId,
+                                lineIndex: widget.lineIndex,
+                                valveId: widget.valveId,
                                 stationId: stationId,
                                 fertilizationMethod: myCubit.fertilizationType);
                           },

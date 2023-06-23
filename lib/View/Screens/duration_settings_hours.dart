@@ -1,5 +1,6 @@
 import 'package:ag_smart/View%20Model/bloc/Duration%20settings/duration_settings_cubit.dart';
 import 'package:ag_smart/View%20Model/bloc/Duration%20settings/duration_settings_states.dart';
+import 'package:ag_smart/View%20Model/bloc/commom_states.dart';
 import 'package:ag_smart/View/Reusable/add_new_container_button.dart';
 import 'package:ag_smart/View/Reusable/choose_days_widget.dart';
 import 'package:ag_smart/View/Reusable/colors.dart';
@@ -12,18 +13,34 @@ import 'package:ag_smart/View/Reusable/set_settings_2rows_container.dart';
 import 'package:ag_smart/View/Reusable/text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../View Model/Repo/auth_bloc.dart';
 import 'bottom_nav_bar.dart';
 import 'package:intl/intl.dart' as intl;
 
 import 'duration_settings.dart';
 
 // ignore: must_be_immutable
-class DurationSettingsByHourScreen extends StatelessWidget {
+class DurationSettingsByHourScreen extends StatefulWidget {
   final bool isEdit;
   final int irrigationType;
   const DurationSettingsByHourScreen(
       {Key? key, required this.isEdit, required this.irrigationType})
       : super(key: key);
+
+  @override
+  State<DurationSettingsByHourScreen> createState() =>
+      _DurationSettingsByHourScreenState();
+}
+
+class _DurationSettingsByHourScreenState
+    extends State<DurationSettingsByHourScreen> {
+  late AuthBloc authBloc;
+
+  @override
+  void initState() {
+    authBloc = BlocProvider.of<AuthBloc>(context);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,8 +49,8 @@ class DurationSettingsByHourScreen extends StatelessWidget {
         title: Text(text[chosenLanguage]!['Device Setup']!),
       ),
       body: BlocProvider(
-        create: (context) => DurationSettingsCubit()..getPeriods(),
-        child: BlocConsumer<DurationSettingsCubit, DurationSettingsStates>(
+        create: (context) => DurationSettingsCubit(authBloc)..getPeriods(),
+        child: BlocConsumer<DurationSettingsCubit, CommonStates>(
           listener: (context, state) {
             if (state is DurationSettingsSendSuccessState) {
               Navigator.pushAndRemoveUntil(
@@ -65,8 +82,11 @@ class DurationSettingsByHourScreen extends StatelessWidget {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) =>
-                                           DurationSettingsScreen(
-                                              isEdit: true,stationIrrigationType: irrigationType,),
+                                          DurationSettingsScreen(
+                                        isEdit: true,
+                                        stationIrrigationType:
+                                            widget.irrigationType,
+                                      ),
                                     ));
                               },
                               child: Padding(
@@ -161,14 +181,12 @@ class DurationSettingsByHourScreen extends StatelessWidget {
                                 )
                               ],
                             ),
-                            rowWidget:MainIconsRowWidget(
-                                  icon1: 'm',
-                                  icon2: irrigationType == 1
-                                      ? 'r'
-                                      : 't',
-                                  icon3: 'u',
-                                  icon4: 'x',
-                                ),
+                            rowWidget: MainIconsRowWidget(
+                              icon1: 'm',
+                              icon2: widget.irrigationType == 1 ? 'r' : 't',
+                              icon3: 'u',
+                              icon4: 'x',
+                            ),
                             cardtitle:
                                 text[chosenLanguage]!['Duration settings']!,
                             function: () {
@@ -183,10 +201,10 @@ class DurationSettingsByHourScreen extends StatelessWidget {
                                 }
                               }
                               if (allFull == true) {
-                                if (irrigationType == 1) {
+                                if (widget.irrigationType == 1) {
                                   checkTime =
                                       myCubit.checkOpenValveTimeSeriesByTime();
-                                } else if (irrigationType == 2) {
+                                } else if (widget.irrigationType == 2) {
                                   checkTime =
                                       myCubit.checkOpenValveTimeParallel();
                                 }

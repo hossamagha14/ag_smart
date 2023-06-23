@@ -2,14 +2,14 @@ import 'package:ag_smart/View/Reusable/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../View Model/bloc/Report/report_cubit.dart';
-import '../../View Model/bloc/Report/report_states.dart';
+import '../../View Model/bloc/commom_states.dart';
 
 class QuarterContainer extends StatelessWidget {
   const QuarterContainer({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<ReportCubit, ReportStates>(
+    return BlocConsumer<ReportCubit, CommonStates>(
       listener: (context, state) {},
       builder: (context, state) {
         ReportCubit myCubit = ReportCubit.get(context);
@@ -68,7 +68,7 @@ class QuarterContainer extends StatelessWidget {
                         content: SizedBox(
                           width: MediaQuery.of(context).size.width * 0.8,
                           height: MediaQuery.of(context).size.height * 0.4,
-                          child: BlocBuilder<ReportCubit, ReportStates>(
+                          child: BlocBuilder<ReportCubit, CommonStates>(
                             builder: (context, state) {
                               ReportCubit myCubit = ReportCubit.get(context);
                               return Column(

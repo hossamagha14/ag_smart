@@ -1,5 +1,6 @@
 import 'package:ag_smart/View%20Model/bloc/Lines%20activation/lines_activation_cubit.dart';
 import 'package:ag_smart/View%20Model/bloc/Lines%20activation/lines_activation_states.dart';
+import 'package:ag_smart/View%20Model/bloc/commom_states.dart';
 import 'package:ag_smart/View/Reusable/colors.dart';
 import 'package:ag_smart/View/Reusable/text.dart';
 import 'package:ag_smart/View/Reusable/text_style.dart';
@@ -7,13 +8,27 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../View Model/Repo/auth_bloc.dart';
 import '../Reusable/main_card02.dart';
 import 'lines_settings.dart';
 
-class LinesActivationScreen extends StatelessWidget {
+class LinesActivationScreen extends StatefulWidget {
   final bool isEdit;
   const LinesActivationScreen({Key? key, required this.isEdit})
       : super(key: key);
+
+  @override
+  State<LinesActivationScreen> createState() => _LinesActivationScreenState();
+}
+
+class _LinesActivationScreenState extends State<LinesActivationScreen> {
+  late AuthBloc authBloc;
+
+  @override
+  void initState() {
+    authBloc = BlocProvider.of<AuthBloc>(context);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,14 +38,15 @@ class LinesActivationScreen extends StatelessWidget {
       ),
       body: BlocProvider(
         create: (context) =>
-            LinesActivationCubit()..getNumberOfValves(isEdit: isEdit),
-        child: BlocConsumer<LinesActivationCubit, LinesActivationStates>(
+            LinesActivationCubit(authBloc)..getNumberOfValves(isEdit: widget.isEdit),
+        child: BlocConsumer<LinesActivationCubit, CommonStates>(
           listener: (context, state) {
             if (state is LinesActivationSendSuccessState) {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => LinesSettingsScreen(isEdit: isEdit),
+                    builder: (context) =>
+                        LinesSettingsScreen(isEdit: widget.isEdit),
                   ));
             }
           },

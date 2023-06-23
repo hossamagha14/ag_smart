@@ -2,6 +2,7 @@
 
 import 'package:ag_smart/View%20Model/bloc/Stations/station_cubit.dart';
 import 'package:ag_smart/View%20Model/bloc/Stations/station_states.dart';
+import 'package:ag_smart/View%20Model/bloc/commom_states.dart';
 import 'package:ag_smart/View%20Model/database/cache_helpher.dart';
 import 'package:ag_smart/View/Reusable/colors.dart';
 import 'package:ag_smart/View/Reusable/toasts.dart';
@@ -11,18 +12,32 @@ import 'package:ag_smart/View/Screens/sign_in.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../View Model/Repo/auth_bloc.dart';
 import '../Reusable/text.dart';
 
-class DashsboardScreen extends StatelessWidget {
+class DashsboardScreen extends StatefulWidget {
   const DashsboardScreen({Key? key}) : super(key: key);
+
+  @override
+  State<DashsboardScreen> createState() => _DashsboardScreenState();
+}
+
+class _DashsboardScreenState extends State<DashsboardScreen> {
+  late AuthBloc authBloc;
+
+  @override
+  void initState() {
+    authBloc = BlocProvider.of<AuthBloc>(context);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
           child: BlocProvider(
-        create: (context) => StationsCubit()..getStations(),
-        child: BlocConsumer<StationsCubit, StationsStates>(
+        create: (context) => StationsCubit(authBloc)..getStations(),
+        child: BlocConsumer<StationsCubit, CommonStates>(
           listener: (context, state) {
             if (state is StationsGetFailState) {
               errorToast('Something went wrong');

@@ -1,4 +1,6 @@
-abstract class PumpSettingsStates {}
+import '../commom_states.dart';
+
+abstract class PumpSettingsStates extends CommonStates{}
 
 class PumpSettingIntialState extends PumpSettingsStates {}
 

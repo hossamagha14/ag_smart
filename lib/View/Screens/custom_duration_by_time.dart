@@ -1,5 +1,6 @@
 import 'package:ag_smart/View%20Model/bloc/Custom%20Irrigation/custom_irrigation_cubit.dart';
 import 'package:ag_smart/View%20Model/bloc/Custom%20Irrigation/custom_irrigation_states.dart';
+import 'package:ag_smart/View%20Model/bloc/commom_states.dart';
 import 'package:ag_smart/View/Reusable/add_new_container_button.dart';
 import 'package:ag_smart/View/Reusable/colors.dart';
 import 'package:ag_smart/View/Reusable/toasts.dart';
@@ -13,13 +14,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
+import '../../View Model/Repo/auth_bloc.dart';
 import '../Reusable/custom_irrigation_choose_day.dart';
 import '../Reusable/loading_set_settings_2_rows.dart';
 import 'bottom_nav_bar.dart';
 import 'custom_duration_settings.dart';
 
 // ignore: must_be_immutable
-class CustomDurationByTime extends StatelessWidget {
+class CustomDurationByTime extends StatefulWidget {
   final int lineIndex;
   final int valveId;
   final int stationId;
@@ -31,7 +33,20 @@ class CustomDurationByTime extends StatelessWidget {
       required this.stationId,
       required this.irrigationMethod2})
       : super(key: key);
+
+  @override
+  State<CustomDurationByTime> createState() => _CustomDurationByTimeState();
+}
+
+class _CustomDurationByTimeState extends State<CustomDurationByTime> {
   TextEditingController openValveControl = TextEditingController();
+  late AuthBloc authBloc;
+
+  @override
+  void initState() {
+    authBloc = BlocProvider.of<AuthBloc>(context);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,10 +56,12 @@ class CustomDurationByTime extends StatelessWidget {
       ),
       body: SafeArea(
           child: BlocProvider(
-        create: (context) => CustomIrrigationCubit()
+        create: (context) => CustomIrrigationCubit(authBloc)
           ..getPeriods(
-              stationId: stationId, lineIndex: lineIndex, valveId: valveId),
-        child: BlocConsumer<CustomIrrigationCubit, CustomIrrigationStates>(
+              stationId: widget.stationId,
+              lineIndex: widget.lineIndex,
+              valveId: widget.valveId),
+        child: BlocConsumer<CustomIrrigationCubit, CommonStates>(
           listener: (context, state) {
             if (state is CustomIrrigationPutSuccessState) {
               Navigator.pushAndRemoveUntil(
@@ -80,9 +97,9 @@ class CustomDurationByTime extends StatelessWidget {
                                       MaterialPageRoute(
                                         builder: (context) =>
                                             CustomDurationSettingsScreen(
-                                                stationId: stationId,
-                                                lineIndex: lineIndex,
-                                                valveId: valveId),
+                                                stationId: widget.stationId,
+                                                lineIndex: widget.lineIndex,
+                                                valveId: widget.valveId),
                                       ));
                                 },
                                 child: Padding(
@@ -101,7 +118,7 @@ class CustomDurationByTime extends StatelessWidget {
                               mainWidget: Column(
                                 children: [
                                   CustomIrrigationChooseDyasWidget(
-                                    lineIndex: lineIndex,
+                                    lineIndex: widget.lineIndex,
                                   ),
                                   SizedBox(
                                     height: MediaQuery.of(context).size.height *
@@ -117,7 +134,7 @@ class CustomDurationByTime extends StatelessWidget {
                                         shrinkWrap: true,
                                         itemBuilder: (context, index) => myCubit
                                                     .customIrrigationModelList[
-                                                        lineIndex]
+                                                        widget.lineIndex]
                                                     .isBeingDeleted[index] ==
                                                 false
                                             ? SetSettings2RowsContainer(
@@ -126,57 +143,61 @@ class CustomDurationByTime extends StatelessWidget {
                                                   if (myCubit
                                                           .irrigationSettingsModel!
                                                           .customValvesSettings![
-                                                              lineIndex]
+                                                              widget.lineIndex]
                                                           .irrigationPeriods!
                                                           .length >
                                                       index) {
                                                     myCubit.removeContainerFromdb(
-                                                        lineIndex: lineIndex,
+                                                        lineIndex:
+                                                            widget.lineIndex,
                                                         weekday:
                                                             myCubit.toDecimal(
-                                                                lineIndex:
-                                                                    lineIndex),
+                                                                lineIndex: widget
+                                                                    .lineIndex),
                                                         containerIndex: index,
-                                                        stationId: stationId,
-                                                        valveId: valveId,
+                                                        stationId:
+                                                            widget.stationId,
+                                                        valveId: widget.valveId,
                                                         periodId: myCubit
                                                             .customIrrigationModelList[
-                                                                lineIndex]
+                                                                widget
+                                                                    .lineIndex]
                                                             .controllersList
                                                             .length);
                                                   } else {
                                                     myCubit.removeContainer(
-                                                        lineIndex: lineIndex,
+                                                        lineIndex:
+                                                            widget.lineIndex,
                                                         containerIndex: index);
                                                   }
                                                 },
-                                                firstRowTitle: text[chosenLanguage]![
-                                                    'Set time']!,
+                                                firstRowTitle:
+                                                    text[chosenLanguage]![
+                                                        'Set time']!,
                                                 firstRowWidget: MyTimePicker(
-                                                    time: DateFormat('HH:mm').format(DateTime(
-                                                        2023,
-                                                        1,
-                                                        1,
-                                                        myCubit
-                                                            .customIrrigationModelList[
-                                                                lineIndex]
-                                                            .timeList[index]
-                                                            .hour,
-                                                        myCubit
-                                                            .customIrrigationModelList[lineIndex]
-                                                            .timeList[index]
-                                                            .minute)),
-                                                    function: (value) => myCubit.pickTime(value, index, lineIndex)),
-                                                secondRowTitle: myCubit.customIrrigationModelList[lineIndex].accordingToQuantity == false ? text[chosenLanguage]!['Open valve time']! : text[chosenLanguage]!['Amount of water']!,
+                                                    time: DateFormat('HH:mm')
+                                                        .format(DateTime(
+                                                            2023,
+                                                            1,
+                                                            1,
+                                                            myCubit
+                                                                .customIrrigationModelList[
+                                                                    widget.lineIndex]
+                                                                .timeList[index]
+                                                                .hour,
+                                                            myCubit.customIrrigationModelList[widget.lineIndex].timeList[index].minute)),
+                                                    function: (value) => myCubit.pickTime(value, index, widget.lineIndex)),
+                                                secondRowTitle: myCubit.customIrrigationModelList[widget.lineIndex].accordingToQuantity == false ? text[chosenLanguage]!['Open valve time']! : text[chosenLanguage]!['Amount of water']!,
                                                 secondRowWidget: OpenValvePeriodTextField(
                                                   control: myCubit
                                                       .customIrrigationModelList[
-                                                          lineIndex]
+                                                          widget.lineIndex]
                                                       .controllersList[index],
                                                   hintText: '00',
                                                   unit: myCubit
                                                               .customIrrigationModelList[
-                                                                  lineIndex]
+                                                                  widget
+                                                                      .lineIndex]
                                                               .accordingToQuantity ==
                                                           false
                                                       ? text[chosenLanguage]![
@@ -188,17 +209,18 @@ class CustomDurationByTime extends StatelessWidget {
                                                 visible: false,
                                                 function: () {},
                                                 firstRowTitle: text[chosenLanguage]!['Set time']!,
-                                                firstRowWidget: MyTimePicker(time: myCubit.customIrrigationModelList[lineIndex].timeList[index].format(context).toString(), function: (value) => myCubit.pickTime(value, index, lineIndex)),
-                                                secondRowTitle: myCubit.customIrrigationModelList[lineIndex].accordingToQuantity == false ? text[chosenLanguage]!['Open valve time']! : text[chosenLanguage]!['Amount of water']!,
+                                                firstRowWidget: MyTimePicker(time: myCubit.customIrrigationModelList[widget.lineIndex].timeList[index].format(context).toString(), function: (value) => myCubit.pickTime(value, index, widget.lineIndex)),
+                                                secondRowTitle: myCubit.customIrrigationModelList[widget.lineIndex].accordingToQuantity == false ? text[chosenLanguage]!['Open valve time']! : text[chosenLanguage]!['Amount of water']!,
                                                 secondRowWidget: OpenValvePeriodTextField(
                                                   control: myCubit
                                                       .customIrrigationModelList[
-                                                          lineIndex]
+                                                          widget.lineIndex]
                                                       .controllersList[index],
                                                   hintText: '00',
                                                   unit: myCubit
                                                               .customIrrigationModelList[
-                                                                  lineIndex]
+                                                                  widget
+                                                                      .lineIndex]
                                                               .accordingToQuantity ==
                                                           false
                                                       ? text[chosenLanguage]![
@@ -207,11 +229,11 @@ class CustomDurationByTime extends StatelessWidget {
                                                           'ml']!,
                                                 )),
                                         separatorBuilder: (context, index) => SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-                                        itemCount: myCubit.customIrrigationModelList[lineIndex].controllersList.length),
+                                        itemCount: myCubit.customIrrigationModelList[widget.lineIndex].controllersList.length),
                                   ),
                                   AddNewContainerButton(
                                     functionAdd: () {
-                                      myCubit.addContainer(lineIndex,
+                                      myCubit.addContainer(widget.lineIndex,
                                           hour: 0, minute: 0);
                                     },
                                     functionRemove: () {
@@ -224,12 +246,13 @@ class CustomDurationByTime extends StatelessWidget {
                                 icon1: 'm',
                                 icon2: 'f',
                                 icon3: 'u',
-                                icon4:
-                                    myCubit.customIrrigationModelList[lineIndex]
-                                                .accordingToQuantity ==
-                                            false
-                                        ? 'x'
-                                        : 'c',
+                                icon4: myCubit
+                                            .customIrrigationModelList[
+                                                widget.lineIndex]
+                                            .accordingToQuantity ==
+                                        false
+                                    ? 'x'
+                                    : 'c',
                               ),
                               function: () {
                                 bool allFull = true;
@@ -239,12 +262,13 @@ class CustomDurationByTime extends StatelessWidget {
                                     i <
                                         myCubit
                                             .customIrrigationModelList[
-                                                lineIndex]
+                                                widget.lineIndex]
                                             .controllersList
                                             .length;
                                     i++) {
                                   if (myCubit
-                                      .customIrrigationModelList[lineIndex]
+                                      .customIrrigationModelList[
+                                          widget.lineIndex]
                                       .controllersList[i]
                                       .text
                                       .isEmpty) {
@@ -252,29 +276,31 @@ class CustomDurationByTime extends StatelessWidget {
                                   }
                                 }
                                 if (allFull == true) {
-                                  if (irrigationMethod2 == 1) {
+                                  if (widget.irrigationMethod2 == 1) {
                                     validInfo =
                                         myCubit.checkOpenValveTimeParallel(
-                                            lineIndex: lineIndex);
+                                            lineIndex: widget.lineIndex);
                                   }
                                 }
-                                if (myCubit.customIrrigationModelList[lineIndex]
+                                if (myCubit
+                                        .customIrrigationModelList[
+                                            widget.lineIndex]
                                         .noDayIsChosen ==
                                     7) {
                                   errorToast('Please choose the days of work');
                                 } else {
                                   if (allFull == true && validInfo == true) {
                                     myCubit.putIrrigationHour(
-                                        stationId: stationId,
+                                        stationId: widget.stationId,
                                         periodsList: myCubit.makeAList(
-                                            lineIndex: lineIndex,
-                                            valveId: valveId,
+                                            lineIndex: widget.lineIndex,
+                                            valveId: widget.valveId,
                                             weekday: myCubit.toDecimal(
-                                                lineIndex: lineIndex)));
+                                                lineIndex: widget.lineIndex)));
                                   } else if (allFull == false) {
                                     errorToast(myCubit
                                                 .customIrrigationModelList[
-                                                    lineIndex]
+                                                    widget.lineIndex]
                                                 .accordingToQuantity ==
                                             false
                                         ? 'Please add the open valve time'

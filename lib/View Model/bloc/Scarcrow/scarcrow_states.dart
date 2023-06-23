@@ -1,4 +1,6 @@
-abstract class ScarecrowStates {}
+import '../commom_states.dart';
+
+abstract class ScarecrowStates extends CommonStates{}
 
 class ScarecrowIntialState extends ScarecrowStates {}
 

@@ -1,5 +1,6 @@
 import 'package:ag_smart/View%20Model/bloc/Irrigation%20type/irrigation_type_cubit.dart';
 import 'package:ag_smart/View%20Model/bloc/Irrigation%20type/irrigation_type_states.dart';
+import 'package:ag_smart/View%20Model/bloc/commom_states.dart';
 import 'package:ag_smart/View/Reusable/duration_settings_row.dart';
 import 'package:ag_smart/View/Reusable/toasts.dart';
 import 'package:ag_smart/View/Reusable/main_card02.dart';
@@ -12,14 +13,28 @@ import 'package:ag_smart/View/Screens/time_amount.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../View Model/Repo/auth_bloc.dart';
 import '../Reusable/colors.dart';
 
-class DurationSettingsScreen extends StatelessWidget {
+class DurationSettingsScreen extends StatefulWidget {
   final bool isEdit;
   final int stationIrrigationType;
   const DurationSettingsScreen(
       {Key? key, required this.isEdit, required this.stationIrrigationType})
       : super(key: key);
+
+  @override
+  State<DurationSettingsScreen> createState() => _DurationSettingsScreenState();
+}
+
+class _DurationSettingsScreenState extends State<DurationSettingsScreen> {
+  late AuthBloc authBloc;
+
+  @override
+  void initState() {
+    authBloc = BlocProvider.of<AuthBloc>(context);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +45,7 @@ class DurationSettingsScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            BlocConsumer<IrrigationTypeCubit, IrrigationTypesStates>(
+            BlocConsumer<IrrigationTypeCubit, CommonStates>(
               listener: (context, state) {
                 IrrigationTypeCubit myCubit = IrrigationTypeCubit.get(context);
                 if (state is IrrigationTypeSendSuccessState) {
@@ -40,8 +55,8 @@ class DurationSettingsScreen extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                           builder: (context) => DurationSettingsByHourScreen(
-                            isEdit: isEdit,
-                            irrigationType: stationIrrigationType,
+                            isEdit: widget.isEdit,
+                            irrigationType: widget.stationIrrigationType,
                           ),
                         ));
                   } else if (myCubit.accordingToHour == true &&
@@ -50,8 +65,8 @@ class DurationSettingsScreen extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                           builder: (context) => TimeAmountScreen(
-                            isEdit: isEdit,
-                            irrigationType: stationIrrigationType,
+                            isEdit: widget.isEdit,
+                            irrigationType: widget.stationIrrigationType,
                           ),
                         ));
                   } else if (myCubit.accordingToHour == false &&
@@ -60,8 +75,8 @@ class DurationSettingsScreen extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                           builder: (context) => DurationSettingsByPeriodScreen(
-                            isEdit: isEdit,
-                            irrigationType: stationIrrigationType,
+                            isEdit: widget.isEdit,
+                            irrigationType: widget.stationIrrigationType,
                           ),
                         ));
                   } else if (myCubit.accordingToHour == false &&
@@ -70,8 +85,8 @@ class DurationSettingsScreen extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                           builder: (context) => PeriodAmountScreen(
-                            isEdit: isEdit,
-                            irrigationType: stationIrrigationType,
+                            isEdit: widget.isEdit,
+                            irrigationType: widget.stationIrrigationType,
                           ),
                         ));
                   }
@@ -159,7 +174,7 @@ class DurationSettingsScreen extends StatelessWidget {
                     rowWidget: Row(
                       children: [
                         Text(
-                          stationIrrigationType == 1 ? 'r' : 't',
+                          widget.stationIrrigationType == 1 ? 'r' : 't',
                           style: mainIcon,
                         ),
                         SizedBox(

@@ -7,10 +7,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../Model/fertilization_model.dart';
 import '../../../View/Reusable/text.dart';
+import '../../Repo/auth_bloc.dart';
 import '../../database/dio_helper.dart';
+import '../commom_states.dart';
 
-class CustomFertilizationCubit extends Cubit<CustomFertilizationStates> {
-  CustomFertilizationCubit() : super(CustomFertilizationIntialState());
+class CustomFertilizationCubit extends Cubit<CommonStates> {
+  AuthBloc authBloc;
+  late DioHelper dio;
+  CustomFertilizationCubit(this.authBloc)
+      : super(CustomFertilizationIntialState()) {
+    dio = DioHelper(authBloc);
+  }
 
   static CustomFertilizationCubit get(context) => BlocProvider.of(context);
   bool? isDuration;
@@ -24,7 +31,6 @@ class CustomFertilizationCubit extends Cubit<CustomFertilizationStates> {
   int fertilizationType = 0;
   bool visible = false;
   FertilizationModel? fertilizationModel;
-  DioHelper dio = DioHelper();
   List<CustomFertilizationModel> customFertilizationModelList = [];
 
   chooseDuration() {
