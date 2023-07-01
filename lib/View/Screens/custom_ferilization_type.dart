@@ -29,10 +29,12 @@ class CustomFirtilizationTypesScreen extends StatefulWidget {
 class _CustomFirtilizationTypesScreenState
     extends State<CustomFirtilizationTypesScreen> {
   late AuthBloc authBloc;
+  late CustomFertilizationCubit customFertilizationBloc;
 
   @override
   void initState() {
     authBloc = BlocProvider.of<AuthBloc>(context);
+    customFertilizationBloc = BlocProvider.of<CustomFertilizationCubit>(context)..getNumberOfValvesOnly(serialNumber: serialNumber);
     super.initState();
   }
 
@@ -42,110 +44,106 @@ class _CustomFirtilizationTypesScreenState
       appBar: AppBar(
         title: const Text('Station info.'),
       ),
-      body: BlocProvider(
-        create: (context) => CustomFertilizationCubit(authBloc)
-          ..getNumberOfValvesOnly(serialNumber: serialNumber),
-        child: SafeArea(
-            child: BlocConsumer<CustomFertilizationCubit, CommonStates>(
-          listener: (context, state) {
-            CustomFertilizationCubit myCubit =
-                CustomFertilizationCubit.get(context);
-            if (state is CustomFertilizationPutSuccessState) {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => CustomFirtiliserSettingsScreen(
-                      lineIndex: widget.lineIndex,
-                      valveId: widget.valveId,
-                      fertiliationType: myCubit.fertilizationType,
-                    ),
-                  ));
-            } else if (state is CustomFertilizationPutFailState) {
-              errorToast('An error has occurred');
-            }
-          },
-          builder: (context, state) {
-            CustomFertilizationCubit myCubit =
-                CustomFertilizationCubit.get(context);
-            return myCubit.featuresModel == null
-                ? const Center(child: CircularProgressIndicator())
-                : BlocListener<AuthBloc, CommonStates>(
-                    listener: (context, state) {
-                      if (state is ExpiredTokenState) {
-                        Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => SignInScreen(),
-                            ),
-                            (route) => false);
-                        expiredTokenToast();
-                      }
-                      if (state is ServerDownState) {
-                        Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => SignInScreen(),
-                            ),
-                            (route) => false);
-                        serverDownToast();
-                      }
-                    },
-                    child: Column(
-                      children: [
-                        MainCard2(
-                            mainWidget: DurationSettingsRow(
-                                firstButtonTitle: text[chosenLanguage]![
-                                    'Fertilizing by duration']!,
-                                secondButtonTitle: text[chosenLanguage]![
-                                    'Fertilizing by quantity']!,
-                                firstButtonIcon: Center(
-                                    child: Text(
-                                  'g',
-                                  style: TextStyle(
-                                      fontFamily: 'icons',
-                                      color: yellowColor,
-                                      fontSize: 30),
-                                )),
-                                secondButtonIcon: Center(
-                                    child: Text(
-                                  'h',
-                                  style: TextStyle(
-                                      fontFamily: 'icons',
-                                      color: yellowColor,
-                                      fontSize: 30),
-                                )),
-                                firstButtonFunction: () {
-                                  myCubit.chooseDuration();
-                                },
-                                secondButtonFunction: () {
-                                  myCubit.chooseQuantity();
-                                },
-                                firstButtonColor: myCubit.isDuration == true
-                                    ? selectedColor
-                                    : Colors.white,
-                                secondButtonColor: myCubit.isDuration == false
-                                    ? selectedColor
-                                    : Colors.white),
-                            rowWidget: Text(
-                              'y',
-                              style: yellowIcon,
-                            ),
-                            function: () {
-                              myCubit.putFertilizationType(
-                                  lineIndex: widget.lineIndex,
-                                  valveId: widget.valveId,
-                                  stationId: stationId,
-                                  fertilizationMethod:
-                                      myCubit.fertilizationType);
-                            },
-                            cardtitle: 'Fertilization Settings',
-                            buttonColor: yellowColor),
-                      ],
-                    ),
-                  );
-          },
-        )),
-      ),
+      body: SafeArea(
+          child: BlocConsumer<CustomFertilizationCubit, CommonStates>(
+        listener: (context, state) {
+          CustomFertilizationCubit myCubit =
+              CustomFertilizationCubit.get(context);
+          if (state is CustomFertilizationPutSuccessState) {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => CustomFirtiliserSettingsScreen(
+                    lineIndex: widget.lineIndex,
+                    valveId: widget.valveId,
+                    fertiliationType: myCubit.fertilizationType,
+                  ),
+                ));
+          } else if (state is CustomFertilizationPutFailState) {
+            errorToast('An error has occurred');
+          }
+        },
+        builder: (context, state) {
+          CustomFertilizationCubit myCubit =
+              CustomFertilizationCubit.get(context);
+          return myCubit.featuresModel == null
+              ? const Center(child: CircularProgressIndicator())
+              : BlocListener<AuthBloc, CommonStates>(
+                  listener: (context, state) {
+                    if (state is ExpiredTokenState) {
+                      Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SignInScreen(),
+                          ),
+                          (route) => false);
+                      expiredTokenToast();
+                    }
+                    if (state is ServerDownState) {
+                      Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SignInScreen(),
+                          ),
+                          (route) => false);
+                      serverDownToast();
+                    }
+                  },
+                  child: Column(
+                    children: [
+                      MainCard2(
+                          mainWidget: DurationSettingsRow(
+                              firstButtonTitle: text[chosenLanguage]![
+                                  'Fertilizing by duration']!,
+                              secondButtonTitle: text[chosenLanguage]![
+                                  'Fertilizing by quantity']!,
+                              firstButtonIcon: Center(
+                                  child: Text(
+                                'g',
+                                style: TextStyle(
+                                    fontFamily: 'icons',
+                                    color: yellowColor,
+                                    fontSize: 30),
+                              )),
+                              secondButtonIcon: Center(
+                                  child: Text(
+                                'h',
+                                style: TextStyle(
+                                    fontFamily: 'icons',
+                                    color: yellowColor,
+                                    fontSize: 30),
+                              )),
+                              firstButtonFunction: () {
+                                myCubit.chooseDuration();
+                              },
+                              secondButtonFunction: () {
+                                myCubit.chooseQuantity();
+                              },
+                              firstButtonColor: myCubit.isDuration == true
+                                  ? selectedColor
+                                  : Colors.white,
+                              secondButtonColor: myCubit.isDuration == false
+                                  ? selectedColor
+                                  : Colors.white),
+                          rowWidget: Text(
+                            'y',
+                            style: yellowIcon,
+                          ),
+                          function: () {
+                            myCubit.putFertilizationType(
+                                lineIndex: widget.lineIndex,
+                                valveId: widget.valveId,
+                                stationId: stationId,
+                                fertilizationMethod:
+                                    myCubit.fertilizationType);
+                          },
+                          cardtitle: 'Fertilization Settings',
+                          buttonColor: yellowColor),
+                    ],
+                  ),
+                );
+        },
+      )),
     );
   }
 }

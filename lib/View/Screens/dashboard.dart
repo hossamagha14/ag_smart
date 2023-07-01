@@ -39,15 +39,7 @@ class _DashsboardScreenState extends State<DashsboardScreen> {
         create: (context) => StationsCubit(authBloc)..getStations(),
         child: BlocConsumer<StationsCubit, CommonStates>(
           listener: (context, state) {
-            if (state is StationsGetFailState) {
-              errorToast('Something went wrong');
-              Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => SignInScreen(),
-                  ),
-                  (route) => false);
-            } else if (state is StationsFailQrState) {
+            if (state is StationsFailQrState) {
               errorToast('Serial number couldn\'t be found');
             }
           },
@@ -168,7 +160,7 @@ class _DashsboardScreenState extends State<DashsboardScreen> {
                                                 context,
                                                 MaterialPageRoute(
                                                     builder: (context) =>
-                                                        PumpSettingsScreen(
+                                                        const PumpSettingsScreen(
                                                             isEdit: false)),
                                                 (route) => false);
                                           }

@@ -33,8 +33,10 @@ void main() async {
 // ignore: must_be_immutable
 class MyApp extends StatelessWidget {
   late AuthBloc authBloc;
+  late CustomFertilizationCubit customFertilizationBloc;
   MyApp({super.key}) {
     authBloc = AuthBloc(IntialState());
+    customFertilizationBloc=CustomFertilizationCubit(authBloc);
   }
 
   @override
@@ -70,7 +72,7 @@ class MyApp extends StatelessWidget {
           create: (context) => LanguageCubit(),
         ),
         BlocProvider(
-          create: (context) => CustomFertilizationCubit(authBloc),
+          create: (context) => customFertilizationBloc,
         ),
         BlocProvider(
           create: (context) => ReportCubit(authBloc)..getStations(),

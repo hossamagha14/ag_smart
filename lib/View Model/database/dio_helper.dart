@@ -24,8 +24,6 @@ class DioHelper {
         } else if (error.response?.statusCode == null ||
             error.response?.statusCode == 503) {
           authBloc.add(ServerDownEvent());
-        } else {
-          authBloc.add(ServerDownEvent());
         }
         return handler.next(error);
       }
