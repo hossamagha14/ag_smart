@@ -129,9 +129,10 @@ class CustomFertilizationCubit extends Cubit<CommonStates> {
     }).then((value) {
       if (value.statusCode == 200) {
         emit(CustomFertilizationPutSuccessState());
+        getNumberOfValvesandperiods(
+            serialNumber: serialNumber, lineIndex: lineIndex, valveId: valveId);
       }
     }).catchError((onError) {
-      print(onError);
       emit(CustomFertilizationPutFailState());
     });
   }
@@ -146,7 +147,6 @@ class CustomFertilizationCubit extends Cubit<CommonStates> {
         emit(CustomFertilizationPutDelSuccessState());
       }
     }).catchError((onError) {
-      print(onError.toString());
       emit(CustomFertilizationPutFailState());
     });
   }
@@ -161,7 +161,6 @@ class CustomFertilizationCubit extends Cubit<CommonStates> {
         emit(CustomFertilizationPutSuccessState());
       }
     }).catchError((onError) {
-      print(onError.toString());
       emit(CustomFertilizationPutFailState());
     });
   }
@@ -282,7 +281,6 @@ class CustomFertilizationCubit extends Cubit<CommonStates> {
     required String serialNumber,
   }) {
     customFertilizationModelList = [];
-
     dio.get('$base/$features/$serialNumber').then((value) {
       featuresModel = FeaturesModel.fromJson(value.data);
       for (int i = 0; i < featuresModel!.linesNumber!; i++) {
@@ -290,7 +288,6 @@ class CustomFertilizationCubit extends Cubit<CommonStates> {
       }
       emit(CustomFertilizationGetValvesSuccessState());
     }).catchError((onError) {
-      print(onError);
       emit(CustomFertilizationGetValvesFailState());
     });
   }
@@ -306,6 +303,11 @@ class CustomFertilizationCubit extends Cubit<CommonStates> {
       featuresModel = FeaturesModel.fromJson(value.data);
       for (int i = 0; i < featuresModel!.linesNumber!; i++) {
         customFertilizationModelList.add(CustomFertilizationModel());
+        for (int j = 0;
+            j < customFertilizationModelList[i].daysList.length;
+            j++) {
+          customFertilizationModelList[i].controllers[j].text = '';
+        }
       }
       getPeriods(stationId: stationId, lineIndex: lineIndex, valveId: valveId);
     }).catchError((onError) {
