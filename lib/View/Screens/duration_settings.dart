@@ -144,13 +144,23 @@ class _DurationSettingsScreenState extends State<DurationSettingsScreen> {
                             myCubit.accordingToQuantity == null) {
                           errorToast("Please select both categories");
                         } else {
-                          myCubit.putIrrigationType(
-                              pressure: widget.pressure,
-                              pressureSwitch: widget.pressureSwitch,
-                              activeValves: binaryValves,
-                              irrigationType: myCubit.irrigationType,
-                              irrigationMethod1: myCubit.irrigationMethod1!,
-                              irrigationMethod2: myCubit.irrigationMethod2!);
+                          if (widget.isEdit == false) {
+                            myCubit.putIrrigationType(
+                                pressure: widget.pressure,
+                                pressureSwitch: widget.pressureSwitch,
+                                activeValves: binaryValves,
+                                irrigationType: myCubit.irrigationType,
+                                irrigationMethod1: myCubit.irrigationMethod1!,
+                                irrigationMethod2: myCubit.irrigationMethod2!);
+                          }else{
+                            myCubit.putIrrigationTypeEdit(
+                                pressure: widget.pressure,
+                                pressureSwitch: widget.pressureSwitch,
+                                activeValves: binaryValves,
+                                irrigationType: myCubit.irrigationType,
+                                irrigationMethod1: myCubit.irrigationMethod1!,
+                                irrigationMethod2: myCubit.irrigationMethod2!);
+                          }
                         }
                       },
                       buttonColor: greenButtonColor,

@@ -119,6 +119,28 @@ class IrrigationTypeCubit extends Cubit<CommonStates> {
     });
   }
 
+  putIrrigationTypeEdit(
+      {required int activeValves,
+      required int irrigationType,
+      required int irrigationMethod1,
+      required int irrigationMethod2,
+      required int pressureSwitch,
+      required int pressure}) async {
+    await dio.put('$base/$irrigationSettings/$stationId', data: {
+      "station_id": stationId,
+      "active_valves": activeValves,
+      "settings_type": irrigationType,
+      "irrigation_method_1": irrigationMethod1,
+      "irrigation_method_2": irrigationMethod2
+    }).then((value) {
+      if (value.statusCode == 200) {
+        putPressureSwitch(pressurSwitch: pressureSwitch);
+      }
+    }).catchError((onError) {
+      emit(IrrigationTypeSendFailState());
+    });
+  }
+
   putStationConfig({required int pressure, required int pressureSwitch}) async {
     try {
       Response<dynamic> response = await dio.put('$base/$station',
