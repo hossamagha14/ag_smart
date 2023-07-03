@@ -110,7 +110,7 @@ class DeviceFeatureCubit extends Cubit<CommonStates> {
 
   getInfo(int index) {
     if (featureList[index].isPressed == false) {
-      featureList[index].height = 0.22;
+      featureList[index].height = 0.3;
       featureList[index].fontSize = 15;
       featureList[index].isPressed = true;
     } else {

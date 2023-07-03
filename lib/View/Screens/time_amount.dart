@@ -23,8 +23,16 @@ import 'duration_settings.dart';
 class TimeAmountScreen extends StatefulWidget {
   final bool isEdit;
   final int irrigationType;
+  final int flowMeter;
+  final int pressure;
+  final int pressureSwitch;
   const TimeAmountScreen(
-      {Key? key, required this.isEdit, required this.irrigationType})
+      {Key? key,
+      required this.isEdit,
+      required this.pressure,
+      required this.irrigationType,
+      required this.pressureSwitch,
+      required this.flowMeter})
       : super(key: key);
 
   @override
@@ -102,6 +110,10 @@ class _TimeAmountScreenState extends State<TimeAmountScreen> {
                                         MaterialPageRoute(
                                           builder: (context) =>
                                               DurationSettingsScreen(
+                                            pressureSwitch:
+                                                widget.pressureSwitch,
+                                            pressure: widget.pressure,
+                                            flowMeter: widget.flowMeter,
                                             isEdit: true,
                                             stationIrrigationType:
                                                 widget.irrigationType,

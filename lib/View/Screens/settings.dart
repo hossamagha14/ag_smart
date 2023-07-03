@@ -1,5 +1,6 @@
 import 'package:ag_smart/View/Reusable/edit_settings_button.dart';
 import 'package:ag_smart/View/Reusable/main_card.dart';
+import 'package:ag_smart/View/Reusable/settings_pop_up.dart';
 import 'package:ag_smart/View/Reusable/text.dart';
 import 'package:ag_smart/View/Screens/manual_irrigation.dart';
 import 'package:ag_smart/View/Screens/pump_settings.dart';
@@ -11,7 +12,9 @@ import 'lines_activation.dart';
 import 'lines_settings.dart';
 
 class SettingsScreen extends StatelessWidget {
-  const SettingsScreen({Key? key}) : super(key: key);
+  final int flowMeter;
+  final int pressure;
+  const SettingsScreen({Key? key, required this.flowMeter,required this.pressure}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -48,45 +51,67 @@ class SettingsScreen extends StatelessWidget {
                   EditSettingsButton(
                       buttonTile: text[chosenLanguage]!['Pump Settings']!,
                       function: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => PumpSettingsScreen(
-                                isEdit: true,
-                              ),
-                            ));
+                        showDialog(
+                            context: context,
+                            builder: (context) => SettingsPopUp(function: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const PumpSettingsScreen(
+                                          isEdit: true,
+                                        ),
+                                      ));
+                                }));
                       }),
                   EditSettingsButton(
                       buttonTile: text[chosenLanguage]!['Lines Activation']!,
                       function: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const LinesActivationScreen(
-                                isEdit: true,
-                              ),
-                            ));
+                        showDialog(
+                            context: context,
+                            builder: (context) => SettingsPopUp(function: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const LinesActivationScreen(
+                                          isEdit: true,
+                                        ),
+                                      ));
+                                }));
                       }),
                   EditSettingsButton(
                       buttonTile: text[chosenLanguage]!['Lines\' Settings']!,
                       function: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  const LinesSettingsScreen(isEdit: true),
-                            ));
+                        showDialog(
+                            context: context,
+                            builder: (context) => SettingsPopUp(function: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const LinesSettingsScreen(
+                                                isEdit: true),
+                                      ));
+                                }));
                       }),
                   EditSettingsButton(
                       buttonTile: text[chosenLanguage]!['Irrigation type']!,
                       function: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const IrrigationTypeScreen(
-                                isEdit: true,
-                              ),
-                            ));
+                        showDialog(
+                            context: context,
+                            builder: (context) => SettingsPopUp(function: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            IrrigationTypeScreen(
+                                              pressure: pressure,
+                                          isEdit: true,
+                                          flowMeter: flowMeter,
+                                        ),
+                                      ));
+                                }));
                       }),
                 ],
               ),

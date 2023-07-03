@@ -23,9 +23,11 @@ class CustomDurationSettingsByPeriodScreen extends StatefulWidget {
   final int valveId;
   final int irrigationMethod2;
   final int stationId;
+  final int flowMeter;
   const CustomDurationSettingsByPeriodScreen(
       {Key? key,
       required this.lineIndex,
+      required this.flowMeter,
       required this.valveId,
       required this.stationId,
       required this.irrigationMethod2})
@@ -118,6 +120,7 @@ class _CustomDurationSettingsByPeriodScreenState
                                           builder: (context) =>
                                               CustomDurationSettingsScreen(
                                                   stationId: widget.stationId,
+                                                  flowMeter: widget.flowMeter,
                                                   lineIndex: widget.lineIndex,
                                                   valveId: widget.valveId),
                                         ));

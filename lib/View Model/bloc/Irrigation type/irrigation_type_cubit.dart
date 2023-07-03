@@ -24,9 +24,11 @@ class IrrigationTypeCubit extends Cubit<CommonStates> {
   int? irrigationMethod1;
   int? irrigationMethod2;
 
-  activate() {
-    if (irrigationType == 2) {
-      active = !active;
+  activate(int pressure) {
+    if (pressure == 2) {
+      if (irrigationType == 2) {
+        active = !active;
+      }
     }
     emit(IrrigationTypeActivateState());
   }
@@ -82,12 +84,26 @@ class IrrigationTypeCubit extends Cubit<CommonStates> {
     emit(IrrigationTypeTimeState());
   }
 
-  putIrrigationType({
-    required int activeValves,
-    required int irrigationType,
-    required int irrigationMethod1,
-    required int irrigationMethod2,
-  }) async {
+  putPressureSwitch({required int pressurSwitch}) {
+    dio.put('$base/$pumpSettings/$stationId', data: {
+      "station_id": stationId,
+      "pressure_switch": pressurSwitch
+    }).then((value) {
+      print(value.data);
+      emit(IrrigationTypeSendSuccessState());
+    }).catchError((onError) {
+      print(onError);
+      emit(IrrigationTypeSendFailState());
+    });
+  }
+
+  putIrrigationType(
+      {required int activeValves,
+      required int irrigationType,
+      required int irrigationMethod1,
+      required int irrigationMethod2,
+      required int pressureSwitch,
+      required int pressure}) async {
     await dio.put('$base/$irrigationSettings/$stationId', data: {
       "station_id": stationId,
       "active_valves": activeValves,
@@ -96,19 +112,23 @@ class IrrigationTypeCubit extends Cubit<CommonStates> {
       "irrigation_method_2": irrigationMethod2
     }).then((value) {
       if (value.statusCode == 200) {
-        putStationConfig();
+        putStationConfig(pressure: pressure, pressureSwitch: pressureSwitch);
       }
     }).catchError((onError) {
       emit(IrrigationTypeSendFailState());
     });
   }
 
-  putStationConfig() async {
+  putStationConfig({required int pressure, required int pressureSwitch}) async {
     try {
       Response<dynamic> response = await dio.put('$base/$station',
           data: {"serial_number": serialNumber, "configured": 1});
       if (response.statusCode == 200) {
-        emit(IrrigationTypeSendSuccessState());
+        if (pressure == 2) {
+          putPressureSwitch(pressurSwitch: pressureSwitch);
+        } else {
+          emit(IrrigationTypeSendSuccessState());
+        }
       }
     } catch (e) {
       emit(IrrigationTypeSendFailState());

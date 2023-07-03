@@ -16,9 +16,11 @@ class PopUpScreen2 extends StatelessWidget {
   final int stationId;
   final int statusType;
   final int irrigationMethod2;
+  final int flowMeter;
   const PopUpScreen2(
       {Key? key,
       required this.valveId,
+      required this.flowMeter,
       required this.lineIndex,
       required this.stationId,
       required this.statusType,
@@ -52,18 +54,21 @@ class PopUpScreen2 extends StatelessWidget {
                               MaterialPageRoute(
                                   builder: (context) => statusType == 3
                                       ? CustomDurationSettingsByPeriodScreen(
+                                          flowMeter: flowMeter,
                                           stationId: stationId,
                                           lineIndex: lineIndex,
                                           valveId: valveId,
                                           irrigationMethod2: irrigationMethod2)
                                       : statusType == 2
                                           ? CustomDurationByTime(
+                                              flowMeter: flowMeter,
                                               stationId: stationId,
                                               lineIndex: lineIndex,
                                               valveId: valveId,
                                               irrigationMethod2:
                                                   irrigationMethod2)
                                           : CustomDurationSettingsScreen(
+                                              flowMeter: flowMeter,
                                               stationId: stationId,
                                               lineIndex: lineIndex,
                                               valveId: valveId)));
@@ -96,7 +101,8 @@ class PopUpScreen2 extends StatelessWidget {
                     children: [
                       InkWell(
                         onTap: () {
-                          errorToast(text[chosenLanguage]!['You are not subscribed for this feature']!);
+                          errorToast(text[chosenLanguage]![
+                              'You are not subscribed for this feature']!);
                         },
                         child: SizedBox(
                           child: Text(

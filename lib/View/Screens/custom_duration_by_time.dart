@@ -27,10 +27,12 @@ class CustomDurationByTime extends StatefulWidget {
   final int valveId;
   final int stationId;
   final int irrigationMethod2;
+  final int flowMeter;
   const CustomDurationByTime(
       {Key? key,
       required this.lineIndex,
       required this.valveId,
+      required this.flowMeter,
       required this.stationId,
       required this.irrigationMethod2})
       : super(key: key);
@@ -120,6 +122,7 @@ class _CustomDurationByTimeState extends State<CustomDurationByTime> {
                                           builder: (context) =>
                                               CustomDurationSettingsScreen(
                                                   stationId: widget.stationId,
+                                                  flowMeter: widget.flowMeter,
                                                   lineIndex: widget.lineIndex,
                                                   valveId: widget.valveId),
                                         ));

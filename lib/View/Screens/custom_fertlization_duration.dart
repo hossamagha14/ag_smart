@@ -24,10 +24,12 @@ class CustomFirtiliserSettingsScreen extends StatefulWidget {
   final int lineIndex;
   final int valveId;
   final int fertiliationType;
+  final int flowMeter;
   const CustomFirtiliserSettingsScreen(
       {Key? key,
       required this.lineIndex,
       required this.valveId,
+      required this.flowMeter,
       required this.fertiliationType})
       : super(key: key);
 
@@ -105,6 +107,7 @@ class _CustomFirtiliserSettingsScreenState
                                       MaterialPageRoute(
                                           builder: (context) =>
                                               CustomFirtilizationTypesScreen(
+                                                flowMeter: widget.flowMeter,
                                                   lineIndex: widget.lineIndex,
                                                   valveId: widget.valveId)));
                                 },

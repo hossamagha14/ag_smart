@@ -6,4 +6,6 @@ Color yellowColor = const Color(0xFFFF9800);
 Color settingsColor = const Color(0xFF42c4ff);
 Color greenButtonColor = const Color(0xFF1abc9c);
 Color lightSelectedColor = const Color(0xFFfff1b6);
-Color selectedColor =  const Color(0xFF42c4ff).withOpacity(0.5);
+Color selectedColor = const Color(0xFF42c4ff).withOpacity(0.5);
+Color disabled = const Color(0xFF58698D).withOpacity(0.5);
+Color disabledBackground = Colors.grey.withOpacity(0.4);

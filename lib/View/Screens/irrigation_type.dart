@@ -18,7 +18,13 @@ import '../Reusable/text.dart';
 
 class IrrigationTypeScreen extends StatefulWidget {
   final bool isEdit;
-  const IrrigationTypeScreen({Key? key, required this.isEdit})
+  final int flowMeter;
+  final int pressure;
+  const IrrigationTypeScreen(
+      {Key? key,
+      required this.isEdit,
+      required this.flowMeter,
+      required this.pressure})
       : super(key: key);
 
   @override
@@ -91,6 +97,9 @@ class _IrrigationTypeScreenState extends State<IrrigationTypeScreen> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => DurationSettingsScreen(
+                                pressure: widget.pressure,
+                                pressureSwitch: myCubit.active == true ? 2 : 1,
+                                flowMeter: widget.flowMeter,
                                 isEdit: widget.isEdit,
                                 stationIrrigationType: myCubit.irrigationType,
                               ),
@@ -98,6 +107,8 @@ class _IrrigationTypeScreenState extends State<IrrigationTypeScreen> {
                       } else if (myCubit.irrigationType == 3 ||
                           myCubit.irrigationType == 4) {
                         myCubit.putIrrigationType(
+                            pressure: widget.pressure,
+                            pressureSwitch: 1,
                             activeValves: binaryValves,
                             irrigationType: myCubit.irrigationType,
                             irrigationMethod1: 1,
@@ -145,7 +156,7 @@ class _IrrigationTypeScreenState extends State<IrrigationTypeScreen> {
                                             ? myCubit.active
                                             : false,
                                         onChanged: (value) {
-                                          myCubit.activate();
+                                          myCubit.activate(widget.pressure);
                                         }),
                                     Padding(
                                       padding: const EdgeInsets.symmetric(
@@ -174,19 +185,22 @@ class _IrrigationTypeScreenState extends State<IrrigationTypeScreen> {
                                 ),
                                 irrigationType: text[chosenLanguage]![
                                     'Custom Irrigation']!),
-                            IrrigationTypeContainer(
-                                function: () {
-                                  myCubit.chooseAutoIrrigation();
-                                },
-                                color: myCubit.irrigationType == 4
-                                    ? selectedColor
-                                    : backgroundColor,
-                                icon: Text(
-                                  'e',
-                                  style: bigIcon,
-                                ),
-                                irrigationType: text[chosenLanguage]![
-                                    'Automatic Irrigation']!)
+                            Visibility(
+                              visible: false,
+                              child: IrrigationTypeContainer(
+                                  function: () {
+                                    myCubit.chooseAutoIrrigation();
+                                  },
+                                  color: myCubit.irrigationType == 4
+                                      ? selectedColor
+                                      : backgroundColor,
+                                  icon: Text(
+                                    'e',
+                                    style: bigIcon,
+                                  ),
+                                  irrigationType: text[chosenLanguage]![
+                                      'Automatic Irrigation']!),
+                            )
                           ],
                         ),
                       ),

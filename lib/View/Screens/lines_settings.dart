@@ -67,12 +67,18 @@ class _LinesSettingsScreenState extends State<LinesSettingsScreen> {
                 ..getNumberOfValves(isEdit: widget.isEdit),
               child: BlocConsumer<LinesActivationCubit, CommonStates>(
                 listener: (context, state) {
+                  LinesActivationCubit myCubit =
+                      LinesActivationCubit.get(context);
                   if (state is LinesActivationSendSuccessState) {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>
-                              IrrigationTypeScreen(isEdit: widget.isEdit),
+                          builder: (context) => IrrigationTypeScreen(
+                              pressure:
+                                  myCubit.stationModel!.features![0].pressure!,
+                              isEdit: widget.isEdit,
+                              flowMeter: myCubit
+                                  .stationModel!.features![0].flowMeter!),
                         ));
                   } else if (state is LinesActivationSendFailState) {
                     errorToast('An error has occurred');

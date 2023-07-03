@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 TextStyle mainIcon =
     TextStyle(fontSize: 30, fontFamily: 'icons', color: iconColor);
 
+TextStyle mainIconDisabled =
+    TextStyle(fontSize: 30, fontFamily: 'icons', color: disabled);
+
 TextStyle yellowIcon =
     TextStyle(fontSize: 30, fontFamily: 'icons', color: yellowColor);
 
@@ -18,5 +21,3 @@ TextStyle smallIconOff =
 
 TextStyle smallIconOn =
     TextStyle(fontSize: 18, fontFamily: 'icons', color: yellowColor);
-
-

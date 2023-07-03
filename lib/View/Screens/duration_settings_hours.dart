@@ -17,15 +17,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../View Model/Repo/auth_bloc.dart';
 import 'bottom_nav_bar.dart';
 import 'package:intl/intl.dart' as intl;
-
 import 'duration_settings.dart';
 
 // ignore: must_be_immutable
 class DurationSettingsByHourScreen extends StatefulWidget {
   final bool isEdit;
   final int irrigationType;
+  final int flowMeter;
+  final int pressure;
+  final int pressureSwitch;
   const DurationSettingsByHourScreen(
-      {Key? key, required this.isEdit, required this.irrigationType})
+      {Key? key, required this.isEdit, required this.irrigationType,required this.flowMeter,required this.pressure,required this.pressureSwitch})
       : super(key: key);
 
   @override
@@ -105,6 +107,9 @@ class _DurationSettingsByHourScreenState
                                       MaterialPageRoute(
                                         builder: (context) =>
                                             DurationSettingsScreen(
+                                              pressureSwitch: widget.pressureSwitch,
+                                              pressure: widget.pressure,
+                                              flowMeter: widget.flowMeter,
                                           isEdit: true,
                                           stationIrrigationType:
                                               widget.irrigationType,

@@ -19,9 +19,11 @@ class CustomDurationSettingsScreen extends StatefulWidget {
   final int lineIndex;
   final int valveId;
   final int stationId;
+  final int flowMeter;
   const CustomDurationSettingsScreen(
       {Key? key,
       required this.lineIndex,
+      required this.flowMeter,
       required this.valveId,
       required this.stationId})
       : super(key: key);
@@ -58,6 +60,7 @@ class _CustomDurationSettingsScreenState
                   context,
                   MaterialPageRoute(
                     builder: (context) => CustomDurationByTime(
+                      flowMeter: widget.flowMeter,
                       stationId: widget.stationId,
                       valveId: widget.valveId,
                       lineIndex: widget.lineIndex,
@@ -71,6 +74,7 @@ class _CustomDurationSettingsScreenState
                   context,
                   MaterialPageRoute(
                     builder: (context) => CustomDurationSettingsByPeriodScreen(
+                      flowMeter: widget.flowMeter,
                       stationId: widget.stationId,
                       valveId: widget.valveId,
                       lineIndex: widget.lineIndex,
@@ -173,42 +177,52 @@ class _CustomDurationSettingsScreenState
                                       ? selectedColor
                                       : Colors.white),
                               DurationSettingsRow(
-                                  firstButtonTitle: text[chosenLanguage]![
-                                      'Watering duration']!,
-                                  secondButtonTitle: text[chosenLanguage]![
-                                      'According to quantity']!,
-                                  firstButtonIcon: Center(
-                                      child: Text(
-                                    'v',
-                                    style: mainIcon,
-                                  )),
-                                  secondButtonIcon: Center(
-                                      child: Text(
-                                    'c',
-                                    style: mainIcon,
-                                  )),
-                                  firstButtonFunction: () {
-                                    myCubit.chooseAccordingToTime(
-                                        widget.lineIndex);
-                                  },
-                                  secondButtonFunction: () {
+                                firstButtonTitle:
+                                    text[chosenLanguage]!['Watering duration']!,
+                                secondButtonTitle: text[chosenLanguage]![
+                                    'According to quantity']!,
+                                firstButtonIcon: Center(
+                                    child: Text(
+                                  'v',
+                                  style: mainIcon,
+                                )),
+                                secondButtonIcon: Center(
+                                    child: Text(
+                                  'c',
+                                  style: widget.flowMeter == 2
+                                      ? mainIcon
+                                      : mainIconDisabled,
+                                )),
+                                firstButtonFunction: () {
+                                  myCubit
+                                      .chooseAccordingToTime(widget.lineIndex);
+                                },
+                                secondButtonFunction: () {
+                                  if (widget.flowMeter == 2) {
                                     myCubit.chooseAccordingToQuantity(
                                         widget.lineIndex);
-                                  },
-                                  firstButtonColor: myCubit
-                                              .customIrrigationModelList[
-                                                  widget.lineIndex]
-                                              .accordingToQuantity ==
-                                          false
-                                      ? selectedColor
-                                      : Colors.white,
-                                  secondButtonColor: myCubit
-                                              .customIrrigationModelList[
-                                                  widget.lineIndex]
-                                              .accordingToQuantity ==
-                                          true
-                                      ? selectedColor
-                                      : Colors.white),
+                                  } else {
+                                    errorToast(text[chosenLanguage]![
+                                        'You are not subscribed for this feature']!);
+                                  }
+                                },
+                                firstButtonColor: myCubit
+                                            .customIrrigationModelList[
+                                                widget.lineIndex]
+                                            .accordingToQuantity ==
+                                        false
+                                    ? selectedColor
+                                    : Colors.white,
+                                secondButtonColor: widget.flowMeter != 2
+                                    ? disabledBackground
+                                    : myCubit
+                                                .customIrrigationModelList[
+                                                    widget.lineIndex]
+                                                .accordingToQuantity ==
+                                            true
+                                        ? selectedColor
+                                        : Colors.white,
+                              ),
                             ],
                           ),
                           rowWidget: const MainIconsRowWidget(

@@ -13,7 +13,6 @@ import '../../../Model/custom_irrigation_model.dart';
 import '../../../Model/days_model.dart';
 import '../../../View/Reusable/text.dart';
 import '../../Repo/auth_bloc.dart';
-import '../../database/bottom_dio_helper.dart';
 import '../../database/dio_helper.dart';
 import '../../database/end_points.dart';
 import '../commom_states.dart';
@@ -24,7 +23,6 @@ class BottomNavBarCubit extends Cubit<CommonStates> {
   BottomNavBarCubit(this.authBloc) : super(BottomNavBarIntialState()) {
     dio = DioHelper(authBloc);
   }
-  
 
   static BottomNavBarCubit get(context) => BlocProvider.of(context);
 
@@ -66,15 +64,24 @@ class BottomNavBarCubit extends Cubit<CommonStates> {
       if (settingsType == 1 || settingsType == 2) {
         bottomNavBarScreens = [
           const StationInfoScreen(),
-          const SettingsScreen()
+          SettingsScreen(
+              flowMeter: stationModel!.features![0].flowMeter!,
+              pressure: stationModel!.features![0].pressure!)
         ];
       } else if (settingsType == 3) {
         bottomNavBarScreens = [
           const CustomStationInfoScreen(),
-          const SettingsScreen()
+          SettingsScreen(
+              flowMeter: stationModel!.features![0].flowMeter!,
+              pressure: stationModel!.features![0].pressure!)
         ];
       } else if (settingsType == 4) {
-        bottomNavBarScreens = [const AutoScreen(), const SettingsScreen()];
+        bottomNavBarScreens = [
+          const AutoScreen(),
+          SettingsScreen(
+              flowMeter: stationModel!.features![0].flowMeter!,
+              pressure: stationModel!.features![0].pressure!)
+        ];
       }
 
       if (value.statusCode == 200) {

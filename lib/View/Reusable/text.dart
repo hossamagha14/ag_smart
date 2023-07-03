@@ -1,6 +1,6 @@
 import 'package:ag_smart/View%20Model/database/cache_helpher.dart';
 
-String chosenLanguage = CacheHelper.getData(key: 'language') ?? '';
+String chosenLanguage = CacheHelper.getData(key: 'language') ?? 'en';
 String stationName = CacheHelper.getData(key: 'stationName') ?? '';
 int numOfActiveLines = CacheHelper.getData(key: 'numOfActiveLines') ?? 0;
 int stationId = CacheHelper.getData(key: 'stationId') ?? 0;
@@ -98,6 +98,7 @@ Map<String, Map<String, String>> text = {
     'Last 7 days': 'Last 7 days',
     'Last 15 days': 'Last 15 days',
     'Last 30 days': 'Last 30 days',
+    'Language': 'Language',
     'Monthly': 'Monthly',
     'Yearly': 'Yearly',
     'By Quarter': 'By Quarter',
@@ -167,6 +168,7 @@ Map<String, Map<String, String>> text = {
     'Settings': 'الإعدادات',
     'Set time': 'تحديد الساعة',
     'Open valve time': 'مدة فتح الصمام',
+    'Language': 'اللغة',
     'Add a period': 'إضافة فترة',
     'Remove a period': 'ازالة فترة',
     'Device Features': 'ميزات الجهاز',

@@ -15,7 +15,9 @@ import '../../View Model/Repo/auth_bloc.dart';
 import 'fertiliser_settings.dart';
 
 class FirtilisationTypeScreen extends StatefulWidget {
-  const FirtilisationTypeScreen({Key? key}) : super(key: key);
+  final int flowMeter;
+  const FirtilisationTypeScreen({Key? key, required this.flowMeter})
+      : super(key: key);
 
   @override
   State<FirtilisationTypeScreen> createState() =>
@@ -48,7 +50,8 @@ class _FirtilisationTypeScreenState extends State<FirtilisationTypeScreen> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const FirtiliserSettingsScreen(),
+                        builder: (context) => FirtiliserSettingsScreen(
+                            flowMeter: widget.flowMeter),
                       ));
                 }
               },
@@ -124,20 +127,31 @@ class _FirtilisationTypeScreenState extends State<FirtilisationTypeScreen> {
                               secondButtonIcon: Center(
                                 child: Text(
                                   'h',
-                                  style: yellowIcon,
+                                  style: TextStyle(
+                                      fontFamily: 'icons',
+                                      color: widget.flowMeter == 2
+                                          ? yellowColor
+                                          : disabled,
+                                      fontSize: 30),
                                 ),
                               ),
                               firstButtonFunction: () {
                                 myCubit.firtiliseAccordingToTime();
                               },
                               secondButtonFunction: () {
-                                myCubit.firtiliseAccordingToQuantity();
+                                if (widget.flowMeter == 2) {
+                                  myCubit.firtiliseAccordingToQuantity();
+                                } else {
+                                  errorToast(text[chosenLanguage]![
+                                      'You are not subscribed for this feature']!);
+                                }
                               },
                               firstButtonColor: myCubit.accordingToTime == true
                                   ? selectedColor
                                   : Colors.white,
-                              secondButtonColor:
-                                  myCubit.accordingToTime == false
+                              secondButtonColor: widget.flowMeter != 2
+                                  ? disabledBackground
+                                  : myCubit.accordingToTime == false
                                       ? selectedColor
                                       : Colors.white),
                         ],

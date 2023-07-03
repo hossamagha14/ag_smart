@@ -219,7 +219,7 @@ class _DeviceFeaturesScreenState extends State<DeviceFeaturesScreen> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => PumpSettingsScreen(
+                                    builder: (context) => const PumpSettingsScreen(
                                       isEdit: false,
                                     ),
                                   ));

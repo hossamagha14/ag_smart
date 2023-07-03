@@ -216,6 +216,10 @@ class CustomStationInfoScreen extends StatelessWidget {
                                                                       .circular(
                                                                           20)),
                                                           content: PopUpScreen(
+                                                            flowMeter: myCubit
+                                                                .stationModel!
+                                                                .features![0]
+                                                                .flowMeter!,
                                                             fertiliationType: myCubit
                                                                 .stationModel!
                                                                 .fertilizationSettings![
@@ -271,6 +275,10 @@ class CustomStationInfoScreen extends StatelessWidget {
                                                                       .circular(
                                                                           20)),
                                                           content: PopUpScreen2(
+                                                            flowMeter: myCubit
+                                                                .stationModel!
+                                                                .features![0]
+                                                                .flowMeter!,
                                                             statusType: myCubit
                                                                 .customIrrigationModelList[
                                                                     lineIndex]
@@ -348,7 +356,7 @@ class CustomStationInfoScreen extends StatelessWidget {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => LightScreen(),
+                                    builder: (context) => const LightScreen(),
                                   ));
                             }
                           },
@@ -361,7 +369,7 @@ class CustomStationInfoScreen extends StatelessWidget {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => ScarecrowScreen(),
+                                    builder: (context) => const ScarecrowScreen(),
                                   ));
                             }
                           },

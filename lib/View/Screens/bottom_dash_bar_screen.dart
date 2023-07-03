@@ -9,7 +9,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../View Model/Repo/auth_bloc.dart';
 import '../../View Model/bloc/Bottom Dash bar/bottom_dash_bar_cubit.dart';
 import '../../View Model/database/cache_helpher.dart';
+import 'about_us.dart';
 import 'choose_language.dart';
+import 'contact_us.dart';
 
 class BottomDashBarScreen extends StatefulWidget {
   const BottomDashBarScreen({Key? key}) : super(key: key);
@@ -90,7 +92,13 @@ class _BottomDashBarScreenState extends State<BottomDashBarScreen> {
                                   fontSize: 16,
                                   color: iconColor,
                                   fontWeight: FontWeight.w500)),
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const ContactUsScreen(),
+                                ));
+                          },
                         ),
                         ListTile(
                           title: Text(text[chosenLanguage]!['About us']!,
@@ -101,7 +109,13 @@ class _BottomDashBarScreenState extends State<BottomDashBarScreen> {
                                   fontSize: 16,
                                   color: iconColor,
                                   fontWeight: FontWeight.w500)),
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const AboutUsScreen(),
+                                ));
+                          },
                         ),
                         ListTile(
                           title: Text(text[chosenLanguage]!['Change language']!,
@@ -215,7 +229,13 @@ class _BottomDashBarScreenState extends State<BottomDashBarScreen> {
                                   fontSize: 16,
                                   color: iconColor,
                                   fontWeight: FontWeight.w500)),
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const ContactUsScreen(),
+                                ));
+                          },
                         ),
                         ListTile(
                           title: Text(text[chosenLanguage]!['About us']!,
@@ -226,7 +246,13 @@ class _BottomDashBarScreenState extends State<BottomDashBarScreen> {
                                   fontSize: 16,
                                   color: iconColor,
                                   fontWeight: FontWeight.w500)),
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const AboutUsScreen(),
+                                ));
+                          },
                         ),
                         ListTile(
                           title: Text(text[chosenLanguage]!['Change language']!,

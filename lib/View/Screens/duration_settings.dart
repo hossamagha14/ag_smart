@@ -20,8 +20,16 @@ import '../Reusable/colors.dart';
 class DurationSettingsScreen extends StatefulWidget {
   final bool isEdit;
   final int stationIrrigationType;
+  final int flowMeter;
+  final int pressure;
+  final int pressureSwitch;
   const DurationSettingsScreen(
-      {Key? key, required this.isEdit, required this.stationIrrigationType})
+      {Key? key,
+      required this.isEdit,
+      required this.stationIrrigationType,
+      required this.pressure,
+      required this.pressureSwitch,
+      required this.flowMeter})
       : super(key: key);
 
   @override
@@ -56,6 +64,9 @@ class _DurationSettingsScreenState extends State<DurationSettingsScreen> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => DurationSettingsByHourScreen(
+                            pressureSwitch: widget.pressureSwitch,
+                            pressure: widget.pressure,
+                            flowMeter: widget.flowMeter,
                             isEdit: widget.isEdit,
                             irrigationType: widget.stationIrrigationType,
                           ),
@@ -66,6 +77,9 @@ class _DurationSettingsScreenState extends State<DurationSettingsScreen> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => TimeAmountScreen(
+                            pressureSwitch: widget.pressureSwitch,
+                            pressure: widget.pressure,
+                            flowMeter: widget.flowMeter,
                             isEdit: widget.isEdit,
                             irrigationType: widget.stationIrrigationType,
                           ),
@@ -76,6 +90,9 @@ class _DurationSettingsScreenState extends State<DurationSettingsScreen> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => DurationSettingsByPeriodScreen(
+                            pressureSwitch: widget.pressureSwitch,
+                            pressure: widget.pressure,
+                            flowMeter: widget.flowMeter,
                             isEdit: widget.isEdit,
                             irrigationType: widget.stationIrrigationType,
                           ),
@@ -86,6 +103,9 @@ class _DurationSettingsScreenState extends State<DurationSettingsScreen> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => PeriodAmountScreen(
+                            pressureSwitch: widget.pressureSwitch,
+                            pressure: widget.pressure,
+                            flowMeter: widget.flowMeter,
                             isEdit: widget.isEdit,
                             irrigationType: widget.stationIrrigationType,
                           ),
@@ -125,6 +145,8 @@ class _DurationSettingsScreenState extends State<DurationSettingsScreen> {
                           errorToast("Please select both categories");
                         } else {
                           myCubit.putIrrigationType(
+                              pressure: widget.pressure,
+                              pressureSwitch: widget.pressureSwitch,
                               activeValves: binaryValves,
                               irrigationType: myCubit.irrigationType,
                               irrigationMethod1: myCubit.irrigationMethod1!,
@@ -176,20 +198,28 @@ class _DurationSettingsScreenState extends State<DurationSettingsScreen> {
                               secondButtonIcon: Center(
                                   child: Text(
                                 'c',
-                                style: mainIcon,
+                                style: widget.flowMeter == 2
+                                    ? mainIcon
+                                    : mainIconDisabled,
                               )),
                               firstButtonFunction: () {
                                 myCubit.chooseAccordingToTime();
                               },
                               secondButtonFunction: () {
-                                myCubit.chooseAccordingToQuantity();
+                                if (widget.flowMeter == 2) {
+                                  myCubit.chooseAccordingToQuantity();
+                                } else {
+                                  errorToast(text[chosenLanguage]![
+                                      'You are not subscribed for this feature']!);
+                                }
                               },
                               firstButtonColor:
                                   myCubit.accordingToQuantity == false
                                       ? selectedColor
                                       : Colors.white,
-                              secondButtonColor:
-                                  myCubit.accordingToQuantity == true
+                              secondButtonColor: widget.flowMeter != 2
+                                  ? disabledBackground
+                                  : myCubit.accordingToQuantity == true
                                       ? selectedColor
                                       : Colors.white),
                         ],

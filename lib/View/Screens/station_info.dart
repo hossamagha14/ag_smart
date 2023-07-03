@@ -49,6 +49,12 @@ class StationInfoScreen extends StatelessWidget {
                                     MaterialPageRoute(
                                       builder: (context) =>
                                           DurationSettingsScreen(
+                                        pressureSwitch: myCubit.stationModel!
+                                            .pumpSettings![0].pressureSwitch!,
+                                        pressure: myCubit.stationModel!
+                                            .features![0].pressure!,
+                                        flowMeter: myCubit.stationModel!
+                                            .features![0].flowMeter!,
                                         isEdit: true,
                                         stationIrrigationType: myCubit
                                             .stationModel!
@@ -69,6 +75,14 @@ class StationInfoScreen extends StatelessWidget {
                                     MaterialPageRoute(
                                       builder: (context) =>
                                           DurationSettingsByPeriodScreen(
+                                              pressureSwitch: myCubit
+                                                  .stationModel!
+                                                  .pumpSettings![0]
+                                                  .pressureSwitch!,
+                                              pressure: myCubit.stationModel!
+                                                  .features![0].pressure!,
+                                              flowMeter: myCubit.stationModel!
+                                                  .features![0].flowMeter!,
                                               isEdit: true,
                                               irrigationType: myCubit
                                                   .stationModel!
@@ -87,6 +101,12 @@ class StationInfoScreen extends StatelessWidget {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => PeriodAmountScreen(
+                                          pressureSwitch: myCubit.stationModel!
+                                              .pumpSettings![0].pressureSwitch!,
+                                          pressure: myCubit.stationModel!
+                                              .features![0].pressure!,
+                                          flowMeter: myCubit.stationModel!
+                                              .features![0].flowMeter!,
                                           isEdit: true,
                                           irrigationType: myCubit
                                               .stationModel!
@@ -105,6 +125,12 @@ class StationInfoScreen extends StatelessWidget {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => TimeAmountScreen(
+                                          pressureSwitch: myCubit.stationModel!
+                                              .pumpSettings![0].pressureSwitch!,
+                                          pressure: myCubit.stationModel!
+                                              .features![0].pressure!,
+                                          flowMeter: myCubit.stationModel!
+                                              .features![0].flowMeter!,
                                           isEdit: true,
                                           irrigationType: myCubit
                                               .stationModel!
@@ -124,6 +150,14 @@ class StationInfoScreen extends StatelessWidget {
                                     MaterialPageRoute(
                                       builder: (context) =>
                                           DurationSettingsByHourScreen(
+                                              pressureSwitch: myCubit
+                                                  .stationModel!
+                                                  .pumpSettings![0]
+                                                  .pressureSwitch!,
+                                              pressure: myCubit.stationModel!
+                                                  .features![0].pressure!,
+                                              flowMeter: myCubit.stationModel!
+                                                  .features![0].flowMeter!,
                                               isEdit: true,
                                               irrigationType: myCubit
                                                   .stationModel!
@@ -224,7 +258,11 @@ class StationInfoScreen extends StatelessWidget {
                                               context,
                                               MaterialPageRoute(
                                                 builder: (context) =>
-                                                    const FirtilisationTypeScreen(),
+                                                    FirtilisationTypeScreen(
+                                                        flowMeter: myCubit
+                                                            .stationModel!
+                                                            .features![0]
+                                                            .flowMeter!),
                                               ));
                                         } else {
                                           ferCubit.getPeriods();
@@ -232,7 +270,11 @@ class StationInfoScreen extends StatelessWidget {
                                               context,
                                               MaterialPageRoute(
                                                 builder: (context) =>
-                                                    const FirtiliserSettingsScreen(),
+                                                    FirtiliserSettingsScreen(
+                                                        flowMeter: myCubit
+                                                            .stationModel!
+                                                            .features![0]
+                                                            .flowMeter!),
                                               ));
                                         }
                                       },
@@ -247,7 +289,7 @@ class StationInfoScreen extends StatelessWidget {
                                               context,
                                               MaterialPageRoute(
                                                 builder: (context) =>
-                                                    LightScreen(),
+                                                    const LightScreen(),
                                               ));
                                         }
                                       },
@@ -262,7 +304,7 @@ class StationInfoScreen extends StatelessWidget {
                                               context,
                                               MaterialPageRoute(
                                                 builder: (context) =>
-                                                    ScarecrowScreen(),
+                                                    const ScarecrowScreen(),
                                               ));
                                         }
                                       },

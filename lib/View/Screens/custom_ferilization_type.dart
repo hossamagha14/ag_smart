@@ -17,8 +17,12 @@ import 'custom_fertlization_duration.dart';
 class CustomFirtilizationTypesScreen extends StatefulWidget {
   final int lineIndex;
   final int valveId;
+  final int flowMeter;
   const CustomFirtilizationTypesScreen(
-      {Key? key, required this.lineIndex, required this.valveId})
+      {Key? key,
+      required this.lineIndex,
+      required this.valveId,
+      required this.flowMeter})
       : super(key: key);
 
   @override
@@ -34,7 +38,8 @@ class _CustomFirtilizationTypesScreenState
   @override
   void initState() {
     authBloc = BlocProvider.of<AuthBloc>(context);
-    customFertilizationBloc = BlocProvider.of<CustomFertilizationCubit>(context)..getNumberOfValvesOnly(serialNumber: serialNumber);
+    customFertilizationBloc = BlocProvider.of<CustomFertilizationCubit>(context)
+      ..getNumberOfValvesOnly(serialNumber: serialNumber);
     super.initState();
   }
 
@@ -54,6 +59,7 @@ class _CustomFirtilizationTypesScreenState
                 context,
                 MaterialPageRoute(
                   builder: (context) => CustomFirtiliserSettingsScreen(
+                    flowMeter: widget.flowMeter,
                     lineIndex: widget.lineIndex,
                     valveId: widget.valveId,
                     fertiliationType: myCubit.fertilizationType,
@@ -110,21 +116,30 @@ class _CustomFirtilizationTypesScreenState
                                 'h',
                                 style: TextStyle(
                                     fontFamily: 'icons',
-                                    color: yellowColor,
+                                    color: widget.flowMeter == 2
+                                        ? yellowColor
+                                        : disabled,
                                     fontSize: 30),
                               )),
                               firstButtonFunction: () {
                                 myCubit.chooseDuration();
                               },
                               secondButtonFunction: () {
-                                myCubit.chooseQuantity();
+                                if (widget.flowMeter == 2) {
+                                  myCubit.chooseQuantity();
+                                } else {
+                                  errorToast(text[chosenLanguage]![
+                                      'You are not subscribed for this feature']!);
+                                }
                               },
                               firstButtonColor: myCubit.isDuration == true
                                   ? selectedColor
                                   : Colors.white,
-                              secondButtonColor: myCubit.isDuration == false
-                                  ? selectedColor
-                                  : Colors.white),
+                              secondButtonColor: widget.flowMeter != 2
+                                  ? disabledBackground
+                                  : myCubit.isDuration == false
+                                      ? selectedColor
+                                      : Colors.white),
                           rowWidget: Text(
                             'y',
                             style: yellowIcon,
@@ -134,8 +149,7 @@ class _CustomFirtilizationTypesScreenState
                                 lineIndex: widget.lineIndex,
                                 valveId: widget.valveId,
                                 stationId: stationId,
-                                fertilizationMethod:
-                                    myCubit.fertilizationType);
+                                fertilizationMethod: myCubit.fertilizationType);
                           },
                           cardtitle: 'Fertilization Settings',
                           buttonColor: yellowColor),
