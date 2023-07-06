@@ -24,9 +24,13 @@ class CustomDurationSettingsByPeriodScreen extends StatefulWidget {
   final int irrigationMethod2;
   final int stationId;
   final int flowMeter;
+  final int currentMethod1;
+  final int currentMethod2;
   const CustomDurationSettingsByPeriodScreen(
       {Key? key,
       required this.lineIndex,
+      required this.currentMethod1,
+      required this.currentMethod2,
       required this.flowMeter,
       required this.valveId,
       required this.stationId,
@@ -114,11 +118,15 @@ class _CustomDurationSettingsByPeriodScreenState
                             MainCard2(
                                 editButton: InkWell(
                                   onTap: () {
-                                    Navigator.push(
+                                    Navigator.pushReplacement(
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) =>
                                               CustomDurationSettingsScreen(
+                                                  currentMethod1:
+                                                      widget.currentMethod1,
+                                                  currentMethod2:
+                                                      widget.currentMethod2,
                                                   stationId: widget.stationId,
                                                   flowMeter: widget.flowMeter,
                                                   lineIndex: widget.lineIndex,

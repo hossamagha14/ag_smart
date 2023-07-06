@@ -20,9 +20,13 @@ class CustomDurationSettingsScreen extends StatefulWidget {
   final int valveId;
   final int stationId;
   final int flowMeter;
+  final int currentMethod1;
+  final int currentMethod2;
   const CustomDurationSettingsScreen(
       {Key? key,
       required this.lineIndex,
+      required this.currentMethod1,
+      required this.currentMethod2,
       required this.flowMeter,
       required this.valveId,
       required this.stationId})
@@ -56,10 +60,12 @@ class _CustomDurationSettingsScreenState
             if (myCubit.customIrrigationModelList[widget.lineIndex]
                     .accordingToHour ==
                 true) {
-              Navigator.push(
+              Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
                     builder: (context) => CustomDurationByTime(
+                      currentMethod1: widget.currentMethod1,
+                      currentMethod2: widget.currentMethod2,
                       flowMeter: widget.flowMeter,
                       stationId: widget.stationId,
                       valveId: widget.valveId,
@@ -70,10 +76,12 @@ class _CustomDurationSettingsScreenState
             } else if (myCubit.customIrrigationModelList[widget.lineIndex]
                     .accordingToHour ==
                 false) {
-              Navigator.push(
+              Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
                     builder: (context) => CustomDurationSettingsByPeriodScreen(
+                      currentMethod1: widget.currentMethod1,
+                      currentMethod2: widget.currentMethod2,
                       flowMeter: widget.flowMeter,
                       stationId: widget.stationId,
                       valveId: widget.valveId,
@@ -126,6 +134,51 @@ class _CustomDurationSettingsScreenState
                                         .accordingToQuantity ==
                                     null) {
                               errorToast('Please select both categories');
+                            } else if (widget.currentMethod1 ==
+                                    myCubit.irrigationMethod1! &&
+                                widget.currentMethod2 ==
+                                    myCubit.irrigationMethod2!) {
+                              if (myCubit
+                                      .customIrrigationModelList[
+                                          widget.lineIndex]
+                                      .accordingToHour ==
+                                  true) {
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          CustomDurationByTime(
+                                        currentMethod1: widget.currentMethod1,
+                                        currentMethod2: widget.currentMethod2,
+                                        flowMeter: widget.flowMeter,
+                                        stationId: widget.stationId,
+                                        valveId: widget.valveId,
+                                        lineIndex: widget.lineIndex,
+                                        irrigationMethod2:
+                                            myCubit.irrigationMethod2!,
+                                      ),
+                                    ));
+                              } else if (myCubit
+                                      .customIrrigationModelList[
+                                          widget.lineIndex]
+                                      .accordingToHour ==
+                                  false) {
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          CustomDurationSettingsByPeriodScreen(
+                                        currentMethod1: widget.currentMethod1,
+                                        currentMethod2: widget.currentMethod2,
+                                        flowMeter: widget.flowMeter,
+                                        stationId: widget.stationId,
+                                        valveId: widget.valveId,
+                                        lineIndex: widget.lineIndex,
+                                        irrigationMethod2:
+                                            myCubit.irrigationMethod2!,
+                                      ),
+                                    ));
+                              }
                             } else {
                               myCubit.putIrrigationSettings(
                                   irrigationMethod1: myCubit.irrigationMethod1!,

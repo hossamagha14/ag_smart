@@ -21,9 +21,15 @@ class PopUpScreen extends StatelessWidget {
   final int fertiliationType;
   final int irrigationMethod2;
   final int flowMeter;
+  final int currentMethod;
+  final int currentMethod1;
+  final int currentMethod2;
   const PopUpScreen(
       {Key? key,
       required this.valveId,
+      required this.currentMethod,
+      required this.currentMethod1,
+      required this.currentMethod2,
       required this.flowMeter,
       required this.lineIndex,
       required this.stationId,
@@ -60,6 +66,8 @@ class PopUpScreen extends StatelessWidget {
                               MaterialPageRoute(
                                   builder: (context) => statusType == 3
                                       ? CustomDurationSettingsByPeriodScreen(
+                                          currentMethod1: currentMethod1,
+                                          currentMethod2: currentMethod2,
                                           flowMeter: flowMeter,
                                           stationId: stationId,
                                           lineIndex: lineIndex,
@@ -67,6 +75,8 @@ class PopUpScreen extends StatelessWidget {
                                           irrigationMethod2: irrigationMethod2)
                                       : statusType == 2
                                           ? CustomDurationByTime(
+                                              currentMethod1: currentMethod1,
+                                              currentMethod2: currentMethod2,
                                               flowMeter: flowMeter,
                                               stationId: stationId,
                                               lineIndex: lineIndex,
@@ -74,6 +84,8 @@ class PopUpScreen extends StatelessWidget {
                                               irrigationMethod2:
                                                   irrigationMethod2)
                                           : CustomDurationSettingsScreen(
+                                              currentMethod1: currentMethod1,
+                                              currentMethod2: currentMethod2,
                                               flowMeter: flowMeter,
                                               stationId: stationId,
                                               lineIndex: lineIndex,
@@ -117,7 +129,8 @@ class PopUpScreen extends StatelessWidget {
                                 MaterialPageRoute(
                                   builder: (context) =>
                                       CustomFirtiliserSettingsScreen(
-                                        flowMeter: flowMeter,
+                                    currentMethod: currentMethod,
+                                    flowMeter: flowMeter,
                                     valveId: valveId,
                                     lineIndex: lineIndex,
                                     fertiliationType: fertiliationType,
@@ -136,7 +149,8 @@ class PopUpScreen extends StatelessWidget {
                                 MaterialPageRoute(
                                     builder: (context) =>
                                         CustomFirtilizationTypesScreen(
-                                          flowMeter: flowMeter,
+                                            currentMethod: currentMethod,
+                                            flowMeter: flowMeter,
                                             lineIndex: lineIndex,
                                             valveId: valveId)));
                           }

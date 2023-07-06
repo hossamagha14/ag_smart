@@ -1,4 +1,5 @@
 import 'package:ag_smart/View%20Model/Repo/auth_bloc.dart';
+import 'package:ag_smart/View%20Model/bloc/Bottom%20navigation%20bar/bottom_nav_bar_cubit.dart';
 import 'package:ag_smart/View%20Model/bloc/Custom%20Firtilization/custom_fertilization_cubit.dart';
 import 'package:ag_smart/View%20Model/bloc/Custom%20Irrigation/custom_irrigation_cubit.dart';
 import 'package:ag_smart/View%20Model/bloc/Duration%20settings/duration_settings_cubit.dart';
@@ -34,9 +35,11 @@ void main() async {
 class MyApp extends StatelessWidget {
   late AuthBloc authBloc;
   late CustomFertilizationCubit customFertilizationBloc;
+  late BottomNavBarCubit bottomNavBarCubit;
   MyApp({super.key}) {
     authBloc = AuthBloc(IntialState());
     customFertilizationBloc=CustomFertilizationCubit(authBloc);
+    bottomNavBarCubit = BottomNavBarCubit(authBloc);
   }
 
   @override
@@ -48,6 +51,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => IrrigationTypeCubit(authBloc),
+        ),
+        BlocProvider(
+          create: (context) => bottomNavBarCubit,
         ),
         BlocProvider(
           create: (context) => DurationSettingsCubit(authBloc),

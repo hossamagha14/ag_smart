@@ -17,9 +17,13 @@ class PopUpScreen2 extends StatelessWidget {
   final int statusType;
   final int irrigationMethod2;
   final int flowMeter;
+  final int currentMethod1;
+  final int currentMethod2;
   const PopUpScreen2(
       {Key? key,
       required this.valveId,
+      required this.currentMethod1,
+      required this.currentMethod2,
       required this.flowMeter,
       required this.lineIndex,
       required this.stationId,
@@ -54,6 +58,8 @@ class PopUpScreen2 extends StatelessWidget {
                               MaterialPageRoute(
                                   builder: (context) => statusType == 3
                                       ? CustomDurationSettingsByPeriodScreen(
+                                          currentMethod1: currentMethod1,
+                                          currentMethod2: currentMethod2,
                                           flowMeter: flowMeter,
                                           stationId: stationId,
                                           lineIndex: lineIndex,
@@ -61,6 +67,8 @@ class PopUpScreen2 extends StatelessWidget {
                                           irrigationMethod2: irrigationMethod2)
                                       : statusType == 2
                                           ? CustomDurationByTime(
+                                              currentMethod1: currentMethod1,
+                                              currentMethod2: currentMethod2,
                                               flowMeter: flowMeter,
                                               stationId: stationId,
                                               lineIndex: lineIndex,
@@ -68,6 +76,8 @@ class PopUpScreen2 extends StatelessWidget {
                                               irrigationMethod2:
                                                   irrigationMethod2)
                                           : CustomDurationSettingsScreen(
+                                              currentMethod1: currentMethod1,
+                                              currentMethod2: currentMethod2,
                                               flowMeter: flowMeter,
                                               stationId: stationId,
                                               lineIndex: lineIndex,

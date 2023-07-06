@@ -257,12 +257,21 @@ class StationInfoScreen extends StatelessWidget {
                                           Navigator.push(
                                               context,
                                               MaterialPageRoute(
-                                                builder: (context) =>
-                                                    FirtilisationTypeScreen(
-                                                        flowMeter: myCubit
-                                                            .stationModel!
-                                                            .features![0]
-                                                            .flowMeter!),
+                                                builder: (context) => FirtilisationTypeScreen(
+                                                    currentIndexF1: myCubit
+                                                        .stationModel!
+                                                        .fertilizationSettings![
+                                                            0]
+                                                        .fertilizationMethod1!,
+                                                    currentIndexF2: myCubit
+                                                        .stationModel!
+                                                        .fertilizationSettings![
+                                                            0]
+                                                        .fertilizationMethod2!,
+                                                    flowMeter: myCubit
+                                                        .stationModel!
+                                                        .features![0]
+                                                        .flowMeter!),
                                               ));
                                         } else {
                                           ferCubit.getPeriods();
@@ -271,6 +280,16 @@ class StationInfoScreen extends StatelessWidget {
                                               MaterialPageRoute(
                                                 builder: (context) =>
                                                     FirtiliserSettingsScreen(
+                                                        currentIndexF1: myCubit
+                                                            .stationModel!
+                                                            .fertilizationSettings![
+                                                                0]
+                                                            .fertilizationMethod1!,
+                                                        currentIndexF2: myCubit
+                                                            .stationModel!
+                                                            .fertilizationSettings![
+                                                                0]
+                                                            .fertilizationMethod2!,
                                                         flowMeter: myCubit
                                                             .stationModel!
                                                             .features![0]

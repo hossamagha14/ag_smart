@@ -268,8 +268,6 @@ class FirtiliserSettingsCubit extends Cubit<CommonStates> {
         if (firtiliserModel.dateList[i] == firtiliserModel.dateList[j]) {
           if (startTime1 + irrigationTime > startTime2) {
             validInput = false;
-            print(startTime1 + irrigationTime);
-            print(startTime2);
           }
         }
       }

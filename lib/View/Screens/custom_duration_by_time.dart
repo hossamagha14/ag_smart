@@ -28,9 +28,13 @@ class CustomDurationByTime extends StatefulWidget {
   final int stationId;
   final int irrigationMethod2;
   final int flowMeter;
+  final int currentMethod1;
+  final int currentMethod2;
   const CustomDurationByTime(
       {Key? key,
       required this.lineIndex,
+      required this.currentMethod1,
+      required this.currentMethod2,
       required this.valveId,
       required this.flowMeter,
       required this.stationId,
@@ -121,6 +125,10 @@ class _CustomDurationByTimeState extends State<CustomDurationByTime> {
                                         MaterialPageRoute(
                                           builder: (context) =>
                                               CustomDurationSettingsScreen(
+                                                  currentMethod1:
+                                                      widget.currentMethod1,
+                                                  currentMethod2:
+                                                      widget.currentMethod2,
                                                   stationId: widget.stationId,
                                                   flowMeter: widget.flowMeter,
                                                   lineIndex: widget.lineIndex,

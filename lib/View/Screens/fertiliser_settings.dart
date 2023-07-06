@@ -22,7 +22,13 @@ import 'firtilisation_type.dart';
 // ignore: must_be_immutable
 class FirtiliserSettingsScreen extends StatefulWidget {
   final int flowMeter;
-  const FirtiliserSettingsScreen({Key? key, required this.flowMeter})
+  final int currentIndexF1;
+  final int currentIndexF2;
+  const FirtiliserSettingsScreen(
+      {Key? key,
+      required this.flowMeter,
+      required this.currentIndexF2,
+      required this.currentIndexF1})
       : super(key: key);
 
   @override
@@ -99,6 +105,8 @@ class _FirtiliserSettingsScreenState extends State<FirtiliserSettingsScreen> {
                                       MaterialPageRoute(
                                           builder: (context) =>
                                               FirtilisationTypeScreen(
+                                                currentIndexF1: widget.currentIndexF1,
+                                                currentIndexF2: widget.currentIndexF2,
                                                 flowMeter: widget.flowMeter,
                                               )));
                                 },

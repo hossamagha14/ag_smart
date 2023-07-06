@@ -18,9 +18,11 @@ class CustomFirtilizationTypesScreen extends StatefulWidget {
   final int lineIndex;
   final int valveId;
   final int flowMeter;
+  final int currentMethod;
   const CustomFirtilizationTypesScreen(
       {Key? key,
       required this.lineIndex,
+      required this.currentMethod,
       required this.valveId,
       required this.flowMeter})
       : super(key: key);
@@ -54,11 +56,12 @@ class _CustomFirtilizationTypesScreenState
         listener: (context, state) {
           CustomFertilizationCubit myCubit =
               CustomFertilizationCubit.get(context);
-          if (state is CustomFertilizationPutSuccessState) {
-            Navigator.push(
+          if (state is CustomFertilizationPutSuccessState || state is CustomFertilizationGetSuccessState) {
+            Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                   builder: (context) => CustomFirtiliserSettingsScreen(
+                    currentMethod: widget.currentMethod,
                     flowMeter: widget.flowMeter,
                     lineIndex: widget.lineIndex,
                     valveId: widget.valveId,
@@ -145,11 +148,21 @@ class _CustomFirtilizationTypesScreenState
                             style: yellowIcon,
                           ),
                           function: () {
-                            myCubit.putFertilizationType(
+                            if (widget.currentMethod ==
+                                myCubit.fertilizationType) {
+                              myCubit.getNumberOfValvesandperiods(
+                                serialNumber: serialNumber,
                                 lineIndex: widget.lineIndex,
                                 valveId: widget.valveId,
-                                stationId: stationId,
-                                fertilizationMethod: myCubit.fertilizationType);
+                              );
+                            } else {
+                              myCubit.putFertilizationType(
+                                  lineIndex: widget.lineIndex,
+                                  valveId: widget.valveId,
+                                  stationId: stationId,
+                                  fertilizationMethod:
+                                      myCubit.fertilizationType);
+                            }
                           },
                           cardtitle: 'Fertilization Settings',
                           buttonColor: yellowColor),

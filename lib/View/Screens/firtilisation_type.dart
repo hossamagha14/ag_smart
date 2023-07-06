@@ -16,7 +16,13 @@ import 'fertiliser_settings.dart';
 
 class FirtilisationTypeScreen extends StatefulWidget {
   final int flowMeter;
-  const FirtilisationTypeScreen({Key? key, required this.flowMeter})
+  final int currentIndexF1;
+  final int currentIndexF2;
+  const FirtilisationTypeScreen(
+      {Key? key,
+      required this.flowMeter,
+      required this.currentIndexF2,
+      required this.currentIndexF1})
       : super(key: key);
 
   @override
@@ -47,10 +53,12 @@ class _FirtilisationTypeScreenState extends State<FirtilisationTypeScreen> {
                 if (state is FirtiliserSettingsSendFailState) {
                   errorToast('An error has occurred');
                 } else if (state is FirtiliserSettingsGetSuccessState) {
-                  Navigator.push(
+                  Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
                         builder: (context) => FirtiliserSettingsScreen(
+                            currentIndexF1: widget.currentIndexF1,
+                            currentIndexF2: widget.currentIndexF2,
                             flowMeter: widget.flowMeter),
                       ));
                 }
@@ -164,6 +172,9 @@ class _FirtilisationTypeScreenState extends State<FirtilisationTypeScreen> {
                         if (myCubit.accordingToTime == null ||
                             myCubit.seriesFertilization == null) {
                           errorToast('Please select firtilisation type');
+                        } else if (widget.currentIndexF1 == myCubit.method1 &&
+                            widget.currentIndexF2 == myCubit.method2) {
+                          myCubit.getPeriods();
                         } else {
                           myCubit.putFertilizationSettings(
                               ferMethod1: myCubit.method1!,

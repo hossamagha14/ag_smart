@@ -216,6 +216,27 @@ class CustomStationInfoScreen extends StatelessWidget {
                                                                       .circular(
                                                                           20)),
                                                           content: PopUpScreen(
+                                                            currentMethod1: myCubit
+                                                                .stationModel!
+                                                                .irrigationSettings![
+                                                                    0]
+                                                                .customValvesSettings![
+                                                                    0]
+                                                                .irrigationMethod1!,
+                                                            currentMethod2: myCubit
+                                                                .stationModel!
+                                                                .irrigationSettings![
+                                                                    0]
+                                                                .customValvesSettings![
+                                                                    0]
+                                                                .irrigationMethod2!,
+                                                            currentMethod: myCubit
+                                                                .stationModel!
+                                                                .fertilizationSettings![
+                                                                    0]
+                                                                .customFertilizerSettings![
+                                                                    0]
+                                                                .fertilizerMethod1!,
                                                             flowMeter: myCubit
                                                                 .stationModel!
                                                                 .features![0]
@@ -275,6 +296,20 @@ class CustomStationInfoScreen extends StatelessWidget {
                                                                       .circular(
                                                                           20)),
                                                           content: PopUpScreen2(
+                                                            currentMethod1: myCubit
+                                                                .stationModel!
+                                                                .irrigationSettings![
+                                                                    0]
+                                                                .customValvesSettings![
+                                                                    0]
+                                                                .irrigationMethod1!,
+                                                            currentMethod2: myCubit
+                                                                .stationModel!
+                                                                .irrigationSettings![
+                                                                    0]
+                                                                .customValvesSettings![
+                                                                    0]
+                                                                .irrigationMethod2!,
                                                             flowMeter: myCubit
                                                                 .stationModel!
                                                                 .features![0]
@@ -369,7 +404,8 @@ class CustomStationInfoScreen extends StatelessWidget {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => const ScarecrowScreen(),
+                                    builder: (context) =>
+                                        const ScarecrowScreen(),
                                   ));
                             }
                           },
