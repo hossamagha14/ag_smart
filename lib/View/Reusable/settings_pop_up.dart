@@ -4,7 +4,7 @@ import 'colors.dart';
 
 class SettingsPopUp extends StatelessWidget {
   final function;
-  const SettingsPopUp({Key? key,required this.function}) : super(key: key);
+  const SettingsPopUp({Key? key, required this.function}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,18 +29,30 @@ class SettingsPopUp extends StatelessWidget {
                   children: [
                     InkWell(
                       onTap: function,
-                      child: Text(
-                        'Ok',
-                        style: TextStyle(color: iconColor),
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.065,
+                        height: MediaQuery.of(context).size.height * 0.05,
+                        child: FittedBox(
+                          child: Text(
+                            'Ok',
+                            style: TextStyle(color: iconColor),
+                          ),
+                        ),
                       ),
                     ),
                     InkWell(
                       onTap: () {
                         Navigator.pop(context);
                       },
-                      child: const Text(
-                        'Cancel',
-                        style: TextStyle(color: Colors.red),
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.15,
+                        height: MediaQuery.of(context).size.height * 0.05,
+                        child: const FittedBox(
+                          child: Text(
+                            'Cancel',
+                            style: TextStyle(color: Colors.red),
+                          ),
+                        ),
                       ),
                     )
                   ],

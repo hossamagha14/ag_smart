@@ -5,17 +5,22 @@ import 'package:ag_smart/View/Reusable/colors.dart';
 import 'package:ag_smart/View/Reusable/toasts.dart';
 import 'package:ag_smart/View/Reusable/main_card.dart';
 import 'package:ag_smart/View/Reusable/text.dart';
+import 'package:ag_smart/View/Screens/bottom_nav_bar.dart';
 import 'package:ag_smart/View/Screens/sign_in.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../View Model/Repo/auth_bloc.dart';
+import '../../View Model/bloc/Stations/station_states.dart';
 import '../Reusable/main_icons_row_widget.dart';
 
 // ignore: must_be_immutable
 class DeviceSetupScreen extends StatefulWidget {
   final String serial;
-  const DeviceSetupScreen({Key? key, required this.serial}) : super(key: key);
+  final bool isEdit;
+  const DeviceSetupScreen(
+      {Key? key, required this.serial, required this.isEdit})
+      : super(key: key);
 
   @override
   State<DeviceSetupScreen> createState() => _DeviceSetupScreenState();
@@ -46,7 +51,18 @@ class _DeviceSetupScreenState extends State<DeviceSetupScreen> {
               child: Column(
                 children: [
                   BlocConsumer<StationsCubit, CommonStates>(
-                    listener: (context, state) {},
+                    listener: (context, state) {
+                      if (state is StationsEditStationNameSuccessState) {
+                        successToast(
+                            'Station name has been edited successfully');
+                        Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const BottomNavBarScreen()),
+                            (route) => false);
+                      }
+                    },
                     builder: (context, state) {
                       StationsCubit myCubit = StationsCubit.get(context);
                       return BlocListener<AuthBloc, CommonStates>(
@@ -74,6 +90,13 @@ class _DeviceSetupScreenState extends State<DeviceSetupScreen> {
                           function: () {
                             if (changeNameController.text.isEmpty) {
                               errorToast('Please put the station name');
+                            } else if (widget.isEdit == true) {
+                              CacheHelper.saveData(
+                                  key: 'stationName',
+                                  value: changeNameController.text);
+                              stationName =
+                                  CacheHelper.getData(key: 'stationName');
+                              myCubit.putStationName(stationName: changeNameController.text);
                             } else {
                               CacheHelper.saveData(
                                   key: 'stationName',

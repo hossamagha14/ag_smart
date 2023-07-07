@@ -14,6 +14,9 @@ int binaryValves = CacheHelper.getData(key: 'binaryValves') ?? 0;
 Map<String, Map<String, String>> text = {
   'en': {
     'sign in name': 'Username',
+    'Edit settings': 'Edit settings',
+    'Edit name': 'Edit name',
+    'Factory reset': 'Factory reset',
     'Password': 'Password',
     'Sign in': 'Sign in',
     'confirm password': 'Confirm Password',
@@ -139,6 +142,9 @@ Map<String, Map<String, String>> text = {
   },
   'ar': {
     'sign in name': 'اسم المستخدم',
+    'Edit settings': 'تعديل الاعدادات',
+    'Edit name': 'تعديل الاسم',
+    'Factory reset': 'مسح المحطة',
     'Password': 'كلمة المرور',
     'Sign in': 'تسجيل الدخول',
     'Create account': 'انشاء الحساب',

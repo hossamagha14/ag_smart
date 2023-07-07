@@ -78,6 +78,7 @@ class StationsCubit extends Cubit<CommonStates> {
                 MaterialPageRoute(
                   builder: (context) => DeviceSetupScreen(
                     serial: barCode!,
+                    isEdit: false,
                   ),
                 ));
           }
@@ -129,6 +130,17 @@ class StationsCubit extends Cubit<CommonStates> {
       }
       emit(StationsGetStationFailState());
     }
+  }
+
+  putStationName({required String stationName}) {
+    dio.put('$base/$station', data: {
+      "serial_number": serialNumber,
+      "station_name": stationName
+    }).then((value) {
+      emit(StationsEditStationNameSuccessState());
+    }).catchError((onError) {
+      emit(StationsEditStationNameFailState());
+    });
   }
 
   // createDataBase() async {

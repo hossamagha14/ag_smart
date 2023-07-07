@@ -66,6 +66,7 @@ class BottomNavBarCubit extends Cubit<CommonStates> {
           const StationInfoScreen(),
           SettingsScreen(
               flowMeter: stationModel!.features![0].flowMeter!,
+              serial: stationModel!.stationName!,
               pressure: stationModel!.features![0].pressure!)
         ];
       } else if (settingsType == 3) {
@@ -73,6 +74,7 @@ class BottomNavBarCubit extends Cubit<CommonStates> {
           const CustomStationInfoScreen(),
           SettingsScreen(
               flowMeter: stationModel!.features![0].flowMeter!,
+              serial: stationModel!.stationName!,
               pressure: stationModel!.features![0].pressure!)
         ];
       } else if (settingsType == 4) {
@@ -80,6 +82,7 @@ class BottomNavBarCubit extends Cubit<CommonStates> {
           const AutoScreen(),
           SettingsScreen(
               flowMeter: stationModel!.features![0].flowMeter!,
+              serial: stationModel!.stationName!,
               pressure: stationModel!.features![0].pressure!)
         ];
       }

@@ -6,6 +6,10 @@ class StationsIntialState extends StationsStates {}
 
 class StationsCreateDBSuccessState extends StationsStates {}
 
+class StationsEditStationNameSuccessState extends StationsStates {}
+
+class StationsEditStationNameFailState extends StationsStates {}
+
 class StationsCreateDBFailState extends StationsStates {}
 
 class StationsShowPassWordState extends StationsStates {}

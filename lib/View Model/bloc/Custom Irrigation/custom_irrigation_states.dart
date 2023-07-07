@@ -4,6 +4,8 @@ abstract class CustomIrrigationStates extends CommonStates {}
 
 class CustomIrrigationIntialState extends CustomIrrigationStates {}
 
+class CustomIrrigationHideEditState extends CustomIrrigationStates {}
+
 class CustomIrrigationHourState extends CustomIrrigationStates {}
 
 class CustomIrrigationPeriodState extends CustomIrrigationStates {}

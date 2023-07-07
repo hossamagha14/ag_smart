@@ -7,6 +7,7 @@ import 'package:ag_smart/View/Screens/pump_settings.dart';
 import 'package:flutter/material.dart';
 
 import 'device_features.dart';
+import 'edit_settings.dart';
 import 'irrigation_type.dart';
 import 'lines_activation.dart';
 import 'lines_settings.dart';
@@ -14,7 +15,13 @@ import 'lines_settings.dart';
 class SettingsScreen extends StatelessWidget {
   final int flowMeter;
   final int pressure;
-  const SettingsScreen({Key? key, required this.flowMeter,required this.pressure}) : super(key: key);
+  final String serial;
+  const SettingsScreen(
+      {Key? key,
+      required this.flowMeter,
+      required this.pressure,
+      required this.serial})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +34,16 @@ class SettingsScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
+                  EditSettingsButton(
+                      buttonTile: text[chosenLanguage]!['Edit settings']!,
+                      function: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  EditSettingsScreen(serial: serial),
+                            ));
+                      }),
                   EditSettingsButton(
                       buttonTile: text[chosenLanguage]!['Manual Irrigation']!,
                       function: () {
@@ -106,7 +123,7 @@ class SettingsScreen extends StatelessWidget {
                                       MaterialPageRoute(
                                         builder: (context) =>
                                             IrrigationTypeScreen(
-                                              pressure: pressure,
+                                          pressure: pressure,
                                           isEdit: true,
                                           flowMeter: flowMeter,
                                         ),

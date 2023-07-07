@@ -153,7 +153,6 @@ class CustomIrrigationCubit extends Cubit<CommonStates> {
         emit(CustomIrrigationPutSuccessState());
       }
     }).catchError((onError) {
-      print(onError.toString());
       emit(CustomIrrigationPutFailState());
     });
   }
