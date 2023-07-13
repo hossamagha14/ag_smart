@@ -1,46 +1,38 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 
-Future<bool?> errorToast(String errorMessage){
-  return Fluttertoast.showToast(
-        msg: errorMessage,
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 5,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 16.0);
+errorToast(context, String errorMessage) {
+  showToast(errorMessage,
+      backgroundColor: Colors.red,
+      context: context,
+      animation: StyledToastAnimation.scale,
+      position: StyledToastPosition.bottom,
+      duration: const Duration(seconds: 3));
 }
 
-Future<bool?> expiredTokenToast(){
-  return Fluttertoast.showToast(
-        msg: 'Access token has expired please log in again',
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 5,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 16.0);
+expiredTokenToast(context) {
+  showToast('Access token has expired please log in again',
+      backgroundColor: Colors.red,
+      context: context,
+      animation: StyledToastAnimation.scale,
+      position: StyledToastPosition.bottom,
+      duration: const Duration(seconds: 5));
 }
 
-Future<bool?> serverDownToast(){
-  return Fluttertoast.showToast(
-        msg: 'Server is down please try again later',
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 5,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 16.0);
+serverDownToast(context) {
+  showToast('Server is down please try again later',
+      backgroundColor: Colors.red,
+      context: context,
+      animation: StyledToastAnimation.scale,
+      position: StyledToastPosition.bottom,
+      duration: const Duration(seconds: 5));
 }
 
-Future<bool?> successToast(String successMessage){
-  return Fluttertoast.showToast(
-        msg: successMessage,
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 5,
-        backgroundColor: Colors.green,
-        textColor: Colors.white,
-        fontSize: 16.0);
+successToast(context, String successMessage) {
+  showToast(successMessage,
+      backgroundColor: Colors.green,
+      context: context,
+      animation: StyledToastAnimation.scale,
+      position: StyledToastPosition.bottom,
+      duration: const Duration(seconds: 3));
 }

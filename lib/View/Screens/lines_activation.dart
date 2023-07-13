@@ -65,7 +65,7 @@ class _LinesActivationScreenState extends State<LinesActivationScreen> {
                               builder: (context) => SignInScreen(),
                             ),
                             (route) => false);
-                        expiredTokenToast();
+                        expiredTokenToast(context);
                       }
                       if (state is ServerDownState) {
                         Navigator.pushAndRemoveUntil(
@@ -74,7 +74,7 @@ class _LinesActivationScreenState extends State<LinesActivationScreen> {
                               builder: (context) => SignInScreen(),
                             ),
                             (route) => false);
-                        serverDownToast();
+                        serverDownToast(context);
                       }
                     },
                     child: Column(

@@ -123,12 +123,18 @@ class StationsCubit extends Cubit<CommonStates> {
     } catch (e) {
       if (e is DioError) {
         if (e.response!.statusCode == 409) {
-          errorToast(e.response!.data['message']);
+          errorToast(context, e.response!.data['message']);
+          emit(StationsGetStationFailState());
         } else if (e.response!.statusCode == 500) {
-          errorToast(e.response!.data['message']);
+          errorToast(context, e.response!.data['message']);
+          emit(StationsGetStationFailState());
+        } else if (e.response!.statusCode == 404 &&
+            e.response!.data['message'] == 'name duplicated') {
+          emit(StationsEditStationNameReapeatedState());
         }
+      } else {
+        emit(StationsGetStationFailState());
       }
-      emit(StationsGetStationFailState());
     }
   }
 
@@ -139,7 +145,16 @@ class StationsCubit extends Cubit<CommonStates> {
     }).then((value) {
       emit(StationsEditStationNameSuccessState());
     }).catchError((onError) {
-      emit(StationsEditStationNameFailState());
+      if (onError is DioError) {
+        if (onError.response!.statusCode == 404 &&
+            onError.response!.data['message'] == 'name duplicated') {
+          emit(StationsEditStationNameReapeatedState());
+        } else {
+          emit(StationsEditStationNameFailState());
+        }
+      } else {
+        emit(StationsEditStationNameFailState());
+      }
     });
   }
 

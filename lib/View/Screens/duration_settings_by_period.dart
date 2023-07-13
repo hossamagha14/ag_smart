@@ -58,7 +58,7 @@ class _DurationSettingsByPeriodScreenState
         child: BlocConsumer<DurationSettingsCubit, CommonStates>(
           listener: (context, state) {
             if (state is DurationSettingsErrorState) {
-              errorToast('Input error');
+              errorToast(context,'Input error');
             } else if (state is DurationSettingsSendSuccessState) {
               Navigator.pushAndRemoveUntil(
                   context,
@@ -67,7 +67,7 @@ class _DurationSettingsByPeriodScreenState
                   ),
                   (route) => false);
             } else if (state is DurationSettingsSendFailedState) {
-              errorToast('An error has occurred');
+              errorToast(context,'An error has occurred');
             }
           },
           builder: (context, state) {
@@ -88,7 +88,7 @@ class _DurationSettingsByPeriodScreenState
                               builder: (context) => SignInScreen(),
                             ),
                             (route) => false);
-                        expiredTokenToast();
+                        expiredTokenToast(context);
                       }
                       if (state is ServerDownState) {
                         Navigator.pushAndRemoveUntil(
@@ -97,7 +97,7 @@ class _DurationSettingsByPeriodScreenState
                               builder: (context) => SignInScreen(),
                             ),
                             (route) => false);
-                        serverDownToast();
+                        serverDownToast(context);
                       }
                     },
                     child: SingleChildScrollView(
@@ -110,12 +110,12 @@ class _DurationSettingsByPeriodScreenState
                             MainCard2(
                                 function: () {
                                   if (myCubit.noDayIsChosen == 7) {
-                                    errorToast(
+                                    errorToast(context,
                                         'Please choose the days of work');
                                   } else if (numberOfHoursControl
                                           .text.isEmpty ||
                                       numberOfMinutesControl.text.isEmpty) {
-                                    errorToast('Please fill both categories');
+                                    errorToast(context,'Please fill both categories');
                                   } else {
                                     if (widget.irrigationType == 1) {
                                       myCubit.checkOpenValveTimeSeriesByCycle(
@@ -142,7 +142,7 @@ class _DurationSettingsByPeriodScreenState
                                     } else if (double.parse(
                                             numberOfHoursControl.text) >
                                         24) {
-                                      errorToast(text[chosenLanguage]![
+                                      errorToast(context,text[chosenLanguage]![
                                           'The cycle can\'t be more than 24 hours']!);
                                     }
                                   }

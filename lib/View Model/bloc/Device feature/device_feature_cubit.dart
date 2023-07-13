@@ -129,6 +129,9 @@ class DeviceFeatureCubit extends Cubit<CommonStates> {
       stationModel = StationModel.fromJson(value.data);
       map = stationModel!.features![0].toJson();
       featuresIntList = map.values.toList();
+      print(value.data);
+      print(map);
+      print(featuresIntList);
       emit(DeviceFeatureGetSuccessStateState());
     }).catchError((onError) {
       emit(DeviceFeatureGetFailStateState());

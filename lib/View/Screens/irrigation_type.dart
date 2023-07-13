@@ -62,7 +62,7 @@ class _IrrigationTypeScreenState extends State<IrrigationTypeScreen> {
                       ),
                       (route) => false);
                 } else if (state is IrrigationTypeSendFailState) {
-                  errorToast('An error has occurred');
+                  errorToast(context,'An error has occurred');
                 }
               }
             },
@@ -77,7 +77,7 @@ class _IrrigationTypeScreenState extends State<IrrigationTypeScreen> {
                           builder: (context) => SignInScreen(),
                         ),
                         (route) => false);
-                    expiredTokenToast();
+                    expiredTokenToast(context);
                   }
                   if (state is ServerDownState) {
                     Navigator.pushAndRemoveUntil(
@@ -86,7 +86,7 @@ class _IrrigationTypeScreenState extends State<IrrigationTypeScreen> {
                           builder: (context) => SignInScreen(),
                         ),
                         (route) => false);
-                    serverDownToast();
+                    serverDownToast(context);
                   }
                 },
                 child: MainCard2(
@@ -114,7 +114,7 @@ class _IrrigationTypeScreenState extends State<IrrigationTypeScreen> {
                             irrigationMethod1: 1,
                             irrigationMethod2: 1);
                       } else {
-                        errorToast('Please choose irrigation type');
+                        errorToast(context,'Please choose irrigation type');
                       }
                     },
                     buttonColor: greenButtonColor,

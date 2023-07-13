@@ -26,9 +26,9 @@ class ManualIrrigationScreen extends StatelessWidget {
         child: BlocConsumer<BottomNavBarCubit, CommonStates>(
           listener: (context, state) {
             if (state is BottomNavBarPutSuccessState) {
-              successToast('Data sent successfully');
+              successToast(context,'Data sent successfully');
             } else if (state is BottomNavBarPutFailState) {
-              errorToast('An error has occured');
+              errorToast(context,'An error has occured');
             }
           },
           builder: (context, state) {
@@ -155,7 +155,7 @@ class ManualIrrigationScreen extends StatelessWidget {
                                     myCubit.putmanualDurationList(statioId: 1);
                                   } else {
                                     errorToast(
-                                        'Please put durations for all valves');
+                                        context,'Please put durations for all valves');
                                   }
                                 },
                                 child: const Text('Start operation',

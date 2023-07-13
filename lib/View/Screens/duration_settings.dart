@@ -112,7 +112,7 @@ class _DurationSettingsScreenState extends State<DurationSettingsScreen> {
                         ));
                   }
                 } else if (state is IrrigationTypeSendFailState) {
-                  errorToast('An error has occurred');
+                  errorToast(context,'An error has occurred');
                 }
               },
               builder: (context, state) {
@@ -126,7 +126,7 @@ class _DurationSettingsScreenState extends State<DurationSettingsScreen> {
                             builder: (context) => SignInScreen(),
                           ),
                           (route) => false);
-                      expiredTokenToast();
+                      expiredTokenToast(context);
                     }
                     if (state is ServerDownState) {
                       Navigator.pushAndRemoveUntil(
@@ -135,14 +135,14 @@ class _DurationSettingsScreenState extends State<DurationSettingsScreen> {
                             builder: (context) => SignInScreen(),
                           ),
                           (route) => false);
-                      serverDownToast();
+                      serverDownToast(context);
                     }
                   },
                   child: MainCard2(
                       function: () {
                         if (myCubit.accordingToHour == null ||
                             myCubit.accordingToQuantity == null) {
-                          errorToast("Please select both categories");
+                          errorToast(context,"Please select both categories");
                         } else {
                           if (widget.isEdit == false) {
                             myCubit.putIrrigationType(
@@ -219,7 +219,7 @@ class _DurationSettingsScreenState extends State<DurationSettingsScreen> {
                                 if (widget.flowMeter == 2) {
                                   myCubit.chooseAccordingToQuantity();
                                 } else {
-                                  errorToast(text[chosenLanguage]![
+                                  errorToast(context,text[chosenLanguage]![
                                       'You are not subscribed for this feature']!);
                                 }
                               },

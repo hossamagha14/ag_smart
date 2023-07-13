@@ -77,8 +77,9 @@ class CustomIrrigationCubit extends Cubit<CommonStates> {
   }
 
   pickTime(value, int timeIndex, int lineIndex) {
-    customIrrigationModelList[lineIndex].timeList[timeIndex] =
-        value ?? TimeOfDay.now();
+    if (value != null) {
+      customIrrigationModelList[lineIndex].timeList[timeIndex] = value;
+    }
     emit(CustomIrrigationPickTimeState());
   }
 

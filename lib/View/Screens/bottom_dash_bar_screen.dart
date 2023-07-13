@@ -54,7 +54,7 @@ class _BottomDashBarScreenState extends State<BottomDashBarScreen> {
                     builder: (context) => SignInScreen(),
                   ),
                   (route) => false);
-              expiredTokenToast();
+              expiredTokenToast(context);
             }
             if (state is ServerDownState) {
               Navigator.pushAndRemoveUntil(
@@ -63,7 +63,7 @@ class _BottomDashBarScreenState extends State<BottomDashBarScreen> {
                     builder: (context) => SignInScreen(),
                   ),
                   (route) => false);
-              serverDownToast();
+              serverDownToast(context);
             }
           },
           child: Scaffold(

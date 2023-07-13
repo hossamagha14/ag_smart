@@ -137,7 +137,7 @@ class PopUpScreen extends StatelessWidget {
                                   ),
                                 ));
                           } else if (ferStatusType == 3) {
-                            errorToast(text[chosenLanguage]![
+                            errorToast(context,text[chosenLanguage]![
                                 'You are not subscribed for this feature']!);
                           } else {
                             myCubit.getNumberOfValvesandperiods(

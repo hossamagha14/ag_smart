@@ -67,7 +67,7 @@ class _TimeAmountScreenState extends State<TimeAmountScreen> {
                   ),
                   (route) => false);
             } else if (state is DurationSettingsSendFailedState) {
-              errorToast('An error has occured');
+              errorToast(context,'An error has occured');
             }
           },
           builder: (context, state) {
@@ -84,7 +84,7 @@ class _TimeAmountScreenState extends State<TimeAmountScreen> {
                               builder: (context) => SignInScreen(),
                             ),
                             (route) => false);
-                        expiredTokenToast();
+                        expiredTokenToast(context);
                       }
                       if (state is ServerDownState) {
                         Navigator.pushAndRemoveUntil(
@@ -93,7 +93,7 @@ class _TimeAmountScreenState extends State<TimeAmountScreen> {
                               builder: (context) => SignInScreen(),
                             ),
                             (route) => false);
-                        serverDownToast();
+                        serverDownToast(context);
                       }
                     },
                     child: SingleChildScrollView(
@@ -242,14 +242,14 @@ class _TimeAmountScreenState extends State<TimeAmountScreen> {
                                   }
                                   if (myCubit.noDayIsChosen == 7) {
                                     errorToast(
-                                        'Please choose the days of work');
+                                        context,'Please choose the days of work');
                                   } else if (allFull == true) {
                                     myCubit.putIrrigationHourList(
                                         periodsList: myCubit.makeAList(
                                             weekday: myCubit.toDecimal()));
                                   } else {
                                     errorToast(
-                                        'Please add the open valve time');
+                                        context,'Please add the open valve time');
                                   }
                                 },
                                 cardtitle:

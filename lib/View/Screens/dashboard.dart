@@ -40,7 +40,7 @@ class _DashsboardScreenState extends State<DashsboardScreen> {
         child: BlocConsumer<StationsCubit, CommonStates>(
           listener: (context, state) {
             if (state is StationsFailQrState) {
-              errorToast('Serial number couldn\'t be found');
+              errorToast(context,'Serial number couldn\'t be found');
             }
           },
           builder: (context, state) {
@@ -58,7 +58,7 @@ class _DashsboardScreenState extends State<DashsboardScreen> {
                               builder: (context) => SignInScreen(),
                             ),
                             (route) => false);
-                        expiredTokenToast();
+                        expiredTokenToast(context);
                       }
                       if (state is ServerDownState) {
                         Navigator.pushAndRemoveUntil(
@@ -67,7 +67,7 @@ class _DashsboardScreenState extends State<DashsboardScreen> {
                               builder: (context) => SignInScreen(),
                             ),
                             (route) => false);
-                        serverDownToast();
+                        serverDownToast(context);
                       }
                     },
                     child: RefreshIndicator(

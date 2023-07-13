@@ -31,3 +31,9 @@ class BottomNavBarLogOutSuccessState extends BottomNavBarStates {}
 class BottomNavBarLogoutFailState extends BottomNavBarStates {}
 
 class BottomNavBarGetActiveValvesState extends BottomNavBarStates {}
+
+class BottomNavBarDeleteSuccessState extends BottomNavBarStates {}
+
+class BottomNavBarDeleteFailState extends BottomNavBarStates {}
+
+class BottomNavBarDeleteLoadingState extends BottomNavBarStates {}

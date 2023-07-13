@@ -46,7 +46,7 @@ class _LinesSettingsScreenState extends State<LinesSettingsScreen> {
                   builder: (context) => SignInScreen(),
                 ),
                 (route) => false);
-            expiredTokenToast();
+            expiredTokenToast(context);
           }
           if (state is ServerDownState) {
             Navigator.pushAndRemoveUntil(
@@ -55,7 +55,7 @@ class _LinesSettingsScreenState extends State<LinesSettingsScreen> {
                   builder: (context) => SignInScreen(),
                 ),
                 (route) => false);
-            serverDownToast();
+            serverDownToast(context);
           }
         },
         child: SingleChildScrollView(
@@ -81,7 +81,7 @@ class _LinesSettingsScreenState extends State<LinesSettingsScreen> {
                                   .stationModel!.features![0].flowMeter!),
                         ));
                   } else if (state is LinesActivationSendFailState) {
-                    errorToast('An error has occurred');
+                    errorToast(context,'An error has occurred');
                   }
                 },
                 builder: (context, state) {

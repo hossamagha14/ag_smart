@@ -56,9 +56,9 @@ class _ReportScreenState extends State<ReportScreen> {
           child: BlocConsumer<ReportCubit, CommonStates>(
             listener: (context, state) {
               if (state is ReportPDFSuccessState) {
-                successToast('PDF downloaded Successfully');
+                successToast(context,'PDF downloaded Successfully');
               } else if (state is ReportPDFFailState) {
-                errorToast('an Error occured while downloading the PDF');
+                errorToast(context,'an Error occured while downloading the PDF');
               }
             },
             builder: (context, state) {
@@ -75,7 +75,7 @@ class _ReportScreenState extends State<ReportScreen> {
                                 builder: (context) => SignInScreen(),
                               ),
                               (route) => false);
-                          expiredTokenToast();
+                          expiredTokenToast(context);
                         }
                         if (state is ServerDownState) {
                           Navigator.pushAndRemoveUntil(
@@ -84,7 +84,7 @@ class _ReportScreenState extends State<ReportScreen> {
                                 builder: (context) => SignInScreen(),
                               ),
                               (route) => false);
-                          serverDownToast();
+                          serverDownToast(context);
                         }
                       },
                       child: SingleChildScrollView(
@@ -347,7 +347,7 @@ class _ReportScreenState extends State<ReportScreen> {
                                               final result =
                                                   await ImageGallerySaver
                                                       .saveImage(image);
-                                              successToast(
+                                              successToast(context,
                                                   'Screenshot saved to gallery');
                                               return result['filePath'];
                                             },

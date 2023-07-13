@@ -71,7 +71,7 @@ class _LightScreenState extends State<LightScreen> {
                               builder: (context) => SignInScreen(),
                             ),
                             (route) => false);
-                        expiredTokenToast();
+                        expiredTokenToast(context);
                       }
                       if (state is ServerDownState) {
                         Navigator.pushAndRemoveUntil(
@@ -80,7 +80,7 @@ class _LightScreenState extends State<LightScreen> {
                               builder: (context) => SignInScreen(),
                             ),
                             (route) => false);
-                        serverDownToast();
+                        serverDownToast(context);
                       }
                     },
                     child: SingleChildScrollView(
@@ -124,7 +124,7 @@ class _LightScreenState extends State<LightScreen> {
                                 ),
                                 function: () {
                                   if (lightcontrol.text.isEmpty) {
-                                    errorToast('Please add the lighting time');
+                                    errorToast(context,'Please add the lighting time');
                                   } else {
                                     myCubit.putLight(
                                         stationId: stationId,

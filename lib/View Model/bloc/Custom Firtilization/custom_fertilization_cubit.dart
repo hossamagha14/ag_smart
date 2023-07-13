@@ -46,8 +46,9 @@ class CustomFertilizationCubit extends Cubit<CommonStates> {
   }
 
   chooseTime(value, int containerIndex, int lineIndex) {
-    customFertilizationModelList[lineIndex].time[containerIndex] =
-        value ?? TimeOfDay.now();
+    if (value != null) {
+      customFertilizationModelList[lineIndex].time[containerIndex] = value;
+    }
     emit(CustomFirtilizationSettingsChooseTimeState());
   }
 

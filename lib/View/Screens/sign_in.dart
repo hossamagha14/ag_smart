@@ -36,7 +36,7 @@ class SignInScreen extends StatelessWidget {
                     ),
                     (route) => false);
               } else if (state is SignInLoginFailState) {
-                errorToast('The email or password might be incorrect');
+                errorToast(context,'The email or password might be incorrect');
               }
             },
             builder: (context, state) {
@@ -108,7 +108,7 @@ class SignInScreen extends StatelessWidget {
                                   username: nameControl.text,
                                   password: passwordControl.text);
                             } else {
-                              errorToast('Please add your email and password');
+                              errorToast(context,'Please add your email and password');
                             }
                           }),
                       const SizedBox(

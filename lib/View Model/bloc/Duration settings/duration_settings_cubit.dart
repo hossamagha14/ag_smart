@@ -39,7 +39,9 @@ class DurationSettingsCubit extends Cubit<CommonStates> {
   ];
 
   pickTime(value, int containerIndex) {
-    durationModel.time[containerIndex] = value ?? TimeOfDay.now();
+    if (value != null) {
+      durationModel.time[containerIndex] = value;
+    }
     emit(DurationSettingsPickTimeState());
   }
 

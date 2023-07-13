@@ -57,7 +57,7 @@ class _DeviceFeaturesScreenState extends State<DeviceFeaturesScreen> {
                               builder: (context) => SignInScreen(),
                             ),
                             (route) => false);
-                        expiredTokenToast();
+                        expiredTokenToast(context);
                       }
                       if (state is ServerDownState) {
                         Navigator.pushAndRemoveUntil(
@@ -66,7 +66,7 @@ class _DeviceFeaturesScreenState extends State<DeviceFeaturesScreen> {
                               builder: (context) => SignInScreen(),
                             ),
                             (route) => false);
-                        serverDownToast();
+                        serverDownToast(context);
                       }
                     },
                     child: Column(
@@ -79,11 +79,11 @@ class _DeviceFeaturesScreenState extends State<DeviceFeaturesScreen> {
                               child: SizedBox(
                                 width: MediaQuery.of(context).size.width * 0.8,
                                 height:
-                                    MediaQuery.of(context).size.height * 0.43,
+                                    MediaQuery.of(context).size.height * 0.47,
                                 child: ListView.separated(
                                     physics: const BouncingScrollPhysics(),
                                     itemBuilder: (context, index) {
-                                      return myCubit.featuresIntList[index] == 1
+                                      return myCubit.featuresIntList[index] == 1 || myCubit.featureList[index].description==null
                                           ? const SizedBox(
                                               width: 0,
                                               height: 0,

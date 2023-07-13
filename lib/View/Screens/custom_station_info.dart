@@ -385,7 +385,7 @@ class CustomStationInfoScreen extends StatelessWidget {
                         ScarLightWidget(
                           lightFunction: () {
                             if (myCubit.stationModel!.features![0].light == 1) {
-                              errorToast(text[chosenLanguage]![
+                              errorToast(context,text[chosenLanguage]![
                                   'You are not subscribed for this feature']!);
                             } else {
                               Navigator.push(
@@ -398,7 +398,7 @@ class CustomStationInfoScreen extends StatelessWidget {
                           scarFunction: () {
                             if (myCubit.stationModel!.features![0].animal ==
                                 1) {
-                              errorToast(text[chosenLanguage]![
+                              errorToast(context,text[chosenLanguage]![
                                   'You are not subscribed for this feature']!);
                             } else {
                               Navigator.push(

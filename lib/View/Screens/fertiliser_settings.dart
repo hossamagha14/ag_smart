@@ -61,7 +61,7 @@ class _FirtiliserSettingsScreenState extends State<FirtiliserSettingsScreen> {
                 ),
                 (route) => false);
           } else if (state is FirtiliserSettingsSendFailState) {
-            errorToast('An error has occurred');
+            errorToast(context,'An error has occurred');
           }
         },
         builder: (context, state) {
@@ -79,7 +79,7 @@ class _FirtiliserSettingsScreenState extends State<FirtiliserSettingsScreen> {
                             builder: (context) => SignInScreen(),
                           ),
                           (route) => false);
-                      expiredTokenToast();
+                      expiredTokenToast(context);
                     }
                     if (state is ServerDownState) {
                       Navigator.pushAndRemoveUntil(
@@ -88,7 +88,7 @@ class _FirtiliserSettingsScreenState extends State<FirtiliserSettingsScreen> {
                             builder: (context) => SignInScreen(),
                           ),
                           (route) => false);
-                      serverDownToast();
+                      serverDownToast(context);
                     }
                   },
                   child: SingleChildScrollView(
@@ -165,9 +165,9 @@ class _FirtiliserSettingsScreenState extends State<FirtiliserSettingsScreen> {
                                           .fertilizationModel!
                                           .fertilizationMethod2!));
                                 } else if (allFull == false) {
-                                  errorToast('Please fill all the data');
+                                  errorToast(context,'Please fill all the data');
                                 } else if (validInfo == false) {
-                                  errorToast('Input error');
+                                  errorToast(context,'Input error');
                                 }
                               },
                               buttonColor: yellowColor,

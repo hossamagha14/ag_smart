@@ -69,7 +69,7 @@ class _CustomFirtilizationTypesScreenState
                   ),
                 ));
           } else if (state is CustomFertilizationPutFailState) {
-            errorToast('An error has occurred');
+            errorToast(context,'An error has occurred');
           }
         },
         builder: (context, state) {
@@ -86,7 +86,7 @@ class _CustomFirtilizationTypesScreenState
                             builder: (context) => SignInScreen(),
                           ),
                           (route) => false);
-                      expiredTokenToast();
+                      expiredTokenToast(context);
                     }
                     if (state is ServerDownState) {
                       Navigator.pushAndRemoveUntil(
@@ -95,7 +95,7 @@ class _CustomFirtilizationTypesScreenState
                             builder: (context) => SignInScreen(),
                           ),
                           (route) => false);
-                      serverDownToast();
+                      serverDownToast(context);
                     }
                   },
                   child: Column(
@@ -131,7 +131,7 @@ class _CustomFirtilizationTypesScreenState
                                 if (widget.flowMeter == 2) {
                                   myCubit.chooseQuantity();
                                 } else {
-                                  errorToast(text[chosenLanguage]![
+                                  errorToast(context,text[chosenLanguage]![
                                       'You are not subscribed for this feature']!);
                                 }
                               },

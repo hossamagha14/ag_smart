@@ -66,7 +66,7 @@ class _CustomFirtiliserSettingsScreenState
                 ),
                 (route) => false);
           } else if (state is CustomFertilizationPutFailState) {
-            errorToast('An error has occurred');
+            errorToast(context,'An error has occurred');
           }
         },
         builder: (context, state) {
@@ -83,7 +83,7 @@ class _CustomFirtiliserSettingsScreenState
                             builder: (context) => SignInScreen(),
                           ),
                           (route) => false);
-                      expiredTokenToast();
+                      expiredTokenToast(context);
                     }
                     if (state is ServerDownState) {
                       Navigator.pushAndRemoveUntil(
@@ -92,7 +92,7 @@ class _CustomFirtiliserSettingsScreenState
                             builder: (context) => SignInScreen(),
                           ),
                           (route) => false);
-                      serverDownToast();
+                      serverDownToast(context);
                     }
                   },
                   child: SingleChildScrollView(
@@ -174,9 +174,9 @@ class _CustomFirtiliserSettingsScreenState
                                           lineIndex: widget.lineIndex,
                                           valveId: widget.valveId));
                                 } else if (allFull == false) {
-                                  errorToast('Please fill all the data');
+                                  errorToast(context,'Please fill all the data');
                                 } else if (validInfo == false) {
-                                  errorToast('Input error');
+                                  errorToast(context,'Input error');
                                 }
                               },
                               buttonColor: yellowColor,
@@ -227,6 +227,7 @@ class _CustomFirtiliserSettingsScreenState
                                                           (context, state) {
                                                         return DayPickerPopUp(
                                                             function: (value) {
+                                                              
                                                               myCubit.chooseDay(
                                                                   value,
                                                                   widget

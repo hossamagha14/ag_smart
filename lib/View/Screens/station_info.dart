@@ -250,7 +250,7 @@ class StationInfoScreen extends StatelessWidget {
                                         if (myCubit.stationModel!.features![0]
                                                 .fertilizer ==
                                             1) {
-                                          errorToast(text[chosenLanguage]![
+                                          errorToast(context,text[chosenLanguage]![
                                               'You are not subscribed for this feature']!);
                                         } else if (myCubit.stationModel!
                                             .fertilizationSettings!.isEmpty) {
@@ -301,7 +301,7 @@ class StationInfoScreen extends StatelessWidget {
                                         if (myCubit.stationModel!.features![0]
                                                 .light ==
                                             1) {
-                                          errorToast(text[chosenLanguage]![
+                                          errorToast(context,text[chosenLanguage]![
                                               'You are not subscribed for this feature']!);
                                         } else {
                                           Navigator.push(
@@ -316,7 +316,7 @@ class StationInfoScreen extends StatelessWidget {
                                         if (myCubit.stationModel!.features![0]
                                                 .animal ==
                                             1) {
-                                          errorToast(text[chosenLanguage]![
+                                          errorToast(context,text[chosenLanguage]![
                                               'You are not subscribed for this feature']!);
                                         } else {
                                           Navigator.push(

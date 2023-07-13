@@ -91,7 +91,7 @@ class _CustomDurationSettingsScreenState
                   ));
             }
           } else if (state is CustomIrrigationPutFailState) {
-            errorToast('An error has occured');
+            errorToast(context, 'An error has occured');
           }
         },
         builder: (context, state) {
@@ -107,7 +107,7 @@ class _CustomDurationSettingsScreenState
                             builder: (context) => SignInScreen(),
                           ),
                           (route) => false);
-                      expiredTokenToast();
+                      expiredTokenToast(context);
                     }
                     if (state is ServerDownState) {
                       Navigator.pushAndRemoveUntil(
@@ -116,7 +116,7 @@ class _CustomDurationSettingsScreenState
                             builder: (context) => SignInScreen(),
                           ),
                           (route) => false);
-                      serverDownToast();
+                      serverDownToast(context);
                     }
                   },
                   child: Column(
@@ -133,7 +133,7 @@ class _CustomDurationSettingsScreenState
                                             widget.lineIndex]
                                         .accordingToQuantity ==
                                     null) {
-                              errorToast('Please select both categories');
+                              errorToast(context,'Please select both categories');
                             } else if (widget.currentMethod1 ==
                                     myCubit.irrigationMethod1! &&
                                 widget.currentMethod2 ==
@@ -255,7 +255,7 @@ class _CustomDurationSettingsScreenState
                                     myCubit.chooseAccordingToQuantity(
                                         widget.lineIndex);
                                   } else {
-                                    errorToast(text[chosenLanguage]![
+                                    errorToast(context,text[chosenLanguage]![
                                         'You are not subscribed for this feature']!);
                                   }
                                 },

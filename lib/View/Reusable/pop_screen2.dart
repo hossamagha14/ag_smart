@@ -111,7 +111,7 @@ class PopUpScreen2 extends StatelessWidget {
                     children: [
                       InkWell(
                         onTap: () {
-                          errorToast(text[chosenLanguage]![
+                          errorToast(context,text[chosenLanguage]![
                               'You are not subscribed for this feature']!);
                         },
                         child: SizedBox(

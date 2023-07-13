@@ -55,7 +55,7 @@ class _ScarecrowScreenState extends State<ScarecrowScreen> {
                     ),
                     (route) => false);
               } else if (state is ScarecrowPostFailState) {
-                errorToast('An error has occured');
+                errorToast(context,'An error has occured');
               }
             },
             builder: (context, state) {
@@ -72,7 +72,7 @@ class _ScarecrowScreenState extends State<ScarecrowScreen> {
                                 builder: (context) => SignInScreen(),
                               ),
                               (route) => false);
-                          expiredTokenToast();
+                          expiredTokenToast(context);
                         }
                         if (state is ServerDownState) {
                           Navigator.pushAndRemoveUntil(
@@ -81,7 +81,7 @@ class _ScarecrowScreenState extends State<ScarecrowScreen> {
                                 builder: (context) => SignInScreen(),
                               ),
                               (route) => false);
-                          serverDownToast();
+                          serverDownToast(context);
                         }
                       },
                       child: SingleChildScrollView(
@@ -203,7 +203,7 @@ class _ScarecrowScreenState extends State<ScarecrowScreen> {
                                     if (onControl.text.isEmpty ||
                                         offControl.text.isEmpty) {
                                       errorToast(
-                                          'Please fill the on and off periods');
+                                          context,'Please fill the on and off periods');
                                     } else {
                                       int availableTime = myCubit.checkTime();
                                       int onTime = int.parse(onControl.text);
@@ -216,7 +216,7 @@ class _ScarecrowScreenState extends State<ScarecrowScreen> {
                                             offTime:
                                                 int.parse(offControl.text));
                                       } else {
-                                        errorToast('Input error');
+                                        errorToast(context,'Input error');
                                       }
                                     }
                                   },

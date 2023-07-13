@@ -76,7 +76,7 @@ class _CustomDurationSettingsByPeriodScreenState
                   ),
                   (route) => false);
             } else if (state is CustomIrrigationPutFailState) {
-              errorToast('An error has occured');
+              errorToast(context,'An error has occured');
             }
           },
           builder: (context, state) {
@@ -97,7 +97,7 @@ class _CustomDurationSettingsByPeriodScreenState
                               builder: (context) => SignInScreen(),
                             ),
                             (route) => false);
-                        expiredTokenToast();
+                        expiredTokenToast(context);
                       }
                       if (state is ServerDownState) {
                         Navigator.pushAndRemoveUntil(
@@ -106,7 +106,7 @@ class _CustomDurationSettingsByPeriodScreenState
                               builder: (context) => SignInScreen(),
                             ),
                             (route) => false);
-                        serverDownToast();
+                        serverDownToast(context);
                       }
                     },
                     child: SingleChildScrollView(
@@ -193,11 +193,11 @@ class _CustomDurationSettingsByPeriodScreenState
                                               widget.lineIndex]
                                           .noDayIsChosen ==
                                       7) {
-                                    errorToast(
+                                    errorToast(context,
                                         'Please choose the days of work');
                                   } else if (hourControl.text.isEmpty ||
                                       minutesControl.text.isEmpty) {
-                                    errorToast(widget.irrigationMethod2 == 1
+                                    errorToast(context,widget.irrigationMethod2 == 1
                                         ? 'Please add the open valve time'
                                         : 'Please add the amount of water needed');
                                   } else {
@@ -225,7 +225,7 @@ class _CustomDurationSettingsByPeriodScreenState
                                           weekDays: myCubit.toDecimal(
                                               lineIndex: widget.lineIndex));
                                     } else if (validInfo == false) {
-                                      errorToast('Input error');
+                                      errorToast(context,'Input error');
                                     }
                                   }
                                 },

@@ -63,7 +63,7 @@ class _DurationSettingsByHourScreenState
                   ),
                   (route) => false);
             } else if (state is DurationSettingsSendFailedState) {
-              errorToast('An error has occurred');
+              errorToast(context,'An error has occurred');
             }
           },
           builder: (context, state) {
@@ -80,7 +80,7 @@ class _DurationSettingsByHourScreenState
                               builder: (context) => SignInScreen(),
                             ),
                             (route) => false);
-                        expiredTokenToast();
+                        expiredTokenToast(context);
                       }
                       if (state is ServerDownState) {
                         Navigator.pushAndRemoveUntil(
@@ -89,7 +89,7 @@ class _DurationSettingsByHourScreenState
                               builder: (context) => SignInScreen(),
                             ),
                             (route) => false);
-                        serverDownToast();
+                        serverDownToast(context);
                       }
                     },
                     child: SingleChildScrollView(
@@ -238,16 +238,16 @@ class _DurationSettingsByHourScreenState
                                 if (allFull == true && checkTime == true) {
                                   if (myCubit.noDayIsChosen == 7) {
                                     errorToast(
-                                        'Please choose the days of work');
+                                        context,'Please choose the days of work');
                                   } else {
                                     myCubit.putIrrigationHourList(
                                         periodsList: myCubit.makeAList(
                                             weekday: myCubit.toDecimal()));
                                   }
                                 } else if (allFull == false) {
-                                  errorToast('Please add the open valve time');
+                                  errorToast(context,'Please add the open valve time');
                                 } else if (checkTime == false) {
-                                  errorToast('Input error');
+                                  errorToast(context,'Input error');
                                 }
                               },
                             ),

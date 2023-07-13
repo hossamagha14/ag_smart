@@ -33,9 +33,9 @@ class SignUpScreen extends StatelessWidget {
                     builder: (context) => SignInScreen(),
                   ),
                   (route) => false);
-              successToast(state.accountCreatedMessage);
+              successToast(context,state.accountCreatedMessage);
             } else if (state is SignUpFailState) {
-              errorToast(state.errorMessage);
+              errorToast(context,state.errorMessage);
             }
           },
           builder: (context, state) {
@@ -126,10 +126,10 @@ class SignUpScreen extends StatelessWidget {
                               if (nameControl.text.isEmpty ||
                                   passwordControl.text.isEmpty ||
                                   rePasswordControl.text.isEmpty) {
-                                errorToast('Please fill all');
+                                errorToast(context,'Please fill all');
                               } else if (passwordControl.text !=
                                   rePasswordControl.text) {
-                                errorToast('Password doesn\'t match');
+                                errorToast(context,'Password doesn\'t match');
                               } else {
                                 myCubit.createAccount(
                                     username: nameControl.text,

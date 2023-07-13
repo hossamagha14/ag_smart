@@ -53,7 +53,11 @@ class _DeviceSetupScreenState extends State<DeviceSetupScreen> {
                   BlocConsumer<StationsCubit, CommonStates>(
                     listener: (context, state) {
                       if (state is StationsEditStationNameSuccessState) {
-                        successToast(
+                        CacheHelper.saveData(
+                            key: 'stationName',
+                            value: changeNameController.text);
+                        stationName = CacheHelper.getData(key: 'stationName');
+                        successToast(context,
                             'Station name has been edited successfully');
                         Navigator.pushAndRemoveUntil(
                             context,
@@ -61,6 +65,10 @@ class _DeviceSetupScreenState extends State<DeviceSetupScreen> {
                                 builder: (context) =>
                                     const BottomNavBarScreen()),
                             (route) => false);
+                      } else if (state
+                          is StationsEditStationNameReapeatedState) {
+                        errorToast(context,
+                            'This name has already been used for another station');
                       }
                     },
                     builder: (context, state) {
@@ -74,7 +82,7 @@ class _DeviceSetupScreenState extends State<DeviceSetupScreen> {
                                   builder: (context) => SignInScreen(),
                                 ),
                                 (route) => false);
-                            expiredTokenToast();
+                            expiredTokenToast(context);
                           }
                           if (state is ServerDownState) {
                             Navigator.pushAndRemoveUntil(
@@ -83,26 +91,20 @@ class _DeviceSetupScreenState extends State<DeviceSetupScreen> {
                                   builder: (context) => SignInScreen(),
                                 ),
                                 (route) => false);
-                            serverDownToast();
+                            serverDownToast(context);
                           }
                         },
                         child: MainCard(
                           function: () {
                             if (changeNameController.text.isEmpty) {
-                              errorToast('Please put the station name');
+                              errorToast(
+                                  context, 'Please put the station name');
                             } else if (widget.isEdit == true) {
-                              CacheHelper.saveData(
-                                  key: 'stationName',
-                                  value: changeNameController.text);
-                              stationName =
-                                  CacheHelper.getData(key: 'stationName');
-                              myCubit.putStationName(stationName: changeNameController.text);
+                              FocusScope.of(context).unfocus();
+                              myCubit.putStationName(
+                                  stationName: changeNameController.text);
                             } else {
-                              CacheHelper.saveData(
-                                  key: 'stationName',
-                                  value: changeNameController.text);
-                              stationName =
-                                  CacheHelper.getData(key: 'stationName');
+                              FocusScope.of(context).unfocus();
                               myCubit.postStation(context,
                                   stationName: changeNameController.text);
                             }

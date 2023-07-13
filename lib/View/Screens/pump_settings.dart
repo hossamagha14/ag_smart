@@ -44,7 +44,7 @@ class _PumpSettingsScreenState extends State<PumpSettingsScreen> {
                 builder: (context) => SignInScreen(),
               ),
               (route) => false);
-          expiredTokenToast();
+          expiredTokenToast(context);
         }
         if (state is ServerDownState) {
           Navigator.pushAndRemoveUntil(
@@ -53,7 +53,7 @@ class _PumpSettingsScreenState extends State<PumpSettingsScreen> {
                 builder: (context) => SignInScreen(),
               ),
               (route) => false);
-          serverDownToast();
+          serverDownToast(context);
         }
       },
       child: Scaffold(
@@ -89,11 +89,11 @@ class _PumpSettingsScreenState extends State<PumpSettingsScreen> {
                               MainCard2(
                                   function: () {
                                     if (myCubit.groupValue == 0) {
-                                      errorToast('Please choose pump settings');
+                                      errorToast(context,'Please choose pump settings');
                                     } else if (myCubit.groupValue == 2 &&
                                         hoursePowerControl.text.isEmpty) {
                                       errorToast(
-                                          'Please put the pump horse power');
+                                          context,'Please put the pump horse power');
                                     } else {
                                       myCubit.putPumpSettings(
                                           pumpPower:

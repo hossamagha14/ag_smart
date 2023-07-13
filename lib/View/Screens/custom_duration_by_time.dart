@@ -78,12 +78,12 @@ class _CustomDurationByTimeState extends State<CustomDurationByTime> {
                   ),
                   (route) => false);
             } else if (state is CustomIrrigationPutFailState) {
-              errorToast('An error has occured');
+              errorToast(context,'An error has occured');
             } else if (state is CustomIrrigationGetFailState) {
-              errorToast('An error has occured');
+              errorToast(context,'An error has occured');
               Navigator.pop(context);
             } else if (state is CustomIrrigationDeleteFailedState) {
-              errorToast('An error has occured');
+              errorToast(context,'An error has occured');
             }
           },
           builder: (context, state) {
@@ -99,7 +99,7 @@ class _CustomDurationByTimeState extends State<CustomDurationByTime> {
                               builder: (context) => SignInScreen(),
                             ),
                             (route) => false);
-                        expiredTokenToast();
+                        expiredTokenToast(context);
                       }
                       if (state is ServerDownState) {
                         Navigator.pushAndRemoveUntil(
@@ -108,7 +108,7 @@ class _CustomDurationByTimeState extends State<CustomDurationByTime> {
                               builder: (context) => SignInScreen(),
                             ),
                             (route) => false);
-                        serverDownToast();
+                        serverDownToast(context);
                       }
                     },
                     child: SingleChildScrollView(
@@ -326,7 +326,7 @@ class _CustomDurationByTimeState extends State<CustomDurationByTime> {
                                               widget.lineIndex]
                                           .noDayIsChosen ==
                                       7) {
-                                    errorToast(
+                                    errorToast(context,
                                         'Please choose the days of work');
                                   } else {
                                     if (allFull == true && validInfo == true) {
@@ -339,7 +339,7 @@ class _CustomDurationByTimeState extends State<CustomDurationByTime> {
                                                   lineIndex:
                                                       widget.lineIndex)));
                                     } else if (allFull == false) {
-                                      errorToast(myCubit
+                                      errorToast(context,myCubit
                                                   .customIrrigationModelList[
                                                       widget.lineIndex]
                                                   .accordingToQuantity ==
@@ -347,7 +347,7 @@ class _CustomDurationByTimeState extends State<CustomDurationByTime> {
                                           ? 'Please add the open valve time'
                                           : 'Please add the amount of water needed');
                                     } else if (validInfo == false) {
-                                      errorToast('Input error');
+                                      errorToast(context,'Input error');
                                     }
                                   }
                                 },

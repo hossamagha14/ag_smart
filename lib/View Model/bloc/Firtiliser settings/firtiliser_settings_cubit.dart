@@ -35,7 +35,9 @@ class FirtiliserSettingsCubit extends Cubit<CommonStates> {
   int? method2;
 
   chooseTime(value, int containerIndex) {
-    firtiliserModel.timeList[containerIndex] = value ?? TimeOfDay.now();
+    if (value != null) {
+      firtiliserModel.timeList[containerIndex] = value;
+    }
     emit(FirtiliserSettingsChooseTimeState());
   }
 

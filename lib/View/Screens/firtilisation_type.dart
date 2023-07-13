@@ -51,7 +51,7 @@ class _FirtilisationTypeScreenState extends State<FirtilisationTypeScreen> {
             BlocConsumer<FirtiliserSettingsCubit, CommonStates>(
               listener: (context, state) {
                 if (state is FirtiliserSettingsSendFailState) {
-                  errorToast('An error has occurred');
+                  errorToast(context,'An error has occurred');
                 } else if (state is FirtiliserSettingsGetSuccessState) {
                   Navigator.pushReplacement(
                       context,
@@ -75,7 +75,7 @@ class _FirtilisationTypeScreenState extends State<FirtilisationTypeScreen> {
                             builder: (context) => SignInScreen(),
                           ),
                           (route) => false);
-                      expiredTokenToast();
+                      expiredTokenToast(context);
                     }
                     if (state is ServerDownState) {
                       Navigator.pushAndRemoveUntil(
@@ -84,7 +84,7 @@ class _FirtilisationTypeScreenState extends State<FirtilisationTypeScreen> {
                             builder: (context) => SignInScreen(),
                           ),
                           (route) => false);
-                      serverDownToast();
+                      serverDownToast(context);
                     }
                   },
                   child: MainCard2(
@@ -150,7 +150,7 @@ class _FirtilisationTypeScreenState extends State<FirtilisationTypeScreen> {
                                 if (widget.flowMeter == 2) {
                                   myCubit.firtiliseAccordingToQuantity();
                                 } else {
-                                  errorToast(text[chosenLanguage]![
+                                  errorToast(context,text[chosenLanguage]![
                                       'You are not subscribed for this feature']!);
                                 }
                               },
@@ -171,7 +171,7 @@ class _FirtilisationTypeScreenState extends State<FirtilisationTypeScreen> {
                       function: () {
                         if (myCubit.accordingToTime == null ||
                             myCubit.seriesFertilization == null) {
-                          errorToast('Please select firtilisation type');
+                          errorToast(context,'Please select firtilisation type');
                         } else if (widget.currentIndexF1 == myCubit.method1 &&
                             widget.currentIndexF2 == myCubit.method2) {
                           myCubit.getPeriods();
