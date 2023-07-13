@@ -61,6 +61,10 @@ class BottomNavBarCubit extends Cubit<CommonStates> {
           key: 'binaryValves',
           value: stationModel!.irrigationSettings![0].activeValves!);
       binaryValves = CacheHelper.getData(key: 'binaryValves');
+      CacheHelper.saveData(
+          key: 'numOfActiveLines',
+          value: stationModel!.features![0].linesNumber);
+      numOfActiveLines = CacheHelper.getData(key: 'numOfActiveLines');
       if (settingsType == 1 || settingsType == 2) {
         bottomNavBarScreens = [
           const StationInfoScreen(),
@@ -227,6 +231,15 @@ class BottomNavBarCubit extends Cubit<CommonStates> {
       emit(BottomNavBarLogOutSuccessState());
     }).catchError((onError) {
       emit(BottomNavBarLogoutFailState());
+    });
+  }
+
+  deleteStation() {
+    emit(BottomNavBarDeleteLoadingState());
+    dio.delete('$base/$stationBySerial/$serialNumber').then((value) {
+      emit(BottomNavBarDeleteSuccessState());
+    }).catchError((onError) {
+      emit(BottomNavBarDeleteFailState());
     });
   }
 }
