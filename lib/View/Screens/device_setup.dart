@@ -144,12 +144,18 @@ class _DeviceSetupScreenState extends State<DeviceSetupScreen> {
                                             textAlign: TextAlign.start,
                                             // the widget between the top row (Agritopia1) and the next button
                                             decoration: InputDecoration(
-                                              hintTextDirection:
-                                                  chosenLanguage == 'ar'
-                                                      ? TextDirection.rtl
-                                                      : TextDirection.ltr,
-                                              label: Text(text[chosenLanguage]![
-                                                  'Station name']!),
+                                              label: Row(
+                                                mainAxisAlignment:
+                                                    chosenLanguage == 'ar'
+                                                        ? MainAxisAlignment.end
+                                                        : MainAxisAlignment
+                                                            .start,
+                                                mainAxisSize: MainAxisSize.max,
+                                                children: [
+                                                  Text(text[chosenLanguage]![
+                                                      'Station name']!),
+                                                ],
+                                              ),
                                               border: InputBorder.none,
                                             ),
                                           ),

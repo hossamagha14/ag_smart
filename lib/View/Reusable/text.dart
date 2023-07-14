@@ -151,6 +151,7 @@ Map<String, Map<String, String>> text = {
     'edit fail': 'This name has already been used for another station',
     'download suc': 'PDF downloaded Successfully',
     'download fail': 'An Error occured while downloading the PDF',
+    'Change station name':'Change station name'
   },
   'ar': {
     'sign in name': 'اسم المستخدم',
@@ -293,5 +294,6 @@ Map<String, Map<String, String>> text = {
     'edit fail': 'هذا الإسم مستخدم لمحطة اخري',
     'download suc': 'تم تحميل الملف بنجاح',
     'download fail': 'ظهر خطأ اثناء تحميل الملف',
+    'Change station name':'تغيير إسم المحطة'
   },
 };

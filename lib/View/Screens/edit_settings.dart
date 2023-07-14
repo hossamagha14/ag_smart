@@ -32,7 +32,7 @@ class _EditSettingsScreenState extends State<EditSettingsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(text[chosenLanguage]!['Edit settings']!),
+        title: Text(text[chosenLanguage]!['Change station name']!),
       ),
       body: BlocConsumer<BottomNavBarCubit, CommonStates>(
           listener: (context, state) {
@@ -65,7 +65,7 @@ class _EditSettingsScreenState extends State<EditSettingsScreen> {
                         children: [
                           MainButton(
                               buttonLabel:
-                                  text[chosenLanguage]!['Edit settings']!,
+                                  text[chosenLanguage]!['Change station name']!,
                               function: () {
                                 Navigator.push(
                                     context,
