@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../Reusable/text.dart';
+
 class AboutUsScreen extends StatelessWidget {
   const AboutUsScreen({Key? key}) : super(key: key);
 
@@ -18,7 +20,8 @@ class AboutUsScreen extends StatelessWidget {
             elevation: 10,
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            child: const Center(child: Text('About Us')),
+            child:
+                Center(child: Text(text[chosenLanguage]!['About us content']!)),
           ),
         ),
       ),

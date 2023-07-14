@@ -37,14 +37,17 @@ class ChooseLanguageScreen extends StatelessWidget {
               LanguageCubit myCubit = LanguageCubit.get(context);
               return Column(
                 mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: chosenLanguage == 'ar'?CrossAxisAlignment.end:CrossAxisAlignment.start,
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.only(bottom: 20),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 20,right: 20),
                     child: Text(
-                      'Choose your language:',
+                      text[chosenLanguage]!['lang']!,
+                      textDirection: chosenLanguage == 'ar'
+                                                    ? TextDirection.rtl
+                                                    : TextDirection.ltr,
                       style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                          const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                   ),
                   Row(

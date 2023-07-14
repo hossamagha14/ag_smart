@@ -101,8 +101,12 @@ class _DeviceSetupScreenState extends State<DeviceSetupScreen> {
                                   context, text[chosenLanguage]!['fill name']!);
                             } else if (widget.isEdit == true) {
                               FocusScope.of(context).unfocus();
-                              myCubit.putStationName(
-                                  stationName: changeNameController.text);
+                              if (changeNameController.text != stationName) {
+                                myCubit.putStationName(
+                                    stationName: changeNameController.text);
+                              } else {
+                                Navigator.pop(context);
+                              }
                             } else {
                               FocusScope.of(context).unfocus();
                               myCubit.postStation(context,

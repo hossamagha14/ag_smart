@@ -1,3 +1,4 @@
+import 'package:ag_smart/View/Reusable/text.dart';
 import 'package:flutter/material.dart';
 
 class ContactUsScreen extends StatelessWidget {
@@ -18,7 +19,8 @@ class ContactUsScreen extends StatelessWidget {
             elevation: 10,
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            child: const Center(child: Text('Contact Us')),
+            child:
+                Center(child: Text(text[chosenLanguage]!['Contact us content']!)),
           ),
         ),
       ),
