@@ -56,9 +56,9 @@ class _ReportScreenState extends State<ReportScreen> {
           child: BlocConsumer<ReportCubit, CommonStates>(
             listener: (context, state) {
               if (state is ReportPDFSuccessState) {
-                successToast(context,'PDF downloaded Successfully');
+                successToast(context, text[chosenLanguage]!['download suc']!);
               } else if (state is ReportPDFFailState) {
-                errorToast(context,'an Error occured while downloading the PDF');
+                errorToast(context, text[chosenLanguage]!['download fail']!);
               }
             },
             builder: (context, state) {

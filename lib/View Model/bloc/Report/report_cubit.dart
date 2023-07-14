@@ -627,7 +627,6 @@ class ReportCubit extends Cubit<CommonStates> {
         reportStationModel.stationName.add(stationModel!.stationName!);
         reportStationModel.reportStationId.add(stationModel!.id!);
       }
-      currentStationName = stationName;
       get7days();
       emit(ReportGetSuccessState());
     }).catchError((onError) {

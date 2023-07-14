@@ -139,6 +139,18 @@ Map<String, Map<String, String>> text = {
     'dauto': 'auto',
     'dflow':
         'The device contains a system for measuring water consumption, through which reports are created',
+    'Ok': 'Ok',
+    'Cancel': 'Cancel',
+    'settings pop up':
+        'Any change in these features will lead to the change in all the station settings',
+    'delete msg': 'Are you sure you want to delete this station?',
+    'delete err': 'An error has occurred while deleting the station.',
+    'delete suc': 'Station was deleted successfully',
+    'fill name': 'Please put the station name',
+    'edit suc': 'Station name has been edited successfully',
+    'edit fail': 'This name has already been used for another station',
+    'download suc': 'PDF downloaded Successfully',
+    'download fail': 'An Error occured while downloading the PDF',
   },
   'ar': {
     'sign in name': 'اسم المستخدم',
@@ -269,6 +281,17 @@ Map<String, Map<String, String>> text = {
     'dph': 'ph',
     'dtds': 'tds',
     'dtemp': 'temp',
-    'dhumidity': 'humidity'
+    'dhumidity': 'humidity',
+    'Ok': 'موافق',
+    'Cancel': 'إلغاء',
+    'settings pop up': 'اي تعديل في الإعدادات سيؤثر علي باقي اعدادات المحطة',
+    'delete msg': 'هل تريد مسح المحطة؟',
+    'delete err': 'ظهور خطأ اثناء مس المحطة',
+    'delete suc': 'تم مسح المحطة بنجاح',
+    'fill name': 'ضع اسم المحطة',
+    'edit suc': 'تم تعديل إسم المحطة بنجاح',
+    'edit fail': 'هذا الإسم مستخدم لمحطة اخري',
+    'download suc': 'تم تحميل الملف بنجاح',
+    'download fail': 'ظهر خطأ اثناء تحميل الملف',
   },
 };

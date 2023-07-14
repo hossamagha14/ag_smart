@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../View Model/bloc/Bottom navigation bar/bottom_nav_bar_cubit.dart';
 import '../../View Model/bloc/Bottom navigation bar/bottom_nav_bar_states.dart';
+import '../Reusable/text.dart';
 import 'bottom_dash_bar_screen.dart';
 
 class EditSettingsScreen extends StatefulWidget {
@@ -31,7 +32,7 @@ class _EditSettingsScreenState extends State<EditSettingsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Edit settings'),
+        title: Text(text[chosenLanguage]!['Edit settings']!),
       ),
       body: BlocConsumer<BottomNavBarCubit, CommonStates>(
           listener: (context, state) {
@@ -42,10 +43,9 @@ class _EditSettingsScreenState extends State<EditSettingsScreen> {
                 builder: (context) => const BottomDashBarScreen(),
               ),
               (route) => false);
-          successToast(context, 'Station was deleted successfully');
+          successToast(context, text[chosenLanguage]!['delete suc']!);
         } else if (state is BottomNavBarDeleteFailState) {
-          errorToast(
-              context, 'An error has occurred while deleting the station');
+          errorToast(context, text[chosenLanguage]!['delete err']!);
         }
       }, builder: (context, state) {
         BottomNavBarCubit myCubit = BottomNavBarCubit.get(context);
@@ -64,7 +64,8 @@ class _EditSettingsScreenState extends State<EditSettingsScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           MainButton(
-                              buttonLabel: 'Edit station name',
+                              buttonLabel:
+                                  text[chosenLanguage]!['Edit settings']!,
                               function: () {
                                 Navigator.push(
                                     context,
@@ -78,7 +79,8 @@ class _EditSettingsScreenState extends State<EditSettingsScreen> {
                           ),
                           MainButton(
                               color: Colors.red,
-                              buttonLabel: 'Factory reset',
+                              buttonLabel:
+                                  text[chosenLanguage]!['Factory reset']!,
                               function: () {
                                 showDialog(
                                   context: context,
@@ -86,97 +88,77 @@ class _EditSettingsScreenState extends State<EditSettingsScreen> {
                                     shape: RoundedRectangleBorder(
                                         borderRadius:
                                             BorderRadius.circular(20)),
-                                    content: Stack(
-                                      alignment: AlignmentDirectional.topEnd,
-                                      children: [
-                                        Container(
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
+                                    content: Container(
+                                      height:
+                                          MediaQuery.of(context).size.height *
                                               0.27,
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.8,
-                                          color: Colors.white,
-                                          child: Column(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.8,
+                                      color: Colors.white,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          Text(
+                                            text[chosenLanguage]![
+                                                'delete msg']!,
+                                            style: const TextStyle(
+                                                color: Colors.black87),
+                                          ),
+                                          Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceEvenly,
                                             children: [
-                                              const Text(
-                                                'Are you sure you want to delete this station?',
-                                                style: TextStyle(
-                                                    color: Colors.black87),
-                                              ),
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceEvenly,
-                                                children: [
-                                                  InkWell(
-                                                    onTap: () {
-                                                      myCubit.deleteStation();
-                                                    },
-                                                    child: SizedBox(
-                                                      width:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .width *
-                                                              0.09,
-                                                      height:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .height *
-                                                              0.05,
-                                                      child: FittedBox(
-                                                        child: Text(
-                                                          'Yes',
-                                                          style: TextStyle(
-                                                              color: iconColor),
-                                                        ),
-                                                      ),
+                                              InkWell(
+                                                onTap: () {
+                                                  myCubit.deleteStation();
+                                                },
+                                                child: SizedBox(
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      0.09,
+                                                  height: MediaQuery.of(context)
+                                                          .size
+                                                          .height *
+                                                      0.05,
+                                                  child: FittedBox(
+                                                    child: Text(
+                                                      text[chosenLanguage]![
+                                                          'Yes']!,
+                                                      style: TextStyle(
+                                                          color: iconColor),
                                                     ),
                                                   ),
-                                                  InkWell(
-                                                    onTap: () {
-                                                      Navigator.pop(context);
-                                                    },
-                                                    child: SizedBox(
-                                                      width:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .width *
-                                                              0.15,
-                                                      height:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .height *
-                                                              0.05,
-                                                      child: const FittedBox(
-                                                        child: Text(
-                                                          'Cancel',
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.red),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  )
-                                                ],
+                                                ),
                                               ),
+                                              InkWell(
+                                                onTap: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: SizedBox(
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      0.15,
+                                                  height: MediaQuery.of(context)
+                                                          .size
+                                                          .height *
+                                                      0.05,
+                                                  child: FittedBox(
+                                                    child: Text(
+                                                      text[chosenLanguage]![
+                                                          'Cancel']!,
+                                                      style: const TextStyle(
+                                                          color: Colors.red),
+                                                    ),
+                                                  ),
+                                                ),
+                                              )
                                             ],
                                           ),
-                                        ),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 10),
-                                          child: InkWell(
-                                              onTap: () {
-                                                Navigator.pop(context);
-                                              },
-                                              child: const Icon(Icons.close)),
-                                        )
-                                      ],
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 );

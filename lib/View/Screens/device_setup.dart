@@ -57,8 +57,8 @@ class _DeviceSetupScreenState extends State<DeviceSetupScreen> {
                             key: 'stationName',
                             value: changeNameController.text);
                         stationName = CacheHelper.getData(key: 'stationName');
-                        successToast(context,
-                            'Station name has been edited successfully');
+                        successToast(
+                            context, text[chosenLanguage]!['edit suc']!);
                         Navigator.pushAndRemoveUntil(
                             context,
                             MaterialPageRoute(
@@ -67,8 +67,8 @@ class _DeviceSetupScreenState extends State<DeviceSetupScreen> {
                             (route) => false);
                       } else if (state
                           is StationsEditStationNameReapeatedState) {
-                        errorToast(context,
-                            'This name has already been used for another station');
+                        errorToast(
+                            context, text[chosenLanguage]!['edit fail']!);
                       }
                     },
                     builder: (context, state) {
@@ -98,7 +98,7 @@ class _DeviceSetupScreenState extends State<DeviceSetupScreen> {
                           function: () {
                             if (changeNameController.text.isEmpty) {
                               errorToast(
-                                  context, 'Please put the station name');
+                                  context, text[chosenLanguage]!['fill name']!);
                             } else if (widget.isEdit == true) {
                               FocusScope.of(context).unfocus();
                               myCubit.putStationName(
