@@ -4,12 +4,12 @@ AgSmart is a comprehensive mobile application designed for efficient farm manage
 
 ## Features
 
--Irrigation Scheduling: Set and manage irrigation schedules based on crop needs and weather patterns. /n
--Variety of Irrigation Types: Supports different irrigation methods such as drip, sprinklers, and more. /n
--Fertilization Scheduling: Plan and schedule fertilization timings and methods to optimize crop health. /n
--Scarecrow Settings: Customize scarecrow features to protect crops from pests. /n
--Water Consumption Statistics: Track and analyze water usage for better resource management. /n
--Data Insights: Generate reports and statistics to improve farming practices and efficiency. /n
+- Irrigation Scheduling: Set and manage irrigation schedules based on crop needs and weather patterns.  
+- Variety of Irrigation Types: Supports different irrigation methods such as drip, sprinklers, and more.  
+- Fertilization Scheduling: Plan and schedule fertilization timings and methods to optimize crop health.  
+- Scarecrow Settings: Customize scarecrow features to protect crops from pests.  
+- Water Consumption Statistics: Track and analyze water usage for better resource management.  
+- Data Insights: Generate reports and statistics to improve farming practices and efficiency.  
 
 - [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
 - [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
