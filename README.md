@@ -1,12 +1,15 @@
-# ag_smart
+# AgSmart Mobile Application
 
-A new Flutter project.
+AgSmart is a comprehensive mobile application designed for efficient farm management. The app allows farmers to manage irrigation schedules, fertilization timings, scarecrow settings, and track water consumption. With a wide range of irrigation types and fertilization methods, AgSmart offers an easy-to-use interface to optimize farming operations and improve productivity.
 
-## Getting Started
+## Features
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
+*Irrigation Scheduling: Set and manage irrigation schedules based on crop needs and weather patterns.
+*Variety of Irrigation Types: Supports different irrigation methods such as drip, sprinklers, and more.
+*Fertilization Scheduling: Plan and schedule fertilization timings and methods to optimize crop health.
+*Scarecrow Settings: Customize scarecrow features to protect crops from pests.
+*Water Consumption Statistics: Track and analyze water usage for better resource management.
+*Data Insights: Generate reports and statistics to improve farming practices and efficiency.
 
 - [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
 - [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
