@@ -18,16 +18,16 @@ AgSmart is a comprehensive mobile application designed for efficient farm manage
 - Local Storage: shared_preferences, sqflite: ^2.2.5
 - UI/UX Components:
   - numberpicker: ^2.1.1
--  calendar_date_picker2: ^0.5.2
-fl_chart: ^0.62.0
-intl: ^0.17.0
-month_year_picker: ^0.2.0+2
-flutter_month_picker: ^0.0.1
-Barcode Scanning: flutter_barcode_scanner: ^2.0.0
-Storage: path_provider: ^2.0.14, screenshot: ^1.3.0
-Permissions: permission_handler: ^10.2.0
-Image and Gallery: image_gallery_saver: "^1.7.1", gallery_saver: ^2.3.2
-Toast Notifications: flutter_styled_toast: ^2.1.3
+  - calendar_date_picker2: ^0.5.2
+  - fl_chart: ^0.62.0
+  - intl: ^0.17.0
+  - month_year_picker: ^0.2.0+2
+  - flutter_month_picker: ^0.0.1
+  - Barcode Scanning: flutter_barcode_scanner: ^2.0.0
+  - Storage: path_provider: ^2.0.14, screenshot: ^1.3.0
+  - Permissions: permission_handler: ^10.2.0
+  - Image and Gallery: image_gallery_saver: "^1.7.1", gallery_saver: ^2.3.2
+  - Toast Notifications: flutter_styled_toast: ^2.1.3
 
 - [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
 - [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
